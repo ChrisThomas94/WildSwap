@@ -1,50 +1,63 @@
 package scot.wildcamping.wildscotland;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import scot.wildcamping.wildscotland.AppController;
+import scot.wildcamping.wildscotland.SessionManager;
 
-    Button bLogout;
-    EditText etEmailAddress;
+public class MainActivity extends AppCompatActivity {
+
+    TextView txtName;
+    TextView txtEmail;
+    Button btnLogout;
+
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        txtName = (TextView) findViewById(R.id.name);
+        txtEmail = (TextView) findViewById(R.id.email);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+        //setting toolbar
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolBar);
+
+
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+
+        String name = AppController.getString(getApplicationContext(), "name");
+        String email = AppController.getString(getApplicationContext(), "email");
+        txtName.setText(name);
+        txtEmail.setText(email);
+
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                logoutUser();
             }
         });
-
-        etEmailAddress = (EditText) findViewById(R.id.etEmailAddress);
-        bLogout = (Button) findViewById(R.id.bLogout);
-
-        bLogout.setOnClickListener(this);
-
-
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.bLogout:
 
-
-                break;
-        }
+    private void logoutUser() {
+        session.setLogin(false);
+        Intent intent = new Intent(MainActivity.this, Login.class);
+        startActivity(intent);
+        finish();
     }
 }
