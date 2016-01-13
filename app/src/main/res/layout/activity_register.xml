@@ -7,18 +7,6 @@
 
     <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="AndroidSources.com"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="50dp"
-        android:textSize="30sp"
-        android:textColor="#D1555D"
-        android:textStyle="bold"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,7 +74,7 @@
         android:text="Register"
         android:textSize="18sp"
         android:id="@+id/register_button"
-        android:background="#D1555D"
+        android:background="#267326"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

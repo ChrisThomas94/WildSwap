@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -53,6 +54,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SCOTLAND.getCenter(), 6));
+
+        mMap.addMarker(new MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker5))
+                .anchor(0.5f, 1.0f) // Anchors the marker on the bottom left
+                .position(new LatLng(56.797599, -5.060633)));
 
     }
 

@@ -5,19 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="AndroidSources.com"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="50dp"
-        android:textSize="30sp"
-        android:textColor="#D1555D"
-        android:textStyle="bold"/>
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/logo"
+        android:src="@drawable/logosmall"/>
+        >
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +55,7 @@
                 android:id="@+id/password_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="password"
+                android:hint="Password"
                 android:inputType="textPassword"
                 android:singleLine="true"/>
 
@@ -68,7 +70,7 @@
         android:text="Sign In"
         android:textSize="18sp"
         android:id="@+id/signin_button"
-        android:background="#D1555D"
+        android:background="#267326"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -80,7 +82,7 @@
         android:text="Register Here"
         android:textSize="18sp"
         android:id="@+id/registerhere_button"
-        android:background="#D1555D"
+        android:background="#267326"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

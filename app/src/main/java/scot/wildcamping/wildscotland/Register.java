@@ -17,9 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.AppController;
-import scot.wildcamping.wildscotland.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,7 +74,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         if (session.isLoggedIn()) {
             // User is already logged in. Move to main activity
             Intent intent = new Intent(Register.this,
-                    MainActivity.class);
+                    LogOut.class);
             startActivity(intent);
             finish();
         }

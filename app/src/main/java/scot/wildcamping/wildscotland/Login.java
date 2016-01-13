@@ -15,9 +15,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.AppController;
-import scot.wildcamping.wildscotland.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,9 +61,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         session = new SessionManager(getApplicationContext());
 
 
-        //If the session is logged in move to MainActivity
+        //If the session is logged in move to LogOut
         if (session.isLoggedIn()) {
-            Intent intent = new Intent(Login.this, MainActivity.class);
+            Intent intent = new Intent(Login.this, LogOut.class);
             startActivity(intent);
             finish();
         }
@@ -84,7 +81,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                Appconfig.URL_REGISTER, new Response.Listener<String>() {
+                Appconfig.URL_LOGIN, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -101,7 +98,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
                         // Launching  main activity
                         Intent intent = new Intent(Login.this,
-                                MainActivity.class);
+                                LogOut.class);
                         startActivity(intent);
                         finish();
                     } else {
