@@ -5,12 +5,15 @@ import scot.wildcamping.wildscotland.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
+//import android.support.v4.app.Fragment;
+//import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -21,7 +24,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+import com.google.android.gms.maps.MapFragment;
+
+public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -165,9 +170,10 @@ public class MainActivity extends Activity {
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
+		MapFragment mapFragment = null;
 		switch (position) {
 		case 0:
-			fragment = new MapFragment();
+			mapFragment = new MapFragment();
 			break;
 		case 1:
 			fragment = new YourSitesFragment();
@@ -189,10 +195,25 @@ public class MainActivity extends Activity {
 			break;
 		}
 
-		if (fragment != null) {
+
+		if (fragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			mDrawerList.setSelection(position);
+			setTitle(navMenuTitles[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+		}
+		else if(mapFragment != null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, mapFragment).commit();
+
+			//setContentView(R.layout.activity_maps);
+			//addMapFragment();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
@@ -228,6 +249,14 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	private void addMapFragment() {
+		FragmentManager manager = getFragmentManager();
+		FragmentTransaction transaction = manager.beginTransaction();
+		MapFragment fragment = new MapFragment();
+		transaction.add(R.id.mapView, fragment);
+		transaction.commit();
 	}
 
 }

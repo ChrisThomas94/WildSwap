@@ -14,7 +14,7 @@ public class OpenTradesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_open_trades, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_open_trades, container, false);      //fragment_open_trades
          
         return rootView;
     }
