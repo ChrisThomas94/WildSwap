@@ -39,9 +39,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         //initializing toolbar
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
+
         //initializing views
         registerHere=(Button)findViewById(R.id.registerhere_button);
         signIn=(Button)findViewById(R.id.signin_button);
@@ -49,6 +51,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         passwordLogin=(TextInputLayout)findViewById(R.id.password_loginlayout);
         etEmailLogin = (EditText) findViewById(R.id.email_login);
         etPasswordLogin = (EditText) findViewById(R.id.password_login);
+
         //setting onclick listeners
         registerHere.setOnClickListener(this);
         signIn.setOnClickListener(this);
