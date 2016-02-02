@@ -1,4 +1,5 @@
 package scot.wildcamping.wildscotland;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener{    //***
 
 
     Button registerHere;
@@ -41,8 +42,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
         //initializing toolbar
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
+        //Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);               ***
+        //setSupportActionBar(toolBar);                                         ***
 
         //initializing views
         registerHere=(Button)findViewById(R.id.registerhere_button);

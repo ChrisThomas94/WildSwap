@@ -5,6 +5,7 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
     <string name="google_app_id">123456789</string>
+    <string name="google_maps_key">AIzaSyAcdnOoy0diO5vmcwdTtpzsMkx2iQeeBvs</string>
 
     <!--sliding window tutorial -->
     <string name="action_settings">Settings</string>

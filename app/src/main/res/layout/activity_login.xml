@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:id="@+id/logo"
-        android:src="@drawable/logosmall"/>
+        android:src="@drawable/logo_transparent"/>
         >
 
     </LinearLayout>

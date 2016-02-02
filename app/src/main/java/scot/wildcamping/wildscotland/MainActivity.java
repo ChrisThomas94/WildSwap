@@ -25,8 +25,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.MapFragment;
-
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -171,12 +169,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private void displayView(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
-		MapExplorerFragment mapFragment = null;
+		MapsFragment mapsFragment = null;
 		Activity mapsActivity = null;
 		switch (position) {
 		case 0:
-			//mapFragment = new MapExplorerFragment();		//MapExplorerFragment()
-			mapsActivity = new MapsActivity();
+			mapsFragment = new MapsFragment();		//MapsFragment()
+			//mapsActivity = new MapsActivity();
 			break;
 		case 1:
 			fragment = new YourSitesFragment();
@@ -201,8 +199,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
 		if (fragment != null){
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
@@ -216,29 +213,15 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			//myIntent.putExtra("key", value); //Optional parameters
 			MainActivity.this.startActivity(myIntent);
 		}
-		else if(mapFragment != null) {
-			/*FragmentManager manager = getFragmentManager();
-			FragmentTransaction transaction = manager.beginTransaction().add(R.id.mapView, mapFragment);
-
-			transaction.show(mapFragment);
-
-			transaction.commit();*/
-
-			//setContentView(R.layout.activity_maps);
-			//addMapFragment();
-
-			setContentView(R.layout.activity_maps);
-			addMapFragment();
-
-			/*FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, mapFragment).commit();
+		else if(mapsFragment != null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);*/
+			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
@@ -273,9 +256,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private void addMapFragment() {
 		FragmentManager manager = getFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		MapExplorerFragment fragment = new MapExplorerFragment();
+		MapsFragment fragment = new MapsFragment();
 		transaction.add(R.id.mapView, fragment);
 		transaction.commit();
+
 	}
 
 }

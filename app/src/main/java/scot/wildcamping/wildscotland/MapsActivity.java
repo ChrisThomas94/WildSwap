@@ -35,10 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.fragment_maps);
 
         //initializing Views
-        addButton = (FloatingActionButton) findViewById(R.id.addButton);
+        //addButton = (FloatingActionButton) findViewById(R.id.addButton);
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
