@@ -1,6 +1,7 @@
 package scot.wildcamping.wildscotland;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
+import scot.wildcamping.wildscotland.AppClusterItem;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
@@ -36,6 +39,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     MapView mMapView;
     private GoogleMap googleMap;
+    private static final int MINIMUM_ZOOM_LEVEL_SERVER_REQUEST = 7;
+    private static final int DEFAULT_ZOOM_LEVEL = 4;
+
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
     ImageButton addSite;
     Button gpsAdd;
@@ -99,6 +105,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         // set listeners for buttons
         addSite.setOnClickListener(this);
+
+        setUpClustering();
 
 
         // Perform any camera updates here
