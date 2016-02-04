@@ -1,20 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shit son"
-        android:textSize="18sp"
-        android:id="@+id/register_button"
-        android:background="#267326"
-        android:layout_marginTop="40dp"
+        android:id="@+id/edit_text_container"
+        android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:textColor="#ffffff"/>
+        android:padding="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addLat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/Lat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Latitude"
+                android:inputType="numberDecimal"
+                android:singleLine="true"/>
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addLong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/Long"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Longitude"
+                android:inputType="numberDecimal"
+                android:singleLine="true"/>
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/addImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+        <ImageButton
+            android:id="@+id/addFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:inputType="text"
+                android:singleLine="true"/>
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/addDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description"
+                android:inputType="text"
+                android:singleLine="false"/>
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:rating="0.0"
+            android:layout_gravity="center"/>
+
+
+
+    </LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="#90909090"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+
+
+
+        <Button
+            android:id="@+id/confirmCreation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_toRightOf="@+id/cancelCreation"/>
+
+        <Button
+            android:id="@+id/cancelCreation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
 
 </LinearLayout>

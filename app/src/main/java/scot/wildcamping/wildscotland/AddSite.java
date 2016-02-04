@@ -30,5 +30,14 @@ public class AddSite extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            double latitude = extras.getDouble("latitude");
+            double longitude = extras.getDouble("longitude");
+        }
+
     }
+
+
 }
