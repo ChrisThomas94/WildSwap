@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +45,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     private static final int DEFAULT_ZOOM_LEVEL = 4;
 
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
+    LatLng newSite = null;
+    boolean add;
+    double newLat;
+    double newLon;
     ImageButton addSite;
     Button gpsAdd;
     Button manualAdd;
@@ -50,13 +56,27 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button btnDismiss;
     Button btnDismissLatLong;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        if(extras != null)
+        {
+            newLat = extras.getDouble("latitude");
+            newLon = extras.getDouble("longitude");
+            add = extras.getBoolean("add");
+
+            newSite = new LatLng(newLat, newLon);
+
+        }
+
         // inflate and return the layout
         View v = inflater.inflate(R.layout.fragment_maps, container,
                 false);
+
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
@@ -77,41 +97,41 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // Show rationale and request permission.
         }
 
+        //center map on newly created site
+        if(newSite != null){
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(newSite).zoom(15).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
 
-        // latitude and longitude
-        double latitude = 56.797599;
-        double longitude = -5.060633;
+        }
+        else{// center map on Scotland
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(SCOTLAND.getCenter()).zoom(6).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+        }
 
-        // create test marker
-        MarkerOptions marker = new MarkerOptions().position(
-                new LatLng(latitude, longitude)).title("Hello Maps");
-
-        // Changing marker icon
-        marker.icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-        // adding marker
-        googleMap.addMarker(marker);
-
-        // center map on Scotland
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(SCOTLAND.getCenter()).zoom(6).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
+        if(add == true){
+            addMarker(newSite);
+        }
 
 
+        //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
 
 
         // set listeners for buttons
         addSite.setOnClickListener(this);
 
+        // clustering
         setUpClustering();
 
 
         // Perform any camera updates here
         return v;
     }
+
 
     @Override
     public void onResume() {
@@ -137,8 +157,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         mMapView.onLowMemory();
     }
 
+
     @Override
-    public void onClick(View arg0) {
+    public void onClick(View view) {
+
         LayoutInflater layoutInflater
                 = (LayoutInflater)getActivity().getBaseContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -148,25 +170,26 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 AbsListView.LayoutParams.WRAP_CONTENT,
                 AbsListView.LayoutParams.WRAP_CONTENT);
 
+        //initialize views
         btnDismiss = (Button)popupView.findViewById(R.id.cancelNewSite);
         gpsAdd = (Button)popupView.findViewById(R.id.gps);
         manualAdd = (Button)popupView.findViewById(R.id.manual);
         longLatAdd = (Button)popupView.findViewById(R.id.longlat);
-        btnDismissLatLong = (Button)popupView.findViewById(R.id.cancelLatLong);
 
+
+        //set on click listeners
         btnDismiss.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 popupWindow.dismiss();
             }
         });
+
         gpsAdd.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 // start new activity
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         AddSite.class);
@@ -174,19 +197,16 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 //getActivity().finish();
             }
         });
+
         manualAdd.setOnClickListener(new Button.OnClickListener() {
+
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                // start new activity
-
-                double addLat = 0;
-                double addLong = 0;
 
                 popupWindow.dismiss();
 
-                LayoutInflater layoutInflater
+                /*LayoutInflater layoutInflater
                         = (LayoutInflater) getActivity().getBaseContext()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View popupView = layoutInflater.inflate(R.layout.popup_manualadd, null);
@@ -195,18 +215,12 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         AbsListView.LayoutParams.WRAP_CONTENT,
                         AbsListView.LayoutParams.WRAP_CONTENT);
 
-                popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
+                popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);*/
 
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                     @Override
                     public void onMapClick(LatLng point) {
-
-                        MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Marker");
-
-                        googleMap.addMarker(marker);
-
-                        System.out.println(point.latitude + "---" + point.longitude);
 
                         Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
                         intent.putExtra("latitude", point.latitude);
@@ -217,6 +231,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             }
         });
+
         longLatAdd.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -233,12 +248,17 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     }
 
+    private void addMarker(LatLng newSite){
+
+        MarkerOptions marker = new MarkerOptions().position(newSite).title("New Marker");
+
+        googleMap.addMarker(marker);
+
+    }
+
     private void setUpClustering() {
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
-
-        // Position the map in UK.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), DEFAULT_ZOOM_LEVEL));
 
         // Initialize the manager with the context and the map.
         mClusterManager = new ClusterManager<AppClusterItem>(this.getActivity(), googleMap);
@@ -254,8 +274,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
 
         // Set some lat/lng coordinates to start with.
-        double latitude = 51.5145160;
-        double longitude = -0.1270060;
+        double latitude = 56.797599;
+        double longitude = -5.060633;
 
         // Add ten cluster items in close proximity, for purposes of this example.
         for (int i = 0; i < 10; i++) {
@@ -265,6 +285,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             AppClusterItem offsetItem = new AppClusterItem(latitude, longitude);
             mClusterManager.addItem(offsetItem);
         }
+    }
+
+    private void addNewClusterMarker(ClusterManager<AppClusterItem> mClusterManager) {
+        AppClusterItem offsetItem = new AppClusterItem(newLat, newLon);
+        mClusterManager.addItem(offsetItem);
     }
 
 }

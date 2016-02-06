@@ -25,6 +25,8 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -49,6 +51,15 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		Bundle extras = getIntent().getExtras();
+		if(extras != null)
+		{
+			double latitude = extras.getDouble("latitude");
+			double longitude = extras.getDouble("longitude");
+			boolean add = extras.getBoolean("add");
+
+		}
 
 		mTitle = mDrawerTitle = getTitle();
 
@@ -173,8 +184,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		Activity mapsActivity = null;
 		switch (position) {
 		case 0:
-			mapsFragment = new MapsFragment();		//MapsFragment()
-			//mapsActivity = new MapsActivity();
+			mapsFragment = new MapsFragment();
 			break;
 		case 1:
 			fragment = new YourSitesFragment();
