@@ -65,13 +65,15 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
         {
-            newLat = extras.getDouble("latitude");
-            newLon = extras.getDouble("longitude");
+            //newLat = extras.getDouble("latitude");
+            //newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
 
-            newSite = new LatLng(newLat, newLon);
+            //newSite = new LatLng(newLat, newLon);
 
         }
+
+        newSite = new LatLng(newLat, newLon);
 
         // inflate and return the layout
         View v = inflater.inflate(R.layout.fragment_maps, container,
@@ -221,6 +223,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                     @Override
                     public void onMapClick(LatLng point) {
+
+                        newLat = point.latitude;
+                        newLon = point.longitude;
 
                         Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
                         intent.putExtra("latitude", point.latitude);

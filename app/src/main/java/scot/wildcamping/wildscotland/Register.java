@@ -87,16 +87,18 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private void registerUser(final String name, final String email,
                               final String password) {
         // Tag used to cancel the request
-        String tag_string_req = "req_register";
+        String tag_string_req = "req_register"; // tag_string_req req_register
 
         pDialog.setMessage("Registering ...");
         showDialog();
 
+        System.out.println("srtReq");
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 Appconfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
+                System.out.println("onResponse");
                 hideDialog();
 
                 try {
@@ -110,8 +112,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                        String created_at = user.getString("created_at");
 
                         //writing the value to sharedpreference which we will be showing in main screen
                         AppController.setString(Register.this, "uid", uid);
@@ -152,7 +153,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "register");
+                //params.put("tag", "register");
                 params.put("name", name);
                 params.put("email", email);
                 params.put("password", password);
