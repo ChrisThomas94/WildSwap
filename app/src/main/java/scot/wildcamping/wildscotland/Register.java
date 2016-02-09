@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -18,14 +19,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
+
+    private static JSONParser jsonParser = new JSONParser();
 
     TextView tvLogin;
     TextInputLayout fullName;
@@ -86,6 +93,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
      */
     private void registerUser(final String name, final String email,
                               final String password) {
+
         // Tag used to cancel the request
         String tag_string_req = "req_register"; // tag_string_req req_register
 

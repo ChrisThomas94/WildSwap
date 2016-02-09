@@ -8,5 +8,5 @@ public class Appconfig {
     public static String URL_LOGIN = "http://10.0.2.2:81/login_register_api/";     //http://127.0.0.1:81/login_register_api/
 
     // Server register url
-    public static String URL_REGISTER = "http://10.0.2.2:81/login_register_api";   //http://10.0.2.2:81/login_register_api/
+    public static String URL_REGISTER = "http://127.0.0.1";   //http://10.0.2.2:81/login_register_api/
 }
