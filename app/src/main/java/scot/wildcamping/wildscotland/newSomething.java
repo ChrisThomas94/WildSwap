@@ -106,7 +106,7 @@ public class newSomething extends Activity {
             Log.d("Create Response", json.toString());
 
             // check for success tag
-            try {
+            /*try {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
@@ -121,7 +121,7 @@ public class newSomething extends Activity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             return null;
         }

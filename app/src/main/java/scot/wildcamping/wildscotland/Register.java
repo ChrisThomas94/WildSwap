@@ -2,12 +2,14 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,16 +17,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +44,6 @@ import java.util.Map;
 
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
-
-    private static JSONParser jsonParser = new JSONParser();
 
     TextView tvLogin;
     TextInputLayout fullName;
@@ -96,22 +106,21 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                               final String password) {
 
         // Tag used to cancel the request
-        String tag_string_req = "req_register"; // tag_string_req req_register
+        String tag_string_req = "req_register";
 
         pDialog.setMessage("Registering ...");
         showDialog();
 
-        System.out.println("srtReq");
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 Appconfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                System.out.println("onResponse");
                 hideDialog();
 
                 try {
-                    JSONObject jObj = new JSONObject("{response}");
+                    JSONObject jObj = new JSONObject(response);
+
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
                         // User successfully stored in MySQL
@@ -129,10 +138,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         AppController.setString(Register.this, "email", email);
                         AppController.setString(Register.this, "created_at", created_at);
 
+                        System.out.println(jObj);
+
                         // Launch login activity
                         Intent intent = new Intent(
                                 Register.this,
-                                Login.class);
+                                LogOut.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -144,7 +155,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("log_tag", "Error parsing data "+e.toString());
+                    Log.e("log_tag", "Failed data was:\n" + response);
+                    Log.e("Volley","Error");
+
+                    //Log.e("JSON Parser", "Error parsing data [" + e.getMessage() + "] " + response);
+                    //e.printStackTrace();
                 }
 
             }
@@ -156,13 +172,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
-        }) {
+        }){
 
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                //params.put("tag", "register");
+                params.put("tag", "register");
                 params.put("name", name);
                 params.put("email", email);
                 params.put("password", password);
