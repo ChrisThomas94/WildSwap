@@ -1,5 +1,6 @@
 package scot.wildcamping.wildscotland;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
@@ -16,10 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -111,21 +114,25 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         pDialog.setMessage("Registering ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                Appconfig.URL_REGISTER, new Response.Listener<String>() {
+        Map<String, String> params = new HashMap<>();
+        //params.put("tag", "register");
+        params.put("name", name);
+        params.put("email", email);
+        params.put("password", password);
 
+
+        CustomRequest strReq = new CustomRequest(Request.Method.POST, Appconfig.URL_REGISTER, params, new Response.Listener<JSONObject>(){
             @Override
-            public void onResponse(String response) {
+            public void onResponse(JSONObject jObj) {
+                // do these if it request was successful
                 hideDialog();
 
                 try {
-                    JSONObject jObj = new JSONObject(response);
-
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
+                        /*String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
@@ -137,7 +144,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         AppController.setString(Register.this, "name", name);
                         AppController.setString(Register.this, "email", email);
                         AppController.setString(Register.this, "created_at", created_at);
-
+                        */
                         System.out.println(jObj);
 
                         // Launch login activity
@@ -147,49 +154,34 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         startActivity(intent);
                         finish();
                     } else {
-
+                        System.out.println(jObj);
                         // Error occurred in registration. Get the error
-                        // message
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     Log.e("log_tag", "Error parsing data "+e.toString());
-                    Log.e("log_tag", "Failed data was:\n" + response);
+                    Log.e("log_tag", "Failed data was:\n");
                     Log.e("Volley","Error");
 
-                    //Log.e("JSON Parser", "Error parsing data [" + e.getMessage() + "] " + response);
-                    //e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                // do these if it request has errors
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
-        }){
+        });
 
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "register");
-                params.put("name", name);
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
-            }
-
-        };
-
+        System.out.println("strReq: "+strReq);
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        Volley.newRequestQueue(this).add(strReq);
     }
 
     private void showDialog() {
