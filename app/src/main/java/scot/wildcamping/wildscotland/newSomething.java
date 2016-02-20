@@ -28,11 +28,11 @@ public class newSomething extends Activity {
 
     JSONParser jsonParser = new JSONParser();
     EditText inputName;
-    EditText inputPrice;
-    EditText inputDesc;
+    EditText inputEmail;
+    EditText inputPassword;
     String name;
-    String price;
-    String description;
+    String email;
+    String password;
 
     // url to create new product
     private static String url_create_product = Appconfig.URL_REGISTER;
@@ -47,8 +47,8 @@ public class newSomething extends Activity {
 
         // Edit Text
         inputName = (EditText) findViewById(R.id.fullname_register);
-        inputPrice = (EditText) findViewById(R.id.email_register);
-        inputDesc = (EditText) findViewById(R.id.password_register);
+        inputEmail = (EditText) findViewById(R.id.email_register);
+        inputPassword = (EditText) findViewById(R.id.password_register);
 
         // Create button
         Button btnCreateProduct = (Button) findViewById(R.id.register_button);
@@ -82,8 +82,8 @@ public class newSomething extends Activity {
             pDialog.show();
 
             name = inputName.getText().toString();
-            price = inputPrice.getText().toString();
-            description = inputDesc.getText().toString();
+            email = inputEmail.getText().toString();
+            password = inputPassword.getText().toString();
         }
 
         /**
@@ -94,8 +94,8 @@ public class newSomething extends Activity {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("name", name));
-            params.add(new BasicNameValuePair("email", price));
-            params.add(new BasicNameValuePair("password", description));
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", password));
 
             // getting JSON Object
             // Note that create product url accepts POST method
@@ -106,7 +106,7 @@ public class newSomething extends Activity {
             Log.d("Create Response", json.toString());
 
             // check for success tag
-            /*try {
+            try {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
@@ -121,7 +121,7 @@ public class newSomething extends Activity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             return null;
         }

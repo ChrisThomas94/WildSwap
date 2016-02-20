@@ -106,8 +106,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				 //nav menu toggle icon							//R.drawable.ic_drawer
-				R.string.app_name, // nav drawer open - description for accessibility
-				R.string.app_name // nav drawer close - description for accessibility
+				R.string.app_name, // nav drawer open - password for accessibility
+				R.string.app_name // nav drawer close - password for accessibility
 		) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);

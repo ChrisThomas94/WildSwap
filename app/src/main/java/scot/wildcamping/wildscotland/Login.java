@@ -95,6 +95,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                     JSONObject jObj = new JSONObject(response);
                     String userId= jObj.getString("uid");
 
+                    JSONObject user = jObj.getJSONObject("user");
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+
+                    AppController.setString(Login.this, "uid", userId);
+                    AppController.setString(Login.this, "name", name);
+                    AppController.setString(Login.this, "email", email);
+
                     if (userId!=null) {
                         // user successfully logged in
                         // Create login session
@@ -178,15 +186,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 String email = etEmailLogin.getText().toString();
                 String password = etPasswordLogin.getText().toString();
 
-                // Check for empty data
-                if (email.trim().length() > 0 && password.trim().length() > 0) {
+                checkLogin(email, password);
+
+                // Check for empty data, commented out until API is fixed
+                /*if (email.trim().length() > 0 && password.trim().length() > 0) {
                     // login user
                     checkLogin(email, password);
                 } else {
                     // show snackbar to enter credentials
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
-                }
+                }*/
                 break;
         }
     }

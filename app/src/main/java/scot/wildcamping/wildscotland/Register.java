@@ -22,6 +22,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,8 +122,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         params.put("email", email);
         params.put("password", password);
 
+        final JSONObject jsonParams = new JSONObject(params);
+        final String requestBody = jsonParams.toString();
 
-        CustomRequest strReq = new CustomRequest(Request.Method.POST, Appconfig.URL_REGISTER, params, new Response.Listener<JSONObject>(){
+        CustomRequest custReq = new CustomRequest(Request.Method.POST, Appconfig.URL_REGISTER, params, new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject jObj) {
                 // do these if it request was successful
@@ -132,7 +136,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     if (!error) {
                         // User successfully stored in MySQL
                         // Now store the user in sqlite
-                        /*String uid = jObj.getString("uid");
+                        String uid = jObj.getString("uid");
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
@@ -144,7 +148,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         AppController.setString(Register.this, "name", name);
                         AppController.setString(Register.this, "email", email);
                         AppController.setString(Register.this, "created_at", created_at);
-                        */
+
                         System.out.println(jObj);
 
                         // Launch login activity
@@ -176,12 +180,26 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
-        });
+        }){
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            jsonParams, "utf-8");
+                    return null;
+                }
+            }
+        };
 
-        System.out.println("strReq: "+strReq);
+
+
+
+        System.out.println("custReq: "+custReq);
         // Adding request to request queue
-        //AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        Volley.newRequestQueue(this).add(strReq);
+        AppController.getInstance().addToRequestQueue(custReq, tag_string_req);
+        //Volley.newRequestQueue(this).add(custReq);
     }
 
     private void showDialog() {
