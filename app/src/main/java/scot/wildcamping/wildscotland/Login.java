@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
 
         //If the session is logged in move to LogOut
         if (session.isLoggedIn()) {
-            Intent intent = new Intent(Login.this, MainActivity.class);
+            Intent intent = new Intent(Login.this, LogOut.class);
             startActivity(intent);
             finish();
         }

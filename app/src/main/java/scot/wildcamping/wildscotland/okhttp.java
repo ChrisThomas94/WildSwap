@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 /**
  * Created by Chris on 21-Feb-16.
  */
+
 import android.app.Activity;
 
 import java.io.IOException;

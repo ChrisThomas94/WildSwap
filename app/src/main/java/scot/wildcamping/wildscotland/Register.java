@@ -17,28 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -47,8 +30,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
+
+    public final MediaType JSON
+            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
+
+    public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
 
     TextView tvLogin;
     TextInputLayout fullName;
@@ -58,6 +55,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     EditText etEmailRegister;
     EditText etPasswordRegister;
     Button registerButton;
+    String name;
+    String email;
+    String password;
 
     SessionManager session;
 
@@ -104,102 +104,90 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    /*
-    function to register user details in mysql database
-     */
-    private void registerUser(final String name, final String email,
-                              final String password) {
+    class CreateNewProduct extends AsyncTask<String, String, String> {
 
-        // Tag used to cancel the request
-        String tag_string_req = "req_register";
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(Register.this);
+            pDialog.setMessage("Registering ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
 
-        pDialog.setMessage("Registering ...");
-        showDialog();
+            name = etFullName.getText().toString();
+            email = etEmailRegister.getText().toString();
+            password = etPasswordRegister.getText().toString();
 
-        Map<String, String> params = new HashMap<>();
-        //params.put("tag", "register");
-        params.put("name", name);
-        params.put("email", email);
-        params.put("password", password);
+        }
 
-        final JSONObject jsonParams = new JSONObject(params);
-        final String requestBody = jsonParams.toString();
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
 
-        CustomRequest custReq = new CustomRequest(Request.Method.POST, Appconfig.URL_REGISTER, params, new Response.Listener<JSONObject>(){
-            @Override
-            public void onResponse(JSONObject jObj) {
-                // do these if it request was successful
-                hideDialog();
+            //String getResponse = doGetRequest(Appconfig.URL_REGISTER);
+            //System.out.println(getResponse);
 
-                try {
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        // User successfully stored in MySQL
-                        // Now store the user in sqlite
-                        String uid = jObj.getString("uid");
+            // issue the post request
+            try {
+                String json = register(name, email, password);
+                System.out.println("json: "+json);
+                String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+                System.out.println("post response: "+postResponse);
 
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user.getString("created_at");
-
-                        //writing the value to sharedpreference which we will be showing in main screen
-                        AppController.setString(Register.this, "uid", uid);
-                        AppController.setString(Register.this, "name", name);
-                        AppController.setString(Register.this, "email", email);
-                        AppController.setString(Register.this, "created_at", created_at);
-
-                        System.out.println(jObj);
-
-                        // Launch login activity
-                        Intent intent = new Intent(
-                                Register.this,
-                                LogOut.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        System.out.println(jObj);
-                        // Error occurred in registration. Get the error
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    Log.e("log_tag", "Error parsing data "+e.toString());
-                    Log.e("log_tag", "Failed data was:\n");
-                    Log.e("Volley","Error");
-
-                }
+            }catch (IOException e){
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // do these if it request has errors
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }){
-            @Override
-            public byte[] getBody() {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            jsonParams, "utf-8");
-                    return null;
-                }
-            }
-        };
+            return null;
+        }
 
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+        }
 
+        private String doGetRequest(String url)throws IOException{
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
 
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
 
-        System.out.println("custReq: "+custReq);
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(custReq, tag_string_req);
-        //Volley.newRequestQueue(this).add(custReq);
+        private String doPostRequest(String url, String json) throws IOException {
+            //RequestBody body = RequestBody.create(JSON, json);
+            RequestBody formBody = new FormEncodingBuilder()
+                    .add("name","chris")
+                    .add("email", "chris@gmailsaflh")
+                    .add("password", "asd")
+                    .build();
+
+            String parameters = "name=chris&email=sdsdfgsdfkl&password=sfjklsdfkl";
+
+            System.out.println("body: " + formBody.toString());
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, parameters))
+                    .build();
+            System.out.println("request: "+request);
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String register(String name, String email, String password) {
+            return "{'name':'" + name + "',"
+                    + "'email':'" + email + "',"
+                    + "'password':'" + password + "'}";
+        }
     }
 
     private void showDialog() {
@@ -221,12 +209,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 startActivity(intent);
                 finish();
             case R.id.register_button:
-                String name = etFullName.getText().toString();
-                String email = etEmailRegister.getText().toString();
-                String password = etPasswordRegister.getText().toString();
+                name = etFullName.getText().toString();
+                email = etEmailRegister.getText().toString();
+                password = etPasswordRegister.getText().toString();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+                    new CreateNewProduct().execute();
+                        //registerUser(name, email, password);
                 } else {
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
