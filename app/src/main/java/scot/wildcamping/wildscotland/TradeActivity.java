@@ -14,6 +14,10 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+
 /**
  * Created by Chris on 06-Feb-16.
  */
@@ -41,11 +45,20 @@ public class TradeActivity extends Activity {
     private boolean[] quadrantTouched;
     private boolean allowRotating;
 
+    ArrayList<LatLng> cluster = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            cluster = extras.getParcelableArrayList("cluster");
+            System.out.println("Trade" + cluster);
+        }
 
         // load the image only once
         if (imageOriginal == null) {

@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +34,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.geometry.Bounds;
+import com.google.maps.android.geometry.Point;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import scot.wildcamping.wildscotland.AppClusterItem;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
@@ -55,6 +69,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button longLatAdd;
     Button btnDismiss;
     Button btnDismissLatLong;
+    List<LatLng> knownSites = new ArrayList<LatLng>();
+    Cluster<AppClusterItem> clickedCluster;
+    AppClusterItem clickedClusterItem;
 
 
     @Override
@@ -65,15 +82,13 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
         {
-            //newLat = extras.getDouble("latitude");
-            //newLon = extras.getDouble("longitude");
+            newLat = extras.getDouble("latitude");
+            newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
 
-            //newSite = new LatLng(newLat, newLon);
+            newSite = new LatLng(newLat, newLon);
 
         }
-
-        newSite = new LatLng(newLat, newLon);
 
         // inflate and return the layout
         View v = inflater.inflate(R.layout.fragment_maps, container,
@@ -99,22 +114,24 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // Show rationale and request permission.
         }
 
-        //center map on newly created site
-        if(newSite != null){
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(newSite).zoom(15).build();
-            googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-
-        }
-        else{// center map on Scotland
+        // center map on Scotland
+        if(newSite == null){
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(SCOTLAND.getCenter()).zoom(6).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
+
+        }
+        else{//center map on newly created site
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(newSite).zoom(15).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
         }
 
+
         if(add == true){
+            //knownSites.add(newSite);
             addMarker(newSite);
         }
 
@@ -127,8 +144,13 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         addSite.setOnClickListener(this);
 
         // clustering
-        setUpClustering();
+        /*if(knownSites.size() == 0){
 
+        }else{
+        setUpClustering();
+        }*/
+
+        setUpClustering();
 
         // Perform any camera updates here
         return v;
@@ -163,9 +185,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     @Override
     public void onClick(View view) {
 
-        LayoutInflater layoutInflater
-                = (LayoutInflater)getActivity().getBaseContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = layoutInflater.inflate(R.layout.popup, null);
         final PopupWindow popupWindow = new PopupWindow(
                 popupView,
@@ -192,11 +212,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             @Override
             public void onClick(View v) {
+
+                double latitude = 0;
+                double longitude = 0;
+
+                if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    googleMap.getMyLocation();
+                    latitude = googleMap.getMyLocation().getLatitude();
+                    longitude = googleMap.getMyLocation().getLongitude();
+                } else {
+                    // Show rationale and request permission.
+                }
+
                 // start new activity
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        AddSite.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
                 getActivity().startActivity(intent);
-                //getActivity().finish();
+                getActivity().finish();
             }
         });
 
@@ -231,6 +265,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         intent.putExtra("latitude", point.latitude);
                         intent.putExtra("longitude", point.longitude);
                         getActivity().startActivity(intent);
+                        getActivity().finish();
                     }
                 });
 
@@ -241,11 +276,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                // start new activity
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         AddSite.class);
                 getActivity().startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -271,30 +305,151 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // Point the map's listeners at the listeners implemented by the cluster manager.
         googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mClusterManager);
+        googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+
+        //instal custom infoWindowAdapter as the adpater for one or both of the marker collections
+        mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
 
         // Add cluster items (markers) to the cluster manager.
         addClusterMarkers(mClusterManager);
+
+        googleMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<AppClusterItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<AppClusterItem> cluster) {
+                clickedCluster = cluster;
+                return false;
+            }
+        });
+        //not sure this is needed as unknown sites should all show as a cluster rather than an item
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<AppClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(AppClusterItem appClusterItem) {
+                clickedClusterItem = appClusterItem;
+                return false;
+            }
+        });
+
     }
 
-    private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
+    class MyCustomAdapterForClusters implements GoogleMap.InfoWindowAdapter {
 
-        // Set some lat/lng coordinates to start with.
-        double latitude = 56.797599;
-        double longitude = -5.060633;
+        @Override
+        public View getInfoWindow(Marker marker){
 
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            latitude = latitude + offset;
-            longitude = longitude + offset;
-            AppClusterItem offsetItem = new AppClusterItem(latitude, longitude);
-            mClusterManager.addItem(offsetItem);
+            if (clickedCluster != null) {
+
+                ArrayList<LatLng> cluster = new ArrayList<>();
+                Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivity.class);
+
+                for (AppClusterItem item : clickedCluster.getItems()) {
+                    // Extract data from each item in the cluster as needed
+                    //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
+                    cluster.add(item.getPosition());
+                    System.out.println("maps fragment"+item.getPosition());
+                }
+
+                intent.putParcelableArrayListExtra("cluster", cluster);
+
+                // Launching  main activity
+                startActivity(intent);
+            }
+
+            View view = getActivity().getLayoutInflater().inflate(R.layout.cluster_popup, null);
+            return view;
+        }
+
+        //for some reason this is not executing however the method above is instead so use that
+        @Override
+        public View getInfoContents(Marker marker) {
+            if (clickedCluster != null) {
+                for (AppClusterItem item : clickedCluster.getItems()) {
+                    // Extract data from each item in the cluster as needed
+                    System.out.println(item);
+                }
+            }
+
+            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_login, null);
+            return view;
         }
     }
 
-    private void addNewClusterMarker(ClusterManager<AppClusterItem> mClusterManager) {
-        AppClusterItem offsetItem = new AppClusterItem(newLat, newLon);
-        mClusterManager.addItem(offsetItem);
+    class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+
+        @Override
+        public View getInfoWindow(Marker marker){
+
+            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_register, null);
+            return view;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            if (clickedCluster != null) {
+                for (AppClusterItem item : clickedCluster.getItems()) {
+                    // Extract data from each item in the cluster as needed
+                }
+            }
+
+            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_trade, null);
+            return view;
+        }
+    }
+
+
+    private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
+
+        double latitude = 56.79;
+        double longitude = -5.06;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+
+            double offset = i/60d;
+            latitude = latitude + offset;
+            longitude = longitude + offset;
+
+            LatLng genPoint = new LatLng(latitude, longitude);
+            knownSites.add(genPoint);
+
+            LatLng point = knownSites.get(i);
+            double lon = point.longitude;
+            double lat = point.latitude;
+
+            AppClusterItem knownSitesList = new AppClusterItem(lat, lon);
+
+            mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
+            mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
+            mClusterManager.addItem(knownSitesList);
+
+
+
+        }
     }
 
 }
+
+class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>
+{
+    public CustomRenderer(Context context, GoogleMap map, ClusterManager<T> clusterManager) {
+        super(context, map, clusterManager);
+    }
+
+    @Override
+    protected boolean shouldRenderAsCluster(Cluster<T> cluster) {
+        //start clustering if at least 2 items overlap
+        return cluster.getSize() >= 1;
+    }
+
+
+}
+
+class CustomAlgorithm<T extends ClusterItem> extends NonHierarchicalDistanceBasedAlgorithm<T>{
+
+    public CustomAlgorithm(){
+        super();
+    }
+
+}
+

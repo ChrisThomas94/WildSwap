@@ -219,9 +219,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		}
 		if (mapsActivity != null){
 
-			Intent myIntent = new Intent(MainActivity.this, MapsActivity.class);
+			Intent myIntent = new Intent(this, MapsActivity.class);
 			//myIntent.putExtra("key", value); //Optional parameters
-			MainActivity.this.startActivity(myIntent);
+			this.startActivity(myIntent);
 		}
 		else if(mapsFragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();

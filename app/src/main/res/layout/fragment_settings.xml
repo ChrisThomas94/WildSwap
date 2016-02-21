@@ -4,24 +4,49 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginBottom="15dp">
-    
-    <ImageView android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_settings"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/signout_button"
-        android:textSize="18sp"
-        android:id="@+id/signout_button"
-        android:background="#267326"
-        android:layout_marginTop="40dp"
+        android:layout_centerInParent="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:textColor="#ffffff"/>
+        android:gravity="center"
+        android:orientation="vertical" >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You are LoggedIn"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="#333333"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="#D1555D"
+            android:text="LOGOUT"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -11,12 +11,26 @@ import android.text.TextUtils;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
     private RequestQueue mRequestQueue;
+    List<LatLng> knownSites = new ArrayList<LatLng>();
+
+    public List<LatLng> getKnownSites(){
+        return knownSites;
+    }
+
+    public void setKnownSite(LatLng newSite){
+        this.knownSites.add(newSite);
+    }
+
 
     public static synchronized AppController getInstance() {
         return mInstance;
