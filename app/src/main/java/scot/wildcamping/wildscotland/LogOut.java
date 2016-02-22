@@ -49,7 +49,7 @@ public class LogOut extends AppCompatActivity {
         }
 
         String name = AppController.getString(getApplicationContext(), "name");
-        String email = AppController.getString(getApplicationContext(), "uid"); //email is currently blank so print uid instead
+        String email = AppController.getString(getApplicationContext(), "email"); //email is currently blank so print uid instead
         txtName.setText(name);
         txtEmail.setText(email);
 

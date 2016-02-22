@@ -43,8 +43,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
-    public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
-
     OkHttpClient client = new OkHttpClient();
 
     TextView tvLogin;
@@ -139,6 +137,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
                 System.out.println("post response: "+postResponse);
 
+                session.setLogin(true);
+                AppController.setString(Register.this, "name", name);
+                AppController.setString(Register.this, "email", email);
+
+                Intent intent = new Intent(Register.this,
+                        MainActivity.class);
+                startActivity(intent);
+                finish();
+
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -164,19 +171,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
 
         private String doPostRequest(String url, String json) throws IOException {
-            //RequestBody body = RequestBody.create(JSON, json);
-            RequestBody formBody = new FormEncodingBuilder()
-                    .add("name","chris")
-                    .add("email", "chris@gmailsaflh")
-                    .add("password", "asd")
-                    .build();
+            RequestBody body = RequestBody.create(JSON, json);
 
-            String parameters = "name=chris&email=sdsdfgsdfkl&password=sfjklsdfkl";
-
-            System.out.println("body: " + formBody.toString());
+            System.out.println("body: " + body.toString());
             Request request = new Request.Builder()
                     .url(url)
-                    .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, parameters))
+                    .post(body)
                     .build();
             System.out.println("request: "+request);
             Response response = client.newCall(request).execute();
@@ -184,9 +184,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         }
 
         private String register(String name, String email, String password) {
-            return "{'name':'" + name + "',"
-                    + "'email':'" + email + "',"
-                    + "'password':'" + password + "'}";
+            return "{\"tag\":\"" + "register" + "\","
+                    + "\"name\":\"" + name + "\","
+                    + "\"email\":\"" + email + "\","
+                    + "\"password\":\"" + password + "\"}";
         }
     }
 

@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -16,10 +17,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.RequestBody;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +37,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
     TextInputLayout passwordLogin;
     EditText etEmailLogin;
     EditText etPasswordLogin;
+    String email;
+    String password;
 
     private ProgressDialog progressDialog;
     private SessionManager session;
+
+    public final MediaType JSON
+            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
+
+    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,34 +77,43 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         session = new SessionManager(getApplicationContext());
 
 
-        //If the session is logged in move to LogOut
+        //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
-            Intent intent = new Intent(Login.this, LogOut.class);
+            Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
+    class checkLogin extends AsyncTask<String, String, String> {
 
-    /**
-     * function to verify login details
-     * */
-    private void checkLogin(final String email, final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setMessage("Logging in ...");
+            showDialog();
 
-        progressDialog.setMessage("Logging in ...");
-        showDialog();
+        }
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                Appconfig.URL_LOGIN, new Response.Listener<String>() {
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
 
-            @Override
-            public void onResponse(String response) {
-                hideDialog();
+            //String getResponse = doGetRequest(Appconfig.URL_REGISTER);
+            //System.out.println(getResponse);
 
-                try {
-                    JSONObject jObj = new JSONObject(response);
+            // issue the post request
+            try {
+                String json = login(email, password);
+                System.out.println("json: " + json);
+                String postResponse = doPostRequest(Appconfig.URL_LOGIN, json);      //json
+                System.out.println("post response: " + postResponse);
+                try{
+                    JSONObject jObj = new JSONObject(postResponse);
                     String userId= jObj.getString("uid");
 
                     JSONObject user = jObj.getJSONObject("user");
@@ -102,7 +123,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                     AppController.setString(Login.this, "uid", userId);
                     AppController.setString(Login.this, "name", name);
                     AppController.setString(Login.this, "email", email);
-
                     if (userId!=null) {
                         // user successfully logged in
                         // Create login session
@@ -122,33 +142,48 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Post params to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "login");
-                params.put("email", email);
-                params.put("password", password);
-
-                return params;
+            }catch (IOException e){
+                e.printStackTrace();
             }
 
-        };
+            return null;
+        }
 
-        // Adding request to  queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            progressDialog.dismiss();
+        }
+
+        private String doGetRequest(String url)throws IOException{
+            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                    .url(url)
+                    .build();
+
+            com.squareup.okhttp.Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String doPostRequest(String url, String json) throws IOException {
+            RequestBody body = RequestBody.create(JSON, json);
+
+            System.out.println("body: " + body.toString());
+            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            System.out.println("request: "+request);
+            com.squareup.okhttp.Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String login(String email, String password) {
+            return "{\"tag\":\"" + "login" + "\","
+                    + "\"email\":\"" + email + "\","
+                    + "\"password\":\"" + password + "\"}";
+        }
     }
 
     /*
@@ -183,20 +218,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
 
             //on clicking the signin button check for the empty field then call the checkLogin() function
             case R.id.signin_button:
-                String email = etEmailLogin.getText().toString();
-                String password = etPasswordLogin.getText().toString();
 
-                checkLogin(email, password);
+                email = etEmailLogin.getText().toString();
+                password = etPasswordLogin.getText().toString();
 
                 // Check for empty data, commented out until API is fixed
-                /*if (email.trim().length() > 0 && password.trim().length() > 0) {
+                if (email.trim().length() > 0 && password.trim().length() > 0) {
                     // login user
-                    checkLogin(email, password);
+                    new checkLogin().execute();
                 } else {
                     // show snackbar to enter credentials
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
-                }*/
+                }
                 break;
         }
     }
