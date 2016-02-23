@@ -9,4 +9,6 @@ public class Appconfig {
 
     // Server register url
     public static String URL_REGISTER = "http://192.168.0.7:81/login_register_api/";   //http://192.168.0.7:81/login_register_api
+
+    public static String URL_ADDSITE = "http://192.168.0.7:81/login_register_api/";
 }

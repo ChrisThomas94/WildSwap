@@ -230,7 +230,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 getActivity().startActivity(intent);
-                getActivity().finish();
             }
         });
 
@@ -241,6 +240,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             public void onClick(View v) {
 
                 popupWindow.dismiss();
+
+                //TODO make clusters dissapera before listening for map click so user is not restricted by clusters
 
                 /*LayoutInflater layoutInflater
                         = (LayoutInflater) getActivity().getBaseContext()
@@ -265,7 +266,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         intent.putExtra("latitude", point.latitude);
                         intent.putExtra("longitude", point.longitude);
                         getActivity().startActivity(intent);
-                        getActivity().finish();
                     }
                 });
 
@@ -279,7 +279,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         AddSite.class);
                 getActivity().startActivity(intent);
-                getActivity().finish();
             }
         });
 

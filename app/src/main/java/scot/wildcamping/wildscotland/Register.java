@@ -133,18 +133,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             // issue the post request
             try {
                 String json = register(name, email, password);
-                System.out.println("json: "+json);
+                System.out.println("json: " + json);
                 String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
-                System.out.println("post response: "+postResponse);
+                System.out.println("post response: " + postResponse);
 
                 session.setLogin(true);
                 AppController.setString(Register.this, "name", name);
                 AppController.setString(Register.this, "email", email);
-
-                Intent intent = new Intent(Register.this,
-                        MainActivity.class);
-                startActivity(intent);
-                finish();
 
             }catch (IOException e){
                 e.printStackTrace();
@@ -221,6 +216,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
                 }
+
+                intent = new Intent(Register.this,
+                        MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
