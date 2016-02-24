@@ -150,6 +150,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         setUpClustering();
         }*/
 
+        // GET sites where uid == Appcontroller uid AND relat == 90
         setUpClustering();
 
         // Perform any camera updates here
@@ -238,6 +239,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             @Override
             public void onClick(View v) {
+
+
 
                 popupWindow.dismiss();
 

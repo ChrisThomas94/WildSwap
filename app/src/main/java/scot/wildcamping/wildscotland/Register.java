@@ -138,8 +138,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 System.out.println("post response: " + postResponse);
 
                 session.setLogin(true);
-                AppController.setString(Register.this, "name", name);
-                AppController.setString(Register.this, "email", email);
+                try {
+                    JSONObject jObj = new JSONObject(postResponse);
+                    String userId = jObj.getString("uid");
+
+                    JSONObject user = jObj.getJSONObject("user");
+                    String name = user.getString("name");
+                    String email = user.getString("email");
+                    AppController.setString(Register.this, "uid", userId);
+                    AppController.setString(Register.this, "name", name);
+                    AppController.setString(Register.this, "email", email);
+                } catch (JSONException e){
+
+                }
 
             }catch (IOException e){
                 e.printStackTrace();

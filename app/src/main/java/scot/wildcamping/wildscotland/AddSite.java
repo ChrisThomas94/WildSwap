@@ -55,6 +55,8 @@ public class AddSite extends Activity implements View.OnClickListener {
     String postResponse;
     Response response;
     Intent intent;
+    String uid;
+    int relat = 90;
 
     private ProgressDialog pDialog;
 
@@ -114,6 +116,8 @@ public class AddSite extends Activity implements View.OnClickListener {
             pDialog.setCancelable(true);
             pDialog.show();
 
+            uid = AppController.getString(getApplicationContext(), "uid");
+
         }
 
         /**
@@ -126,7 +130,7 @@ public class AddSite extends Activity implements View.OnClickListener {
 
             // issue the post request
             try {
-                String json = addSite(latReq, lonReq, titleReq, descReq, ratingReq);
+                String json = addSite(uid, relat, latReq, lonReq, titleReq, descReq, ratingReq);
                 System.out.println("json: "+json);
                 postResponse = doPostRequest(url, json);      //json
                 System.out.println("post response: "+postResponse);
@@ -200,8 +204,10 @@ public class AddSite extends Activity implements View.OnClickListener {
             return response.body().string();
         }
 
-        private String addSite(String lat, String lon, String title, String description, String rating) {
+        private String addSite(String uid, int relat, String lat, String lon, String title, String description, String rating) {
             return "{\"tag\":\"" + "addSite" + "\","
+                    + "\"uid\":\"" + uid + "\","
+                    + "\"relat\":\"" + relat + "\","
                     + "\"lat\":\"" + lat + "\","
                     + "\"lon\":\"" + lon + "\","
                     + "\"title\":\"" + title + "\","
