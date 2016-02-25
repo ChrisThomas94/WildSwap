@@ -56,6 +56,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     String name;
     String email;
     String password;
+    Intent intent;
 
     SessionManager session;
 
@@ -140,6 +141,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 session.setLogin(true);
                 try {
                     JSONObject jObj = new JSONObject(postResponse);
+                    Boolean error = jObj.getBoolean("error");
+
+                    if(!error){
                     String userId = jObj.getString("uid");
 
                     JSONObject user = jObj.getJSONObject("user");
@@ -148,6 +152,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     AppController.setString(Register.this, "uid", userId);
                     AppController.setString(Register.this, "name", name);
                     AppController.setString(Register.this, "email", email);
+
+                    intent = new Intent(Register.this,
+                            MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(Register.this,
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+
                 } catch (JSONException e){
 
                 }
@@ -165,6 +180,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
+
         }
 
         private String doGetRequest(String url)throws IOException{
@@ -211,7 +227,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_signin:
-                Intent intent = new Intent(getApplicationContext(),
+                intent = new Intent(getApplicationContext(),
                         Login.class);
                 startActivity(intent);
                 finish();
@@ -227,11 +243,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
                 }
-
-                intent = new Intent(Register.this,
-                        MainActivity.class);
-                startActivity(intent);
-                finish();
                 break;
         }
     }

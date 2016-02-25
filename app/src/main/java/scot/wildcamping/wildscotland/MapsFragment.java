@@ -1,6 +1,7 @@
 package scot.wildcamping.wildscotland;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -43,15 +45,31 @@ import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgor
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.geometry.Bounds;
 import com.google.maps.android.geometry.Point;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import scot.wildcamping.wildscotland.AppClusterItem;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
 	public MapsFragment(){}
+
+    public final MediaType JSON
+            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
+
+    OkHttpClient client = new OkHttpClient();
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -70,8 +88,12 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button btnDismiss;
     Button btnDismissLatLong;
     List<LatLng> knownSites = new ArrayList<LatLng>();
+    ArrayList<LatLng> knownSites2 = new ArrayList<>();
     Cluster<AppClusterItem> clickedCluster;
     AppClusterItem clickedClusterItem;
+    private ProgressDialog pDialog;
+    final int knownRelat = 90;
+    int knownSitesSize;
 
 
     @Override
@@ -150,8 +172,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         setUpClustering();
         }*/
 
-        // GET sites where uid == Appcontroller uid AND relat == 90
-        setUpClustering();
+        // GET sites
+        new FetchKnownSites().execute();
+
+        //setUpClustering();
 
         // Perform any camera updates here
         return v;
@@ -333,6 +357,112 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             }
         });
 
+    }
+
+    class FetchKnownSites extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Fetching Sites ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+
+            String user = AppController.getString(getActivity(), "uid");
+
+            // issue the post request
+            try {
+                String json = getKnownSites(user, knownRelat);
+                System.out.println("json: " + json);
+                String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+                System.out.println("post response: " + postResponse);
+
+                try {
+
+                    JSONObject jObj = new JSONObject(postResponse);
+                    Boolean error = jObj.getBoolean("error");
+                    int size = jObj.getInt("size");
+
+                    if(!error) {
+                        for (int i = 0; i < size; i++) {
+                            JSONObject site = jObj.getJSONObject("site" + i);
+                            String longitude = site.getString("longitude");
+                            String latitude = site.getString("latitude");
+                            double lon = Double.parseDouble(longitude);
+                            double lat = Double.parseDouble(latitude);
+                            LatLng known = new LatLng(lat, lon);
+                            knownSites.add(known);
+                        }
+
+                        knownSitesSize= knownSites.size();
+
+                    } else {
+                        //error message
+                    }
+
+                } catch (JSONException e){
+
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog.dismiss();
+
+            if(knownSitesSize > 0) {
+                for (int i = 0; i < knownSitesSize; i++) {
+                    addMarker(knownSites.get(i));
+                }
+            }
+        }
+
+        private String doGetRequest(String url)throws IOException{
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String doPostRequest(String url, String json) throws IOException {
+            RequestBody body = RequestBody.create(JSON, json);
+
+            System.out.println("body: " + body.toString());
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            System.out.println("request: "+request);
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String getKnownSites(String uid, int relat) {
+            return "{\"tag\":\"" + "knownSites" + "\","
+                    + "\"uid\":\"" + uid + "\","
+                    + "\"relat\":\"" + relat + "\"}";
+        }
     }
 
     class MyCustomAdapterForClusters implements GoogleMap.InfoWindowAdapter {
