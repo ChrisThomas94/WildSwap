@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -57,6 +59,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -86,15 +89,19 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button manualAdd;
     Button longLatAdd;
     Button btnDismiss;
-    Button btnDismissLatLong;
     List<LatLng> knownSites = new ArrayList<LatLng>();
-    ArrayList<LatLng> knownSites2 = new ArrayList<>();
+    int knownSitesSize;
+    List<LatLng> unknownSites = new ArrayList<LatLng>();
+    int unknownSitesSize;
     Cluster<AppClusterItem> clickedCluster;
     AppClusterItem clickedClusterItem;
     private ProgressDialog pDialog;
-    final int knownRelat = 90;
-    int knownSitesSize;
-
+    private ProgressDialog pDialog2;
+    final int relatOwn = 90;
+    final int relatTrade = 45;
+    String user;
+    MarkerManager mMarkerManager;
+    MarkerManager.Collection coll;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,39 +150,28 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
-        }
-        else{//center map on newly created site
+        }else{//center map on newly created site
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(newSite).zoom(15).build();
+                    .target(newSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
         }
 
 
         if(add == true){
-            //knownSites.add(newSite);
+            knownSites.add(newSite);
             addMarker(newSite);
         }
-
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
 
-
         // set listeners for buttons
         addSite.setOnClickListener(this);
 
-        // clustering
-        /*if(knownSites.size() == 0){
-
-        }else{
-        setUpClustering();
-        }*/
-
         // GET sites
         new FetchKnownSites().execute();
-
-        //setUpClustering();
+        new FetchUnknownSites().execute();
 
         // Perform any camera updates here
         return v;
@@ -233,6 +229,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             }
         });
 
+
+
         gpsAdd.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -263,8 +261,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             @Override
             public void onClick(View v) {
-
-
 
                 popupWindow.dismiss();
 
@@ -310,12 +306,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         });
 
         popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
-
     }
 
     private void addMarker(LatLng newSite){
 
-        MarkerOptions marker = new MarkerOptions().position(newSite).title("New Marker");
+        MarkerOptions marker = new MarkerOptions().position(newSite);
 
         googleMap.addMarker(marker);
 
@@ -325,22 +320,29 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
 
+        mMarkerManager = new MarkerManager(googleMap);
+
         // Initialize the manager with the context and the map.
-        mClusterManager = new ClusterManager<AppClusterItem>(this.getActivity(), googleMap);
+        mClusterManager = new ClusterManager<AppClusterItem>(this.getActivity(), googleMap, mMarkerManager);
+
+        coll = mMarkerManager.newCollection();
+
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
         googleMap.setOnCameraChangeListener(mClusterManager);
-        googleMap.setOnMarkerClickListener(mClusterManager);
+        googleMap.setOnMarkerClickListener(mMarkerManager);
         googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 
         //instal custom infoWindowAdapter as the adpater for one or both of the marker collections
         mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
-        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
 
         // Add cluster items (markers) to the cluster manager.
         addClusterMarkers(mClusterManager);
 
-        googleMap.setOnMarkerClickListener(mClusterManager);
+        //mMarkerManager.onMarkerClick(knownSites.get(i));
+
+        //coll.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener markerClickListener);
+
         mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<AppClusterItem>() {
             @Override
             public boolean onClusterClick(Cluster<AppClusterItem> cluster) {
@@ -348,15 +350,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 return false;
             }
         });
-        //not sure this is needed as unknown sites should all show as a cluster rather than an item
-        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<AppClusterItem>() {
-            @Override
-            public boolean onClusterItemClick(AppClusterItem appClusterItem) {
-                clickedClusterItem = appClusterItem;
-                return false;
-            }
-        });
-
     }
 
     class FetchKnownSites extends AsyncTask<String, String, String> {
@@ -368,7 +361,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage("Fetching Sites ...");
+            pDialog.setMessage("Fetching Your Sites ...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -379,11 +372,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
          * */
         protected String doInBackground(String... args) {
 
-            String user = AppController.getString(getActivity(), "uid");
+            user = AppController.getString(getActivity(), "uid");
 
             // issue the post request
             try {
-                String json = getKnownSites(user, knownRelat);
+                String json = getKnownSites(user, relatOwn);
                 System.out.println("json: " + json);
                 String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -423,16 +416,23 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
 
         /**
-         * After completing background task Dismiss the progress dialog
+         * After completing background task Dismiss the progress dialog and add markers
          * **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
 
             if(knownSitesSize > 0) {
+                //MarkerOptions mopt = new MarkerOptions();
                 for (int i = 0; i < knownSitesSize; i++) {
-                    addMarker(knownSites.get(i));
+                    //addMarker(knownSites.get(i));
+                    googleMap.addMarker(new MarkerOptions().position(knownSites.get(i)));
+                    //mopt.position(knownSites.get(i));
+                    //mopt.title("hello mutha fucka");
+                    //mopt.visible(true);
+                    //coll.addMarker(mopt);
                 }
+
             }
         }
 
@@ -448,7 +448,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         private String doPostRequest(String url, String json) throws IOException {
             RequestBody body = RequestBody.create(JSON, json);
 
-            System.out.println("body: " + body.toString());
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
@@ -462,6 +461,106 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             return "{\"tag\":\"" + "knownSites" + "\","
                     + "\"uid\":\"" + uid + "\","
                     + "\"relat\":\"" + relat + "\"}";
+        }
+    }
+
+    class FetchUnknownSites extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog2 = new ProgressDialog(getActivity());
+            pDialog2.setMessage("Fetching Unknown Sites ...");
+            pDialog2.setIndeterminate(false);
+            pDialog2.setCancelable(true);
+            pDialog2.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+
+            user = AppController.getString(getActivity(), "uid");
+            // issue the post request
+            try {
+                String json = getKnownSites(user, relatOwn, relatTrade);
+                System.out.println("json: " + json);
+                String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+                System.out.println("post response: " + postResponse);
+
+                try {
+
+                    JSONObject jObj = new JSONObject(postResponse);
+                    Boolean error = jObj.getBoolean("error");
+                    int size = jObj.getInt("size");
+
+                    if(!error) {
+                        for (int i = 0; i < size; i++) {
+                            JSONObject site = jObj.getJSONObject("site" + i);
+                            String longitude = site.getString("longitude");
+                            String latitude = site.getString("latitude");
+                            double lon = Double.parseDouble(longitude);
+                            double lat = Double.parseDouble(latitude);
+                            LatLng unknown = new LatLng(lat, lon);
+                            unknownSites.add(unknown);
+                        }
+                        unknownSitesSize= unknownSites.size();
+
+                    } else {
+                        //error message
+                    }
+
+                } catch (JSONException e){
+
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+            pDialog2.dismiss();
+            //add the unknown sites as cluster items
+            setUpClustering();
+        }
+
+        private String doGetRequest(String url)throws IOException{
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String doPostRequest(String url, String json) throws IOException {
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            System.out.println("request: "+request);
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+
+        private String getKnownSites(String uid, int relatOwn, int relatTrade) {
+            return "{\"tag\":\"" + "unknownSites" + "\","
+                    + "\"uid\":\"" + uid + "\","
+                    + "\"relatOwn\":\"" + relatOwn + "\","
+                    + "\"relatTrade\":\"" + relatTrade + "\"}";
         }
     }
 
@@ -507,57 +606,22 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
     }
 
-    class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
-
-        @Override
-        public View getInfoWindow(Marker marker){
-
-            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_register, null);
-            return view;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            if (clickedCluster != null) {
-                for (AppClusterItem item : clickedCluster.getItems()) {
-                    // Extract data from each item in the cluster as needed
-                }
-            }
-
-            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_trade, null);
-            return view;
-        }
-    }
-
-
     private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
 
-        double latitude = 56.79;
-        double longitude = -5.06;
-
         // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < unknownSitesSize; i++) {
 
-            double offset = i/60d;
-            latitude = latitude + offset;
-            longitude = longitude + offset;
-
-            LatLng genPoint = new LatLng(latitude, longitude);
-            knownSites.add(genPoint);
-
-            LatLng point = knownSites.get(i);
+            LatLng point = unknownSites.get(i);
             double lon = point.longitude;
             double lat = point.latitude;
 
-            AppClusterItem knownSitesList = new AppClusterItem(lat, lon);
+            AppClusterItem unknownSitesList = new AppClusterItem(lat, lon);
 
             mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
             mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
-            mClusterManager.addItem(knownSitesList);
-
-
-
+            mClusterManager.addItem(unknownSitesList);
         }
+
     }
 
 }

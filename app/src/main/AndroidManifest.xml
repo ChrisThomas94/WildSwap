@@ -75,12 +75,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".okhttp"
-            android:label="Wild Scotland"
+        <activity
+            android:name=".KnownSiteActivity"
+            android:label="KnownSite"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
-
 
     </application>
 
