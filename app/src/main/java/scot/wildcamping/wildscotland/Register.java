@@ -77,9 +77,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         etPasswordRegister = (EditText) findViewById(R.id.password_register);
         tvLogin = (TextView) findViewById(R.id.tv_signin);
 
-        //setting toolbar
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolBar);
 
         tvLogin.setOnClickListener(this);
         registerButton.setOnClickListener(this);

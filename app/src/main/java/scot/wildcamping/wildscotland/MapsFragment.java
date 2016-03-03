@@ -103,6 +103,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     MarkerManager mMarkerManager;
     MarkerManager.Collection coll;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -320,17 +321,23 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
 
-        mMarkerManager = new MarkerManager(googleMap);
-
         // Initialize the manager with the context and the map.
         mClusterManager = new ClusterManager<AppClusterItem>(this.getActivity(), googleMap, mMarkerManager);
-
-        coll = mMarkerManager.newCollection();
-
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
         googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mMarkerManager);
+
+        //GoogleMap.OnMarkerClickListener markerClickListener
+        coll.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
         googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 
         //instal custom infoWindowAdapter as the adpater for one or both of the marker collections
@@ -422,15 +429,15 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // dismiss the dialog once done
             pDialog.dismiss();
 
+            mMarkerManager = new MarkerManager(googleMap);
+            coll = mMarkerManager.newCollection();
+
             if(knownSitesSize > 0) {
                 //MarkerOptions mopt = new MarkerOptions();
                 for (int i = 0; i < knownSitesSize; i++) {
                     //addMarker(knownSites.get(i));
-                    googleMap.addMarker(new MarkerOptions().position(knownSites.get(i)));
-                    //mopt.position(knownSites.get(i));
-                    //mopt.title("hello mutha fucka");
-                    //mopt.visible(true);
-                    //coll.addMarker(mopt);
+                    //googleMap.addMarker(new MarkerOptions().position(knownSites.get(i)));
+                    coll.addMarker(new MarkerOptions().position(knownSites.get(i)));
                 }
 
             }

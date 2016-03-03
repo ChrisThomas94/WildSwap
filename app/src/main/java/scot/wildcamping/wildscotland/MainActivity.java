@@ -28,9 +28,20 @@ import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
+
+	//Window window = activity.getWindow();
+
+
+
+
+
+
+
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -216,14 +227,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
-		}
-		if (mapsActivity != null){
-
-			Intent myIntent = new Intent(this, MapsActivity.class);
-			//myIntent.putExtra("key", value); //Optional parameters
-			this.startActivity(myIntent);
-		}
-		else if(mapsFragment != null) {
+		} else if(mapsFragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 

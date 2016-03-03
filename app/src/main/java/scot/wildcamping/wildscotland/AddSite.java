@@ -230,6 +230,8 @@ public class AddSite extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.addFeature:
+                Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                startActivity(intent);
                 break;
 
             case R.id.confirmCreation:

@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class AppController extends Application {
         return knownSites;
     }
 
-    public void setKnownSite(LatLng newSite){
+    public void setKnownSites(LatLng newSite){
         this.knownSites.add(newSite);
     }
 
