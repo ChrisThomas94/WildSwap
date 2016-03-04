@@ -16,27 +16,52 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
     private RequestQueue mRequestQueue;
-    List<LatLng> knownSites = new ArrayList<LatLng>();
-
-    public List<LatLng> getKnownSites(){
-        return knownSites;
-    }
-
-    public void setKnownSites(LatLng newSite){
-        this.knownSites.add(newSite);
-    }
-
+    static Map<Integer, knownSite> map = new HashMap<Integer, knownSite>();
+    static int siteSize = 0;
+    List<LatLng> unknownSites = new ArrayList<>();
+    List<LatLng> knownSites = new ArrayList<>();
 
     public static synchronized AppController getInstance() {
         return mInstance;
     }
+
+    public static void addSite(Context context, Integer siteNo, knownSite site){
+        map.put(siteNo, site);
+        siteSize++;
+    }
+
+    public static knownSite getSite(Context context, Integer siteNo){
+        return map.get(siteNo);
+    }
+
+    public void setUnknownSites(Context context, List<LatLng> unknownSites){
+        this.unknownSites = unknownSites;
+    }
+
+    public List<LatLng> getUnknownSites(Context context){
+        return this.unknownSites;
+    }
+
+    public void setKnownSites(Context context, List<LatLng> knownSites){
+        this.knownSites = knownSites;
+    }
+
+    public List<LatLng> getKnownSites(Context context){
+        return this.knownSites;
+    }
+
+
+
+
 
     /*
     function to write string to preference file

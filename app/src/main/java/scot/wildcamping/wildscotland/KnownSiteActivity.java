@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -27,6 +28,9 @@ public class KnownSiteActivity extends Activity implements View.OnClickListener 
 
         Button back = (Button)findViewById(R.id.leaveSite);
         Button edit = (Button)findViewById(R.id.editSite);
+
+        back.setOnClickListener(this);
+        edit.setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +47,7 @@ public class KnownSiteActivity extends Activity implements View.OnClickListener 
 
             case R.id.editSite:
                 intent = new Intent(getApplicationContext(),MainActivity.class);
+                //bundle all current details into "add site"
                 startActivity(intent);
                 finish();
                 break;

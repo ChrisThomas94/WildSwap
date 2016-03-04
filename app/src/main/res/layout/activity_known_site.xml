@@ -5,10 +5,84 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-        <ImageView
-            android:id="@+id/popupFeatures"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/preview_feature1"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature1 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <ImageView
+                    android:id="@+id/preview_feature2"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature2 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <ImageView
+                    android:id="@+id/preview_feature3"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature3 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <ImageView
+                    android:id="@+id/preview_feature4"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature4 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <ImageView
+                    android:id="@+id/preview_feature5"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature5 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <ImageView
+                    android:id="@+id/preview_feature6"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature6 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                <ImageView
+                    android:id="@+id/preview_feature7"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature7 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                <ImageView
+                    android:id="@+id/preview_feature8"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature8 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                <ImageView
+                    android:id="@+id/preview_feature9"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature9 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                <ImageView
+                    android:id="@+id/preview_feature10"
+                    android:layout_width="match_parent"
+                    android:contentDescription="feature10 thumbnail view"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <TextView
             android:id="@+id/popupTitle"
@@ -16,7 +90,8 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:textStyle="bold"
-            android:textSize="30dp"/>
+            android:padding="15dp"
+            android:textSize="30sp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,37 +108,56 @@
                 android:layout_height="wrap_content"
                 android:text="Description"
                 android:layout_toRightOf="@+id/popupImage"
-                android:textSize="15dp"/>
+                android:textSize="15sp"/>
 
         </RelativeLayout>
         <RatingBar
             android:id="@+id/popupRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:isIndicator="true"
             android:layout_gravity="center"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end">
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="#90909090"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"/>
 
-
-        <Button
-            android:id="@+id/editSite"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UPDATE"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_toRightOf="@+id/leaveSite"/>
+            android:layout_gravity="end">
 
-        <Button
-            android:id="@+id/leaveSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BACK"
-            style="?android:attr/borderlessButtonStyle"/>
 
-    </RelativeLayout>
+
+            <Button
+                android:id="@+id/editSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UPDATE"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_toRightOf="@+id/leaveSite"/>
+
+            <Button
+                android:id="@+id/leaveSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BACK"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

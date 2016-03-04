@@ -4,6 +4,8 @@ import scot.wildcamping.wildscotland.slidingmenu.adapter.NavDrawerListAdapter;
 import scot.wildcamping.wildscotland.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 //import android.support.v4.app.Fragment;
 //import android.app.Activity;
@@ -29,18 +31,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
 
-	//Window window = activity.getWindow();
-
-
-
-
-
-
-
-
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	List<LatLng> knownSites = new ArrayList<LatLng>();
 
 
 	// nav drawer title
@@ -138,6 +132,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			// on first time display view for first nav item
 			displayView(0);
 		}
+
+
+		new FetchKnownSites(this).execute();
+		new FetchUnknownSites(this).execute();
 	}
 
 	/**

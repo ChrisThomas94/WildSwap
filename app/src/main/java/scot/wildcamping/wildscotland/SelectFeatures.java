@@ -41,10 +41,25 @@ public class SelectFeatures extends Activity implements View.OnClickListener {
     Button confirmFeatures;
     Button cancelFeatures;
 
+    double latitude;
+    double longitude;
+    String title;
+    String description;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_features);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            latitude = extras.getDouble("latitude");
+            longitude = extras.getDouble("longitude");
+            title = extras.getString("title");
+            description = extras.getString("description");
+
+        }
 
         final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
         final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
@@ -227,14 +242,32 @@ public class SelectFeatures extends Activity implements View.OnClickListener {
         {
             case R.id.cancelFeatures:
                 Intent intent = new Intent(getApplicationContext(), AddSite.class);
-                startActivity(intent);
                 //bundle all data back EXCEPT for feature data
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("title", title);
+                intent.putExtra("description", description);
+                startActivity(intent);
                 finish();
                 break;
 
             case R.id.confirmFeatures:
                 Intent i = new Intent(getApplicationContext(), AddSite.class);
                 //bundle additional data
+                i.putExtra("latitude", latitude);
+                i.putExtra("longitude", longitude);
+                i.putExtra("title", title);
+                i.putExtra("description", description);
+                i.putExtra("feature1", feature1);
+                i.putExtra("feature2", feature2);
+                i.putExtra("feature3", feature3);
+                i.putExtra("feature4", feature4);
+                i.putExtra("feature5", feature5);
+                i.putExtra("feature6", feature6);
+                i.putExtra("feature7", feature7);
+                i.putExtra("feature8", feature8);
+                i.putExtra("feature9", feature9);
+                i.putExtra("feature10", feature10);
                 startActivity(i);
                 finish();
                 break;

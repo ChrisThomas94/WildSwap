@@ -57,6 +57,16 @@ public class AddSite extends Activity implements View.OnClickListener {
     Intent intent;
     String uid;
     int relat = 90;
+    Boolean feature1;
+    Boolean feature2;
+    Boolean feature3;
+    Boolean feature4;
+    Boolean feature5;
+    Boolean feature6;
+    Boolean feature7;
+    Boolean feature8;
+    Boolean feature9;
+    Boolean feature10;
 
     private ProgressDialog pDialog;
 
@@ -91,6 +101,23 @@ public class AddSite extends Activity implements View.OnClickListener {
 
             Lat.setText(lat);
             Lon.setText(lon);
+
+            feature1 = extras.getBoolean("feature1");
+            feature2 = extras.getBoolean("feature2");
+            feature3 = extras.getBoolean("feature3");
+            feature4 = extras.getBoolean("feature4");
+            feature5 = extras.getBoolean("feature5");
+            feature6 = extras.getBoolean("feature6");
+            feature7 = extras.getBoolean("feature7");
+            feature8 = extras.getBoolean("feature8");
+            feature9 = extras.getBoolean("feature9");
+            feature10 = extras.getBoolean("feature10");
+
+            String titlePassed = extras.getString("title");
+            String descPassed = extras.getString("description");
+
+            title.setText(titlePassed);
+            description.setText(descPassed);
 
         }
 
@@ -212,7 +239,17 @@ public class AddSite extends Activity implements View.OnClickListener {
                     + "\"lon\":\"" + lon + "\","
                     + "\"title\":\"" + title + "\","
                     + "\"description\":\"" + description + "\","
-                    + "\"rating\":\"" + rating + "\"}";
+                    + "\"rating\":\"" + rating + "\","
+                    + "\"feature1\":\"" + feature1 + "\","
+                    + "\"feature2\":\"" + feature2 + "\","
+                    + "\"feature3\":\"" + feature3 + "\","
+                    + "\"feature4\":\"" + feature4 + "\","
+                    + "\"feature5\":\"" + feature5 + "\","
+                    + "\"feature6\":\"" + feature6 + "\","
+                    + "\"feature7\":\"" + feature7 + "\","
+                    + "\"feature8\":\"" + feature8 + "\","
+                    + "\"feature9\":\"" + feature9 + "\","
+                    + "\"feature10\":\"" + feature10 + "\"}";
         }
     }
 
@@ -231,6 +268,10 @@ public class AddSite extends Activity implements View.OnClickListener {
 
             case R.id.addFeature:
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("title", title.getText().toString());
+                intent.putExtra("description", description.getText().toString());
                 startActivity(intent);
                 break;
 
@@ -253,6 +294,9 @@ public class AddSite extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.cancelCreation:
+
+                Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+
                 intent = new Intent(getApplicationContext(),
                         MainActivity.class);
                 startActivity(intent);
