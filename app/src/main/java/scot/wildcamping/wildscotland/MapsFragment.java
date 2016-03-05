@@ -2,19 +2,12 @@ package scot.wildcamping.wildscotland;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +16,6 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,8 +23,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -45,26 +34,13 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.geometry.Bounds;
-import com.google.maps.android.geometry.Point;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import scot.wildcamping.wildscotland.AppClusterItem;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
@@ -102,6 +78,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     String user;
     MarkerManager mMarkerManager;
     MarkerManager.Collection coll;
+    knownSite inst = new knownSite();
+    boolean clicked;
 
 
     @Override
@@ -159,7 +137,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
 
 
-        if(add == true){
+        if(add){
             knownSites.add(newSite);
             addMarker(newSite);
         }
@@ -264,7 +242,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                 popupWindow.dismiss();
 
-                //TODO make clusters dissapera before listening for map click so user is not restricted by clusters
+                //TODO make clusters dissaper before listening for map click so user is not restricted by clusters
+
+                //googleMap.clear();
 
                 /*LayoutInflater layoutInflater
                         = (LayoutInflater) getActivity().getBaseContext()
@@ -281,7 +261,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                     @Override
                     public void onMapClick(LatLng point) {
-
+                        clicked = true;
                         newLat = point.latitude;
                         newLon = point.longitude;
 
@@ -291,7 +271,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         getActivity().startActivity(intent);
                     }
                 });
-
             }
         });
 
@@ -317,27 +296,24 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     }
 
     private void setUpClustering() {
-        System.out.println("clustering");
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
         mMarkerManager = new MarkerManager(googleMap);
 
         // Initialize the manager with the context and the map.
-        mClusterManager = new ClusterManager<AppClusterItem>(this.getActivity(), googleMap, mMarkerManager);
+        mClusterManager = new ClusterManager<>(this.getActivity(), googleMap, mMarkerManager);
 
         coll = mMarkerManager.newCollection();
 
-        knownSite inst = new knownSite();
-        List<LatLng> knownSites = inst.getKnownSites();
+
+        SparseArray<Site> map = inst.getKnownSitesMap();
         int size = inst.getSiteSize();
-        System.out.println("size" + size);
 
         if(size > 0) {
-            System.out.println("size is more than 0");
             for (int i = 0; i < size; i++) {
-                coll.addMarker(new MarkerOptions().position(knownSites.get(i)));
+                Site currentSite = map.get(i);
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()));
             }
-
         }
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
@@ -350,14 +326,32 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
 
-                //marker.getPosition() == AppController.getString(cid);
-                //AppController.getString(title);
-                //AppController.getHashMap();
+                SparseArray<Site> map = inst.getKnownSitesMap();
 
-                //intent.putExtra("title", title);
-                //intent.putExtra("description", description);
-                //intent.putExtra("rating", rating);
-                startActivity(intent);
+                int size = inst.getSiteSize();
+
+                for (int i = 0; i < size; i++) {
+                    Site currentSite = map.get(i);
+
+                    if (marker.getPosition().equals(currentSite.getPosition())){
+                        intent.putExtra("title", currentSite.getTitle());
+                        intent.putExtra("description", currentSite.getDescription());
+                        intent.putExtra("rating", currentSite.getRating());
+                        intent.putExtra("feature1", currentSite.getFeature1());
+                        intent.putExtra("feature2", currentSite.getFeature2());
+                        intent.putExtra("feature3", currentSite.getFeature3());
+                        intent.putExtra("feature4", currentSite.getFeature4());
+                        intent.putExtra("feature5", currentSite.getFeature5());
+                        intent.putExtra("feature6", currentSite.getFeature6());
+                        intent.putExtra("feature7", currentSite.getFeature7());
+                        intent.putExtra("feature8", currentSite.getFeature8());
+                        intent.putExtra("feature9", currentSite.getFeature9());
+                        intent.putExtra("feature10", currentSite.getFeature10());
+                        startActivity(intent);
+                        break;
+                    }
+                }
+
                 return true;
             }
         });
@@ -369,10 +363,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         // Add cluster items (markers) to the cluster manager.
         addClusterMarkers(mClusterManager);
-
-        //mMarkerManager.onMarkerClick(knownSites.get(i));
-
-        //coll.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener markerClickListener);
 
         mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<AppClusterItem>() {
             @Override
@@ -427,14 +417,16 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
 
-        knownSite inst = new knownSite();
-        List<LatLng> unknownSites = inst.getUnknownSites();
+        //knownSite inst = new knownSite();
+        SparseArray<Site> map = inst.getUnknownSitesMap();
         int size = inst.getUnknownSitesSize();
 
         // Add ten cluster items in close proximity, for purposes of this example.
         for (int i = 0; i < size; i++) {
 
-            LatLng point = unknownSites.get(i);
+            Site currentSite = map.get(i);
+
+            LatLng point = currentSite.getPosition();
             double lon = point.longitude;
             double lat = point.latitude;
 

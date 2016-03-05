@@ -272,6 +272,16 @@ public class AddSite extends Activity implements View.OnClickListener {
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("title", title.getText().toString());
                 intent.putExtra("description", description.getText().toString());
+                intent.putExtra("feature1", feature1);
+                intent.putExtra("feature2", feature2);
+                intent.putExtra("feature3", feature3);
+                intent.putExtra("feature4", feature4);
+                intent.putExtra("feature5", feature5);
+                intent.putExtra("feature6", feature6);
+                intent.putExtra("feature7", feature7);
+                intent.putExtra("feature8", feature8);
+                intent.putExtra("feature9", feature9);
+                intent.putExtra("feature10", feature10);
                 startActivity(intent);
                 break;
 

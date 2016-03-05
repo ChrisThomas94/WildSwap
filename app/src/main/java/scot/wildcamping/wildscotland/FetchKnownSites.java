@@ -3,11 +3,9 @@ package scot.wildcamping.wildscotland;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
+import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.MarkerManager;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -19,7 +17,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -37,6 +38,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     final int relatOwn = 90;
     final int relatTrade = 45;
     List<LatLng> knownSites = new ArrayList<LatLng>();
+    Map<String, String> knownSitesString = new HashMap<>();
+    SparseArray<Site> map = new SparseArray<>();
 
     public FetchKnownSites(Context context) {
         this.context = context;
@@ -74,10 +77,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 int size = jObj.getInt("size");
-
                 if (!error) {
-                    //Map<Integer, knownSite> map = new HashMap<Integer, knownSite>();
-
                     for (int i = 0; i < size; i++) {
                         JSONObject jsonSite = jObj.getJSONObject("site" + i);
                         String longitude = jsonSite.getString("longitude");
@@ -86,20 +86,27 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         double lat = Double.parseDouble(latitude);
                         LatLng position = new LatLng(lat, lon);
 
-                        //knownSite siteClass = new knownSite();
-                        //siteClass.setPosition(position);
-                        //siteClass.setTitle(jsonSite.getString("title"));
-                        //siteClass.setDescription(jsonSite.getString("description"));
-                        //siteClass.setRating(jsonSite.getDouble("rating"));
-                        //siteClass.setFeature1(jsonSite.getBoolean("feature1"));
-                        //feature...
-                        //AppController.addSite(context, i, siteClass);
+                        Site siteClass = new Site();
+                        siteClass.setPosition(position);
+                        siteClass.setTitle(jsonSite.getString("title"));
+                        siteClass.setDescription(jsonSite.getString("description"));
+                        siteClass.setRating(jsonSite.getDouble("rating"));
+                        siteClass.setFeature1(jsonSite.getString("feature1"));
+                        siteClass.setFeature2(jsonSite.getString("feature2"));
+                        siteClass.setFeature3(jsonSite.getString("feature3"));
+                        siteClass.setFeature4(jsonSite.getString("feature4"));
+                        siteClass.setFeature5(jsonSite.getString("feature5"));
+                        siteClass.setFeature6(jsonSite.getString("feature6"));
+                        siteClass.setFeature7(jsonSite.getString("feature7"));
+                        siteClass.setFeature8(jsonSite.getString("feature8"));
+                        siteClass.setFeature9(jsonSite.getString("feature9"));
+                        siteClass.setFeature10(jsonSite.getString("feature10"));
 
-                        knownSites.add(position);
-
+                        map.put(i, siteClass);
                     }
+
                     knownSite inst = new knownSite();
-                    inst.setKnownSites(knownSites);
+                    inst.setKnownSitesMap(map);
                     inst.setSiteSize(size);
 
                 } else {

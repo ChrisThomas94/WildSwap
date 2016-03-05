@@ -42,11 +42,12 @@
     <string name="feature3">Water Source</string>
     <string name="feature4">Grassy Terrain</string>
     <string name="feature5">Rocky Terrain</string>
-    <string name="feature6">Fishing Permit</string>
-    <string name="feature7">Pub Nearby</string>
-    <string name="feature8">Shop Nearby</string>
-    <string name="feature9">Grazing Animals</string>
-    <string name="feature10">Playing Field</string>
+    <string name="feature6">Sandy Terrain</string>
+    <string name="feature7">Fishing Permit</string>
+    <string name="feature8">Pub Nearby</string>
+    <string name="feature9">Shop Nearby</string>
+    <string name="feature10">Grazing Animals</string>
+    <string name="feature11">Playing Field</string>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>

@@ -90,10 +90,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature4"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/grassy_terrain3"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,10 +115,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature5"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/rocky_terrain"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -138,10 +140,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature6"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/sandy_terrain"/>
 
             <TextView
                 android:layout_width="wrap_content"

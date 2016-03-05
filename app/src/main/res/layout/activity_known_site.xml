@@ -16,76 +16,110 @@
 
                 <ImageView
                     android:id="@+id/preview_feature1"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature1 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/preview_feature2"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature2 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/preview_feature3"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature3 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/preview_feature4"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature4 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/grassy_terrain3"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/preview_feature5"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature5 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/rocky_terrain"
+                    android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/preview_feature6"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature6 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/sandy_terrain"
+                    android:visibility="visible"/>
+
                 <ImageView
                     android:id="@+id/preview_feature7"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature7 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
+
                 <ImageView
                     android:id="@+id/preview_feature8"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature8 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
+
                 <ImageView
                     android:id="@+id/preview_feature9"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature9 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
+
                 <ImageView
                     android:id="@+id/preview_feature10"
-                    android:layout_width="match_parent"
                     android:contentDescription="feature10 thumbnail view"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:layout_width="58dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:visibility="visible"/>
 
             </LinearLayout>
 
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/popupTitle"
+            android:id="@+id/siteViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -98,21 +132,21 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/popupImage"
+                android:id="@+id/siteViewGallery"
                 android:layout_width="150dp"
                 android:layout_height="150dp" />
 
             <TextView
-                android:id="@+id/popupDescription"
+                android:id="@+id/siteViewDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:layout_toRightOf="@+id/popupImage"
+                android:layout_toRightOf="@+id/siteViewGallery"
                 android:textSize="15sp"/>
 
         </RelativeLayout>
         <RatingBar
-            android:id="@+id/popupRating"
+            android:id="@+id/siteViewRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"

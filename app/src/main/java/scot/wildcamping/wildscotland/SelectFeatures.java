@@ -51,16 +51,6 @@ public class SelectFeatures extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_features);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras != null)
-        {
-            latitude = extras.getDouble("latitude");
-            longitude = extras.getDouble("longitude");
-            title = extras.getString("title");
-            description = extras.getString("description");
-
-        }
-
         final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
         final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
 
@@ -75,6 +65,57 @@ public class SelectFeatures extends Activity implements View.OnClickListener {
         feature9box = (RelativeLayout)findViewById(R.id.feature9box);
         feature10box = (RelativeLayout)findViewById(R.id.feature10box);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            latitude = extras.getDouble("latitude");
+            longitude = extras.getDouble("longitude");
+            title = extras.getString("title");
+            description = extras.getString("description");
+            feature1 = extras.getBoolean("feature1");
+            feature2 = extras.getBoolean("feature2");
+            feature3 = extras.getBoolean("feature3");
+            feature4 = extras.getBoolean("feature4");
+            feature5 = extras.getBoolean("feature5");
+            feature6 = extras.getBoolean("feature6");
+            feature7 = extras.getBoolean("feature7");
+            feature8 = extras.getBoolean("feature8");
+            feature9 = extras.getBoolean("feature9");
+            feature10 = extras.getBoolean("feature10");
+
+            if(feature1){
+                feature1box.setBackgroundColor(green);
+            }
+            if(feature2){
+                feature2box.setBackgroundColor(green);
+            }
+            if(feature3){
+                feature3box.setBackgroundColor(green);
+            }
+            if(feature4){
+                feature4box.setBackgroundColor(green);
+            }
+            if(feature5){
+                feature5box.setBackgroundColor(green);
+            }
+            if(feature6){
+                feature6box.setBackgroundColor(green);
+            }
+            if(feature7){
+                feature7box.setBackgroundColor(green);
+            }
+            if(feature8){
+                feature8box.setBackgroundColor(green);
+            }
+            if(feature9){
+                feature9box.setBackgroundColor(green);
+            }
+            if(feature10){
+                feature10box.setBackgroundColor(green);
+            }
+
+        }
+        
         confirmFeatures = (Button)findViewById(R.id.confirmFeatures);
         cancelFeatures = (Button)findViewById(R.id.cancelFeatures);
 

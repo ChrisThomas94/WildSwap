@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.okhttp.MediaType;
@@ -33,7 +34,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     String user;
     final int relatOwn = 90;
     final int relatTrade = 45;
-    List<LatLng> unknownSites = new ArrayList<LatLng>();
+    SparseArray<Site> map = new SparseArray<>();
 
     public FetchUnknownSites(Context context) {
         this.context = context;
@@ -73,17 +74,33 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
                 if(!error) {
                     for (int i = 0; i < size; i++) {
-                        JSONObject site = jObj.getJSONObject("site" + i);
-                        String longitude = site.getString("longitude");
-                        String latitude = site.getString("latitude");
+                        JSONObject jsonSite = jObj.getJSONObject("site" + i);
+                        String longitude = jsonSite.getString("longitude");
+                        String latitude = jsonSite.getString("latitude");
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
                         LatLng unknown = new LatLng(lat, lon);
 
-                        unknownSites.add(unknown);
+                        Site siteClass = new Site();
+                        siteClass.setPosition(unknown);
+                        siteClass.setTitle(jsonSite.getString("title"));
+                        siteClass.setDescription(jsonSite.getString("description"));
+                        siteClass.setRating(jsonSite.getDouble("rating"));
+                        siteClass.setFeature1(jsonSite.getString("feature1"));
+                        siteClass.setFeature2(jsonSite.getString("feature2"));
+                        siteClass.setFeature3(jsonSite.getString("feature3"));
+                        siteClass.setFeature4(jsonSite.getString("feature4"));
+                        siteClass.setFeature5(jsonSite.getString("feature5"));
+                        siteClass.setFeature6(jsonSite.getString("feature6"));
+                        siteClass.setFeature7(jsonSite.getString("feature7"));
+                        siteClass.setFeature8(jsonSite.getString("feature8"));
+                        siteClass.setFeature9(jsonSite.getString("feature9"));
+                        siteClass.setFeature10(jsonSite.getString("feature10"));
+
+                        map.put(i, siteClass);
                     }
                     knownSite inst = new knownSite();
-                    inst.setUnknownSites(unknownSites);
+                    inst.setUnknownSitesMap(map);
                     inst.setUnknownSitesSize(size);
 
                 } else {
