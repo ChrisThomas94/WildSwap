@@ -109,8 +109,6 @@ public class TradeActivitySimple extends Activity implements View.OnClickListene
             System.out.println("Trade" + cluster + recieveSize);
         }
 
-
-
         //where lat lng of cluster = lat lng of map
         //add to new map
 
