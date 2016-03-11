@@ -115,7 +115,7 @@ public class SelectFeatures extends Activity implements View.OnClickListener {
             }
 
         }
-        
+
         confirmFeatures = (Button)findViewById(R.id.confirmFeatures);
         cancelFeatures = (Button)findViewById(R.id.cancelFeatures);
 
