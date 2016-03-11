@@ -381,7 +381,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             if (clickedCluster != null) {
 
                 ArrayList<LatLng> cluster = new ArrayList<>();
-                Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
 
                 for (AppClusterItem item : clickedCluster.getItems()) {
                     // Extract data from each item in the cluster as needed

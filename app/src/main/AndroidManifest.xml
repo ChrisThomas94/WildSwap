@@ -70,6 +70,12 @@
         </activity>
 
         <activity
+            android:name=".TradeActivitySimple"
+            android:label="Trade"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
             android:name=".KnownSiteActivity"
             android:label="KnownSite"
             android:theme="@style/AppTheme"/>
