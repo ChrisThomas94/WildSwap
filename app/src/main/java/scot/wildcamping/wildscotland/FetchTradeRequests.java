@@ -18,9 +18,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * Created by Chris on 11-Mar-16.
+ * Created by Chris on 12-Mar-16.
  */
-public class SendTrade extends AsyncTask<String, String, String> {
+public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -31,14 +31,10 @@ public class SendTrade extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     final int tradeStatus = 0;
+    SparseArray<Trade> map = new SparseArray<>();
 
-    String send_cid;
-    String recieve_cid;
-
-    public SendTrade(Context context, String send_cid, String recieve_cid) {
+    public FetchTradeRequests(Context context) {
         this.context = context;
-        this.send_cid = send_cid;
-        this.recieve_cid = recieve_cid;
     }
 
     /**
@@ -48,7 +44,7 @@ public class SendTrade extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Sending Trade Request...");
+        pDialog.setMessage("Fetching Trade Requests...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -60,10 +56,9 @@ public class SendTrade extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = AppController.getString(context, "uid");
-
         // issue the post request
         try {
-            String json = tradeRequest(user, tradeStatus, send_cid, recieve_cid);
+            String json = getTradeRequests(user, tradeStatus);
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
             System.out.println("post response: " + postResponse);
@@ -76,31 +71,21 @@ public class SendTrade extends AsyncTask<String, String, String> {
 
                 if(!error) {
                     for (int i = 0; i < size; i++) {
-                        /*JSONObject jsonSite = jObj.getJSONObject("site" + i);
-                        String longitude = jsonSite.getString("longitude");
-                        String latitude = jsonSite.getString("latitude");
-                        double lon = Double.parseDouble(longitude);
-                        double lat = Double.parseDouble(latitude);
-                        LatLng unknown = new LatLng(lat, lon);
+                        JSONObject jsonTrade = jObj.getJSONObject("trade" + i);
 
-                        Site siteClass = new Site();
-                        siteClass.setPosition(unknown);
-                        siteClass.setTitle(jsonSite.getString("title"));
-                        siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("rating"));
-                        siteClass.setFeature1(jsonSite.getString("feature1"));
-                        siteClass.setFeature2(jsonSite.getString("feature2"));
-                        siteClass.setFeature3(jsonSite.getString("feature3"));
-                        siteClass.setFeature4(jsonSite.getString("feature4"));
-                        siteClass.setFeature5(jsonSite.getString("feature5"));
-                        siteClass.setFeature6(jsonSite.getString("feature6"));
-                        siteClass.setFeature7(jsonSite.getString("feature7"));
-                        siteClass.setFeature8(jsonSite.getString("feature8"));
-                        siteClass.setFeature9(jsonSite.getString("feature9"));
-                        siteClass.setFeature10(jsonSite.getString("feature10"));*/
+                        Trade activeTrade = new Trade();
+                        activeTrade.setUnique_tid(jsonTrade.getString("unique_tid"));
+                        activeTrade.setSender_uid(jsonTrade.getString("sender_uid_fk"));
+                        activeTrade.setReciever_uid(jsonTrade.getString("reciever_uid_fk"));
+                        activeTrade.setSend_cid(jsonTrade.getString("send_cid_fk"));
+                        activeTrade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
+                        activeTrade.setDate(jsonTrade.getString("created_at"));
+
+                        map.put(i, activeTrade);
                     }
-                    knownSite inst = new knownSite();
-                    inst.setUnknownSitesSize(size);
+                    StoredTrades inst = new StoredTrades();
+                    inst.setActiveTrades(map);
+                    inst.setActiveTradesSize(size);
 
                 } else {
                     //error message
@@ -146,11 +131,10 @@ public class SendTrade extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String tradeRequest(String uid, int tradeStatus, String send_cid, String recieve_cid) {
-        return "{\"tag\":\"" + "tradeRequest" + "\","
+    private String getTradeRequests(String uid, int tradeStatus) {
+        return "{\"tag\":\"" + "activeTrades" + "\","
                 + "\"uid\":\"" + uid + "\","
-                + "\"tradeStatus\":\"" + tradeStatus + "\","
-                + "\"send_cid\":\"" + send_cid + "\","
-                + "\"recieve_cid\":\"" + recieve_cid + "\"}";
+                + "\"tradeStatus\":\"" + tradeStatus+ "\"}";
     }
+
 }

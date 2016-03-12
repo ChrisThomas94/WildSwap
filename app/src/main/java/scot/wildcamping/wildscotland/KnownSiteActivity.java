@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +18,7 @@ import com.squareup.okhttp.OkHttpClient;
 /**
  * Created by Chris on 26-Feb-16.
  */
-public class KnownSiteActivity extends Activity implements View.OnClickListener {
+public class KnownSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8

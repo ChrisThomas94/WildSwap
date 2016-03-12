@@ -82,6 +82,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                         LatLng unknown = new LatLng(lat, lon);
 
                         Site siteClass = new Site();
+                        siteClass.setCid(jsonSite.getString("unique_cid"));
                         siteClass.setPosition(unknown);
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));

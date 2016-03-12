@@ -133,9 +133,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			displayView(0);
 		}
 
-
 		new FetchKnownSites(this).execute();
 		new FetchUnknownSites(this).execute();
+		new FetchTradeRequests(this).execute();
 	}
 
 	/**

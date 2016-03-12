@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddSite extends Activity implements View.OnClickListener {
+public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8

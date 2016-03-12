@@ -88,6 +88,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
                         Site siteClass = new Site();
                         siteClass.setPosition(position);
+                        siteClass.setCid(jsonSite.getString("unique_cid"));
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("rating"));

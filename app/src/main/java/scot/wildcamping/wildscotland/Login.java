@@ -30,7 +30,6 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{    //***
 
-
     Button registerHere;
     Button signIn;
     TextInputLayout emailLogin;

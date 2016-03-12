@@ -16,11 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Chris on 11-Mar-16.
+ * Created by Chris on 12-Mar-16.
  */
-public class SendTrade extends AsyncTask<String, String, String> {
+public class CancelTrade extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -30,15 +34,16 @@ public class SendTrade extends AsyncTask<String, String, String> {
     private ProgressDialog pDialog;
     private Context context;
     String user;
-    final int tradeStatus = 0;
+    final int relatOwn = 90;
+    final int relatTrade = 45;
+    List<LatLng> knownSites = new ArrayList<LatLng>();
+    Map<String, String> knownSitesString = new HashMap<>();
+    SparseArray<Site> map = new SparseArray<>();
+    String unique_tid;
 
-    String send_cid;
-    String recieve_cid;
-
-    public SendTrade(Context context, String send_cid, String recieve_cid) {
+    public CancelTrade(Context context, String unique_tid) {
         this.context = context;
-        this.send_cid = send_cid;
-        this.recieve_cid = recieve_cid;
+        this.unique_tid = unique_tid;
     }
 
     /**
@@ -48,7 +53,7 @@ public class SendTrade extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Sending Trade Request...");
+        pDialog.setMessage("Canceling trade...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -63,7 +68,7 @@ public class SendTrade extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = tradeRequest(user, tradeStatus, send_cid, recieve_cid);
+            String json = getTrade(unique_tid);
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
             System.out.println("post response: " + postResponse);
@@ -72,19 +77,19 @@ public class SendTrade extends AsyncTask<String, String, String> {
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
-                int size = jObj.getInt("size");
-
-                if(!error) {
-                    for (int i = 0; i < size; i++) {
+                //int size = jObj.getInt("size");
+                if (!error) {
+                    //for (int i = 0; i < size; i++) {
                         /*JSONObject jsonSite = jObj.getJSONObject("site" + i);
                         String longitude = jsonSite.getString("longitude");
                         String latitude = jsonSite.getString("latitude");
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
-                        LatLng unknown = new LatLng(lat, lon);
+                        LatLng position = new LatLng(lat, lon);
 
                         Site siteClass = new Site();
-                        siteClass.setPosition(unknown);
+                        siteClass.setPosition(position);
+                        siteClass.setCid(jsonSite.getString("unique_cid"));
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("rating"));
@@ -98,19 +103,23 @@ public class SendTrade extends AsyncTask<String, String, String> {
                         siteClass.setFeature8(jsonSite.getString("feature8"));
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));*/
-                    }
-                    knownSite inst = new knownSite();
-                    inst.setUnknownSitesSize(size);
+
+                        //map.put(i, siteClass);
+                   // }
+
+                    //knownSite inst = new knownSite();
+                    //inst.setKnownSitesMap(map);
+                    //inst.setSiteSize(size);
 
                 } else {
                     //error message
                 }
 
-            } catch (JSONException e){
+            } catch (JSONException e) {
 
             }
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -118,14 +127,14 @@ public class SendTrade extends AsyncTask<String, String, String> {
     }
 
     /**
-     * After completing background task Dismiss the progress dialog
-     * **/
+     * After completing background task Dismiss the progress dialog and add markers
+     **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         pDialog.dismiss();
     }
 
-    private String doGetRequest(String url)throws IOException{
+    private String doGetRequest(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -141,16 +150,14 @@ public class SendTrade extends AsyncTask<String, String, String> {
                 .url(url)
                 .post(body)
                 .build();
-        System.out.println("request: "+request);
+        System.out.println("request: " + request);
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
 
-    private String tradeRequest(String uid, int tradeStatus, String send_cid, String recieve_cid) {
-        return "{\"tag\":\"" + "tradeRequest" + "\","
-                + "\"uid\":\"" + uid + "\","
-                + "\"tradeStatus\":\"" + tradeStatus + "\","
-                + "\"send_cid\":\"" + send_cid + "\","
-                + "\"recieve_cid\":\"" + recieve_cid + "\"}";
+    private String getTrade(String unique_tid) {
+        return "{\"tag\":\"" + "cancelTrade" + "\","
+                + "\"tid\":\"" + unique_tid + "\"}";
     }
+
 }
