@@ -11,12 +11,16 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class OpenTradesFragment extends Fragment implements View.OnClickListener{
 	
 	public OpenTradesFragment(){}
+
+    final String sent = "Sent";
+    final String received = "Received";
 
     RelativeLayout trade1;
     RelativeLayout trade2;
@@ -40,9 +44,26 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
     TextView titleTrade9;
     TextView titleTrade10;
 
-    SparseArray<Trade> activeTrades = new SparseArray<>();
+    TextView title1;
+    TextView title2;
+    TextView title3;
+    TextView title4;
+    TextView title5;
+    TextView title6;
+    TextView title7;
+    TextView title8;
+    TextView title9;
+    TextView title10;
+
     private int tradesSize;
-	
+    SparseArray<Trade> activeTrades = new SparseArray<>();
+
+    //private int sentTradesSize;
+    //SparseArray<Trade> sentTrades = new SparseArray<>();
+
+   // private int receivedTradesSize;
+    //SparseArray<Trade> receivedTrades = new SparseArray<>();
+
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -71,52 +92,78 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
         titleTrade9 = (TextView)rootView.findViewById(R.id.titleTrade9);
         titleTrade10 = (TextView)rootView.findViewById(R.id.titleTrade10);
 
+        title1 = (TextView)rootView.findViewById(R.id.title1);
+        title2 = (TextView)rootView.findViewById(R.id.title2);
+        title3 = (TextView)rootView.findViewById(R.id.title3);
+        title4 = (TextView)rootView.findViewById(R.id.title4);
+        title5 = (TextView)rootView.findViewById(R.id.title5);
+        title6 = (TextView)rootView.findViewById(R.id.title6);
+        title7 = (TextView)rootView.findViewById(R.id.title7);
+        title8 = (TextView)rootView.findViewById(R.id.title8);
+        title9 = (TextView)rootView.findViewById(R.id.title9);
+        title10 = (TextView)rootView.findViewById(R.id.title10);
+
         StoredTrades trades = new StoredTrades();
+
         activeTrades = trades.getActiveTrades();
         tradesSize = trades.getActiveTradesSize();
 
-        if(tradesSize <1){
+        //sentTrades = trades.getSentTrades();
+        //sentTradesSize = trades.getSentTradesSize();
 
-        }
+        //receivedTrades = trades.getReceivedTrades();
+        //receivedTradesSize = trades.getReceivedTradesSize();
+
+        //if no open trades then this displays the text of the last open trade minor problem
         if(tradesSize >= 1){
             titleTrade1.setText(activeTrades.get(0).getDate());
             trade1.setVisibility(View.VISIBLE);
+            title1.setText(activeTrades.get(0).getUserRelation());
         }
         if (tradesSize >= 2){
             titleTrade2.setText(activeTrades.get(1).getDate());
             trade2.setVisibility(View.VISIBLE);
+            title2.setText(activeTrades.get(1).getUserRelation());
         }
         if (tradesSize >= 3){
             titleTrade3.setText(activeTrades.get(2).getDate());
             trade3.setVisibility(View.VISIBLE);
+            title3.setText(activeTrades.get(2).getUserRelation());
         }
         if(tradesSize >= 4){
             titleTrade4.setText(activeTrades.get(3).getDate());
             trade4.setVisibility(View.VISIBLE);
+            title4.setText(activeTrades.get(3).getUserRelation());
         }
         if(tradesSize >= 5){
             titleTrade5.setText(activeTrades.get(4).getDate());
             trade5.setVisibility(View.VISIBLE);
+            title5.setText(activeTrades.get(4).getUserRelation());
         }
         if(tradesSize >= 6){
             titleTrade6.setText(activeTrades.get(5).getDate());
             trade6.setVisibility(View.VISIBLE);
+            title6.setText(activeTrades.get(5).getUserRelation());
         }
         if(tradesSize >= 7){
             titleTrade7.setText(activeTrades.get(6).getDate());
             trade7.setVisibility(View.VISIBLE);
+            title7.setText(activeTrades.get(6).getUserRelation());
         }
         if(tradesSize >= 8){
             titleTrade8.setText(activeTrades.get(7).getDate());
             trade8.setVisibility(View.VISIBLE);
+            title8.setText(activeTrades.get(7).getUserRelation());
         }
         if(tradesSize >= 9){
             titleTrade9.setText(activeTrades.get(8).getDate());
             trade9.setVisibility(View.VISIBLE);
+            title9.setText(activeTrades.get(8).getUserRelation());
         }
         if(tradesSize >= 10){
             titleTrade10.setText(activeTrades.get(9).getDate());
             trade10.setVisibility(View.VISIBLE);
+            title10.setText(activeTrades.get(9).getUserRelation());
         }
 
         trade1.setOnClickListener(this);
@@ -186,45 +233,45 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
             case R.id.trade6:
                 intent = new Intent(getActivity(),
                         TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(5).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(5).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(5).getRecieve_cid());
+                intent.putExtra("unique_tid", activeTrades.get(0).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(0).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(0).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade7:
                 intent = new Intent(getActivity(),
                         TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(6).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(6).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(6).getRecieve_cid());
+                intent.putExtra("unique_tid", activeTrades.get(1).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(1).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(1).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade8:
                 intent = new Intent(getActivity(),
                         TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(7).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(7).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(7).getRecieve_cid());
+                intent.putExtra("unique_tid", activeTrades.get(2).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(2).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(2).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade9:
                 intent = new Intent(getActivity(),
                         TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(8).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(8).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(8).getRecieve_cid());
+                intent.putExtra("unique_tid", activeTrades.get(3).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(3).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(3).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade10:
                 intent = new Intent(getActivity(),
                         TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(9).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(9).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(9).getRecieve_cid());
+                intent.putExtra("unique_tid", activeTrades.get(4).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(4).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(4).getRecieve_cid());
                 startActivity(intent);
                 break;
         }

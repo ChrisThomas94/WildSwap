@@ -31,7 +31,10 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     final int tradeStatus = 0;
-    SparseArray<Trade> map = new SparseArray<>();
+    SparseArray<Trade> activeTrades = new SparseArray<>();
+
+    SparseArray<Trade> sentTrades = new SparseArray<>();
+    SparseArray<Trade> receivedTrades = new SparseArray<>();
 
     public FetchTradeRequests(Context context) {
         this.context = context;
@@ -71,6 +74,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
                 if(!error) {
                     for (int i = 0; i < size; i++) {
+
                         JSONObject jsonTrade = jObj.getJSONObject("trade" + i);
 
                         Trade activeTrade = new Trade();
@@ -81,11 +85,19 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                         activeTrade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
                         activeTrade.setDate(jsonTrade.getString("created_at"));
 
-                        map.put(i, activeTrade);
+                        if(jsonTrade.getString("sender_uid_fk").equals(user)){
+                            activeTrade.setUserRelation("Sent");
+                        } else {
+                            activeTrade.setUserRelation("Received");
+                        }
+
+                        activeTrades.put(i, activeTrade);
                     }
                     StoredTrades inst = new StoredTrades();
-                    inst.setActiveTrades(map);
+                    inst.setActiveTrades(activeTrades);
                     inst.setActiveTradesSize(size);
+
+                    System.out.println(activeTrades);
 
                 } else {
                     //error message

@@ -13,6 +13,7 @@ public class Trade {
     private String send_cid;
     private String recieve_cid;
     private String date;
+    private String userRelation;
 
     public void setUnique_tid(String unique_tid){
         this.unique_tid = unique_tid;
@@ -60,6 +61,14 @@ public class Trade {
 
     public String getDate(){
         return date;
+    }
+
+    public void setUserRelation(String relat){
+        this.userRelation = relat;
+    }
+
+    public String getUserRelation(){
+        return userRelation;
     }
 
 }

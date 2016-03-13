@@ -11,6 +11,25 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/sent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sent"/>
+
+            <Button
+                android:id="@+id/received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/sent"
+                android:text="Received"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/trade1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,20 +40,11 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:padding="5dp"
-                android:layout_below="@+id/title1"
                 android:text="Trade 1"/>
 
         </RelativeLayout>
@@ -50,19 +60,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title2"
                 android:padding="5dp"
                 android:text="Trade 2"/>
 
@@ -79,19 +80,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title3"
                 android:padding="5dp"
                 android:text="Trade 3"/>
 
@@ -108,20 +100,11 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:padding="5dp"
-                android:layout_below="@+id/title4"
                 android:text="Trade 4"/>
 
         </RelativeLayout>
@@ -137,19 +120,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title5"
                 android:padding="5dp"
                 android:text="Trade 5"/>
 
@@ -166,19 +140,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title6"
                 android:padding="5dp"
                 android:text="Trade 6"/>
 
@@ -195,19 +160,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title7"
                 android:padding="5dp"
                 android:text="Trade 7"/>
 
@@ -224,19 +180,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title8"
                 android:padding="5dp"
                 android:text="Trade 8"/>
 
@@ -253,19 +200,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title9"
                 android:padding="5dp"
                 android:text="Trade 9"/>
 
@@ -282,19 +220,10 @@
             android:background="@color/colorPrimary">
 
             <TextView
-                android:id="@+id/title10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="Sent/Received"/>
-
-            <TextView
                 android:id="@+id/titleTrade10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
-                android:layout_below="@+id/title10"
                 android:padding="5dp"
                 android:text="Trade 10"/>
 
