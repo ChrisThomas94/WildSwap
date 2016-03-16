@@ -16,8 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -34,7 +32,11 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     String user;
     final int relatOwn = 90;
     final int relatTrade = 45;
-    SparseArray<Site> map = new SparseArray<>();
+    SparseArray<Site> unknownSites = new SparseArray<>();
+
+    knownSite inst = new knownSite();
+    SparseArray<Site> knownSites = new SparseArray<>();
+    int knownSize;
 
     public FetchUnknownSites(Context context) {
         this.context = context;
@@ -58,10 +60,14 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
+        knownSize = inst.getKnownSiteSize();
+
+        knownSites = inst.getKnownSitesMap();
+
         user = AppController.getString(context, "uid");
         // issue the post request
         try {
-            String json = getKnownSites(user, relatOwn, relatTrade);
+            String json = getUnknownSites(user, relatOwn, relatTrade);
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
             System.out.println("post response: " + postResponse);
@@ -73,36 +79,53 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                 int size = jObj.getInt("size");
 
                 if(!error) {
+                    int counter = 0;
                     for (int i = 0; i < size; i++) {
                         JSONObject jsonSite = jObj.getJSONObject("site" + i);
-                        String longitude = jsonSite.getString("longitude");
-                        String latitude = jsonSite.getString("latitude");
-                        double lon = Double.parseDouble(longitude);
-                        double lat = Double.parseDouble(latitude);
-                        LatLng unknown = new LatLng(lat, lon);
 
-                        Site siteClass = new Site();
-                        siteClass.setCid(jsonSite.getString("unique_cid"));
-                        siteClass.setPosition(unknown);
-                        siteClass.setTitle(jsonSite.getString("title"));
-                        siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("rating"));
-                        siteClass.setFeature1(jsonSite.getString("feature1"));
-                        siteClass.setFeature2(jsonSite.getString("feature2"));
-                        siteClass.setFeature3(jsonSite.getString("feature3"));
-                        siteClass.setFeature4(jsonSite.getString("feature4"));
-                        siteClass.setFeature5(jsonSite.getString("feature5"));
-                        siteClass.setFeature6(jsonSite.getString("feature6"));
-                        siteClass.setFeature7(jsonSite.getString("feature7"));
-                        siteClass.setFeature8(jsonSite.getString("feature8"));
-                        siteClass.setFeature9(jsonSite.getString("feature9"));
-                        siteClass.setFeature10(jsonSite.getString("feature10"));
+                        boolean knownError = false;
 
-                        map.put(i, siteClass);
+
+                        for(int j = 0; j< knownSize; j++){
+                            if (knownSites.get(j).getCid().equals(jsonSite.getString("unique_cid"))){
+                                System.out.print("This is actually a known site: " + jsonSite.getString("unique_cid"));
+                                knownError = true;
+                                size--;
+
+                            }
+                        }
+
+                        if(!knownError){
+                            String longitude = jsonSite.getString("longitude");
+                            String latitude = jsonSite.getString("latitude");
+                            double lon = Double.parseDouble(longitude);
+                            double lat = Double.parseDouble(latitude);
+                            LatLng unknown = new LatLng(lat, lon);
+
+                            Site siteClass = new Site();
+                            siteClass.setCid(jsonSite.getString("unique_cid"));
+                            siteClass.setPosition(unknown);
+                            siteClass.setTitle(jsonSite.getString("title"));
+                            siteClass.setDescription(jsonSite.getString("description"));
+                            siteClass.setRating(jsonSite.getDouble("rating"));
+                            siteClass.setFeature1(jsonSite.getString("feature1"));
+                            siteClass.setFeature2(jsonSite.getString("feature2"));
+                            siteClass.setFeature3(jsonSite.getString("feature3"));
+                            siteClass.setFeature4(jsonSite.getString("feature4"));
+                            siteClass.setFeature5(jsonSite.getString("feature5"));
+                            siteClass.setFeature6(jsonSite.getString("feature6"));
+                            siteClass.setFeature7(jsonSite.getString("feature7"));
+                            siteClass.setFeature8(jsonSite.getString("feature8"));
+                            siteClass.setFeature9(jsonSite.getString("feature9"));
+                            siteClass.setFeature10(jsonSite.getString("feature10"));
+
+                            unknownSites.put(counter, siteClass);
+                            counter++;
+                        }
                     }
-                    knownSite inst = new knownSite();
-                    inst.setUnknownSitesMap(map);
-                    inst.setUnknownSitesSize(size);
+
+                    inst.setUnknownSitesMap(unknownSites);
+                    inst.setUnknownSitesSize(unknownSites.size());
 
                 } else {
                     //error message
@@ -148,7 +171,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String getKnownSites(String uid, int relatOwn, int relatTrade) {
+    private String getUnknownSites(String uid, int relatOwn, int relatTrade) {
         return "{\"tag\":\"" + "unknownSites" + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"relatOwn\":\"" + relatOwn + "\","

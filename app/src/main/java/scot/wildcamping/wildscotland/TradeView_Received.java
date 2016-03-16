@@ -13,26 +13,25 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
- * Created by Chris on 11-Mar-16.
+ * Created by Chris on 15-Mar-16.
  */
-public class TradeActivitySimple extends AppCompatActivity implements View.OnClickListener {
+public class TradeView_Received extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<LatLng> cluster = null;
     knownSite inst = new knownSite();
     int recieveSize;
-    int ownedSitesSize;
-    int unknownSitesSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
-    SparseArray<Site> ownedMap;
+    SparseArray<Site> knownMap;
     SparseArray<Site> unknownMap;
     Site recieveSite;
     Site sendSite;
     String send_cid;
     String recieve_cid;
-    int ownedSiteInit =0;
+    String unique_tid;
+    int PositiveTradeStatus = 2;
+    int NegativeTradeStatus = 1;
 
     TextView recieveTitle;
     ImageView features1;
@@ -61,22 +60,20 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     RatingBar sendRating;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_simple);
+        setContentView(R.layout.activity_trade_view_received);
 
-        ownedMap = inst.getOwnedSitesMap();
-        unknownMap = inst.getUnknownSitesMap();
-        unknownSitesSize = inst.getUnknownSitesSize();
-        ownedSitesSize = inst.getOwnedSiteSize();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            unique_tid = extras.getString("unique_tid");
+            send_cid = extras.getString("send_cid");
+            recieve_cid = extras.getString("recieve_cid");
+        }
 
-        Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
-        Button refresh = (Button)findViewById(R.id.btnRefresh_Trade);
-        Button send = (Button)findViewById(R.id.btnSend_Trade);
-
-        Button right = (Button)findViewById(R.id.btn_right);
-        Button left = (Button)findViewById(R.id.btn_left);
-
+        Button reject = (Button)findViewById(R.id.btnReject_Trade);
+        Button contactUser = (Button)findViewById(R.id.btnContact_User);
+        Button accept = (Button)findViewById(R.id.btnAccept_Trade);
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         features1 = (ImageView)findViewById(R.id.features1);
@@ -104,46 +101,35 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
 
+        configSites();
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            cluster = extras.getParcelableArrayList("cluster");
-            recieveSize = cluster.size();
-            System.out.println("Trade" + cluster + recieveSize);
-        }
+        reject.setOnClickListener(this);
+        contactUser.setOnClickListener(this);
+        accept.setOnClickListener(this);
 
-        //where lat lng of cluster = lat lng of map
-        //add to new map
+    }
 
-        for(int i=0; i<recieveSize; i++){
+    public void configSites(){
 
-            for(int j=0; j<unknownSitesSize; j++){
-                Site currentSite = unknownMap.get(j);
+        knownMap = inst.getKnownSitesMap();
+        unknownMap = inst.getUnknownSitesMap();
+        int sizeUnknown = inst.getUnknownSitesSize();
+        System.out.println(sizeUnknown);
 
-                if (cluster.get(i).equals(currentSite.getPosition())) {
-                    System.out.println(currentSite.getPosition());
-                    selectedUnknownSites.put(i, currentSite);
-                }
+        int sizeKnown = inst.getKnownSiteSize();
+        System.out.println(sizeKnown);
+
+        for(int i=0; i<sizeUnknown; i++){
+            if(unknownMap.get(i).getCid().equals(send_cid)){
+                recieveSite = unknownMap.get(i);
             }
         }
 
-        //initialise unknown site
-        genUnknownSite(0);
-
-        //initialise known site
-        genOwnedSite(ownedSiteInit);
-
-        cancel.setOnClickListener(this);
-        refresh.setOnClickListener(this);
-        send.setOnClickListener(this);
-        right.setOnClickListener(this);
-        left.setOnClickListener(this);
-    }
-
-    public void genOwnedSite(int random){
-        sendSite = ownedMap.get(random);
-
-        send_cid = sendSite.getCid();
+        for(int j=0; j<sizeKnown; j++){
+            if (knownMap.get(j).getCid().equals(recieve_cid)){
+                sendSite = knownMap.get(j);
+            }
+        }
 
         sendTitle.setText(sendSite.getTitle());
 
@@ -199,12 +185,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         }
 
         sendRating.setRating((sendSite.getRating()).floatValue());
-    }
-
-    public void genUnknownSite(int random){
-        recieveSite = selectedUnknownSites.get(random);
-
-        recieve_cid = recieveSite.getCid();
 
         recieveTitle.setText(recieveSite.getTitle());
 
@@ -260,58 +240,41 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         }
 
         recieveRating.setRating((recieveSite.getRating()).floatValue());
+
     }
 
     @Override
-    public void onClick(View v){
-
+    public void onClick(View v) {
         Intent intent;
-        switch (v.getId())
-        {
-            //on clicking register button move to Register Activity
-            case R.id.btnCancel_Trade:
+
+        switch (v.getId()) {
+            case R.id.btnReject_Trade:
+
+                //update trade record in db
+                new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
+
                  intent = new Intent(getApplicationContext(),
                         MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
 
-            //on clicking the signin button check for the empty field then call the checkLogin() function
-            case R.id.btnRefresh_Trade:
-                Random ran = new Random();
-                int nextSite = ran.nextInt(recieveSize);
-                genUnknownSite(nextSite);
+            case R.id.btnContact_User:
+
+                //open email dialog
                 break;
 
-            case R.id.btnSend_Trade:
-                //send trade
-                new CreateTrade(this, send_cid, recieve_cid).execute();
+            case R.id.btnAccept_Trade:
+
+                //update trade record in db positively
+                new UpdateTrade(this, unique_tid, PositiveTradeStatus).execute();
+
+                //create new entry in user_has_trades with relat 45
 
                 intent = new Intent(getApplicationContext(),
                         MainActivity.class);
                 startActivity(intent);
                 finish();
-                break;
-
-            case R.id.btn_right:
-
-                if(ownedSiteInit == ownedSitesSize-1){
-                    ownedSiteInit = -1;
-                }
-                ownedSiteInit++;
-                genOwnedSite(ownedSiteInit);
-
-                break;
-
-            case R.id.btn_left:
-
-                if(ownedSiteInit == 0){
-                    ownedSiteInit = ownedSitesSize;
-                }
-                ownedSiteInit--;
-                genOwnedSite(ownedSiteInit);
-
-
                 break;
         }
     }

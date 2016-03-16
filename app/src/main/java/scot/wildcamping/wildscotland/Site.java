@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class Site {
 
     private String cid;
+    private String siteAdmin;
     private LatLng position;
     private String title;
     private String description;
@@ -23,12 +24,21 @@ public class Site {
     private String feature9;
     private String feature10;
 
+
     public void setCid(String cid){
         this.cid = cid;
     }
 
     public String getCid(){
         return cid;
+    }
+
+    public void setSiteAdmin(String admin){
+        this.siteAdmin = admin;
+    }
+
+    public String getSiteAdmin(){
+        return siteAdmin;
     }
 
     public void setPosition(LatLng position){

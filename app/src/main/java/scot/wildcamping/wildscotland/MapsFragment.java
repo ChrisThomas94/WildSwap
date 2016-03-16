@@ -1,6 +1,7 @@
 package scot.wildcamping.wildscotland;
 
 import android.Manifest;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,9 +40,7 @@ import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
@@ -81,20 +81,36 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     knownSite inst = new knownSite();
     boolean clicked;
 
+    SparseArray<Site> knownSitesMap;
+    int knownSiteSize;
+
+    SparseArray<Site> ownedSitesMap;
+    int ownedSiteSize;
+
+    Site newlyAdded;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        knownSitesMap = inst.getKnownSitesMap();
+        knownSiteSize = inst.getKnownSiteSize();
+
+        ownedSitesMap = inst.getOwnedSitesMap();
+        ownedSiteSize = inst.getOwnedSiteSize();
+
+        newlyAdded = ownedSitesMap.get(ownedSiteSize-1);
+
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
         {
-            newLat = extras.getDouble("latitude");
-            newLon = extras.getDouble("longitude");
+            //newLat = extras.getDouble("latitude");
+            //newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
 
-            newSite = new LatLng(newLat, newLon);
+            //newSite = new LatLng(newLat, newLon);
 
         }
 
@@ -122,25 +138,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // Show rationale and request permission.
         }
 
-        // center map on Scotland
-        if(newSite == null){
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(SCOTLAND.getCenter()).zoom(6).build();
-            googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-
-        }else{//center map on newly created site
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(newSite).zoom(10).build();
-            googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-        }
-
-
-        if(add){
-            knownSites.add(newSite);
-            addMarker(newSite);
-        }
+       // if(add){
+            //knownSites.add(newSite);
+            //addMarker(newSite);
+        //}
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
@@ -150,6 +151,20 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         //add the unknown sites as cluster items
         setUpClustering();
+
+        // center map on Scotland
+        if(!add){
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(SCOTLAND.getCenter()).zoom(6).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+
+        }else{//center map on newly created site
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(newlyAdded.getPosition()).zoom(10).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+        }
 
         // Perform any camera updates here
         return v;
@@ -296,6 +311,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     }
 
     private void setUpClustering() {
+        System.out.println("set up clustering");
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
         mMarkerManager = new MarkerManager(googleMap);
@@ -305,15 +321,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         coll = mMarkerManager.newCollection();
 
-
-        SparseArray<Site> map = inst.getKnownSitesMap();
-        int size = inst.getSiteSize();
-
-        if(size > 0) {
-            for (int i = 0; i < size; i++) {
-                Site currentSite = map.get(i);
+        if(knownSiteSize > 0) {
+            for (int i = 0; i < knownSiteSize; i++) {
+                Site currentSite = knownSitesMap.get(i);
                 coll.addMarker(new MarkerOptions().position(currentSite.getPosition()));
             }
+        } else {
+            //no known sites
+        }
+
+        if(ownedSiteSize > 0){
+            for(int i = 0; i< ownedSiteSize; i++){
+
+                Site currentSite = ownedSitesMap.get(i);
+                System.out.println(i + "  " + currentSite.getTitle());
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()));
+            }
+
+        } else {
+            //no owned sites
         }
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
@@ -326,14 +352,34 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
 
-                SparseArray<Site> map = inst.getKnownSitesMap();
-
-                int size = inst.getSiteSize();
-
-                for (int i = 0; i < size; i++) {
-                    Site currentSite = map.get(i);
+                for (int i = 0; i < knownSiteSize; i++) {
+                    Site currentSite = knownSitesMap.get(i);
 
                     if (marker.getPosition().equals(currentSite.getPosition())){
+                        intent.putExtra("cid", currentSite.getCid());
+                        intent.putExtra("title", currentSite.getTitle());
+                        intent.putExtra("description", currentSite.getDescription());
+                        intent.putExtra("rating", currentSite.getRating());
+                        intent.putExtra("feature1", currentSite.getFeature1());
+                        intent.putExtra("feature2", currentSite.getFeature2());
+                        intent.putExtra("feature3", currentSite.getFeature3());
+                        intent.putExtra("feature4", currentSite.getFeature4());
+                        intent.putExtra("feature5", currentSite.getFeature5());
+                        intent.putExtra("feature6", currentSite.getFeature6());
+                        intent.putExtra("feature7", currentSite.getFeature7());
+                        intent.putExtra("feature8", currentSite.getFeature8());
+                        intent.putExtra("feature9", currentSite.getFeature9());
+                        intent.putExtra("feature10", currentSite.getFeature10());
+                        startActivity(intent);
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < ownedSiteSize; i++) {
+                    Site currentSite = ownedSitesMap.get(i);
+
+                    if (marker.getPosition().equals(currentSite.getPosition())){
+                        intent.putExtra("cid", currentSite.getCid());
                         intent.putExtra("title", currentSite.getTitle());
                         intent.putExtra("description", currentSite.getDescription());
                         intent.putExtra("rating", currentSite.getRating());
@@ -380,20 +426,27 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
             if (clickedCluster != null) {
 
-                ArrayList<LatLng> cluster = new ArrayList<>();
-                Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
+                if(inst.getOwnedSiteSize() == 0){
 
-                for (AppClusterItem item : clickedCluster.getItems()) {
-                    // Extract data from each item in the cluster as needed
-                    //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
-                    cluster.add(item.getPosition());
-                    System.out.println("maps fragment"+item.getPosition());
+                    Toast.makeText(getActivity(), "You do not own a site to trade!", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    ArrayList<LatLng> cluster = new ArrayList<>();
+                    Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
+
+                    for (AppClusterItem item : clickedCluster.getItems()) {
+                        // Extract data from each item in the cluster as needed
+                        //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
+                        cluster.add(item.getPosition());
+                        System.out.println("maps fragment"+item.getPosition());
+                    }
+
+                    intent.putParcelableArrayListExtra("cluster", cluster);
+
+                    // Launching  main activity
+                    startActivity(intent);
                 }
-
-                intent.putParcelableArrayListExtra("cluster", cluster);
-
-                // Launching  main activity
-                startActivity(intent);
             }
 
             View view = getActivity().getLayoutInflater().inflate(R.layout.cluster_popup, null);
@@ -420,10 +473,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         //knownSite inst = new knownSite();
         SparseArray<Site> map = inst.getUnknownSitesMap();
         int size = inst.getUnknownSitesSize();
+        //System.out.println("maps fragment "+size);
 
         // Add ten cluster items in close proximity, for purposes of this example.
         for (int i = 0; i < size; i++) {
-
+            //System.out.println(i);
             Site currentSite = map.get(i);
 
             LatLng point = currentSite.getPosition();

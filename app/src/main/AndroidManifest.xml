@@ -76,8 +76,14 @@
         </activity>
 
         <activity
-            android:name=".TradeView"
-            android:label="Trade View"
+            android:name=".TradeView_Sent"
+            android:label="Sent Trade"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name=".TradeView_Received"
+            android:label="Received Trade"
             android:theme="@style/AppTheme">
         </activity>
 

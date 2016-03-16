@@ -1,54 +1,28 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 
-public class TradeView extends AppCompatActivity implements View.OnClickListener {
+public class TradeView_Sent extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<LatLng> cluster = null;
     knownSite inst = new knownSite();
     int recieveSize;
+    int negativeTradeStatus = 1;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
-    SparseArray<Site> knownMap;
+    SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
     Site recieveSite;
     Site sendSite;
@@ -130,10 +104,10 @@ public class TradeView extends AppCompatActivity implements View.OnClickListener
 
     public void configSites(){
 
-        knownMap = inst.getKnownSitesMap();
+        ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
-        int sizeKnown = inst.getSiteSize();
+        int sizeOwned = inst.getOwnedSiteSize();
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(recieve_cid)){
@@ -141,9 +115,9 @@ public class TradeView extends AppCompatActivity implements View.OnClickListener
             }
         }
 
-        for(int j=0; j<sizeKnown; j++){
-            if (knownMap.get(j).getCid().equals(send_cid)){
-                sendSite = knownMap.get(j);
+        for(int j=0; j<sizeOwned; j++){
+            if (ownedMap.get(j).getCid().equals(send_cid)){
+                sendSite = ownedMap.get(j);
             }
         }
 
@@ -265,7 +239,7 @@ public class TradeView extends AppCompatActivity implements View.OnClickListener
             case R.id.btnCancel_Trade:
 
                 //update trade record in db
-                new CancelTrade(this, unique_tid).execute();
+                new UpdateTrade(this, unique_tid, negativeTradeStatus).execute();
 
                 Intent intent = new Intent(getApplicationContext(),
                         MainActivity.class);

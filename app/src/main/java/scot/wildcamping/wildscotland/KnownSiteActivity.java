@@ -20,17 +20,28 @@ import com.squareup.okhttp.OkHttpClient;
  */
 public class KnownSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public final MediaType JSON
-            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
+    String cid;
+    String titleBun;
+    String descriptionBun;
+    Double ratingBun;
+    String feature1;
+    String feature2;
+    String feature3;
+    String feature4;
+    String feature5;
+    String feature6;
+    String feature7;
+    String feature8;
+    String feature9;
+    String feature10;
 
-    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_known_site);
 
-        Button back = (Button)findViewById(R.id.leaveSite);
+        Button back = (Button)findViewById(R.id.deactivateSite);
         Button edit = (Button)findViewById(R.id.editSite);
         TextView title = (TextView)findViewById(R.id.siteViewTitle);
         TextView description = (TextView)findViewById(R.id.siteViewDescription);
@@ -49,19 +60,20 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
-            String titleBun = extras.getString("title");
-            String descriptionBun = extras.getString("description");
-            Double ratingBun = extras.getDouble("rating");
-            String feature1 = extras.getString("feature1");
-            String feature2 = extras.getString("feature2");
-            String feature3 = extras.getString("feature3");
-            String feature4 = extras.getString("feature4");
-            String feature5 = extras.getString("feature5");
-            String feature6 = extras.getString("feature6");
-            String feature7 = extras.getString("feature7");
-            String feature8 = extras.getString("feature8");
-            String feature9 = extras.getString("feature9");
-            String feature10 = extras.getString("feature10");
+            cid = extras.getString("cid");
+            titleBun = extras.getString("title");
+            descriptionBun = extras.getString("description");
+            ratingBun = extras.getDouble("rating");
+            feature1 = extras.getString("feature1");
+            feature2 = extras.getString("feature2");
+            feature3 = extras.getString("feature3");
+            feature4 = extras.getString("feature4");
+            feature5 = extras.getString("feature5");
+            feature6 = extras.getString("feature6");
+            feature7 = extras.getString("feature7");
+            feature8 = extras.getString("feature8");
+            feature9 = extras.getString("feature9");
+            feature10 = extras.getString("feature10");
 
             title.setText(titleBun);
             description.setText(descriptionBun);
@@ -124,8 +136,13 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
         switch (v.getId())
         {
-            case R.id.leaveSite:
+            case R.id.deactivateSite:
+                boolean active = false;
                 intent = new Intent(getApplicationContext(),MainActivity.class);
+
+                //trigger php to deactivate site
+                new UpdateSite(this, active, cid, titleBun, descriptionBun, ratingBun, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10).execute();
+
                 startActivity(intent);
                 finish();
                 break;

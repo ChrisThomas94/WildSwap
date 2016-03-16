@@ -16,11 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -37,9 +32,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     String user;
     final int relatOwn = 90;
     final int relatTrade = 45;
-    List<LatLng> knownSites = new ArrayList<LatLng>();
-    Map<String, String> knownSitesString = new HashMap<>();
     SparseArray<Site> map = new SparseArray<>();
+    SparseArray<Site> owned = new SparseArray<>();
+
 
     public FetchKnownSites(Context context) {
         this.context = context;
@@ -78,6 +73,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
                 int size = jObj.getInt("size");
                 if (!error) {
+                    int ownedCnt = 0;
+                    int knownCnt = 0;
                     for (int i = 0; i < size; i++) {
                         JSONObject jsonSite = jObj.getJSONObject("site" + i);
                         String longitude = jsonSite.getString("longitude");
@@ -89,6 +86,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         Site siteClass = new Site();
                         siteClass.setPosition(position);
                         siteClass.setCid(jsonSite.getString("unique_cid"));
+                        siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("rating"));
@@ -103,12 +101,20 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));
 
-                        map.put(i, siteClass);
+                        if (jsonSite.getString("site_admin").equals(user)){
+                            owned.put(ownedCnt, siteClass);
+                            ownedCnt++;
+                        } else {
+                            map.put(knownCnt, siteClass);
+                            knownCnt++;
+                        }
                     }
 
                     knownSite inst = new knownSite();
                     inst.setKnownSitesMap(map);
-                    inst.setSiteSize(size);
+                    inst.setOwnedSitesMap(owned);
+                    inst.setKnownSiteSize(knownCnt);
+                    inst.setOwnedSiteSize(ownedCnt);
 
                 } else {
                     //error message

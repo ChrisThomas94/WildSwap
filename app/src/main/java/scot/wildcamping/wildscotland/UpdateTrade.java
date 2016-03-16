@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.okhttp.MediaType;
@@ -16,11 +17,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Chris on 11-Mar-16.
+ * Created by Chris on 12-Mar-16.
  */
-public class SendTrade extends AsyncTask<String, String, String> {
+public class UpdateTrade extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -29,16 +34,28 @@ public class SendTrade extends AsyncTask<String, String, String> {
 
     private ProgressDialog pDialog;
     private Context context;
-    String user;
-    final int tradeStatus = 0;
+    int newTradeStatus;
+    int positiveTradeStatus = 2;
+    int negativeTradeStatus = 1;
+    final int relatOwn = 90;
+    final int relatTrade = 45;
+    List<LatLng> knownSites = new ArrayList<LatLng>();
+    Map<String, String> knownSitesString = new HashMap<>();
+    SparseArray<Site> map = new SparseArray<>();
+    String unique_tid;
+    String postResponse;
 
-    String send_cid;
-    String recieve_cid;
+    SparseArray<Trade> activeTrades = new SparseArray<>();
 
-    public SendTrade(Context context, String send_cid, String recieve_cid) {
+    StoredTrades trades = new StoredTrades();
+
+    Trade trade = new Trade();
+
+
+    public UpdateTrade(Context context, String unique_tid, int newTradeStatus) {
         this.context = context;
-        this.send_cid = send_cid;
-        this.recieve_cid = recieve_cid;
+        this.unique_tid = unique_tid;
+        this.newTradeStatus = newTradeStatus;
     }
 
     /**
@@ -48,7 +65,13 @@ public class SendTrade extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Sending Trade Request...");
+
+        if(newTradeStatus == negativeTradeStatus){
+            pDialog.setMessage("Canceling trade...");
+        } else {
+            pDialog.setMessage("Accepting trade...");
+        }
+
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -59,32 +82,44 @@ public class SendTrade extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
+        activeTrades = trades.getActiveTrades();
+        int size = trades.getActiveTradesSize();
+
+        for(int i=0; i<size; i++){
+            if(activeTrades.get(i).getUnique_tid().equals(unique_tid));
+
+            trade = activeTrades.get(i);
+        }
+
+        String sender_uid = trade.getSender_uid();
+        String receiver_uid = trade.getReciever_uid();
+        String send_cid = trade.getSend_cid();
+        String receive_cid = trade.getRecieve_cid();
 
         // issue the post request
         try {
-            String json = tradeRequest(user, tradeStatus, send_cid, recieve_cid);
+            String json = getTrade(unique_tid, newTradeStatus, sender_uid, receiver_uid, send_cid, receive_cid);
             System.out.println("json: " + json);
-            String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
             System.out.println("post response: " + postResponse);
 
             try {
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
-                int size = jObj.getInt("size");
-
-                if(!error) {
-                    for (int i = 0; i < size; i++) {
+                //int size = jObj.getInt("size");
+                if (!error) {
+                    //for (int i = 0; i < size; i++) {
                         /*JSONObject jsonSite = jObj.getJSONObject("site" + i);
                         String longitude = jsonSite.getString("longitude");
                         String latitude = jsonSite.getString("latitude");
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
-                        LatLng unknown = new LatLng(lat, lon);
+                        LatLng position = new LatLng(lat, lon);
 
                         Site siteClass = new Site();
-                        siteClass.setPosition(unknown);
+                        siteClass.setPosition(position);
+                        siteClass.setCid(jsonSite.getString("unique_cid"));
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("rating"));
@@ -98,19 +133,23 @@ public class SendTrade extends AsyncTask<String, String, String> {
                         siteClass.setFeature8(jsonSite.getString("feature8"));
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));*/
-                    }
-                    knownSite inst = new knownSite();
-                    inst.setUnknownSitesSize(size);
+
+                        //map.put(i, siteClass);
+                   // }
+
+                    //knownSite inst = new knownSite();
+                    //inst.setKnownSitesMap(map);
+                    //inst.setKnownSiteSize(size);
 
                 } else {
                     //error message
                 }
 
-            } catch (JSONException e){
+            } catch (JSONException e) {
 
             }
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -118,14 +157,36 @@ public class SendTrade extends AsyncTask<String, String, String> {
     }
 
     /**
-     * After completing background task Dismiss the progress dialog
-     * **/
+     * After completing background task Dismiss the progress dialog and add markers
+     **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         pDialog.dismiss();
+
+        try {
+            JSONObject resp = new JSONObject(postResponse);
+
+            boolean error = resp.getBoolean("error");
+            if (!error && newTradeStatus == 2) {
+
+
+                Toast.makeText(context, "Trade Accepted!", Toast.LENGTH_LONG).show();
+
+            } else if(!error && newTradeStatus == 1) {
+
+                Toast.makeText(context, "Trade Rejected!", Toast.LENGTH_LONG).show();
+
+            } else {
+                String errMsg = resp.getString("error_msg");
+                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e){
+
+        }
     }
 
-    private String doGetRequest(String url)throws IOException{
+    private String doGetRequest(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -141,16 +202,19 @@ public class SendTrade extends AsyncTask<String, String, String> {
                 .url(url)
                 .post(body)
                 .build();
-        System.out.println("request: "+request);
+        System.out.println("request: " + request);
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
 
-    private String tradeRequest(String uid, int tradeStatus, String send_cid, String recieve_cid) {
-        return "{\"tag\":\"" + "tradeRequest" + "\","
-                + "\"uid\":\"" + uid + "\","
-                + "\"tradeStatus\":\"" + tradeStatus + "\","
+    private String getTrade(String unique_tid, int newTradeStatus, String sender_uid, String receiver_uid, String send_cid, String receive_cid) {
+        return "{\"tag\":\"" + "updateTrade" + "\","
+                + "\"tid\":\"" + unique_tid + "\","
+                + "\"tradeStatus\":\"" + newTradeStatus + "\","
+                + "\"sender_uid\":\"" + sender_uid + "\","
+                + "\"receiver_uid\":\"" + receiver_uid + "\","
                 + "\"send_cid\":\"" + send_cid + "\","
-                + "\"recieve_cid\":\"" + recieve_cid + "\"}";
+                + "\"receive_cid\":\"" + receive_cid + "\"}";
     }
+
 }

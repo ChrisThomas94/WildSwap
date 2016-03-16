@@ -173,21 +173,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end">
 
-
-
             <Button
                 android:id="@+id/editSite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UPDATE"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_toRightOf="@+id/leaveSite"/>
+                android:layout_toRightOf="@+id/deactivateSite"/>
 
             <Button
-                android:id="@+id/leaveSite"
+                android:id="@+id/deactivateSite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BACK"
+                android:text="delete"
                 style="?android:attr/borderlessButtonStyle"/>
 
         </RelativeLayout>

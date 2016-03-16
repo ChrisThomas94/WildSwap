@@ -1,17 +1,12 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Application;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -185,8 +180,11 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
         Intent intent;
         switch (v.getId()){
             case R.id.trade1:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
+                if(activeTrades.get(0).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
                 intent.putExtra("unique_tid", activeTrades.get(0).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(0).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(0).getRecieve_cid());
@@ -195,8 +193,11 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.trade2:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
+                if(activeTrades.get(1).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
                 intent.putExtra("unique_tid", activeTrades.get(1).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(1).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(1).getRecieve_cid());
@@ -204,8 +205,11 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.trade3:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
+                if(activeTrades.get(2).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
                 intent.putExtra("unique_tid", activeTrades.get(2).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(2).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(2).getRecieve_cid());
@@ -213,8 +217,11 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.trade4:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
+                if(activeTrades.get(3).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
                 intent.putExtra("unique_tid", activeTrades.get(3).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(3).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(3).getRecieve_cid());
@@ -222,8 +229,11 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.trade5:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
+                if(activeTrades.get(4).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
                 intent.putExtra("unique_tid", activeTrades.get(4).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(4).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(4).getRecieve_cid());
@@ -231,47 +241,62 @@ public class OpenTradesFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.trade6:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(0).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(0).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(0).getRecieve_cid());
+                if(activeTrades.get(5).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
+                intent.putExtra("unique_tid", activeTrades.get(5).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(5).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(5).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade7:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(1).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(1).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(1).getRecieve_cid());
+                if(activeTrades.get(6).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
+                intent.putExtra("unique_tid", activeTrades.get(6).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(6).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(6).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade8:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(2).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(2).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(2).getRecieve_cid());
+                if(activeTrades.get(7).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
+                intent.putExtra("unique_tid", activeTrades.get(7).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(7).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(7).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade9:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(3).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(3).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(3).getRecieve_cid());
+                if(activeTrades.get(8).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
+                intent.putExtra("unique_tid", activeTrades.get(8).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(8).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(8).getRecieve_cid());
                 startActivity(intent);
                 break;
 
             case R.id.trade10:
-                intent = new Intent(getActivity(),
-                        TradeView.class);
-                intent.putExtra("unique_tid", activeTrades.get(4).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(4).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(4).getRecieve_cid());
+                if(activeTrades.get(9).getUserRelation().equals(sent)){
+                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                } else {
+                    intent = new Intent(getActivity(), TradeView_Received.class);
+                }
+                intent.putExtra("unique_tid", activeTrades.get(9).getUnique_tid());
+                intent.putExtra("send_cid", activeTrades.get(9).getSend_cid());
+                intent.putExtra("recieve_cid", activeTrades.get(9).getRecieve_cid());
                 startActivity(intent);
                 break;
         }

@@ -1,33 +1,27 @@
 package scot.wildcamping.wildscotland;
 
-import android.support.v4.app.TaskStackBuilder;
 import android.util.SparseArray;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Chris on 04-Mar-16.
  */
 public class knownSite {
 
-    private static int siteSize;
+    private static int knownSiteSize;
     private static int unknownSitesSize;
+    private static int ownedSitesSize;
 
     private static SparseArray<Site> knownSitesMap = new SparseArray<>();
     private static SparseArray<Site> unknownSitesMap = new SparseArray<>();
+    private static SparseArray<Site> ownedSitesMap = new SparseArray<>();
 
-    public void setSiteSize(int siteSize) {
-        this.siteSize = siteSize;
+
+    public void setKnownSiteSize(int siteSize) {
+        this.knownSiteSize = siteSize;
     }
 
-    public int getSiteSize(){
-        return siteSize;
+    public int getKnownSiteSize(){
+        return knownSiteSize;
     }
 
     public void setUnknownSitesSize(int unknownSitesSize) {
@@ -42,6 +36,14 @@ public class knownSite {
         this.knownSitesMap = map;
     }
 
+    public void setOwnedSiteSize(int siteSize) {
+        this.ownedSitesSize = siteSize;
+    }
+
+    public int getOwnedSiteSize(){
+        return ownedSitesSize;
+    }
+
     public SparseArray<Site> getKnownSitesMap(){
         return knownSitesMap;
     }
@@ -52,6 +54,14 @@ public class knownSite {
 
     public SparseArray<Site> getUnknownSitesMap(){
         return unknownSitesMap;
+    }
+
+    public void setOwnedSitesMap(SparseArray<Site> map){
+        this.ownedSitesMap = map;
+    }
+
+    public SparseArray<Site> getOwnedSitesMap(){
+        return ownedSitesMap;
     }
 
 }
