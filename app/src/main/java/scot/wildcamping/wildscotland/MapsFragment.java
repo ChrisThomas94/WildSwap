@@ -58,7 +58,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
     LatLng newSite = null;
-    boolean add;
+    boolean add = false;
     double newLat;
     double newLon;
     ImageButton addSite;
@@ -101,7 +101,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
 
-        newlyAdded = ownedSitesMap.get(ownedSiteSize-1);
+        System.out.println(ownedSitesMap.size());
 
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
@@ -111,7 +111,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             add = extras.getBoolean("add");
 
             //newSite = new LatLng(newLat, newLon);
-
         }
 
         // inflate and return the layout
@@ -160,10 +159,16 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                     .newCameraPosition(cameraPosition));
 
         }else{//center map on newly created site
+            /*if(knownSiteSize == 0){
+                newlyAdded = ownedSitesMap.get(ownedSiteSize);
+            } else {
+                newlyAdded = ownedSitesMap.get(ownedSiteSize - 1);
+            }
+
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(newlyAdded.getPosition()).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition));*/
         }
 
         // Perform any camera updates here
@@ -352,50 +357,58 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             public boolean onMarkerClick(Marker marker) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
 
-                for (int i = 0; i < knownSiteSize; i++) {
-                    Site currentSite = knownSitesMap.get(i);
+                if(knownSiteSize > 0) {
+                    for (int i = 0; i < knownSiteSize; i++) {
+                        Site currentSite = knownSitesMap.get(i);
 
-                    if (marker.getPosition().equals(currentSite.getPosition())){
-                        intent.putExtra("cid", currentSite.getCid());
-                        intent.putExtra("title", currentSite.getTitle());
-                        intent.putExtra("description", currentSite.getDescription());
-                        intent.putExtra("rating", currentSite.getRating());
-                        intent.putExtra("feature1", currentSite.getFeature1());
-                        intent.putExtra("feature2", currentSite.getFeature2());
-                        intent.putExtra("feature3", currentSite.getFeature3());
-                        intent.putExtra("feature4", currentSite.getFeature4());
-                        intent.putExtra("feature5", currentSite.getFeature5());
-                        intent.putExtra("feature6", currentSite.getFeature6());
-                        intent.putExtra("feature7", currentSite.getFeature7());
-                        intent.putExtra("feature8", currentSite.getFeature8());
-                        intent.putExtra("feature9", currentSite.getFeature9());
-                        intent.putExtra("feature10", currentSite.getFeature10());
-                        startActivity(intent);
-                        break;
+                        if (marker.getPosition().equals(currentSite.getPosition())) {
+                            intent.putExtra("cid", currentSite.getCid());
+                            intent.putExtra("title", currentSite.getTitle());
+                            intent.putExtra("description", currentSite.getDescription());
+                            intent.putExtra("rating", currentSite.getRating());
+                            intent.putExtra("feature1", currentSite.getFeature1());
+                            intent.putExtra("feature2", currentSite.getFeature2());
+                            intent.putExtra("feature3", currentSite.getFeature3());
+                            intent.putExtra("feature4", currentSite.getFeature4());
+                            intent.putExtra("feature5", currentSite.getFeature5());
+                            intent.putExtra("feature6", currentSite.getFeature6());
+                            intent.putExtra("feature7", currentSite.getFeature7());
+                            intent.putExtra("feature8", currentSite.getFeature8());
+                            intent.putExtra("feature9", currentSite.getFeature9());
+                            intent.putExtra("feature10", currentSite.getFeature10());
+                            startActivity(intent);
+                            break;
+                        }
                     }
+                } else {
+
                 }
 
-                for (int i = 0; i < ownedSiteSize; i++) {
-                    Site currentSite = ownedSitesMap.get(i);
+                if(ownedSiteSize > 0) {
+                    for (int i = 0; i < ownedSiteSize; i++) {
+                        Site currentSite = ownedSitesMap.get(i);
 
-                    if (marker.getPosition().equals(currentSite.getPosition())){
-                        intent.putExtra("cid", currentSite.getCid());
-                        intent.putExtra("title", currentSite.getTitle());
-                        intent.putExtra("description", currentSite.getDescription());
-                        intent.putExtra("rating", currentSite.getRating());
-                        intent.putExtra("feature1", currentSite.getFeature1());
-                        intent.putExtra("feature2", currentSite.getFeature2());
-                        intent.putExtra("feature3", currentSite.getFeature3());
-                        intent.putExtra("feature4", currentSite.getFeature4());
-                        intent.putExtra("feature5", currentSite.getFeature5());
-                        intent.putExtra("feature6", currentSite.getFeature6());
-                        intent.putExtra("feature7", currentSite.getFeature7());
-                        intent.putExtra("feature8", currentSite.getFeature8());
-                        intent.putExtra("feature9", currentSite.getFeature9());
-                        intent.putExtra("feature10", currentSite.getFeature10());
-                        startActivity(intent);
-                        break;
+                        if (marker.getPosition().equals(currentSite.getPosition())) {
+                            intent.putExtra("cid", currentSite.getCid());
+                            intent.putExtra("title", currentSite.getTitle());
+                            intent.putExtra("description", currentSite.getDescription());
+                            intent.putExtra("rating", currentSite.getRating());
+                            intent.putExtra("feature1", currentSite.getFeature1());
+                            intent.putExtra("feature2", currentSite.getFeature2());
+                            intent.putExtra("feature3", currentSite.getFeature3());
+                            intent.putExtra("feature4", currentSite.getFeature4());
+                            intent.putExtra("feature5", currentSite.getFeature5());
+                            intent.putExtra("feature6", currentSite.getFeature6());
+                            intent.putExtra("feature7", currentSite.getFeature7());
+                            intent.putExtra("feature8", currentSite.getFeature8());
+                            intent.putExtra("feature9", currentSite.getFeature9());
+                            intent.putExtra("feature10", currentSite.getFeature10());
+                            startActivity(intent);
+                            break;
+                        }
                     }
+                } else {
+
                 }
 
                 return true;

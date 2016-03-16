@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -62,6 +63,12 @@ public class LogOut extends AppCompatActivity {
 
     private void logoutUser() {
         session.setLogin(false);
+        knownSite inst = new knownSite();
+        SparseArray<Site> empty = new SparseArray<>();
+        empty = inst.getOwnedSitesMap();
+        empty.clear();
+        inst.setOwnedSitesMap(empty);
+        //inst.setKnownSitesMap(empty);
         Intent intent = new Intent(LogOut.this, Login.class);
         startActivity(intent);
         finish();

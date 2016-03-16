@@ -23,7 +23,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     knownSite inst = new knownSite();
     int recieveSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
-    SparseArray<Site> knownMap;
+    SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
     Site recieveSite;
     Site sendSite;
@@ -111,13 +111,13 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
     public void configSites(){
 
-        knownMap = inst.getKnownSitesMap();
+        ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
         System.out.println(sizeUnknown);
 
-        int sizeKnown = inst.getKnownSiteSize();
-        System.out.println(sizeKnown);
+        int sizeOwn = inst.getOwnedSiteSize();
+        System.out.println(sizeOwn);
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(send_cid)){
@@ -125,9 +125,9 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             }
         }
 
-        for(int j=0; j<sizeKnown; j++){
-            if (knownMap.get(j).getCid().equals(recieve_cid)){
-                sendSite = knownMap.get(j);
+        for(int j=0; j<sizeOwn; j++){
+            if (ownedMap.get(j).getCid().equals(recieve_cid)){
+                sendSite = ownedMap.get(j);
             }
         }
 

@@ -60,8 +60,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		Bundle extras = getIntent().getExtras();
 		if(extras != null)
 		{
-			double latitude = extras.getDouble("latitude");
-			double longitude = extras.getDouble("longitude");
+			//double latitude = extras.getDouble("latitude");
+			//double longitude = extras.getDouble("longitude");
 			boolean add = extras.getBoolean("add");
 
 		}

@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
+    String image;
 
     String uid;
     String postResponse;
@@ -54,7 +56,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     int ownedSitesSize;
 
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String bitmap) {
 
         this.context = context;
         this.relat = relationship;
@@ -73,6 +75,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature8 = feature8;
         this.feature9 = feature9;
         this.feature10 = feature10;
+        this.image = bitmap;
     }
 
     /**
@@ -101,10 +104,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10);
+            String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
             System.out.println("json: "+json);
-            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
-            System.out.println("post response: "+postResponse);
+            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
+            System.out.println("create site post response: "+postResponse);
 
             try {
 
@@ -139,13 +142,13 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
 
-                    knownSite inst = new knownSite();
-                    ownedSites = inst.getOwnedSitesMap();
-                    ownedSitesSize = inst.getOwnedSiteSize();
+                    //knownSite inst = new knownSite();
+                    //ownedSites = inst.getOwnedSitesMap();
+                    //ownedSitesSize = inst.getOwnedSiteSize();
 
-                    ownedSites.put(ownedSitesSize, newSite);
+                    //ownedSites.put(ownedSitesSize, newSite);
 
-                    inst.setOwnedSitesMap(ownedSites);
+                    //inst.setOwnedSitesMap(ownedSites);
                 }
 
             } catch (JSONException e){
@@ -164,7 +167,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+        //pDialog.dismiss();
         try {
             JSONObject resp = new JSONObject(postResponse);
 
@@ -196,7 +199,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10) {
+    private String addSite(String uid, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         return "{\"tag\":\"" + "addSite" + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"relat\":\"" + relat + "\","
@@ -214,7 +217,8 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"feature7\":\"" + feature7 + "\","
                 + "\"feature8\":\"" + feature8 + "\","
                 + "\"feature9\":\"" + feature9 + "\","
-                + "\"feature10\":\"" + feature10 + "\"}";
+                + "\"feature10\":\"" + feature10 + "\","
+                + "\"image\":\"" + image + "\"}";
     }
 
 }

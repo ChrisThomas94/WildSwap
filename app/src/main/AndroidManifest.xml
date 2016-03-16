@@ -61,7 +61,8 @@
         <activity
             android:name=".AddSite"
             android:label="New Site"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity
             android:name=".TradeActivity"
@@ -112,5 +113,9 @@
 
     <!-- Allows the Google Maps API to use the Global Positioning System (GPS) to determine the device's location to within a very small area. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>
