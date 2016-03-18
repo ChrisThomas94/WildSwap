@@ -1,7 +1,6 @@
 package scot.wildcamping.wildscotland;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -57,7 +56,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     private static final int DEFAULT_ZOOM_LEVEL = 4;
 
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
-    LatLng newSite = null;
+    LatLng bunSite;
     boolean add = false;
     double newLat;
     double newLon;
@@ -106,11 +105,15 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
         {
-            //newLat = extras.getDouble("latitude");
-            //newLon = extras.getDouble("longitude");
+            newLat = extras.getDouble("latitude");
+            newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
 
-            //newSite = new LatLng(newLat, newLon);
+            System.out.println(newLat);
+            System.out.println(newLon);
+            System.out.println(add);
+
+            bunSite = new LatLng(newLat, newLon);
         }
 
         // inflate and return the layout
@@ -130,6 +133,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         googleMap = mMapView.getMap();
 
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
@@ -137,10 +142,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // Show rationale and request permission.
         }
 
-       // if(add){
-            //knownSites.add(newSite);
-            //addMarker(newSite);
-        //}
+        if(add){
+            addMarker(bunSite);
+        }
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
@@ -159,19 +163,12 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                     .newCameraPosition(cameraPosition));
 
         }else{//center map on newly created site
-            /*if(knownSiteSize == 0){
-                newlyAdded = ownedSitesMap.get(ownedSiteSize);
-            } else {
-                newlyAdded = ownedSitesMap.get(ownedSiteSize - 1);
-            }
-
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(newlyAdded.getPosition()).zoom(10).build();
+                    .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));*/
+                    .newCameraPosition(cameraPosition));
         }
 
-        // Perform any camera updates here
         return v;
     }
 
@@ -355,13 +352,16 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         coll.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
+
 
                 if(knownSiteSize > 0) {
                     for (int i = 0; i < knownSiteSize; i++) {
                         Site currentSite = knownSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
+                            Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
+                            intent.putExtra("latitude", currentSite.getPosition().latitude);
+                            intent.putExtra("longitude", currentSite.getPosition().longitude);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("title", currentSite.getTitle());
                             intent.putExtra("description", currentSite.getDescription());
@@ -389,6 +389,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
+                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("title", currentSite.getTitle());
                             intent.putExtra("description", currentSite.getDescription());

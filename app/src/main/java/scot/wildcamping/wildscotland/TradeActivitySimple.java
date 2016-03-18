@@ -2,8 +2,10 @@ package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -64,6 +66,10 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_simple);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
 
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
@@ -314,6 +320,19 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
 }

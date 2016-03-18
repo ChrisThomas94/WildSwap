@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features2"
@@ -44,14 +44,14 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features4"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features5"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features6"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features7"
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features8"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features9"
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/features10"
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
@@ -200,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures2"
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures3"
@@ -216,14 +216,14 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures5"
@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures6"
@@ -239,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures7"
@@ -247,7 +247,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures8"
@@ -255,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures9"
@@ -263,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures10"
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_add_to_photos_black_48dp"
                     android:paddingRight="5dp"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 

@@ -2,8 +2,10 @@ package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -59,7 +61,11 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_viewer);
+        setContentView(R.layout.activity_trade_view_send);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -68,6 +74,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
             recieve_cid = extras.getString("recieve_cid");
         }
 
+        Button contact = (Button)findViewById(R.id.btnContact_User);
         Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
@@ -99,6 +106,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         configSites();
 
         cancel.setOnClickListener(this);
+        contact.setOnClickListener(this);
 
     }
 
@@ -245,6 +253,25 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                         MainActivity.class);
                 startActivity(intent);
                 finish();
+                break;
+            case R.id.btnContact_User:
+                intent = new Intent(getApplicationContext(), ActivityContactUser.class);
+                startActivity(intent);
+                //open email dialog
+                break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 }

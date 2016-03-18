@@ -1,7 +1,9 @@
 package scot.wildcamping.wildscotland;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -10,11 +12,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
+
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
 
 /**
- * Created by Chris on 17-Mar-16.
+ * Created by Chris on 26-Feb-16.
  */
-public class KnownSiteActivity extends AppCompatActivity implements View.OnClickListener {
+public class OwnedSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     Double latitude;
     Double longitude;
@@ -37,13 +44,14 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_known_site);
+        setContentView(R.layout.activity_owned_site);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        Button contact = (Button)findViewById(R.id.contactSiteAdmin);
+        Button back = (Button)findViewById(R.id.deactivateSite);
+        Button edit = (Button)findViewById(R.id.editSite);
         TextView title = (TextView)findViewById(R.id.siteViewTitle);
         TextView description = (TextView)findViewById(R.id.siteViewDescription);
         RatingBar rating = (RatingBar)findViewById(R.id.siteViewRating);
@@ -128,7 +136,9 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             System.out.println(feature10);
         }
 
-        contact.setOnClickListener(this);
+        back.setOnClickListener(this);
+        edit.setOnClickListener(this);
+
     }
 
     @Override
@@ -137,17 +147,23 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
         switch (v.getId())
         {
-            case R.id.contactSiteAdmin:
+            case R.id.deactivateSite:
+                boolean active = false;
+                intent = new Intent(getApplicationContext(),MainActivity.class);
 
+                //trigger php to deactivate site
+                new UpdateSite(this, active, cid, titleBun, descriptionBun, ratingBun, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10).execute();
+
+                startActivity(intent);
+                finish();
                 break;
 
-            case android.R.id.home:
-                this.finish();
+            case R.id.editSite:
                 intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
+                //bundle all current details into "add site"
                 startActivity(intent);
-
+                finish();
+                break;
         }
 
     }

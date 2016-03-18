@@ -36,6 +36,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private ActionBarDrawerToggle mDrawerToggle;
 	List<LatLng> knownSites = new ArrayList<LatLng>();
 
+	double latitude;
+	double longitude;
+	boolean add;
+
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -60,9 +64,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		Bundle extras = getIntent().getExtras();
 		if(extras != null)
 		{
-			//double latitude = extras.getDouble("latitude");
-			//double longitude = extras.getDouble("longitude");
-			boolean add = extras.getBoolean("add");
+			latitude = extras.getDouble("latitude");
+			longitude = extras.getDouble("longitude");
+			add = extras.getBoolean("add");
 
 		}
 

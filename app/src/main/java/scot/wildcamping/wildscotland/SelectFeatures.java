@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,6 +40,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     Boolean feature8 = false;
     Boolean feature9 = false;
     Boolean feature10 = false;
+    Boolean isSelected = false;
 
     Button confirmFeatures;
     Button cancelFeatures;
@@ -46,11 +49,16 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     double longitude;
     String title;
     String description;
+    float rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_features);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
 
         final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
         final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
@@ -83,6 +91,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             feature8 = extras.getBoolean("feature8");
             feature9 = extras.getBoolean("feature9");
             feature10 = extras.getBoolean("feature10");
+            rating = extras.getFloat("rating");
 
             if(feature1){
                 feature1box.setBackgroundColor(green);
@@ -289,6 +298,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
+                intent.putExtra("rating", rating);
                 startActivity(intent);
                 finish();
                 break;
@@ -310,11 +320,30 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 i.putExtra("feature8", feature8);
                 i.putExtra("feature9", feature9);
                 i.putExtra("feature10", feature10);
+                i.putExtra("rating", rating);
                 startActivity(i);
                 finish();
                 break;
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getApplicationContext(),AddSite.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("title", title);
+                intent.putExtra("description", description);
+                intent.putExtra("rating", rating);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
 }

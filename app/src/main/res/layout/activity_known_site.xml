@@ -5,153 +5,153 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-        <HorizontalScrollView
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/preview_feature1"
-                    android:contentDescription="feature1 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature2"
-                    android:contentDescription="feature2 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature3"
-                    android:contentDescription="feature3 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature4"
-                    android:contentDescription="feature4 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/grassy_terrain3"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature5"
-                    android:contentDescription="feature5 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/rocky_terrain"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature6"
-                    android:contentDescription="feature6 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/sandy_terrain"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature7"
-                    android:contentDescription="feature7 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature8"
-                    android:contentDescription="feature8 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature9"
-                    android:contentDescription="feature9 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/preview_feature10"
-                    android:contentDescription="feature10 thumbnail view"
-                    android:layout_width="58dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:paddingRight="5dp"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
-                    android:visibility="visible"/>
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/siteViewTitle"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:textStyle="bold"
-            android:padding="15dp"
-            android:textSize="30sp"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/siteViewGallery"
-                android:layout_width="150dp"
-                android:layout_height="150dp" />
+                android:id="@+id/preview_feature1"
+                android:contentDescription="feature1 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
 
-            <TextView
-                android:id="@+id/siteViewDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:layout_toRightOf="@+id/siteViewGallery"
-                android:textSize="15sp"/>
+            <ImageView
+                android:id="@+id/preview_feature2"
+                android:contentDescription="feature2 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
 
-        </RelativeLayout>
-        <RatingBar
-            android:id="@+id/siteViewRating"
+            <ImageView
+                android:id="@+id/preview_feature3"
+                android:contentDescription="feature3 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature4"
+                android:contentDescription="feature4 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/grassy_terrain3"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature5"
+                android:contentDescription="feature5 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/rocky_terrain"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature6"
+                android:contentDescription="feature6 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/sandy_terrain"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature7"
+                android:contentDescription="feature7 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature8"
+                android:contentDescription="feature8 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature9"
+                android:contentDescription="feature9 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/preview_feature10"
+                android:contentDescription="feature10 thumbnail view"
+                android:layout_width="58dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/siteViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textStyle="bold"
+        android:padding="15dp"
+        android:textSize="30sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/siteViewGallery"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+
+        <TextView
+            android:id="@+id/siteViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:isIndicator="true"
-            android:layout_gravity="center"/>
+            android:text="Description"
+            android:layout_toRightOf="@+id/siteViewGallery"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
+    <RatingBar
+        android:id="@+id/siteViewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:isIndicator="true"
+        android:layout_gravity="center"/>
 
 
     <LinearLayout
@@ -161,12 +161,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
-    <View
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="#90909090"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"/>
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="#90909090"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -174,19 +174,12 @@
             android:layout_gravity="end">
 
             <Button
-                android:id="@+id/editSite"
+                android:id="@+id/contactSiteAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UPDATE"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_toRightOf="@+id/deactivateSite"/>
-
-            <Button
-                android:id="@+id/deactivateSite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="delete"
+                android:text="Contact Site Admin"
                 style="?android:attr/borderlessButtonStyle"/>
+
 
         </RelativeLayout>
 

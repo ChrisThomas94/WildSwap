@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/counter_text_color"
+    android:minWidth="300dp">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/gps"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginBottom="150dp"
-            android:background="@android:color/darker_gray">
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/list_item_title"
+            android:text="GPS"/>
+        <Button
+            android:id="@+id/manual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/list_item_title"
+            android:text="Manual"/>
+        <Button
+            android:id="@+id/longlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/list_item_title"
+            android:text="Longitude and Latitude"/>
 
-            <Button
-                android:id="@+id/gps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/background_light"
-                android:text="GPS"/>
-            <Button
-                android:id="@+id/manual"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/background_light"
-                android:text="Manual"/>
-            <Button
-                android:id="@+id/longlat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@android:color/background_light"
-                android:text="Longitude and Latitude"/>
+        <Button
+            android:id="@+id/cancelNewSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_gravity="right"/>
 
-            <Button
-                android:id="@+id/cancelNewSite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_gravity="right"/>
-
-        </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

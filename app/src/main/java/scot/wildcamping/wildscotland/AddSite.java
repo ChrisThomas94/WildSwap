@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,6 +83,14 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
+
+
+        final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+        final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
+
         //initializing views
         Lat =(EditText)findViewById(R.id.Lat);
         Lon = (EditText)findViewById(R.id.Long);
@@ -92,7 +103,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         cancelCreation = (Button)findViewById(R.id.cancelCreation);
         image1 = (ImageView)findViewById(R.id.image1);
 
-        title.setSelection(0);
+        //title.setSelection(0);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -117,12 +128,21 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             feature9 = extras.getBoolean("feature9");
             feature10 = extras.getBoolean("feature10");
 
+            if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
+                addFeature.setBackgroundColor(green);
+            } else {
+                addFeature.setBackgroundColor(gray);
+            }
+
             String titlePassed = extras.getString("title");
             String descPassed = extras.getString("description");
 
             title.setText(titlePassed);
             description.setText(descPassed);
 
+            float ratingFloat = extras.getFloat("rating");
+
+            rating.setRating(ratingFloat);
         }
 
         //setting onclick listeners
@@ -145,6 +165,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 break;
 
             case R.id.addFeature:
+
+                ratingReq = Float.toString(rating.getRating());
+
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
@@ -160,6 +183,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature8", feature8);
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
+                intent.putExtra("rating", rating.getRating());
                 startActivity(intent);
                 break;
 
@@ -172,14 +196,13 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 ratingReq = Float.toString(rating.getRating());
 
                 if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
-                    String str_result = null;
 
                     new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, getStringImage(bitmap)).execute();
 
                     intent = new Intent(getApplicationContext(),
                             MainActivity.class);
-                    //intent.putExtra("latitude", latitude);
-                    //intent.putExtra("longitude", longitude);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
                     intent.putExtra("add", true);
                     startActivity(intent);
                     finish();
@@ -197,6 +220,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                 intent = new Intent(getApplicationContext(),
                         MainActivity.class);
+                intent.putExtra("add", false);
                 startActivity(intent);
                 finish();
                 break;
@@ -231,6 +255,19 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getApplicationContext(),AddSite.class);
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
 }

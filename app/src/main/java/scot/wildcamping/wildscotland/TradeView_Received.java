@@ -2,8 +2,11 @@ package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -59,10 +62,19 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     ImageView sendFeatures10;
     RatingBar sendRating;
 
+    Boolean siteAlreadyOwned;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_view_received);
+        View parentLayout = findViewById(R.id.recieveTitle);
+
+        siteAlreadyOwned = false;
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -103,6 +115,10 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
         configSites();
 
+        if(siteAlreadyOwned){
+            Snackbar.make(parentLayout, "You already own the site being offered!", Snackbar.LENGTH_LONG).show();
+        }
+
         reject.setOnClickListener(this);
         contactUser.setOnClickListener(this);
         accept.setOnClickListener(this);
@@ -122,12 +138,24 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(send_cid)){
                 recieveSite = unknownMap.get(i);
+            } else {
+                //error
             }
         }
 
         for(int j=0; j<sizeOwn; j++){
             if (ownedMap.get(j).getCid().equals(recieve_cid)){
                 sendSite = ownedMap.get(j);
+            }
+        }
+
+        if(recieveSite == null){
+            System.out.println("recieveSite == null");
+            for(int j=0; j<sizeOwn; j++){
+                if (ownedMap.get(j).getCid().equals(send_cid)){
+                    recieveSite = ownedMap.get(j);
+                    siteAlreadyOwned=true;
+                }
             }
         }
 
@@ -260,7 +288,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.btnContact_User:
-
+                intent = new Intent(getApplicationContext(), ActivityContactUser.class);
+                startActivity(intent);
                 //open email dialog
                 break;
 
@@ -277,6 +306,20 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+
+                startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
 }

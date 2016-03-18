@@ -89,12 +89,21 @@
         </activity>
 
         <activity
+            android:name=".OwnedSiteActivity"
+            android:label="Owned Site"
+            android:theme="@style/AppTheme"/>
+
+        <activity
             android:name=".KnownSiteActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
 
         <activity android:name=".SelectFeatures"
             android:label="Select Features"
+            android:theme= "@style/AppTheme"/>
+
+        <activity android:name=".ActivityContactUser"
+            android:label="Contact User"
             android:theme= "@style/AppTheme"/>
 
     </application>
