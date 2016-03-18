@@ -1,8 +1,7 @@
-package scot.wildcamping.wildscotland;
+package scot.wildcamping.wildscotland.slidingmenu.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +12,18 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import scot.wildcamping.wildscotland.slidingmenu.model.NavDrawerItem;
+import scot.wildcamping.wildscotland.R;
+import scot.wildcamping.wildscotland.Site;
 
 /**
  * Created by Chris on 18-Mar-16.
  */
-public class KnownSiteListAdapter extends BaseAdapter {
+public class SiteListAdapter extends BaseAdapter {
 
     private Context context;
     private SparseArray<Site> knownSites;
 
-    public KnownSiteListAdapter(Context context, SparseArray<Site> knownSites){
+    public SiteListAdapter(Context context, SparseArray<Site> knownSites){
         this.context = context;
         this.knownSites = knownSites;
     }
@@ -50,7 +48,7 @@ public class KnownSiteListAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.list_known_sites, null);
+            convertView = mInflater.inflate(R.layout.known_sites_list, null);
         }
 
         RelativeLayout site = (RelativeLayout) convertView.findViewById(R.id.site);

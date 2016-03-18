@@ -5,4 +5,5 @@
     android:padding="15dp"
     android:dividerHeight="15dp"
     android:divider="#00000000"
-    android:clickable="true"/>
+    android:clickable="true"
+    android:focusable="true"/>

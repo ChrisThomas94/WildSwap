@@ -314,12 +314,14 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             case android.R.id.home:
 
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-
+                intent.putExtra("fragment", 3);
                 startActivity(intent);
                 finish();
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
+
+
 
 }

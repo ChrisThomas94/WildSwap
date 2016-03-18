@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
+    android:focusable="false"
+    android:descendantFocusability="blocksDescendants"
     android:background="@color/colorPrimary">
 
 
@@ -143,10 +145,9 @@
         android:id="@+id/ratingThumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:isIndicator="true"
         android:layout_toRightOf="@id/siteThumbnail"
-        android:layout_below="@+id/features"/>
+        android:layout_below="@+id/features"
+        android:progressTint="@color/counter_text_color"/>
 
 </RelativeLayout>
 

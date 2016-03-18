@@ -39,7 +39,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	double latitude;
 	double longitude;
 	boolean add;
-
+	int fragment = 0;
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -67,6 +67,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			latitude = extras.getDouble("latitude");
 			longitude = extras.getDouble("longitude");
 			add = extras.getBoolean("add");
+			fragment = extras.getInt("fragment");
 
 		}
 
@@ -132,7 +133,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		if (savedInstanceState == null) {
+		if (fragment > 0) {
+			displayView(fragment);
+		} else {
 			// on first time display view for first nav item
 			displayView(0);
 		}
