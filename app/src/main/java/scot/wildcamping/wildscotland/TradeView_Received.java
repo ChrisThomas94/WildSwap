@@ -281,7 +281,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
 
-                 intent = new Intent(getApplicationContext(),
+                intent = new Intent(getApplicationContext(),
                         MainActivity.class);
                 startActivity(intent);
                 finish();

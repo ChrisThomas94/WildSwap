@@ -194,7 +194,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		MapsFragment mapsFragment = null;
-		Activity mapsActivity = null;
 		switch (position) {
 		case 0:
 			mapsFragment = new MapsFragment();
