@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -41,6 +42,8 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     Boolean feature9 = false;
     Boolean feature10 = false;
     Boolean isSelected = false;
+    String image;
+    Boolean update;
 
     Button confirmFeatures;
     Button cancelFeatures;
@@ -49,7 +52,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     double longitude;
     String title;
     String description;
-    float rating;
+    double rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +80,12 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+            update = extras.getBoolean("update");
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
             title = extras.getString("title");
             description = extras.getString("description");
+            image = extras.getString("image");
             feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
             feature3 = extras.getBoolean("feature3");
@@ -91,7 +96,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             feature8 = extras.getBoolean("feature8");
             feature9 = extras.getBoolean("feature9");
             feature10 = extras.getBoolean("feature10");
-            rating = extras.getFloat("rating");
+            rating = extras.getDouble("rating");
 
             if(feature1){
                 feature1box.setBackgroundColor(green);
@@ -292,10 +297,19 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.cancelFeatures:
-                Intent intent = new Intent(getApplicationContext(), AddSite.class);
+
+                Intent intent;
+
+                if(update){
+                    intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), AddSite.class);
+                }
+
                 //bundle all data back EXCEPT for feature data
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
+                intent.putExtra("image", image);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
                 intent.putExtra("rating", rating);
@@ -304,10 +318,19 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.confirmFeatures:
-                Intent i = new Intent(getApplicationContext(), AddSite.class);
+
+                Intent i;
+
+                if(update){
+                    i = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                } else {
+                    i = new Intent(getApplicationContext(), AddSite.class);
+                }
+
                 //bundle additional data
                 i.putExtra("latitude", latitude);
                 i.putExtra("longitude", longitude);
+                i.putExtra("image", image);
                 i.putExtra("title", title);
                 i.putExtra("description", description);
                 i.putExtra("feature1", feature1);
@@ -333,9 +356,15 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),AddSite.class);
+                Intent intent;
+                if(update){
+                    intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), AddSite.class);
+                }
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
+                intent.putExtra("image", image);
                 intent.putExtra("title", title);
                 intent.putExtra("description", description);
                 intent.putExtra("rating", rating);

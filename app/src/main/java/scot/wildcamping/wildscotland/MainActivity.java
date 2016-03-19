@@ -11,8 +11,11 @@ import java.util.List;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -130,6 +134,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		/*if(isNetworkAvailable()){
+			new FetchKnownSites(this).execute();
+			new FetchUnknownSites(this).execute();
+			new FetchTradeRequests(this).execute();
+		}*/
+
 		if (fragment > 0) {
 			displayView(fragment);
 		} else {
@@ -137,9 +147,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			displayView(0);
 		}
 
-		new FetchKnownSites(this).execute();
-		new FetchUnknownSites(this).execute();
-		new FetchTradeRequests(this).execute();
 	}
 
 	/**
@@ -169,7 +176,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		}
 		// Handle action bar actions click
 		switch (item.getItemId()) {
-		case R.id.action_settings:
+		case R.id.action_refresh:
+			new FetchKnownSites(this).execute();
+			new FetchUnknownSites(this).execute();
+			new FetchTradeRequests(this).execute();
+			displayView(0);
+
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -183,7 +195,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_refresh).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -275,6 +287,13 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		transaction.add(R.id.mapView, fragment);
 		transaction.commit();
 
+	}
+
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager
+				= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 }

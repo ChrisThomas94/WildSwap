@@ -20,10 +20,8 @@ public class YourSitesFragment extends Fragment {
 
     knownSite inst;
     SparseArray<Site> ownedSites;
-    int ownedSize;
     private SiteListAdapter adapter;
     private ListView mDrawerList;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,31 +34,23 @@ public class YourSitesFragment extends Fragment {
         inst = new knownSite();
         ownedSites = new SparseArray<>();
         ownedSites = inst.getOwnedSitesMap();
-        ownedSize = inst.getOwnedSiteSize();
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getActivity(), OwnedSiteActivity.class);
+                intent.putExtra("arrayPosition", position);
                 intent.putExtra("latitude", ownedSites.get(position).getPosition().latitude);
                 intent.putExtra("longitude", ownedSites.get(position).getPosition().longitude);
                 intent.putExtra("cid", ownedSites.get(position).getCid());
                 intent.putExtra("title", ownedSites.get(position).getTitle());
                 intent.putExtra("description", ownedSites.get(position).getDescription());
                 intent.putExtra("rating", ownedSites.get(position).getRating());
-                intent.putExtra("feature1", ownedSites.get(position).getFeature1());
-                intent.putExtra("feature2", ownedSites.get(position).getFeature2());
-                intent.putExtra("feature3", ownedSites.get(position).getFeature3());
-                intent.putExtra("feature4", ownedSites.get(position).getFeature4());
-                intent.putExtra("feature5", ownedSites.get(position).getFeature5());
-                intent.putExtra("feature6", ownedSites.get(position).getFeature6());
-                intent.putExtra("feature7", ownedSites.get(position).getFeature7());
-                intent.putExtra("feature8", ownedSites.get(position).getFeature8());
-                intent.putExtra("feature9", ownedSites.get(position).getFeature9());
-                intent.putExtra("feature10", ownedSites.get(position).getFeature10());
                 intent.putExtra("image", ownedSites.get(position).getImage());
-                startActivity(intent);            }
+                intent.putExtra("prevState", 1);
+                startActivity(intent);
+            }
         });
 
         adapter = new SiteListAdapter(getActivity(), ownedSites);

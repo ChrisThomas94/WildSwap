@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class AddSite extends AppCompatActivity implements View.OnClickListener {
+public class UpdateSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText Lat;
     EditText Lon;
@@ -43,8 +43,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     ImageButton addImage;
     ImageButton addFeature;
     ImageView image1;
-    ImageView image2;
-    ImageView image3;
     RatingBar ratingBar;
     Button confirmCreation;
     Button cancelCreation;
@@ -62,11 +60,11 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     Uri targetUri;
     String image;
     String imageMultiLine;
+    String cid;
 
     String titlePassed;
     String descPassed;
 
-    int relat = 90;
     Boolean feature1;
     Boolean feature2;
     Boolean feature3;
@@ -77,7 +75,19 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
-    Boolean update;
+
+    String feature1String;
+    String feature2String;
+    String feature3String;
+    String feature4String;
+    String feature5String;
+    String feature6String;
+    String feature7String;
+    String feature8String;
+    String feature9String;
+    String feature10String;
+
+    Boolean update = true;
     Boolean lonLat;
 
     private Bitmap bitmap;
@@ -85,7 +95,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_site);
+        setContentView(R.layout.activity_update_site);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -106,14 +116,18 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         cancelCreation = (Button)findViewById(R.id.cancelCreation);
         image1 = (ImageView)findViewById(R.id.image1);
-        image2 = (ImageView)findViewById(R.id.image2);
-        image3 = (ImageView)findViewById(R.id.image3);
 
         //title.setSelection(0);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+
+            lonLat = extras.getBoolean("lonLat");
+            if(lonLat){
+                //make text editable
+            }
+
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
 
@@ -123,16 +137,30 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             Lat.setText(lat);
             Lon.setText(lon);
 
-            feature1 = extras.getBoolean("feature1");
-            feature2 = extras.getBoolean("feature2");
-            feature3 = extras.getBoolean("feature3");
-            feature4 = extras.getBoolean("feature4");
-            feature5 = extras.getBoolean("feature5");
-            feature6 = extras.getBoolean("feature6");
-            feature7 = extras.getBoolean("feature7");
-            feature8 = extras.getBoolean("feature8");
-            feature9 = extras.getBoolean("feature9");
-            feature10 = extras.getBoolean("feature10");
+            image = extras.getString("image");
+            image1.setImageBitmap(StringToBitMap(image));
+
+            feature1String = extras.getString("feature1");
+            feature2String = extras.getString("feature2");
+            feature3String = extras.getString("feature3");
+            feature4String = extras.getString("feature4");
+            feature5String = extras.getString("feature5");
+            feature6String = extras.getString("feature6");
+            feature7String = extras.getString("feature7");
+            feature8String = extras.getString("feature8");
+            feature9String = extras.getString("feature9");
+            feature10String = extras.getString("feature10");
+
+            feature1 = extras.getBoolean("feature1Bool");
+            feature2 = extras.getBoolean("feature2Bool");
+            feature3 = extras.getBoolean("feature3Bool");
+            feature4 = extras.getBoolean("feature4Bool");
+            feature5 = extras.getBoolean("feature5Bool");
+            feature6 = extras.getBoolean("feature6Bool");
+            feature7 = extras.getBoolean("feature7Bool");
+            feature8 = extras.getBoolean("feature8Bool");
+            feature9 = extras.getBoolean("feature9Bool");
+            feature10 = extras.getBoolean("feature10Bool");
 
             if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
                 addFeature.setBackgroundColor(green);
@@ -175,6 +203,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             case R.id.addFeature:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                intent.putExtra("update", update);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("title", title.getText().toString());
@@ -202,12 +231,12 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 descReq = description.getText().toString();
                 ratingReq = Float.toString(ratingBar.getRating());
 
+                //feature bools to string here for updated values
+
                 if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                    String imageSingleLine = image.replaceAll("[\r\n]+", "");
-
-                    new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
-
+                    boolean active = true;
+                    new UpdateSite(this, active, cid, titlePassed, descPassed, rating, feature1String, feature2String, feature3String, feature4String, feature5String, feature6String, feature7String, feature8String, feature9String, feature10String).execute();
                     //new UploadImage(this, imageSingleLine, null).execute();
 
                     intent = new Intent(getApplicationContext(),
@@ -222,17 +251,31 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                     Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
                 }
 
-
                 break;
 
             case R.id.cancelCreation:
 
-                Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Site update canceled!", Toast.LENGTH_LONG).show();
 
-                intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
-                intent.putExtra("add", false);
+                intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("image", image);
+                //intent.putExtra("feature1", feature1String);
+                //intent.putExtra("feature2", feature2String);
+                //intent.putExtra("feature3", feature3String);
+                //intent.putExtra("feature4", feature4String);
+                //intent.putExtra("feature5", feature5String);
+                //intent.putExtra("feature6", feature6String);
+                //intent.putExtra("feature7", feature7String);
+                //intent.putExtra("feature8", feature8String);
+                //intent.putExtra("feature9", feature9String);
+                //intent.putExtra("feature10", feature10String);
+                intent.putExtra("title", titlePassed);
+                intent.putExtra("description", descPassed);
+                intent.putExtra("rating", rating);
                 startActivity(intent);
+
                 finish();
                 break;
         }
@@ -285,9 +328,26 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent;
+                intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("image", image);
+                intent.putExtra("feature1", feature1String);
+                intent.putExtra("feature2", feature2String);
+                intent.putExtra("feature3", feature3String);
+                intent.putExtra("feature4", feature4String);
+                intent.putExtra("feature5", feature5String);
+                intent.putExtra("feature6", feature6String);
+                intent.putExtra("feature7", feature7String);
+                intent.putExtra("feature8", feature8String);
+                intent.putExtra("feature9", feature9String);
+                intent.putExtra("feature10", feature10String);
+                intent.putExtra("title", titlePassed);
+                intent.putExtra("description", descPassed);
+                intent.putExtra("rating", rating);
                 startActivity(intent);
+
                 finish();
                 return true;
         }

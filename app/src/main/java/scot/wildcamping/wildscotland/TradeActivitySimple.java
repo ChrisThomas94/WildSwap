@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -279,7 +280,9 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         {
             //on clicking register button move to Register Activity
             case R.id.btnCancel_Trade:
-                 intent = new Intent(getApplicationContext(),
+
+                Toast.makeText(this, "Trade Canceled!", Toast.LENGTH_LONG).show();
+                intent = new Intent(getApplicationContext(),
                         MainActivity.class);
                 startActivity(intent);
                 finish();

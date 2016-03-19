@@ -1,7 +1,10 @@
 package scot.wildcamping.wildscotland;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -75,6 +78,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
 
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
+
+            if(isNetworkAvailable()){
+                new FetchKnownSites(this).execute();
+                new FetchUnknownSites(this).execute();
+                new FetchTradeRequests(this).execute();
+            }
+
             Intent intent = new Intent(Login.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -220,5 +230,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 }
                 break;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

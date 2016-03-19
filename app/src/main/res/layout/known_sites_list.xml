@@ -33,7 +33,7 @@
                 android:layout_height="150dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_photos"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/siteThumbnail2"
@@ -41,7 +41,7 @@
                 android:layout_height="150dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_photos"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/siteThumbnail3"
@@ -49,7 +49,7 @@
                 android:layout_height="150dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_photos"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
         </LinearLayout>
 
@@ -176,6 +176,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/features"
         android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:focusable="false"
         android:progressTint="@color/counter_text_color"/>
 
 </RelativeLayout>

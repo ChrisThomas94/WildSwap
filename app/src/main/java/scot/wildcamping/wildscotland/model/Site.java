@@ -1,5 +1,7 @@
 package scot.wildcamping.wildscotland.model;
 
+import android.util.SparseArray;
+
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -24,6 +26,12 @@ public class Site {
     private String feature9;
     private String feature10;
     private String image;
+    private String image2;
+    private String image3;
+    private String image4;
+    private String image5;
+
+    private SparseArray<Image> images;
 
     public void setCid(String cid){
         this.cid = cid;
@@ -159,5 +167,13 @@ public class Site {
 
     public String getImage(){
         return image;
+    }
+
+    public void setFetchedImages(SparseArray<Image> images){
+        this.images = images;
+    }
+
+    public SparseArray<Image> getFetchedImages(){
+        return images;
     }
 }

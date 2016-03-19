@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import java.io.ByteArrayOutputStream;
+
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
+
 /**
  * Created by Chris on 26-Feb-16.
  */
 public class OwnedSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
+    int arrayPos;
     Double latitude;
     Double longitude;
     String cid;
@@ -41,6 +48,8 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
     String feature10;
     String imageStr;
     Bitmap imageBit;
+    int prevState;
+    SparseArray<Site> owned = new SparseArray<>();
 
 
     @Override
@@ -72,23 +81,15 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+            arrayPos = extras.getInt("arrayPosition");
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
             cid = extras.getString("cid");
             titleBun = extras.getString("title");
             descriptionBun = extras.getString("description");
             ratingBun = extras.getDouble("rating");
-            feature1 = extras.getString("feature1");
-            feature2 = extras.getString("feature2");
-            feature3 = extras.getString("feature3");
-            feature4 = extras.getString("feature4");
-            feature5 = extras.getString("feature5");
-            feature6 = extras.getString("feature6");
-            feature7 = extras.getString("feature7");
-            feature8 = extras.getString("feature8");
-            feature9 = extras.getString("feature9");
-            feature10 = extras.getString("feature10");
             imageStr = extras.getString("image");
+            prevState = extras.getInt("prevState");
 
             title.setText(titleBun);
             description.setText(descriptionBun);
@@ -96,51 +97,53 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
 
             imageBit = StringToBitMap(imageStr);
             image.setImageBitmap(imageBit);
+        }
 
-            //1 = true
-            //0 = false
+        knownSite inst = new knownSite();
+        owned = inst.getOwnedSitesMap();
 
-            if(feature1.equals("0")){
-                feature1Image.setVisibility(View.GONE);
-            }
-            if(feature2.equals("0")){
-                feature2Image.setVisibility(View.GONE);
-            }
-            if(feature3.equals("0")){
-                feature3Image.setVisibility(View.GONE);
-            }
-            if(feature4.equals("0")){
-                feature4Image.setVisibility(View.GONE);
-            }
-            if(feature5.equals("0")){
-                feature5Image.setVisibility(View.GONE);
-            }
-            if(feature6.equals("0")){
-                feature6Image.setVisibility(View.GONE);
-            }
-            if(feature7.equals("0")){
-                feature7Image.setVisibility(View.GONE);
-            }
-            if(feature8.equals("0")){
-                feature8Image.setVisibility(View.GONE);
-            }
-            if(feature9.equals("0")){
-                feature9Image.setVisibility(View.GONE);
-            }
-            if(feature10.equals("0")){
-                feature10Image.setVisibility(View.GONE);
-            }
+        Site focused = owned.get(arrayPos);
 
-            System.out.println(feature1);
-            System.out.println(feature2);
-            System.out.println(feature3);
-            System.out.println(feature4);
-            System.out.println(feature5);
-            System.out.println(feature6);
-            System.out.println(feature7);
-            System.out.println(feature8);
-            System.out.println(feature9);
-            System.out.println(feature10);
+        feature1 = focused.getFeature1();
+        feature2 = focused.getFeature2();
+        feature3 = focused.getFeature3();
+        feature4 = focused.getFeature4();
+        feature5 = focused.getFeature5();
+        feature6 = focused.getFeature6();
+        feature7 = focused.getFeature7();
+        feature8 = focused.getFeature8();
+        feature9 = focused.getFeature9();
+        feature10 = focused.getFeature10();
+
+        if(feature1.equals("0")){
+            feature1Image.setVisibility(View.GONE);
+        }
+        if(feature2.equals("0")){
+            feature2Image.setVisibility(View.GONE);
+        }
+        if(feature3.equals("0")){
+            feature3Image.setVisibility(View.GONE);
+        }
+        if(feature4.equals("0")){
+            feature4Image.setVisibility(View.GONE);
+        }
+        if(feature5.equals("0")){
+            feature5Image.setVisibility(View.GONE);
+        }
+        if(feature6.equals("0")){
+            feature6Image.setVisibility(View.GONE);
+        }
+        if(feature7.equals("0")){
+            feature7Image.setVisibility(View.GONE);
+        }
+        if(feature8.equals("0")){
+            feature8Image.setVisibility(View.GONE);
+        }
+        if(feature9.equals("0")){
+            feature9Image.setVisibility(View.GONE);
+        }
+        if(feature10.equals("0")){
+            feature10Image.setVisibility(View.GONE);
         }
 
         back.setOnClickListener(this);
@@ -164,8 +167,24 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.editSite:
-                intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent = new Intent(getApplicationContext(),UpdateSiteActivity.class);
                 //bundle all current details into "add site"
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("image", imageStr);
+                intent.putExtra("feature1", feature1);
+                intent.putExtra("feature2", feature2);
+                intent.putExtra("feature3", feature3);
+                intent.putExtra("feature4", feature4);
+                intent.putExtra("feature5", feature5);
+                intent.putExtra("feature6", feature6);
+                intent.putExtra("feature7", feature7);
+                intent.putExtra("feature8", feature8);
+                intent.putExtra("feature9", feature9);
+                intent.putExtra("feature10", feature10);
+                intent.putExtra("title", titleBun);
+                intent.putExtra("description", descriptionBun);
+                intent.putExtra("rating", ratingBun);
                 startActivity(intent);
                 finish();
                 break;
@@ -190,7 +209,9 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             case android.R.id.home:
 
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("fragment", 1);
+                if(prevState == 1) {
+                    intent.putExtra("fragment", 1);
+                }
                 startActivity(intent);
                 finish();
                 return true;

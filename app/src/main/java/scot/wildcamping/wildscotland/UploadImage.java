@@ -29,15 +29,14 @@ public class UploadImage extends AsyncTask<String, String, String> {
     private ProgressDialog pDialog;
     private Context context;
     String image;
+    String cid;
     String postResponse;
 
-    public UploadImage(Context context, String imageMultiLine) {
+    public UploadImage(Context context, String imageSingleLine, String cid) {
 
         this.context = context;
-
-        String imageSingleLine = imageMultiLine.replaceAll("[\r\n]+", "");
-
         this.image = imageSingleLine;
+        this.cid = cid;
     }
 
     /**
@@ -60,7 +59,8 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(image);
+            String json = addSite(image, cid);
+            System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
         }catch (IOException e){
             e.printStackTrace();
@@ -104,9 +104,10 @@ public class UploadImage extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String image) {
+    private String addSite(String image, String cid) {
         return "{\"tag\":\"" + "uploadImage" + "\","
-                + "\"image\":\"" + image + "\"}";
+                + "\"image\":\"" + image + "\","
+                + "\"cid\":\"" + cid + "\"}";
     }
 
 }

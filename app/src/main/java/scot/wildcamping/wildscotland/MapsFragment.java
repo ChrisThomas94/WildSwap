@@ -316,7 +316,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     }
 
     private void setUpClustering() {
-        System.out.println("set up clustering");
         // Declare a variable for the cluster manager.
         ClusterManager<AppClusterItem> mClusterManager;
         mMarkerManager = new MarkerManager(googleMap);
@@ -363,6 +362,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
                             Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
+                            intent.putExtra("arrayPosition", i);
                             intent.putExtra("latitude", currentSite.getPosition().latitude);
                             intent.putExtra("longitude", currentSite.getPosition().longitude);
                             intent.putExtra("cid", currentSite.getCid());
@@ -379,7 +379,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             intent.putExtra("feature8", currentSite.getFeature8());
                             intent.putExtra("feature9", currentSite.getFeature9());
                             intent.putExtra("feature10", currentSite.getFeature10());
+                            intent.putExtra("image", currentSite.getImage());
+                            intent.putExtra("prevState", 0);
                             startActivity(intent);
+                            getActivity().finish();
                             break;
                         }
                     }
@@ -393,22 +396,18 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
                             Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            intent.putExtra("arrayPosition", i);
+                            intent.putExtra("cid", currentSite.getCid());
+                            intent.putExtra("latitude", currentSite.getPosition().latitude);
+                            intent.putExtra("longitude", currentSite.getPosition().longitude);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("title", currentSite.getTitle());
                             intent.putExtra("description", currentSite.getDescription());
                             intent.putExtra("rating", currentSite.getRating());
-                            intent.putExtra("feature1", currentSite.getFeature1());
-                            intent.putExtra("feature2", currentSite.getFeature2());
-                            intent.putExtra("feature3", currentSite.getFeature3());
-                            intent.putExtra("feature4", currentSite.getFeature4());
-                            intent.putExtra("feature5", currentSite.getFeature5());
-                            intent.putExtra("feature6", currentSite.getFeature6());
-                            intent.putExtra("feature7", currentSite.getFeature7());
-                            intent.putExtra("feature8", currentSite.getFeature8());
-                            intent.putExtra("feature9", currentSite.getFeature9());
-                            intent.putExtra("feature10", currentSite.getFeature10());
                             intent.putExtra("image", currentSite.getImage());
+                            intent.putExtra("prevState", 0);
                             startActivity(intent);
+                            getActivity().finish();
                             break;
                         }
                     }

@@ -19,6 +19,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 /**
  * Created by Chris on 16-Mar-16.
@@ -56,7 +57,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     SparseArray<Site> ownedSites = new SparseArray<>();
     int ownedSitesSize;
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String imageMultiLine) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
 
         this.context = context;
         this.relat = relationship;
@@ -75,8 +76,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature8 = feature8;
         this.feature9 = feature9;
         this.feature10 = feature10;
-        String imageSingleLine = imageMultiLine.replaceAll("[\r\n]+", "");
-        this.image = imageSingleLine;
+        this.image = image;
     }
 
     /**
@@ -106,9 +106,8 @@ public class CreateSite extends AsyncTask<String, String, String> {
         try {
             String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
             System.out.println("json: "+json);
-            System.out.println("image 64base: " + image);
             postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
-            System.out.println("create site post response: "+postResponse);
+            System.out.println("post response: "+postResponse);
 
             try {
 
@@ -144,11 +143,11 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature10(jsonSite.getString("feature10"));
                     newSite.setImage(jsonSite.getString("image"));
 
-                    //knownSite inst = new knownSite();
-                    //ownedSites = inst.getOwnedSitesMap();
-                    //ownedSitesSize = inst.getOwnedSiteSize();
-                    //ownedSites.put(ownedSitesSize, newSite);
-                    //inst.setOwnedSitesMap(ownedSites);
+                    knownSite inst = new knownSite();
+                    ownedSites = inst.getOwnedSitesMap();
+                    ownedSitesSize = inst.getOwnedSiteSize();
+                    ownedSites.put(ownedSitesSize, newSite);
+                    inst.setOwnedSitesMap(ownedSites);
                 }
 
             } catch (JSONException e){
@@ -188,14 +187,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
     private String doPostRequest(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
-        //RequestBody body = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("image", "filename", RequestBody.create(MediaType.parse("image/jpeg"), new File(target.getPath()))).build();
-
-        System.out.println("body: " + body.toString());
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
-        System.out.println("request: "+request);
         Response response = client.newCall(request).execute();
         return response.body().string();
     }

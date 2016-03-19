@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Latitude"
-                    android:inputType="numberDecimal"
+                    android:inputType="none"
                     android:singleLine="true"/>
 
 
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Longitude"
-                    android:inputType="numberDecimal"
+                    android:inputType="none"
                     android:singleLine="true"/>
 
 
@@ -63,22 +63,6 @@
 
             <ImageView
                 android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:layout_marginBottom="10dp"/>
-
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:layout_marginBottom="10dp"/>
-
-            <ImageView
-                android:id="@+id/image3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
@@ -134,7 +118,6 @@
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:stepSize="0.5"
-                android:rating="0.0"
                 android:layout_gravity="center"/>
 
         </LinearLayout>
