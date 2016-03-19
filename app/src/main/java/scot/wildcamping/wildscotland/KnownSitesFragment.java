@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import scot.wildcamping.wildscotland.slidingmenu.adapter.SiteListAdapter;
+import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 public class KnownSitesFragment extends Fragment{
 	

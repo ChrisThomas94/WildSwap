@@ -13,13 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.RequestBody;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +22,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{    //***
 
@@ -152,25 +153,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
             progressDialog.dismiss();
         }
 
-        private String doGetRequest(String url)throws IOException{
-            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
-                    .url(url)
-                    .build();
-
-            com.squareup.okhttp.Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
         private String doPostRequest(String url, String json) throws IOException {
             RequestBody body = RequestBody.create(JSON, json);
 
             System.out.println("body: " + body.toString());
-            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+            Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .build();
             System.out.println("request: "+request);
-            com.squareup.okhttp.Response response = client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
             return response.body().string();
         }
 

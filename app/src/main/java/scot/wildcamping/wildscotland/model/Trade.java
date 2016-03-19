@@ -1,6 +1,4 @@
-package scot.wildcamping.wildscotland;
-
-import android.util.SparseArray;
+package scot.wildcamping.wildscotland.model;
 
 /**
  * Created by Chris on 12-Mar-16.

@@ -35,11 +35,14 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
@@ -404,6 +407,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             intent.putExtra("feature8", currentSite.getFeature8());
                             intent.putExtra("feature9", currentSite.getFeature9());
                             intent.putExtra("feature10", currentSite.getFeature10());
+                            intent.putExtra("image", currentSite.getImage());
                             startActivity(intent);
                             break;
                         }

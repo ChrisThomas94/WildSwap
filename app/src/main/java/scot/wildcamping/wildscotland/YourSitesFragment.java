@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import scot.wildcamping.wildscotland.slidingmenu.adapter.SiteListAdapter;
+import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 public class YourSitesFragment extends Fragment {
 	
@@ -57,6 +59,7 @@ public class YourSitesFragment extends Fragment {
                 intent.putExtra("feature8", ownedSites.get(position).getFeature8());
                 intent.putExtra("feature9", ownedSites.get(position).getFeature9());
                 intent.putExtra("feature10", ownedSites.get(position).getFeature10());
+                intent.putExtra("image", ownedSites.get(position).getImage());
                 startActivity(intent);            }
         });
 

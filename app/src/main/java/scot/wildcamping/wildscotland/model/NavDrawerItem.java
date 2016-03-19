@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland.slidingmenu.model;
+package scot.wildcamping.wildscotland.model;
 
 public class NavDrawerItem {
 	

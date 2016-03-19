@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland;
+package scot.wildcamping.wildscotland.model;
 
 import android.util.SparseArray;
 

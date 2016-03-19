@@ -1,7 +1,10 @@
-package scot.wildcamping.wildscotland.slidingmenu.adapter;
+package scot.wildcamping.wildscotland.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.R;
-import scot.wildcamping.wildscotland.Site;
+import scot.wildcamping.wildscotland.model.Site;
 
 /**
  * Created by Chris on 18-Mar-16.
@@ -52,7 +55,7 @@ public class SiteListAdapter extends BaseAdapter {
         }
 
         RelativeLayout site = (RelativeLayout) convertView.findViewById(R.id.site);
-        ImageView siteThumbnail = (ImageView) convertView.findViewById(R.id.siteThumbnail);
+        ImageView siteThumbnail = (ImageView) convertView.findViewById(R.id.siteThumbnail1);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         ImageView feature1 = (ImageView) convertView.findViewById(R.id.preview_feature1);
         ImageView feature2 = (ImageView) convertView.findViewById(R.id.preview_feature2);
@@ -68,6 +71,10 @@ public class SiteListAdapter extends BaseAdapter {
 
         //siteThumbnail.setImageResource(knownSites.get(position).getImage());
         title.setText(knownSites.get(position).getTitle());
+
+        Bitmap image = StringToBitMap(knownSites.get(position).getImage());
+
+        siteThumbnail.setImageBitmap(image);
 
         if(knownSites.get(position).getFeature1().equals("0")){
             feature1.setVisibility(View.GONE);
@@ -123,5 +130,16 @@ public class SiteListAdapter extends BaseAdapter {
         rating.setRating(knownSites.get(position).getRating().floatValue());
 
         return convertView;
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

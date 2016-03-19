@@ -2,23 +2,23 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import scot.wildcamping.wildscotland.model.Site;
 
 /**
  * Created by Chris on 16-Mar-16.
@@ -49,14 +49,14 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Boolean feature9;
     Boolean feature10;
     String image;
+    String tag = "addSite";
 
     String uid;
     String postResponse;
     SparseArray<Site> ownedSites = new SparseArray<>();
     int ownedSitesSize;
 
-
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String bitmap) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String imageMultiLine) {
 
         this.context = context;
         this.relat = relationship;
@@ -75,7 +75,8 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature8 = feature8;
         this.feature9 = feature9;
         this.feature10 = feature10;
-        this.image = bitmap;
+        String imageSingleLine = imageMultiLine.replaceAll("[\r\n]+", "");
+        this.image = imageSingleLine;
     }
 
     /**
@@ -91,7 +92,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
         pDialog.show();
 
         uid = AppController.getString(context, "uid");
-
     }
 
     /**
@@ -106,6 +106,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         try {
             String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
             System.out.println("json: "+json);
+            System.out.println("image 64base: " + image);
             postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
             System.out.println("create site post response: "+postResponse);
 
@@ -141,13 +142,12 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature8(jsonSite.getString("feature8"));
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
+                    newSite.setImage(jsonSite.getString("image"));
 
                     //knownSite inst = new knownSite();
                     //ownedSites = inst.getOwnedSitesMap();
                     //ownedSitesSize = inst.getOwnedSiteSize();
-
                     //ownedSites.put(ownedSitesSize, newSite);
-
                     //inst.setOwnedSitesMap(ownedSites);
                 }
 
@@ -188,6 +188,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
     private String doPostRequest(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
+        //RequestBody body = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("image", "filename", RequestBody.create(MediaType.parse("image/jpeg"), new File(target.getPath()))).build();
 
         System.out.println("body: " + body.toString());
         Request request = new Request.Builder()
@@ -200,7 +201,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     }
 
     private String addSite(String uid, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
-        return "{\"tag\":\"" + "addSite" + "\","
+        return "{\"tag\":\"" + tag + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"relat\":\"" + relat + "\","
                 + "\"lat\":\"" + lat + "\","

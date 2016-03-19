@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland;
+package scot.wildcamping.wildscotland.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -23,7 +23,7 @@ public class Site {
     private String feature8;
     private String feature9;
     private String feature10;
-
+    private String image;
 
     public void setCid(String cid){
         this.cid = cid;
@@ -153,4 +153,11 @@ public class Site {
         return feature10;
     }
 
+    public void setImage(String image){
+        this.image = image;
+    }
+
+    public String getImage(){
+        return image;
+    }
 }

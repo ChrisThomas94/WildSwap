@@ -5,17 +5,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.SparseArray;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import scot.wildcamping.wildscotland.model.StoredTrades;
+import scot.wildcamping.wildscotland.model.Trade;
 
 /**
  * Created by Chris on 12-Mar-16.

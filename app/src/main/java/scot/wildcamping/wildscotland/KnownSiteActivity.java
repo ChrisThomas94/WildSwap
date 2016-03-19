@@ -138,16 +138,9 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId())
         {
             case R.id.contactSiteAdmin:
-
+                Intent i = new Intent(getApplicationContext(), ActivityContactUser.class);
+                startActivity(i);
                 break;
-
-            case android.R.id.home:
-                this.finish();
-                intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                startActivity(intent);
-
         }
 
     }
@@ -158,8 +151,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             case android.R.id.home:
 
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
+                intent.putExtra("fragment", 2);
                 startActivity(intent);
                 finish();
                 return true;

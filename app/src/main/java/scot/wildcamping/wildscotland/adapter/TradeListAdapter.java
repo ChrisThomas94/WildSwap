@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland.slidingmenu.adapter;
+package scot.wildcamping.wildscotland.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,14 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.R;
-import scot.wildcamping.wildscotland.Site;
-import scot.wildcamping.wildscotland.Trade;
+import scot.wildcamping.wildscotland.model.Trade;
 
 /**
  * Created by Chris on 18-Mar-16.

@@ -7,11 +7,6 @@ import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +16,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.StoredTrades;
+import scot.wildcamping.wildscotland.model.Trade;
 
 /**
  * Created by Chris on 12-Mar-16.

@@ -1,19 +1,16 @@
 package scot.wildcamping.wildscotland;
 
-import scot.wildcamping.wildscotland.slidingmenu.adapter.NavDrawerListAdapter;
-import scot.wildcamping.wildscotland.slidingmenu.model.NavDrawerItem;
+import scot.wildcamping.wildscotland.adapter.NavDrawerListAdapter;
+import scot.wildcamping.wildscotland.model.NavDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 //import android.support.v4.app.Fragment;
 //import android.app.Activity;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;

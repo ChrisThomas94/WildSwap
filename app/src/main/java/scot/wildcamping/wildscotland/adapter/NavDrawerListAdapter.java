@@ -1,7 +1,7 @@
-package scot.wildcamping.wildscotland.slidingmenu.adapter;
+package scot.wildcamping.wildscotland.adapter;
 
 import scot.wildcamping.wildscotland.R;
-import scot.wildcamping.wildscotland.slidingmenu.model.NavDrawerItem;
+import scot.wildcamping.wildscotland.model.NavDrawerItem;
 
 import java.util.ArrayList;
 

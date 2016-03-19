@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
+
 
 public class TradeView_Sent extends AppCompatActivity implements View.OnClickListener {
 
@@ -268,6 +271,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
             case android.R.id.home:
 
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("fragment", 3);
                 startActivity(intent);
                 finish();
                 return true;

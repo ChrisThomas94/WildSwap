@@ -1,6 +1,5 @@
-package scot.wildcamping.wildscotland;
+package scot.wildcamping.wildscotland.model;
 
-import android.support.v4.app.TaskStackBuilder;
 import android.util.SparseArray;
 
 /**

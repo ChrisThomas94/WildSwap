@@ -24,12 +24,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,9 +54,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String descReq;
     String ratingReq;
     String url = Appconfig.URL_ADDSITE;
-    Response response;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
+    Uri targetUri;
 
     int relat = 90;
     Boolean feature1;
@@ -197,7 +191,12 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                 if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                    new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, getStringImage(bitmap)).execute();
+                    String image = getStringImage(bitmap);
+                    System.out.println("image start: " + image);
+
+                    new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image).execute();         //getStringImage(bitmap)
+
+                    //new UploadImage(this, targetUri);
 
                     intent = new Intent(getApplicationContext(),
                             MainActivity.class);
@@ -233,7 +232,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            Uri targetUri = data.getData();
+            targetUri = data.getData();
             //textTargetUri.setText(targetUri.toString());
             try{
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));

@@ -17,6 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
+
 /**
  * Created by Chris on 15-Mar-16.
  */

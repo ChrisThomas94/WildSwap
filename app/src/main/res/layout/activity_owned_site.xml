@@ -134,7 +134,9 @@
             <ImageView
                 android:id="@+id/siteViewGallery"
                 android:layout_width="150dp"
-                android:layout_height="150dp" />
+                android:layout_height="150dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/red_fab"/>
 
             <TextView
                 android:id="@+id/siteViewDescription"

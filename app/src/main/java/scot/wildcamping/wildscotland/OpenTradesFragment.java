@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.slidingmenu.adapter.SiteListAdapter;
-import scot.wildcamping.wildscotland.slidingmenu.adapter.TradeListAdapter;
+import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
+import scot.wildcamping.wildscotland.model.StoredTrades;
+import scot.wildcamping.wildscotland.model.Trade;
 
 public class OpenTradesFragment extends Fragment{
 	

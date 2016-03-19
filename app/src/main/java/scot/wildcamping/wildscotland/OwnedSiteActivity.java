@@ -2,10 +2,13 @@ package scot.wildcamping.wildscotland;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,9 +17,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
 
 /**
  * Created by Chris on 26-Feb-16.
@@ -39,6 +39,8 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
     String feature8;
     String feature9;
     String feature10;
+    String imageStr;
+    Bitmap imageBit;
 
 
     @Override
@@ -65,6 +67,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
+        ImageView image = (ImageView)findViewById(R.id.siteViewGallery);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -85,10 +88,14 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             feature8 = extras.getString("feature8");
             feature9 = extras.getString("feature9");
             feature10 = extras.getString("feature10");
+            imageStr = extras.getString("image");
 
             title.setText(titleBun);
             description.setText(descriptionBun);
             rating.setRating(ratingBun.floatValue());
+
+            imageBit = StringToBitMap(imageStr);
+            image.setImageBitmap(imageBit);
 
             //1 = true
             //0 = false
@@ -150,10 +157,8 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             case R.id.deactivateSite:
                 boolean active = false;
                 intent = new Intent(getApplicationContext(),MainActivity.class);
-
                 //trigger php to deactivate site
                 new UpdateSite(this, active, cid, titleBun, descriptionBun, ratingBun, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10).execute();
-
                 startActivity(intent);
                 finish();
                 break;
@@ -168,14 +173,24 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
+                intent.putExtra("fragment", 1);
                 startActivity(intent);
                 finish();
                 return true;

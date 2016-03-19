@@ -2,20 +2,27 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -100,6 +107,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature8(jsonSite.getString("feature8"));
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));
+                        siteClass.setImage(jsonSite.getString("image"));
 
                         if (jsonSite.getString("site_admin").equals(user)){
                             owned.put(ownedCnt, siteClass);
@@ -164,6 +172,17 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
         return "{\"tag\":\"" + "knownSites" + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"relat\":\"" + relat + "\"}";
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
 }
