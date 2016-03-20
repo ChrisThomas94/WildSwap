@@ -21,7 +21,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/transport"
                 android:visibility="visible"/>
 
             <ImageView
@@ -31,7 +31,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/mountain"
                 android:visibility="visible"/>
 
             <ImageView
@@ -41,7 +41,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/nature"
                 android:visibility="visible"/>
 
             <ImageView
@@ -81,7 +81,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/animals"
                 android:visibility="visible"/>
 
             <ImageView
@@ -91,7 +91,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/pint"
                 android:visibility="visible"/>
 
             <ImageView
@@ -101,7 +101,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/shop"
                 android:visibility="visible"/>
 
             <ImageView
@@ -111,7 +111,7 @@
                 android:layout_height="53dip"
                 android:scaleType="fitXY"
                 android:paddingRight="5dp"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
+                android:src="@drawable/sheep"
                 android:visibility="visible"/>
 
         </LinearLayout>

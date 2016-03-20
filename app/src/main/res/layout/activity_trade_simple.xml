@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp">
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -32,80 +33,90 @@
 
                 <ImageView
                     android:id="@+id/features1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/transport"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mountain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/nature"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/grassy_terrain3"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/rocky_terrain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sandy_terrain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/animals"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pint"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/shop"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/features10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sheep"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
@@ -165,22 +176,69 @@
         android:layout_gravity="center"
         android:layout_margin="15dp">
 
-        <TextView
-            android:id="@+id/sendTitle"
+        <LinearLayout
+            android:id="@+id/titleAndFeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textSize="30sp"
-            android:text="Site title"/>
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/sendPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_to_photos_black_48dp"
-            android:paddingRight="5dp"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/sendTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="30sp"
+                android:text="Site title"/>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/sendPicture1"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"/>
+
+                    <ImageView
+                        android:id="@+id/sendPicture2"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"/>
+
+                    <ImageView
+                        android:id="@+id/sendPicture3"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"/>
+
+                    <ImageView
+                        android:id="@+id/sendPicture4"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"/>
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -196,80 +254,90 @@
 
                 <ImageView
                     android:id="@+id/sendFeatures1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/transport"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/mountain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/nature"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/grassy_terrain3"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/rocky_terrain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sandy_terrain"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/animals"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/pint"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/shop"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/sendFeatures10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"
+                    android:layout_width="48dip"
+                    android:layout_height="48dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sheep"
                     android:paddingRight="5dp"
                     android:visibility="visible"/>
 
@@ -277,14 +345,16 @@
 
         </HorizontalScrollView>
 
+        </LinearLayout>
+
         <RatingBar
             android:id="@+id/sendRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:isIndicator="true"/>
+            android:isIndicator="true"
+            android:layout_below="@+id/titleAndFeat"/>
 
     </RelativeLayout>
 

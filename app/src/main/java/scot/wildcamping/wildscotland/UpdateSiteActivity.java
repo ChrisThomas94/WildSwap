@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
+
 public class UpdateSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText Lat;
@@ -76,19 +79,10 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     Boolean feature9;
     Boolean feature10;
 
-    String feature1String;
-    String feature2String;
-    String feature3String;
-    String feature4String;
-    String feature5String;
-    String feature6String;
-    String feature7String;
-    String feature8String;
-    String feature9String;
-    String feature10String;
-
     Boolean update = true;
     Boolean lonLat;
+
+    int arrayPos;
 
     private Bitmap bitmap;
 
@@ -122,45 +116,18 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+            arrayPos = extras.getInt("arrayPosition");
 
-            lonLat = extras.getBoolean("lonLat");
-            if(lonLat){
-                //make text editable
-            }
-
-            latitude = extras.getDouble("latitude");
-            longitude = extras.getDouble("longitude");
-
-            String lat = Double.toString(latitude);
-            String lon = Double.toString(longitude);
-
-            Lat.setText(lat);
-            Lon.setText(lon);
-
-            image = extras.getString("image");
-            image1.setImageBitmap(StringToBitMap(image));
-
-            feature1String = extras.getString("feature1");
-            feature2String = extras.getString("feature2");
-            feature3String = extras.getString("feature3");
-            feature4String = extras.getString("feature4");
-            feature5String = extras.getString("feature5");
-            feature6String = extras.getString("feature6");
-            feature7String = extras.getString("feature7");
-            feature8String = extras.getString("feature8");
-            feature9String = extras.getString("feature9");
-            feature10String = extras.getString("feature10");
-
-            feature1 = extras.getBoolean("feature1Bool");
-            feature2 = extras.getBoolean("feature2Bool");
-            feature3 = extras.getBoolean("feature3Bool");
-            feature4 = extras.getBoolean("feature4Bool");
-            feature5 = extras.getBoolean("feature5Bool");
-            feature6 = extras.getBoolean("feature6Bool");
-            feature7 = extras.getBoolean("feature7Bool");
-            feature8 = extras.getBoolean("feature8Bool");
-            feature9 = extras.getBoolean("feature9Bool");
-            feature10 = extras.getBoolean("feature10Bool");
+            feature1 = extras.getBoolean("feature1");
+            feature2 = extras.getBoolean("feature2");
+            feature3 = extras.getBoolean("feature3");
+            feature4 = extras.getBoolean("feature4");
+            feature5 = extras.getBoolean("feature5");
+            feature6 = extras.getBoolean("feature6");
+            feature7 = extras.getBoolean("feature7");
+            feature8 = extras.getBoolean("feature8");
+            feature9 = extras.getBoolean("feature9");
+            feature10 = extras.getBoolean("feature10");
 
             if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
                 addFeature.setBackgroundColor(green);
@@ -176,17 +143,41 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
             rating = extras.getDouble("rating");
 
-            float ratingFloat = extras.getFloat("rating");
+            float ratingFloat = (float)rating;
             ratingBar.setRating(ratingFloat);
 
         }
+
+        knownSite inst = new knownSite();
+        Site focused = inst.getOwnedSitesMap().get(arrayPos);
+
+        cid = focused.getCid();
+        Lat.setText(Double.toString(focused.getPosition().latitude));
+        Lon.setText(Double.toString(focused.getPosition().latitude));
+        title.setText(focused.getTitle());
+        description.setText(focused.getDescription());
+        if(focused.getImage() != null) {
+            image = focused.getImage();
+            image1.setVisibility(View.VISIBLE);
+            image1.setImageBitmap(StringToBitMap(image));
+        }
+        feature1.equals(focused.getFeature1());
+        feature2.equals(focused.getFeature2());
+        feature3.equals(focused.getFeature3());
+        feature4.equals(focused.getFeature4());
+        feature5.equals(focused.getFeature5());
+        feature6.equals(focused.getFeature6());
+        feature7.equals(focused.getFeature7());
+        feature8.equals(focused.getFeature8());
+        feature9.equals(focused.getFeature9());
+        feature10.equals(focused.getFeature10());
+        ratingBar.setRating((focused.getRating()).floatValue());
 
         //setting onclick listeners
         addImage.setOnClickListener(this);
         addFeature.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
         cancelCreation.setOnClickListener(this);
-
     }
 
     @Override
@@ -203,12 +194,8 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
             case R.id.addFeature:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                intent.putExtra("arrayPosition", arrayPos);
                 intent.putExtra("update", update);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("title", title.getText().toString());
-                intent.putExtra("description", description.getText().toString());
-                intent.putExtra("image", image);
                 intent.putExtra("feature1", feature1);
                 intent.putExtra("feature2", feature2);
                 intent.putExtra("feature3", feature3);
@@ -219,7 +206,6 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
                 intent.putExtra("feature8", feature8);
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
-                intent.putExtra("rating", rating);
                 startActivity(intent);
                 break;
 
@@ -235,15 +221,19 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
                 if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
+                    String imageSingleLine = null;
                     boolean active = true;
-                    new UpdateSite(this, active, cid, titlePassed, descPassed, rating, feature1String, feature2String, feature3String, feature4String, feature5String, feature6String, feature7String, feature8String, feature9String, feature10String).execute();
-                    //new UploadImage(this, imageSingleLine, null).execute();
+                    if(image != null) {
+                        imageSingleLine = image.replaceAll("[\r\n]+", "");
+                    }
+
+                    new UpdateSite(this, active, cid, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
 
                     intent = new Intent(getApplicationContext(),
                             MainActivity.class);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("add", true);
+                    //intent.putExtra("latitude", latitude);
+                    //intent.putExtra("longitude", longitude);
+                    //intent.putExtra("add", true);
                     startActivity(intent);
                     finish();
 
@@ -258,22 +248,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(getApplicationContext(), "Site update canceled!", Toast.LENGTH_LONG).show();
 
                 intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("image", image);
-                //intent.putExtra("feature1", feature1String);
-                //intent.putExtra("feature2", feature2String);
-                //intent.putExtra("feature3", feature3String);
-                //intent.putExtra("feature4", feature4String);
-                //intent.putExtra("feature5", feature5String);
-                //intent.putExtra("feature6", feature6String);
-                //intent.putExtra("feature7", feature7String);
-                //intent.putExtra("feature8", feature8String);
-                //intent.putExtra("feature9", feature9String);
-                //intent.putExtra("feature10", feature10String);
-                intent.putExtra("title", titlePassed);
-                intent.putExtra("description", descPassed);
-                intent.putExtra("rating", rating);
+                intent.putExtra("arrayPosition", arrayPos);
                 startActivity(intent);
 
                 finish();
@@ -288,7 +263,6 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
         if(resultCode == RESULT_OK){
             targetUri = data.getData();
-            //textTargetUri.setText(targetUri.toString());
             try{
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 image = getStringImage(bitmap);
@@ -328,24 +302,10 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent;
+                Toast.makeText(getApplicationContext(), "Site update canceled!", Toast.LENGTH_LONG).show();
+
                 intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("image", image);
-                intent.putExtra("feature1", feature1String);
-                intent.putExtra("feature2", feature2String);
-                intent.putExtra("feature3", feature3String);
-                intent.putExtra("feature4", feature4String);
-                intent.putExtra("feature5", feature5String);
-                intent.putExtra("feature6", feature6String);
-                intent.putExtra("feature7", feature7String);
-                intent.putExtra("feature8", feature8String);
-                intent.putExtra("feature9", feature9String);
-                intent.putExtra("feature10", feature10String);
-                intent.putExtra("title", titlePassed);
-                intent.putExtra("description", descPassed);
-                intent.putExtra("rating", rating);
+                intent.putExtra("arrayPosition", arrayPos);
                 startActivity(intent);
 
                 finish();

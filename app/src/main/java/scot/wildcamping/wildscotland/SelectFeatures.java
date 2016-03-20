@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
+
 /**
  * Created by Chris on 03-Mar-16.
  */
@@ -41,8 +44,20 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     Boolean feature8 = false;
     Boolean feature9 = false;
     Boolean feature10 = false;
-    Boolean isSelected = false;
-    String image;
+
+    Boolean newFeature1 = false;
+    Boolean newFeature2 = false;
+    Boolean newFeature3 = false;
+    Boolean newFeature4 = false;
+    Boolean newFeature5 = false;
+    Boolean newFeature6 = false;
+    Boolean newFeature7 = false;
+    Boolean newFeature8 = false;
+    Boolean newFeature9 = false;
+    Boolean newFeature10 = false;
+
+    Boolean image;
+    int arrayPos;
     Boolean update;
 
     Button confirmFeatures;
@@ -80,12 +95,21 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
-            update = extras.getBoolean("update");
-            latitude = extras.getDouble("latitude");
-            longitude = extras.getDouble("longitude");
-            title = extras.getString("title");
-            description = extras.getString("description");
-            image = extras.getString("image");
+            //bundled from update
+            update =  extras.getBoolean("update");
+            if(update) {
+                arrayPos = extras.getInt("arrayPosition");
+
+            } else {
+                //bundled from add
+                image = extras.getBoolean("image");
+                latitude = extras.getDouble("latitude");
+                longitude = extras.getDouble("longitude");
+                title = extras.getString("title");
+                description = extras.getString("description");
+                rating = extras.getDouble("rating");
+            }
+
             feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
             feature3 = extras.getBoolean("feature3");
@@ -96,39 +120,47 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             feature8 = extras.getBoolean("feature8");
             feature9 = extras.getBoolean("feature9");
             feature10 = extras.getBoolean("feature10");
-            rating = extras.getDouble("rating");
+            newFeature1 = extras.getBoolean("feature1");
+            newFeature2 = extras.getBoolean("feature2");
+            newFeature3 = extras.getBoolean("feature3");
+            newFeature4 = extras.getBoolean("feature4");
+            newFeature5 = extras.getBoolean("feature5");
+            newFeature6 = extras.getBoolean("feature6");
+            newFeature7 = extras.getBoolean("feature7");
+            newFeature8 = extras.getBoolean("feature8");
+            newFeature9 = extras.getBoolean("feature9");
+            newFeature10 = extras.getBoolean("feature10");
+        }
 
-            if(feature1){
-                feature1box.setBackgroundColor(green);
-            }
-            if(feature2){
-                feature2box.setBackgroundColor(green);
-            }
-            if(feature3){
-                feature3box.setBackgroundColor(green);
-            }
-            if(feature4){
-                feature4box.setBackgroundColor(green);
-            }
-            if(feature5){
-                feature5box.setBackgroundColor(green);
-            }
-            if(feature6){
-                feature6box.setBackgroundColor(green);
-            }
-            if(feature7){
-                feature7box.setBackgroundColor(green);
-            }
-            if(feature8){
-                feature8box.setBackgroundColor(green);
-            }
-            if(feature9){
-                feature9box.setBackgroundColor(green);
-            }
-            if(feature10){
-                feature10box.setBackgroundColor(green);
-            }
-
+        if(feature1){
+            feature1box.setBackgroundColor(green);
+        }
+        if(feature2){
+            feature2box.setBackgroundColor(green);
+        }
+        if(feature3){
+            feature3box.setBackgroundColor(green);
+        }
+        if(feature4){
+            feature4box.setBackgroundColor(green);
+        }
+        if(feature5){
+            feature5box.setBackgroundColor(green);
+        }
+        if(feature6){
+            feature6box.setBackgroundColor(green);
+        }
+        if(feature7){
+            feature7box.setBackgroundColor(green);
+        }
+        if(feature8){
+            feature8box.setBackgroundColor(green);
+        }
+        if(feature9){
+            feature9box.setBackgroundColor(green);
+        }
+        if(feature10){
+            feature10box.setBackgroundColor(green);
         }
 
         confirmFeatures = (Button)findViewById(R.id.confirmFeatures);
@@ -143,11 +175,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature1){
                     //turn colour grey
                     feature1box.setBackgroundColor(gray);
-                    feature1 = false;
+                    newFeature1 = false;
                 } else {
                     //turn colour green
                     feature1box.setBackgroundColor(green);
-                    feature1 = true;
+                    newFeature1 = true;
                 }
             }
         });
@@ -158,11 +190,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature2){
                     //turn colour grey
                     feature2box.setBackgroundColor(gray);
-                    feature2 = false;
+                    newFeature2 = false;
                 } else {
                     //turn colour green
                     feature2box.setBackgroundColor(green);
-                    feature2 = true;
+                    newFeature2 = true;
                 }
             }
         });
@@ -173,11 +205,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature3){
                     //turn colour grey
                     feature3box.setBackgroundColor(gray);
-                    feature3 = false;
+                    newFeature3 = false;
                 } else {
                     //turn colour green
                     feature3box.setBackgroundColor(green);
-                    feature3 = true;
+                    newFeature3 = true;
                 }
             }
         });
@@ -188,11 +220,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature4){
                     //turn colour grey
                     feature4box.setBackgroundColor(gray);
-                    feature4 = false;
+                    newFeature4 = false;
                 } else {
                     //turn colour green
                     feature4box.setBackgroundColor(green);
-                    feature4 = true;
+                    newFeature4 = true;
                 }
             }
         });
@@ -203,11 +235,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature5){
                     //turn colour grey
                     feature5box.setBackgroundColor(gray);
-                    feature5 = false;
+                    newFeature5 = false;
                 } else {
                     //turn colour green
                     feature5box.setBackgroundColor(green);
-                    feature5 = true;
+                    newFeature5 = true;
                 }
             }
         });
@@ -218,11 +250,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature6){
                     //turn colour grey
                     feature6box.setBackgroundColor(gray);
-                    feature6 = false;
+                    newFeature6 = false;
                 } else {
                     //turn colour green
                     feature6box.setBackgroundColor(green);
-                    feature6 = true;
+                    newFeature6 = true;
                 }
             }
         });
@@ -233,11 +265,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature7){
                     //turn colour grey
                     feature7box.setBackgroundColor(gray);
-                    feature7 = false;
+                    newFeature7 = false;
                 } else {
                     //turn colour green
                     feature7box.setBackgroundColor(green);
-                    feature7 = true;
+                    newFeature7 = true;
                 }
             }
         });
@@ -248,11 +280,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature8){
                     //turn colour grey
                     feature8box.setBackgroundColor(gray);
-                    feature8 = false;
+                    newFeature8 = false;
                 } else {
                     //turn colour green
                     feature8box.setBackgroundColor(green);
-                    feature8 = true;
+                    newFeature8 = true;
                 }
             }
         });
@@ -263,11 +295,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature9){
                     //turn colour grey
                     feature9box.setBackgroundColor(gray);
-                    feature9 = false;
+                    newFeature9 = false;
                 } else {
                     //turn colour green
                     feature9box.setBackgroundColor(green);
-                    feature9 = true;
+                    newFeature9 = true;
                 }
             }
         });
@@ -278,11 +310,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 if(feature10){
                     //turn colour grey
                     feature10box.setBackgroundColor(gray);
-                    feature10 = false;
+                    newFeature10 = false;
                 } else {
                     //turn colour green
                     feature10box.setBackgroundColor(green);
-                    feature10 = true;
+                    newFeature10 = true;
                 }
             }
         });
@@ -297,22 +329,34 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.cancelFeatures:
-
                 Intent intent;
-
                 if(update){
                     intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+
+                    //bundle for update
+                    intent.putExtra("arrayPosition", arrayPos);
+                    intent.putExtra("feature1", feature1);
+                    intent.putExtra("feature2", feature2);
+                    intent.putExtra("feature3", feature3);
+                    intent.putExtra("feature4", feature4);
+                    intent.putExtra("feature5", feature5);
+                    intent.putExtra("feature6", feature6);
+                    intent.putExtra("feature7", feature7);
+                    intent.putExtra("feature8", feature8);
+                    intent.putExtra("feature9", feature9);
+                    intent.putExtra("feature10", feature10);
                 } else {
                     intent = new Intent(getApplicationContext(), AddSite.class);
+
+                    //bundle for add
+                    intent.putExtra("image", image);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("title", title);
+                    intent.putExtra("description", description);
+                    intent.putExtra("rating", rating);
                 }
 
-                //bundle all data back EXCEPT for feature data
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("image", image);
-                intent.putExtra("title", title);
-                intent.putExtra("description", description);
-                intent.putExtra("rating", rating);
                 startActivity(intent);
                 finish();
                 break;
@@ -320,30 +364,43 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             case R.id.confirmFeatures:
 
                 Intent i;
-
                 if(update){
                     i = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+
+                    //bundle for update
+                    i.putExtra("arrayPosition", arrayPos);
+                    i.putExtra("feature1", newFeature1);
+                    i.putExtra("feature2", newFeature2);
+                    i.putExtra("feature3", newFeature3);
+                    i.putExtra("feature4", newFeature4);
+                    i.putExtra("feature5", newFeature5);
+                    i.putExtra("feature6", newFeature6);
+                    i.putExtra("feature7", newFeature7);
+                    i.putExtra("feature8", newFeature8);
+                    i.putExtra("feature9", newFeature9);
+                    i.putExtra("feature10", newFeature10);
                 } else {
                     i = new Intent(getApplicationContext(), AddSite.class);
+
+                    //bundle for add
+                    i.putExtra("image", image);
+                    i.putExtra("latitude", latitude);
+                    i.putExtra("longitude", longitude);
+                    i.putExtra("title", title);
+                    i.putExtra("description", description);
+                    i.putExtra("rating", rating);
+                    i.putExtra("feature1", newFeature1);
+                    i.putExtra("feature2", newFeature2);
+                    i.putExtra("feature3", newFeature3);
+                    i.putExtra("feature4", newFeature4);
+                    i.putExtra("feature5", newFeature5);
+                    i.putExtra("feature6", newFeature6);
+                    i.putExtra("feature7", newFeature7);
+                    i.putExtra("feature8", newFeature8);
+                    i.putExtra("feature9", newFeature9);
+                    i.putExtra("feature10", newFeature10);
                 }
 
-                //bundle additional data
-                i.putExtra("latitude", latitude);
-                i.putExtra("longitude", longitude);
-                i.putExtra("image", image);
-                i.putExtra("title", title);
-                i.putExtra("description", description);
-                i.putExtra("feature1", feature1);
-                i.putExtra("feature2", feature2);
-                i.putExtra("feature3", feature3);
-                i.putExtra("feature4", feature4);
-                i.putExtra("feature5", feature5);
-                i.putExtra("feature6", feature6);
-                i.putExtra("feature7", feature7);
-                i.putExtra("feature8", feature8);
-                i.putExtra("feature9", feature9);
-                i.putExtra("feature10", feature10);
-                i.putExtra("rating", rating);
                 startActivity(i);
                 finish();
                 break;
@@ -359,15 +416,31 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 Intent intent;
                 if(update){
                     intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+
+                    //bundle for update
+                    intent.putExtra("arrayPosition", arrayPos);
+                    intent.putExtra("feature1", feature1);
+                    intent.putExtra("feature2", feature2);
+                    intent.putExtra("feature3", feature3);
+                    intent.putExtra("feature4", feature4);
+                    intent.putExtra("feature5", feature5);
+                    intent.putExtra("feature6", feature6);
+                    intent.putExtra("feature7", feature7);
+                    intent.putExtra("feature8", feature8);
+                    intent.putExtra("feature9", feature9);
+                    intent.putExtra("feature10", feature10);
                 } else {
                     intent = new Intent(getApplicationContext(), AddSite.class);
+
+                    //bundle for add
+                    intent.putExtra("image", image);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("title", title);
+                    intent.putExtra("description", description);
+                    intent.putExtra("rating", rating);
                 }
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("image", image);
-                intent.putExtra("title", title);
-                intent.putExtra("description", description);
-                intent.putExtra("rating", rating);
+
                 startActivity(intent);
                 finish();
                 return true;

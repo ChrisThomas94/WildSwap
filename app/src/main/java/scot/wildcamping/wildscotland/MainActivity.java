@@ -134,11 +134,11 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		/*if(isNetworkAvailable()){
+		if(isNetworkAvailable()){
 			new FetchKnownSites(this).execute();
 			new FetchUnknownSites(this).execute();
 			new FetchTradeRequests(this).execute();
-		}*/
+		}
 
 		if (fragment > 0) {
 			displayView(fragment);
@@ -177,11 +177,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_refresh:
-			new FetchKnownSites(this).execute();
-			new FetchUnknownSites(this).execute();
-			new FetchTradeRequests(this).execute();
-			displayView(0);
-
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

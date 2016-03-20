@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +36,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
@@ -79,6 +86,11 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     Boolean feature10;
     Boolean update;
     Boolean lonLat;
+    Boolean imageUpload = false;
+    knownSite inst = new knownSite();
+    int tempLocation;
+    SparseArray<Image> temp = new SparseArray<>();
+
 
     private Bitmap bitmap;
 
@@ -114,6 +126,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+            imageUpload = extras.getBoolean("image");
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
 
@@ -148,9 +161,21 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             rating = extras.getDouble("rating");
 
-            float ratingFloat = extras.getFloat("rating");
+            float ratingFloat = (float)rating;
             ratingBar.setRating(ratingFloat);
 
+        }
+
+        System.out.println(imageUpload);
+
+
+        if(imageUpload) {
+            temp = inst.getTemp();
+            image = temp.get(0).getImage();
+            System.out.println(image);
+            bitmap = StringToBitMap(image);
+            image1.setVisibility(View.VISIBLE);
+            image1.setImageBitmap(bitmap);
         }
 
         //setting onclick listeners
@@ -175,11 +200,12 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             case R.id.addFeature:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                intent.putExtra("image", imageUpload);
+                //intent.putExtra("temp", tempLocation);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("title", title.getText().toString());
                 intent.putExtra("description", description.getText().toString());
-                intent.putExtra("image", image);
                 intent.putExtra("feature1", feature1);
                 intent.putExtra("feature2", feature2);
                 intent.putExtra("feature3", feature3);
@@ -204,11 +230,12 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                 if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                    String imageSingleLine = image.replaceAll("[\r\n]+", "");
+                    String imageSingleLine = null;
+                    if(image != null) {
+                        imageSingleLine = image.replaceAll("[\r\n]+", "");
+                    }
 
                     new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
-
-                    //new UploadImage(this, imageSingleLine, null).execute();
 
                     intent = new Intent(getApplicationContext(),
                             MainActivity.class);
@@ -245,10 +272,23 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         if(resultCode == RESULT_OK){
             targetUri = data.getData();
-            //textTargetUri.setText(targetUri.toString());
             try{
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 image = getStringImage(bitmap);
+                imageUpload = true;
+
+                Image upload = new Image();
+                upload.setImage(image);
+                upload.setCid("temp");
+
+                temp = inst.getTemp();
+
+
+                temp.put(0, upload);
+
+                inst.setTemp(temp);
+
+                image1.setVisibility(View.VISIBLE);
                 image1.setImageBitmap(bitmap);
             } catch (FileNotFoundException e){
                 e.printStackTrace();

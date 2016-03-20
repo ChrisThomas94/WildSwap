@@ -18,10 +18,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature1"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/transport"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,10 +43,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature2"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/mountain"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,10 +68,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature3"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/nature"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -165,10 +168,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
                 android:id="@+id/feature7"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/animals"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -189,10 +193,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature8"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/pint"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -213,10 +218,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature9"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/shop"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -237,10 +243,11 @@
             android:background="@color/counter_text_color">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="53dip"
+                android:layout_height="53dip"
+                android:scaleType="fitXY"
                 android:id="@+id/feature10"
-                android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                android:src="@drawable/sheep"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -42,19 +42,20 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     String cid;
     String title;
     String description;
-    Double rating;
-    String feature1;
-    String feature2;
-    String feature3;
-    String feature4;
-    String feature5;
-    String feature6;
-    String feature7;
-    String feature8;
-    String feature9;
-    String feature10;
+    String rating;
+    Boolean feature1;
+    Boolean feature2;
+    Boolean feature3;
+    Boolean feature4;
+    Boolean feature5;
+    Boolean feature6;
+    Boolean feature7;
+    Boolean feature8;
+    Boolean feature9;
+    Boolean feature10;
+    String image;
 
-    public UpdateSite(Context context, Boolean active, String cid, String title, String description, Double rating, String feature1, String feature2, String feature3, String feature4, String feature5, String feature6, String feature7, String feature8, String feature9, String feature10) {
+    public UpdateSite(Context context, Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         this.context = context;
         this.active = active;
         this.cid = cid;
@@ -71,6 +72,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         this.feature8 = feature8;
         this.feature9 = feature9;
         this.feature10 = feature10;
+        this.image = image;
     }
 
     /**
@@ -110,7 +112,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         } else {
             // issue the post request
             try {
-                String json = updateSite(cid, active);
+                String json = updateSite(active, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -211,10 +213,24 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String updateSite(String cid, Boolean active) {
+    private String updateSite(boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         return "{\"tag\":\"" + "updateSite" + "\","
+                + "\"active\":\"" + active + "\","
                 + "\"cid\":\"" + cid + "\","
-                + "\"active\":\"" + active + "\"}";
+                + "\"title\":\"" + title + "\","
+                + "\"description\":\"" + description + "\","
+                + "\"rating\":\"" + rating + "\","
+                + "\"feature1\":\"" + feature1 + "\","
+                + "\"feature2\":\"" + feature2 + "\","
+                + "\"feature3\":\"" + feature3 + "\","
+                + "\"feature4\":\"" + feature4 + "\","
+                + "\"feature5\":\"" + feature5 + "\","
+                + "\"feature6\":\"" + feature6 + "\","
+                + "\"feature7\":\"" + feature7 + "\","
+                + "\"feature8\":\"" + feature8 + "\","
+                + "\"feature9\":\"" + feature9 + "\","
+                + "\"feature10\":\"" + feature10 + "\","
+                + "\"image\":\"" + image + "\"}";
     }
 
     private String deleteSite(String cid, Boolean active) {

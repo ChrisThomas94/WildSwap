@@ -398,13 +398,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
-                            intent.putExtra("latitude", currentSite.getPosition().latitude);
-                            intent.putExtra("longitude", currentSite.getPosition().longitude);
-                            intent.putExtra("cid", currentSite.getCid());
-                            intent.putExtra("title", currentSite.getTitle());
-                            intent.putExtra("description", currentSite.getDescription());
-                            intent.putExtra("rating", currentSite.getRating());
-                            intent.putExtra("image", currentSite.getImage());
                             intent.putExtra("prevState", 0);
                             startActivity(intent);
                             getActivity().finish();

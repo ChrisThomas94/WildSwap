@@ -41,13 +41,13 @@ public class YourSitesFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), OwnedSiteActivity.class);
                 intent.putExtra("arrayPosition", position);
-                intent.putExtra("latitude", ownedSites.get(position).getPosition().latitude);
-                intent.putExtra("longitude", ownedSites.get(position).getPosition().longitude);
+                //intent.putExtra("latitude", ownedSites.get(position).getPosition().latitude);
+                //intent.putExtra("longitude", ownedSites.get(position).getPosition().longitude);
                 intent.putExtra("cid", ownedSites.get(position).getCid());
-                intent.putExtra("title", ownedSites.get(position).getTitle());
-                intent.putExtra("description", ownedSites.get(position).getDescription());
-                intent.putExtra("rating", ownedSites.get(position).getRating());
-                intent.putExtra("image", ownedSites.get(position).getImage());
+                //intent.putExtra("title", ownedSites.get(position).getTitle());
+                //intent.putExtra("description", ownedSites.get(position).getDescription());
+                //intent.putExtra("rating", ownedSites.get(position).getRating());
+                //intent.putExtra("image", ownedSites.get(position).getImage());
                 intent.putExtra("prevState", 1);
                 startActivity(intent);
             }
