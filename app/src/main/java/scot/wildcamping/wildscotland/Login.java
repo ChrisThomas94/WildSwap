@@ -116,7 +116,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
             try {
                 String json = login(email, password);
                 System.out.println("json: " + json);
-                String postResponse = doPostRequest(Appconfig.URL_LOGIN, json);      //json
+                String postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
                 try{
                     JSONObject jObj = new JSONObject(postResponse);

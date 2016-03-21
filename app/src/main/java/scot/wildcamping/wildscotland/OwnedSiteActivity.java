@@ -76,7 +76,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
-        ImageView image = (ImageView)findViewById(R.id.siteViewGallery);
+        ImageView image = (ImageView)findViewById(R.id.image1);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)

@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:hint="To:"
             android:inputType="text"
+            android:focusable="false"
             android:singleLine="true"/>
 
 
@@ -31,6 +32,7 @@
             android:layout_height="wrap_content"
             android:hint="Subject:"
             android:inputType="text"
+            android:focusable="false"
             android:singleLine="true"/>
 
 

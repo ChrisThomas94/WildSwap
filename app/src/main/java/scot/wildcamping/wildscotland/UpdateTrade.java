@@ -104,7 +104,7 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
         try {
             String json = getTrade(unique_tid, newTradeStatus, sender_uid, receiver_uid, send_cid, receive_cid);
             System.out.println("json: " + json);
-            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
             try {

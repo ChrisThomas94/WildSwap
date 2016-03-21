@@ -70,7 +70,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
-        ImageView image = (ImageView)findViewById(R.id.siteViewGallery);
+        ImageView image = (ImageView)findViewById(R.id.image1);
 
 
         Bundle extras = getIntent().getExtras();
@@ -151,7 +151,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId())
         {
             case R.id.contactSiteAdmin:
-                Intent i = new Intent(getApplicationContext(), ActivityContactUser.class);
+                Intent i = new Intent(getApplicationContext(), ContactUser.class);
                 startActivity(i);
                 break;
         }

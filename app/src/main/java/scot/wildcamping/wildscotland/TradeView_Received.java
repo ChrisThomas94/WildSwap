@@ -291,7 +291,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.btnContact_User:
-                intent = new Intent(getApplicationContext(), ActivityContactUser.class);
+                intent = new Intent(getApplicationContext(), ContactUser.class);
                 startActivity(intent);
                 //open email dialog
                 break;

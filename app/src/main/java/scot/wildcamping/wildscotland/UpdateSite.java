@@ -103,7 +103,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             try {
                 String json = deleteSite(cid, active);
                 System.out.println("json: " + json);
-                postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+                postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
 
             } catch (IOException e) {
@@ -114,7 +114,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             try {
                 String json = updateSite(active, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
                 System.out.println("json: " + json);
-                postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+                postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
 
                 try {

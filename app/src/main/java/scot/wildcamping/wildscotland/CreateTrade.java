@@ -69,7 +69,7 @@ public class CreateTrade extends AsyncTask<String, String, String> {
         try {
             String json = tradeRequest(user, tradeStatus, send_cid, recieve_cid);
             System.out.println("json: " + json);
-            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
             /*try {

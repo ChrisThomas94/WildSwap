@@ -63,7 +63,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String descReq;
     String ratingReq;
     double rating;
-    String url = Appconfig.URL_ADDSITE;
+    String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
     Uri targetUri;

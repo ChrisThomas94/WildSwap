@@ -61,7 +61,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
         try {
             String json = addSite(image, cid);
             System.out.println("json: "+json);
-            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
+            postResponse = doPostRequest(Appconfig.URL, json);
         }catch (IOException e){
             e.printStackTrace();
         }

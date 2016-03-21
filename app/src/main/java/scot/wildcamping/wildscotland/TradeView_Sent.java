@@ -1,9 +1,12 @@
 package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +26,9 @@ import scot.wildcamping.wildscotland.model.knownSite;
 public class TradeView_Sent extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<LatLng> cluster = null;
-    knownSite inst = new knownSite();
     int recieveSize;
     int negativeTradeStatus = 1;
+    knownSite inst = new knownSite();
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
@@ -61,6 +64,12 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     ImageView sendFeatures10;
     RatingBar sendRating;
 
+    ImageView sendPicture1;
+    ImageView sendPicture2;
+    ImageView sendPicture3;
+
+    String date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +84,9 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
             unique_tid = extras.getString("unique_tid");
             send_cid = extras.getString("send_cid");
             recieve_cid = extras.getString("recieve_cid");
+            date = extras.getString("date");
         }
+
 
         Button contact = (Button)findViewById(R.id.btnContact_User);
         Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
@@ -106,11 +117,14 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
 
+        sendPicture1 = (ImageView)findViewById(R.id.sendPicture1);
+        sendPicture2 = (ImageView)findViewById(R.id.sendPicture2);
+        sendPicture3 = (ImageView)findViewById(R.id.sendPicture3);
+
         configSites();
 
         cancel.setOnClickListener(this);
         contact.setOnClickListener(this);
-
     }
 
     public void configSites(){
@@ -242,6 +256,12 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
 
         recieveRating.setRating((recieveSite.getRating()).floatValue());
 
+        if(sendSite.getImage() != null){
+            Bitmap image1 = StringToBitMap(sendSite.getImage());
+            sendPicture1.setImageBitmap(image1);
+            sendPicture1.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -258,7 +278,9 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btnContact_User:
-                intent = new Intent(getApplicationContext(), ActivityContactUser.class);
+                intent = new Intent(getApplicationContext(), ContactUser.class);
+                intent.putExtra("contact", recieveSite.getSiteAdmin());
+                intent.putExtra("date", date);
                 startActivity(intent);
                 //open email dialog
                 break;
@@ -277,5 +299,16 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }

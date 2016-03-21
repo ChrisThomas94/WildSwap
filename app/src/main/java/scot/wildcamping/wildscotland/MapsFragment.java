@@ -5,11 +5,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
 import android.util.SparseArray;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -18,9 +28,12 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.maps.MapsFragment;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -29,6 +42,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.VisibleRegion;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
@@ -83,6 +98,12 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     knownSite inst = new knownSite();
     boolean clicked;
 
+
+    private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
+    private final int MAX_ZOOM = 13;
+    private final int MIN_ZOOM = 7;
+    private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
+
     SparseArray<Site> knownSitesMap;
     int knownSiteSize;
 
@@ -91,11 +112,16 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     Site newlyAdded;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
+        if(isNetworkAvailable()){
+            new FetchKnownSites(getActivity()).execute();
+            new FetchUnknownSites(getActivity()).execute();
+        }
+
 
         knownSitesMap = inst.getKnownSitesMap();
         knownSiteSize = inst.getKnownSiteSize();
@@ -167,12 +193,63 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         }else{//center map on newly created site
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(bunSite).zoom(10).build();
+                    .target(bunSite).zoom(9).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
+            add = false;
         }
 
+        //mOverscrollHandler.sendEmptyMessageDelayed(0,100);
+
         return v;
+    }
+
+    /**
+     * Returns the correction for Lat and Lng if camera is trying to get outside of visible map
+     * @param cameraBounds Current camera bounds
+     * @return Latitude and Longitude corrections to get back into bounds.
+     */
+    private LatLng getLatLngCorrection(LatLngBounds cameraBounds) {
+        double latitude=0, longitude=0;
+        if(cameraBounds.southwest.latitude < BOUNDS.southwest.latitude) {
+            latitude = BOUNDS.southwest.latitude - cameraBounds.southwest.latitude;
+        }
+        if(cameraBounds.southwest.longitude < BOUNDS.southwest.longitude) {
+            longitude = BOUNDS.southwest.longitude - cameraBounds.southwest.longitude;
+        }
+        if(cameraBounds.northeast.latitude > BOUNDS.northeast.latitude) {
+            latitude = BOUNDS.northeast.latitude - cameraBounds.northeast.latitude;
+        }
+        if(cameraBounds.northeast.longitude > BOUNDS.northeast.longitude) {
+            longitude = BOUNDS.northeast.longitude - cameraBounds.northeast.longitude;
+        }
+        return new LatLng(latitude, longitude);
+    }
+
+    /**
+     * Bounds the user to the overlay.
+     */
+    private class OverscrollHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            CameraPosition position = googleMap.getCameraPosition();
+            VisibleRegion region = googleMap.getProjection().getVisibleRegion();
+            float zoom = 0;
+            if(position.zoom < MIN_ZOOM) zoom = MIN_ZOOM;
+            if(position.zoom > MAX_ZOOM) zoom = MAX_ZOOM;
+            LatLng correction = getLatLngCorrection(region.latLngBounds);
+            if(zoom != 0) {     //|| correction.latitude != 0 || correction.longitude != 0
+                zoom = (zoom==0)?position.zoom:zoom;
+                double lat = position.target.latitude + correction.latitude;
+                double lon = position.target.longitude + correction.longitude;
+                CameraPosition newPosition = new CameraPosition(new LatLng(lat, lon), zoom, position.tilt, position.bearing);
+                //CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position.target, zoom);
+                CameraUpdate update = CameraUpdateFactory.newCameraPosition(newPosition);
+                googleMap.moveCamera(update);
+            }
+        /* Recursively call handler every 100ms */
+            sendEmptyMessageDelayed(0,100);
+        }
     }
 
 
@@ -524,6 +601,15 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             super();
         }
 
+    }
+
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 

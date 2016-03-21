@@ -106,7 +106,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         try {
             String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
             System.out.println("json: "+json);
-            postResponse = doPostRequest(Appconfig.URL_REGISTER, json);
+            postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
 
             try {
@@ -142,6 +142,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
                     newSite.setImage(jsonSite.getString("image"));
+                    newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
                     knownSite inst = new knownSite();
                     ownedSites = inst.getOwnedSitesMap();

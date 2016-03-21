@@ -102,7 +102,7 @@
             android:label="Select Features"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".ActivityContactUser"
+        <activity android:name=".ContactUser"
             android:label="Contact User"
             android:theme= "@style/AppTheme"/>
 

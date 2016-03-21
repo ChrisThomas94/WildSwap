@@ -1,7 +1,10 @@
 package scot.wildcamping.wildscotland;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -29,12 +32,16 @@ public class OpenTradesFragment extends Fragment{
 
 
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.fragment_open_trades, container, false);      //fragment_open_trades
 
         mDrawerList = (ListView) rootView.findViewById(R.id.open_trades_listview);
+
+        if(isNetworkAvailable()) {
+            new FetchTradeRequests(getActivity()).execute();
+        }
 
         trades = new StoredTrades();
         activeTrades = new SparseArray<>();
@@ -53,6 +60,7 @@ public class OpenTradesFragment extends Fragment{
                 intent.putExtra("unique_tid", activeTrades.get(position).getUnique_tid());
                 intent.putExtra("send_cid", activeTrades.get(position).getSend_cid());
                 intent.putExtra("recieve_cid", activeTrades.get(position).getRecieve_cid());
+                intent.putExtra("date", activeTrades.get(position).getDate());
                 startActivity(intent);
             }
         });
@@ -61,6 +69,13 @@ public class OpenTradesFragment extends Fragment{
         mDrawerList.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

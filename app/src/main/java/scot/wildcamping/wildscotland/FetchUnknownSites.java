@@ -72,7 +72,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
         try {
             String json = getUnknownSites(user, relatOwn, relatTrade);
             System.out.println("json: " + json);
-            String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
             try {
@@ -121,6 +121,8 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                             siteClass.setFeature8(jsonSite.getString("feature8"));
                             siteClass.setFeature9(jsonSite.getString("feature9"));
                             siteClass.setFeature10(jsonSite.getString("feature10"));
+                            siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
+
 
                             unknownSites.put(counter, siteClass);
                             counter++;

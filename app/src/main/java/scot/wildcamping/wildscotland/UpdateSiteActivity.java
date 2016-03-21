@@ -57,7 +57,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     String descReq;
     String ratingReq;
     double rating;
-    String url = Appconfig.URL_ADDSITE;
+    String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
     Uri targetUri;

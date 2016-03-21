@@ -1,7 +1,10 @@
 package scot.wildcamping.wildscotland;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -31,6 +34,10 @@ public class KnownSitesFragment extends Fragment{
 
         mDrawerList = (ListView) rootView.findViewById(R.id.known_sites_listview);
 
+        if(isNetworkAvailable()){
+            new FetchKnownSites(getActivity()).execute();
+        }
+
         inst = new knownSite();
         knownSites = new SparseArray<>();
         knownSites = inst.getKnownSitesMap();
@@ -57,6 +64,13 @@ public class KnownSitesFragment extends Fragment{
         mDrawerList.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

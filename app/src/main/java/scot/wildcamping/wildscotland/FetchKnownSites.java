@@ -77,7 +77,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
         try {
             String json = getKnownSites(user, relatOwn);
             System.out.println("json: " + json);
-            String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
             try {
@@ -117,6 +117,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature8(jsonSite.getString("feature8"));
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));
+                        siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
 
                         for (int j = 0; j < sizeImages; j++) {
 
@@ -166,7 +167,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
+        // dismiss the dialog once donepDialog.dismiss();
         pDialog.dismiss();
     }
 

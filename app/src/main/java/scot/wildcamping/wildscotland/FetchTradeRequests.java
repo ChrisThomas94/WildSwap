@@ -64,7 +64,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
         try {
             String json = getTradeRequests(user, tradeStatus);
             System.out.println("json: " + json);
-            String postResponse = doPostRequest(Appconfig.URL_REGISTER, json);      //json
+            String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
 
