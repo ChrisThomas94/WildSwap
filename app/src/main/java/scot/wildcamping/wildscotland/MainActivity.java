@@ -41,7 +41,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	double longitude;
 	boolean add;
 	int fragment = 0;
-	MapsFragment mappy = (MapsFragment)getSupportFragmentManager().findFragmentById(R.id.frame_container);
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
@@ -174,7 +173,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		case R.id.action_refresh:
 			new FetchKnownSites(this).execute();
 			new FetchUnknownSites(this).execute();
-			mappy.set;
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

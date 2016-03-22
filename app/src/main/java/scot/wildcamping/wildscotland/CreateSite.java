@@ -31,7 +31,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialog;
+    private ProgressDialog pDialogAddSite;
     private Context context;
     int relat;
     String lat;
@@ -51,6 +51,12 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Boolean feature10;
     String image;
     String tag = "addSite";
+    String email;
+    Double latUpperBound;
+    Double latLowerBound;
+    Double lonUpperBound;
+    Double lonLowerBound;
+    Double distance;
 
     String uid;
     String postResponse;
@@ -77,6 +83,17 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature9 = feature9;
         this.feature10 = feature10;
         this.image = image;
+
+
+        Double latDouble = Double.parseDouble(lat);
+        Double lonDouble = Double.parseDouble(lon);
+
+        this.latLowerBound = latDouble-0.001;
+        this.latUpperBound = latDouble+0.001;
+        this.lonLowerBound = lonDouble-0.001;
+        this.lonUpperBound = lonDouble+0.001;
+
+        //this.distance = distance()
     }
 
     /**
@@ -85,13 +102,14 @@ public class CreateSite extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Adding site ...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        pDialogAddSite = new ProgressDialog(context);
+        pDialogAddSite.setMessage("Adding site ...");
+        pDialogAddSite.setIndeterminate(false);
+        pDialogAddSite.setCancelable(true);
+        pDialogAddSite.show();
 
         uid = AppController.getString(context, "uid");
+        email = AppController.getString(context, "email");
     }
 
     /**
@@ -104,7 +122,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
+            String json = addSite(uid, email, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
@@ -167,7 +185,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        //pDialog.dismiss();
+        pDialogAddSite.dismiss();
         try {
             JSONObject resp = new JSONObject(postResponse);
 
@@ -196,9 +214,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
         return "{\"tag\":\"" + tag + "\","
                 + "\"uid\":\"" + uid + "\","
+                + "\"email\":\"" + email + "\","
                 + "\"relat\":\"" + relat + "\","
                 + "\"lat\":\"" + lat + "\","
                 + "\"lon\":\"" + lon + "\","
@@ -215,7 +234,32 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"feature8\":\"" + feature8 + "\","
                 + "\"feature9\":\"" + feature9 + "\","
                 + "\"feature10\":\"" + feature10 + "\","
-                + "\"image\":\"" + image + "\"}";
+                + "\"image\":\"" + image + "\","
+                + "\"latLowerBound\":\"" + latLowerBound + "\","
+                + "\"latUpperBound\":\"" + latUpperBound + "\","
+                + "\"lonLowerBound\":\"" + lonLowerBound + "\","
+                + "\"lonUpperBound\":\"" + lonUpperBound + "\"}";
     }
+
+    public static double distance(double lat1, double lat2, double lon1,
+                                  double lon2) {
+
+        final int R = 6371; // Radius of the earth
+
+        Double latDistance = Math.toRadians(lat2 - lat1);
+        Double lonDistance = Math.toRadians(lon2 - lon1);
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        //double height = el1 - el2;
+
+        distance = Math.pow(distance, 2); //+ Math.pow(height, 2);
+
+        return Math.sqrt(distance);
+    }
+
 
 }

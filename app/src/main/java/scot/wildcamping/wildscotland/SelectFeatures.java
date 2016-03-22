@@ -172,7 +172,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature1box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature1){
+                if(newFeature1){
                     //turn colour grey
                     feature1box.setBackgroundColor(gray);
                     newFeature1 = false;
@@ -187,7 +187,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature2box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature2){
+                if(newFeature2){
                     //turn colour grey
                     feature2box.setBackgroundColor(gray);
                     newFeature2 = false;
@@ -202,7 +202,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature3box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature3){
+                if(newFeature3){
                     //turn colour grey
                     feature3box.setBackgroundColor(gray);
                     newFeature3 = false;
@@ -217,7 +217,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature4box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature4){
+                if(newFeature4){
                     //turn colour grey
                     feature4box.setBackgroundColor(gray);
                     newFeature4 = false;
@@ -232,7 +232,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature5box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature5){
+                if(newFeature5){
                     //turn colour grey
                     feature5box.setBackgroundColor(gray);
                     newFeature5 = false;
@@ -247,7 +247,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature6box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature6){
+                if(newFeature6){
                     //turn colour grey
                     feature6box.setBackgroundColor(gray);
                     newFeature6 = false;
@@ -262,7 +262,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature7box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature7){
+                if(newFeature7){
                     //turn colour grey
                     feature7box.setBackgroundColor(gray);
                     newFeature7 = false;
@@ -277,7 +277,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature8box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature8){
+                if(newFeature8){
                     //turn colour grey
                     feature8box.setBackgroundColor(gray);
                     newFeature8 = false;
@@ -292,7 +292,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature9box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature9){
+                if(newFeature9){
                     //turn colour grey
                     feature9box.setBackgroundColor(gray);
                     newFeature9 = false;
@@ -307,7 +307,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature10box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(feature10){
+                if(newFeature10){
                     //turn colour grey
                     feature10box.setBackgroundColor(gray);
                     newFeature10 = false;
@@ -369,16 +369,6 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
 
                     //bundle for update
                     i.putExtra("arrayPosition", arrayPos);
-                    i.putExtra("feature1", newFeature1);
-                    i.putExtra("feature2", newFeature2);
-                    i.putExtra("feature3", newFeature3);
-                    i.putExtra("feature4", newFeature4);
-                    i.putExtra("feature5", newFeature5);
-                    i.putExtra("feature6", newFeature6);
-                    i.putExtra("feature7", newFeature7);
-                    i.putExtra("feature8", newFeature8);
-                    i.putExtra("feature9", newFeature9);
-                    i.putExtra("feature10", newFeature10);
                 } else {
                     i = new Intent(getApplicationContext(), AddSite.class);
 
@@ -389,17 +379,18 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                     i.putExtra("title", title);
                     i.putExtra("description", description);
                     i.putExtra("rating", rating);
-                    i.putExtra("feature1", newFeature1);
-                    i.putExtra("feature2", newFeature2);
-                    i.putExtra("feature3", newFeature3);
-                    i.putExtra("feature4", newFeature4);
-                    i.putExtra("feature5", newFeature5);
-                    i.putExtra("feature6", newFeature6);
-                    i.putExtra("feature7", newFeature7);
-                    i.putExtra("feature8", newFeature8);
-                    i.putExtra("feature9", newFeature9);
-                    i.putExtra("feature10", newFeature10);
                 }
+
+                i.putExtra("feature1", newFeature1);
+                i.putExtra("feature2", newFeature2);
+                i.putExtra("feature3", newFeature3);
+                i.putExtra("feature4", newFeature4);
+                i.putExtra("feature5", newFeature5);
+                i.putExtra("feature6", newFeature6);
+                i.putExtra("feature7", newFeature7);
+                i.putExtra("feature8", newFeature8);
+                i.putExtra("feature9", newFeature9);
+                i.putExtra("feature10", newFeature10);
 
                 startActivity(i);
                 finish();

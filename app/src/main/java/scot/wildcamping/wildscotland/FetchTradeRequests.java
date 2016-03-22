@@ -28,7 +28,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialog;
+    private ProgressDialog pDialogTrades;
     private Context context;
     String user;
     final int tradeStatus = 0;
@@ -47,11 +47,11 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Fetching Trade Requests...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        pDialogTrades = new ProgressDialog(context);
+        pDialogTrades.setMessage("Fetching Trade Requests...");
+        pDialogTrades.setIndeterminate(false);
+        pDialogTrades.setCancelable(true);
+        pDialogTrades.show();
     }
 
     /**
@@ -120,7 +120,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+        pDialogTrades.dismiss();
     }
 
     private String doGetRequest(String url)throws IOException{
