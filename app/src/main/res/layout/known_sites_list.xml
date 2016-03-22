@@ -4,10 +4,11 @@
     android:id="@+id/site"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
+    android:padding="15dp"
+    android:layout_margin="15dp"
     android:focusable="false"
     android:descendantFocusability="blocksDescendants"
-    android:background="@color/colorPrimary">
+    android:background="@drawable/shadow">
 
     <TextView
         android:id="@+id/title"
@@ -16,50 +17,12 @@
         android:text="Title"
         android:textSize="30sp"/>
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/siteThumbnails"
-        android:layout_below="@+id/title">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/siteThumbnail1"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_photos"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/siteThumbnail2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_photos"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/siteThumbnail3"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_photos"
-                android:visibility="visible"/>
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
 
     <HorizontalScrollView
         android:id="@+id/features"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/siteThumbnails">
+        android:layout_below="@+id/title">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -178,6 +141,7 @@
         android:layout_centerHorizontal="true"
         android:clickable="false"
         android:focusable="false"
+        android:isIndicator="true"
         android:progressTint="@color/counter_text_color"/>
 
 </RelativeLayout>

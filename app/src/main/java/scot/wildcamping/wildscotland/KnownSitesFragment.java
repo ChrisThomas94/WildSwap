@@ -34,10 +34,6 @@ public class KnownSitesFragment extends Fragment{
 
         mDrawerList = (ListView) rootView.findViewById(R.id.known_sites_listview);
 
-        if(isNetworkAvailable()){
-            new FetchKnownSites(getActivity()).execute();
-        }
-
         inst = new knownSite();
         knownSites = new SparseArray<>();
         knownSites = inst.getKnownSitesMap();
@@ -48,13 +44,13 @@ public class KnownSitesFragment extends Fragment{
 
                 Intent intent = new Intent(getActivity(), KnownSiteActivity.class);
                 intent.putExtra("arrayPosition", position);
-                intent.putExtra("latitude", knownSites.get(position).getPosition().latitude);
-                intent.putExtra("longitude", knownSites.get(position).getPosition().longitude);
+                //intent.putExtra("latitude", knownSites.get(position).getPosition().latitude);
+                //intent.putExtra("longitude", knownSites.get(position).getPosition().longitude);
                 intent.putExtra("cid", knownSites.get(position).getCid());
-                intent.putExtra("title", knownSites.get(position).getTitle());
-                intent.putExtra("description", knownSites.get(position).getDescription());
-                intent.putExtra("rating", knownSites.get(position).getRating());
-                intent.putExtra("image", knownSites.get(position).getImage());
+                //intent.putExtra("title", knownSites.get(position).getTitle());
+                //intent.putExtra("description", knownSites.get(position).getDescription());
+                //intent.putExtra("rating", knownSites.get(position).getRating());
+                //intent.putExtra("image", knownSites.get(position).getImage());
                 intent.putExtra("prevState", 2);
                 startActivity(intent);
             }

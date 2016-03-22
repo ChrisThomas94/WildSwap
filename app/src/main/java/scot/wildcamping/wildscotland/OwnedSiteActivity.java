@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,9 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 
+import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -50,7 +54,8 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
     Bitmap imageBit;
     int prevState;
     SparseArray<Site> owned = new SparseArray<>();
-
+    int RESULT_LOAD_IMAGE = 0;
+    ImageView addImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,10 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
-        ImageView image = (ImageView)findViewById(R.id.image1);
+        ImageView image1 = (ImageView)findViewById(R.id.image1);
+        ImageView image2 = (ImageView)findViewById(R.id.image2);
+        ImageView image3 = (ImageView)findViewById(R.id.image3);
+        addImage = (ImageView)findViewById(R.id.addImage);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -94,8 +102,22 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
         rating.setRating((focused.getRating()).floatValue());
-        imageBit = StringToBitMap(focused.getImage());
-        image.setImageBitmap(imageBit);
+
+        if(focused.getImage() != null) {
+            imageBit = StringToBitMap(focused.getImage());
+            image1.setImageBitmap(imageBit);
+            image1.setVisibility(View.VISIBLE);
+        }
+        if(focused.getImage2() != null) {
+            imageBit = StringToBitMap(focused.getImage2());
+            image2.setImageBitmap(imageBit);
+            image2.setVisibility(View.VISIBLE);
+        }
+        if(focused.getImage3() != null) {
+            imageBit = StringToBitMap(focused.getImage3());
+            image3.setImageBitmap(imageBit);
+            image3.setVisibility(View.VISIBLE);
+        }
 
         if(focused.getFeature1().equals("0")){
             feature1Image.setVisibility(View.GONE);
@@ -175,24 +197,14 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
 
-                //intent.putExtra("latitude", latitude);
-                //intent.putExtra("longitude", longitude);
-                //intent.putExtra("image", imageStr);
-                //intent.putExtra("feature1", feature1);
-                //intent.putExtra("feature2", feature2);
-                //intent.putExtra("feature3", feature3);
-                //intent.putExtra("feature4", feature4);
-                //intent.putExtra("feature5", feature5);
-                //intent.putExtra("feature6", feature6);
-                //intent.putExtra("feature7", feature7);
-                //intent.putExtra("feature8", feature8);
-                //intent.putExtra("feature9", feature9);
-                //intent.putExtra("feature10", feature10);
-                //intent.putExtra("title", titleBun);
-                //intent.putExtra("description", descriptionBun);
-                //intent.putExtra("rating", ratingBun);
                 startActivity(intent);
                 finish();
+                break;
+
+            case R.id.image1:
+
+
+
                 break;
         }
 
@@ -221,8 +233,44 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
                 finish();
                 return true;
+
+            case R.id.addImage:
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+
+                break;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            Uri targetUri = data.getData();
+            try{
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                String image = getStringImage(bitmap);
+
+                addImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public String getStringImage(Bitmap bmp){
+        if(bmp != null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            return encodedImage;
+        } else {
+            return null;
+        }
     }
 
 }

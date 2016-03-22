@@ -176,19 +176,22 @@
         android:layout_gravity="center"
         android:layout_margin="15dp">
 
+        <TextView
+            android:id="@+id/sendTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textSize="30sp"
+            android:text="Site title"/>
+
         <LinearLayout
             android:id="@+id/titleAndFeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_below="@+id/sendTitle">
 
-            <TextView
-                android:id="@+id/sendTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="30sp"
-                android:text="Site title"/>
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
@@ -206,6 +209,7 @@
                         android:src="@drawable/ic_add_to_photos_black_48dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"
+                        android:visibility="gone"
                         android:scaleType="fitXY"/>
 
                     <ImageView
@@ -215,6 +219,7 @@
                         android:src="@drawable/ic_add_to_photos_black_48dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"
+                        android:visibility="gone"
                         android:scaleType="fitXY"/>
 
                     <ImageView
@@ -224,6 +229,7 @@
                         android:src="@drawable/ic_add_to_photos_black_48dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"
+                        android:visibility="gone"
                         android:scaleType="fitXY"/>
 
                     <ImageView
@@ -233,6 +239,7 @@
                         android:src="@drawable/ic_add_to_photos_black_48dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="5dp"
+                        android:visibility="gone"
                         android:scaleType="fitXY"/>
 
                 </LinearLayout>

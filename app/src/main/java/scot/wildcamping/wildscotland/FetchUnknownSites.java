@@ -84,14 +84,16 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                 if(!error) {
                     int counter = 0;
                     for (int i = 0; i < size; i++) {
+                        Site siteClass = new Site();
                         JSONObject jsonSite = jObj.getJSONObject("site" + i);
+                        JSONObject jsonDetails = jsonSite.getJSONObject("details");
 
                         boolean knownError = false;
 
 
                         for(int j = 0; j< knownSize; j++){
-                            if (knownSites.get(j).getCid().equals(jsonSite.getString("unique_cid"))){
-                                System.out.print("This is actually a known site: " + jsonSite.getString("unique_cid"));
+                            if (knownSites.get(j).getCid().equals(jsonDetails.getString("unique_cid"))){
+                                System.out.print("This is actually a known site: " + jsonDetails.getString("unique_cid"));
                                 knownError = true;
                                 size--;
 
@@ -99,29 +101,31 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                         }
 
                         if(!knownError){
-                            String longitude = jsonSite.getString("longitude");
-                            String latitude = jsonSite.getString("latitude");
+                            //int populairty = jsonSite.getInt("pop");
+                            String longitude = jsonDetails.getString("longitude");
+                            String latitude = jsonDetails.getString("latitude");
                             double lon = Double.parseDouble(longitude);
                             double lat = Double.parseDouble(latitude);
                             LatLng unknown = new LatLng(lat, lon);
 
-                            Site siteClass = new Site();
-                            siteClass.setCid(jsonSite.getString("unique_cid"));
+
+                            siteClass.setPopularity(jsonSite.getInt("pop"));
+                            siteClass.setCid(jsonDetails.getString("unique_cid"));
                             siteClass.setPosition(unknown);
-                            siteClass.setTitle(jsonSite.getString("title"));
-                            siteClass.setDescription(jsonSite.getString("description"));
-                            siteClass.setRating(jsonSite.getDouble("rating"));
-                            siteClass.setFeature1(jsonSite.getString("feature1"));
-                            siteClass.setFeature2(jsonSite.getString("feature2"));
-                            siteClass.setFeature3(jsonSite.getString("feature3"));
-                            siteClass.setFeature4(jsonSite.getString("feature4"));
-                            siteClass.setFeature5(jsonSite.getString("feature5"));
-                            siteClass.setFeature6(jsonSite.getString("feature6"));
-                            siteClass.setFeature7(jsonSite.getString("feature7"));
-                            siteClass.setFeature8(jsonSite.getString("feature8"));
-                            siteClass.setFeature9(jsonSite.getString("feature9"));
-                            siteClass.setFeature10(jsonSite.getString("feature10"));
-                            siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
+                            siteClass.setTitle(jsonDetails.getString("title"));
+                            siteClass.setDescription(jsonDetails.getString("description"));
+                            siteClass.setRating(jsonDetails.getDouble("rating"));
+                            siteClass.setFeature1(jsonDetails.getString("feature1"));
+                            siteClass.setFeature2(jsonDetails.getString("feature2"));
+                            siteClass.setFeature3(jsonDetails.getString("feature3"));
+                            siteClass.setFeature4(jsonDetails.getString("feature4"));
+                            siteClass.setFeature5(jsonDetails.getString("feature5"));
+                            siteClass.setFeature6(jsonDetails.getString("feature6"));
+                            siteClass.setFeature7(jsonDetails.getString("feature7"));
+                            siteClass.setFeature8(jsonDetails.getString("feature8"));
+                            siteClass.setFeature9(jsonDetails.getString("feature9"));
+                            siteClass.setFeature10(jsonDetails.getString("feature10"));
+                            siteClass.setSiteAdmin(jsonDetails.getString("site_admin"));
 
 
                             unknownSites.put(counter, siteClass);

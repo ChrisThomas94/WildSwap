@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
 
-public class OpenTradesFragment extends Fragment{
+public class OpenTradesFragment extends Fragment {
 	
 	public OpenTradesFragment(){}
 
@@ -34,14 +35,10 @@ public class OpenTradesFragment extends Fragment{
 	@Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
- 
+
         View rootView = inflater.inflate(R.layout.fragment_open_trades, container, false);      //fragment_open_trades
 
         mDrawerList = (ListView) rootView.findViewById(R.id.open_trades_listview);
-
-        if(isNetworkAvailable()) {
-            new FetchTradeRequests(getActivity()).execute();
-        }
 
         trades = new StoredTrades();
         activeTrades = new SparseArray<>();

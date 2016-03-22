@@ -26,6 +26,7 @@ public class YourSitesFragment extends Fragment {
     private SiteListAdapter adapter;
     private ListView mDrawerList;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -33,10 +34,6 @@ public class YourSitesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_your_sites, container, false);
 
         mDrawerList = (ListView) rootView.findViewById(R.id.known_sites_listview);
-
-        if(isNetworkAvailable()){
-            new FetchKnownSites(getActivity()).execute();
-        }
 
         inst = new knownSite();
         ownedSites = new SparseArray<>();
@@ -48,13 +45,7 @@ public class YourSitesFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), OwnedSiteActivity.class);
                 intent.putExtra("arrayPosition", position);
-                //intent.putExtra("latitude", ownedSites.get(position).getPosition().latitude);
-                //intent.putExtra("longitude", ownedSites.get(position).getPosition().longitude);
                 intent.putExtra("cid", ownedSites.get(position).getCid());
-                //intent.putExtra("title", ownedSites.get(position).getTitle());
-                //intent.putExtra("description", ownedSites.get(position).getDescription());
-                //intent.putExtra("rating", ownedSites.get(position).getRating());
-                //intent.putExtra("image", ownedSites.get(position).getImage());
                 intent.putExtra("prevState", 1);
                 startActivity(intent);
             }

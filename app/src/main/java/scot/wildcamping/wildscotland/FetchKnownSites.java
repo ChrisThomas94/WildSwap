@@ -38,6 +38,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     private ProgressDialog pDialogKnownSites;
     private Context context;
     String user;
+    String email;
     final int relatOwn = 90;
     final int relatTrade = 45;
     String image;
@@ -72,6 +73,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = AppController.getString(context, "uid");
+        email = AppController.getString(context, "email");
 
         // issue the post request
         try {
@@ -133,7 +135,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                             }
                         }
 
-                        if (jsonSite.getString("site_admin").equals(user)) {
+                        if (jsonSite.getString("site_admin").equals(email)) {
                             owned.put(ownedCnt, siteClass);
                             ownedCnt++;
                         } else {
@@ -168,7 +170,17 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once donepDialog.dismiss();
-        pDialogKnownSites.dismiss();
+        try {
+            if ((this.pDialogKnownSites != null) && this.pDialogKnownSites.isShowing()) {
+                this.pDialogKnownSites.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            // Handle or log or ignore
+        } catch (final Exception e) {
+            // Handle or log or ignore
+        } finally {
+            this.pDialogKnownSites = null;
+        }
     }
 
     private String doGetRequest(String url) throws IOException {

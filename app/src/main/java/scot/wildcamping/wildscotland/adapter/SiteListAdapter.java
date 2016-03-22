@@ -55,7 +55,9 @@ public class SiteListAdapter extends BaseAdapter {
         }
 
         RelativeLayout site = (RelativeLayout) convertView.findViewById(R.id.site);
-        ImageView siteThumbnail = (ImageView) convertView.findViewById(R.id.siteThumbnail1);
+        //ImageView siteThumbnail1 = (ImageView) convertView.findViewById(R.id.siteThumbnail1);
+        //ImageView siteThumbnail2 = (ImageView) convertView.findViewById(R.id.siteThumbnail2);
+        //ImageView siteThumbnail3 = (ImageView) convertView.findViewById(R.id.siteThumbnail3);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         ImageView feature1 = (ImageView) convertView.findViewById(R.id.preview_feature1);
         ImageView feature2 = (ImageView) convertView.findViewById(R.id.preview_feature2);
@@ -72,9 +74,23 @@ public class SiteListAdapter extends BaseAdapter {
         //siteThumbnail.setImageResource(knownSites.get(position).getImage());
         title.setText(knownSites.get(position).getTitle());
 
-        Bitmap image = StringToBitMap(knownSites.get(position).getImage());
 
-        siteThumbnail.setImageBitmap(image);
+        /*if(knownSites.get(position).getImage() != null){
+            Bitmap image = StringToBitMap(knownSites.get(position).getImage());
+            siteThumbnail1.setVisibility(View.VISIBLE);
+            siteThumbnail1.setImageBitmap(image);
+        }
+        if(knownSites.get(position).getImage2() != null){
+            Bitmap image = StringToBitMap(knownSites.get(position).getImage2());
+            siteThumbnail2.setVisibility(View.VISIBLE);
+            siteThumbnail2.setImageBitmap(image);
+        }
+        if(knownSites.get(position).getImage3() != null){
+            Bitmap image = StringToBitMap(knownSites.get(position).getImage3());
+            siteThumbnail3.setVisibility(View.VISIBLE);
+            siteThumbnail3.setImageBitmap(image);
+        }*/
+
 
         if(knownSites.get(position).getFeature1().equals("0")){
             feature1.setVisibility(View.GONE);

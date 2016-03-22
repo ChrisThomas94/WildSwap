@@ -3,7 +3,9 @@ package scot.wildcamping.wildscotland;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -15,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+
+import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -44,8 +50,8 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     int prevState;
     int arrayPos;
     SparseArray<Site> known = new SparseArray<>();
-
-
+    int RESULT_LOAD_IMAGE = 0;
+    ImageView addImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,35 +76,43 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
-        ImageView image = (ImageView)findViewById(R.id.image1);
-
+        ImageView image1 = (ImageView)findViewById(R.id.image1);
+        ImageView image2 = (ImageView)findViewById(R.id.image2);
+        ImageView image3 = (ImageView)findViewById(R.id.image3);
+        addImage = (ImageView)findViewById(R.id.addImage);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
             arrayPos = extras.getInt("arrayPosition");
-            latitude = extras.getDouble("latitude");
-            longitude = extras.getDouble("longitude");
             cid = extras.getString("cid");
-            titleBun = extras.getString("title");
-            descriptionBun = extras.getString("description");
-            ratingBun = extras.getDouble("rating");
-            imageStr = extras.getString("image");
             prevState = extras.getInt("prevState");
-
-
-            title.setText(titleBun);
-            description.setText(descriptionBun);
-            rating.setRating(ratingBun.floatValue());
-
-            imageBit = StringToBitMap(imageStr);
-            image.setImageBitmap(imageBit);
         }
 
         knownSite inst = new knownSite();
         known = inst.getKnownSitesMap();
 
         Site focused = known.get(arrayPos);
+
+        title.setText(focused.getTitle());
+        description.setText(focused.getDescription());
+        rating.setRating(focused.getRating().floatValue());
+
+        if(focused.getImage() != null) {
+            imageBit = StringToBitMap(focused.getImage());
+            image1.setImageBitmap(imageBit);
+            image1.setVisibility(View.VISIBLE);
+        }
+        if(focused.getImage2() != null) {
+            imageBit = StringToBitMap(focused.getImage2());
+            image2.setImageBitmap(imageBit);
+            image2.setVisibility(View.VISIBLE);
+        }
+        if(focused.getImage3() != null) {
+            imageBit = StringToBitMap(focused.getImage3());
+            image3.setImageBitmap(imageBit);
+            image3.setVisibility(View.VISIBLE);
+        }
 
         feature1 = focused.getFeature1();
         feature2 = focused.getFeature2();
@@ -143,6 +157,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         }
 
         contact.setOnClickListener(this);
+        addImage.setOnClickListener(this);
     }
 
     @Override
@@ -153,6 +168,12 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             case R.id.contactSiteAdmin:
                 Intent i = new Intent(getApplicationContext(), ContactUser.class);
                 startActivity(i);
+                break;
+
+            case R.id.addImage:
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
+
                 break;
         }
 
@@ -184,6 +205,36 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            Uri targetUri = data.getData();
+            try{
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                String image = getStringImage(bitmap);
+
+                addImage.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public String getStringImage(Bitmap bmp){
+        if(bmp != null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            return encodedImage;
+        } else {
+            return null;
+        }
     }
 
 }

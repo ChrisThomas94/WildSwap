@@ -1,10 +1,13 @@
 package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -30,6 +34,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     int recieveSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
     SparseArray<Site> ownedMap;
+    SparseArray<Site> knownMap;
     SparseArray<Site> unknownMap;
     Site recieveSite;
     Site sendSite;
@@ -64,6 +69,10 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     ImageView sendFeatures9;
     ImageView sendFeatures10;
     RatingBar sendRating;
+    ImageView sendPicture1;
+    ImageView sendPicture2;
+    ImageView sendPicture3;
+    ImageView sendPicture4;
 
     Boolean siteAlreadyOwned;
 
@@ -115,11 +124,15 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         sendFeatures9 = (ImageView)findViewById(R.id.sendFeatures9);
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
+        sendPicture1 = (ImageView)findViewById(R.id.sendPicture1);
+        sendPicture2 = (ImageView)findViewById(R.id.sendPicture2);
+        sendPicture3 = (ImageView)findViewById(R.id.sendPicture3);
+        sendPicture4 = (ImageView)findViewById(R.id.sendPicture4);
 
         configSites();
 
         if(siteAlreadyOwned){
-            Snackbar.make(parentLayout, "You already own the site being offered!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(parentLayout, "Attention! You already own the site being offered!", Snackbar.LENGTH_LONG).show();
         }
 
         reject.setOnClickListener(this);
@@ -130,6 +143,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
     public void configSites(){
 
+        knownMap = inst.getKnownSitesMap();
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
@@ -152,11 +166,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             }
         }
 
+        System.out.print(recieveSite);
         if(recieveSite == null){
             System.out.println("recieveSite == null");
-            for(int j=0; j<sizeOwn; j++){
-                if (ownedMap.get(j).getCid().equals(send_cid)){
-                    recieveSite = ownedMap.get(j);
+            for(int j=0; j<knownMap.size(); j++){
+                if (knownMap.get(j).getCid().equals(send_cid)){
+                    recieveSite = knownMap.get(j);
                     siteAlreadyOwned=true;
                 }
             }
@@ -213,6 +228,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             sendFeatures10.setVisibility(View.GONE);
         }else{
             sendFeatures10.setVisibility(View.VISIBLE);
+        }
+
+        if(sendSite.getImage() != null){
+            Bitmap image1 = StringToBitMap(sendSite.getImage());
+            sendPicture1.setImageBitmap(image1);
+            sendPicture1.setVisibility(View.VISIBLE);
         }
 
         sendRating.setRating((sendSite.getRating()).floatValue());
@@ -325,6 +346,15 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         return (super.onOptionsItemSelected(menuItem));
     }
 
-
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 
 }

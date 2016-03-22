@@ -5,6 +5,7 @@ import scot.wildcamping.wildscotland.model.NavDrawerItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 //import android.support.v4.app.Fragment;
 //import android.app.Activity;
@@ -171,8 +172,16 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_refresh:
-			new FetchKnownSites(this).execute();
-			new FetchUnknownSites(this).execute();
+			if(isNetworkAvailable()) {
+				try {
+					String known_result = new FetchKnownSites(this).execute().get();
+					String unknown_result = new FetchUnknownSites(this).execute().get();
+				} catch (InterruptedException e) {
+
+				} catch (ExecutionException e) {
+
+				}
+			}
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -200,15 +209,52 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		switch (position) {
 		case 0:
 			mapsFragment = new MapsFragment();
+			if(isNetworkAvailable()) {
+				try {
+					String known_result = new FetchKnownSites(this).execute().get();
+					String unknown_result = new FetchUnknownSites(this).execute().get();
+				} catch (InterruptedException e) {
+
+				} catch (ExecutionException e) {
+
+				}
+			}
 			break;
 		case 1:
 			fragment = new YourSitesFragment();
+			if(isNetworkAvailable()) {
+				try {
+					String your_result = new FetchKnownSites(this).execute().get();
+				} catch (InterruptedException e) {
+
+				} catch (ExecutionException e) {
+
+				}
+			}
 			break;
 		case 2:
 			fragment = new KnownSitesFragment();
+			if(isNetworkAvailable()) {
+				try {
+					String known_result = new FetchKnownSites(this).execute().get();
+				} catch (InterruptedException e) {
+
+				} catch (ExecutionException e) {
+
+				}
+			}
 			break;
 		case 3:
 			fragment = new OpenTradesFragment();
+			if(isNetworkAvailable()) {
+				try {
+					String str_result = new FetchTradeRequests(this).execute().get();
+				} catch (InterruptedException e) {
+
+				} catch (ExecutionException e) {
+
+				}
+			}
 			break;
 		case 4:
 			fragment = new SiteSearchFragment();

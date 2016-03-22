@@ -53,8 +53,7 @@ public class LogOut extends AppCompatActivity {
     private void logoutUser() {
         session.setLogin(false);
         knownSite inst = new knownSite();
-        SparseArray<Site> empty = new SparseArray<>();
-        empty = inst.getOwnedSitesMap();
+        SparseArray<Site> empty = inst.getOwnedSitesMap();
         empty.clear();
         inst.setOwnedSitesMap(empty);
         //inst.setKnownSitesMap(empty);

@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -80,9 +82,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         if (session.isLoggedIn()) {
 
             if(isNetworkAvailable()){
-                new FetchKnownSites(this).execute();
-                new FetchUnknownSites(this).execute();
-                new FetchTradeRequests(this).execute();
+                try {
+                    String known_results = new FetchKnownSites(this).execute().get();
+                    String unknown_result = new FetchUnknownSites(this).execute().get();
+                    String trade_result = new FetchTradeRequests(this).execute().get();
+                } catch (ExecutionException e){
+
+                } catch (InterruptedException e){
+
+                }
             }
 
             Intent intent = new Intent(Login.this, MainActivity.class);

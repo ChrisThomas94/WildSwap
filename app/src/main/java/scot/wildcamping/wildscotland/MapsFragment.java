@@ -117,12 +117,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if(isNetworkAvailable()){
-            new FetchKnownSites(getActivity()).execute();
-            new FetchUnknownSites(getActivity()).execute();
-        }
-
-
         knownSitesMap = inst.getKnownSitesMap();
         knownSiteSize = inst.getKnownSiteSize();
 
@@ -440,12 +434,12 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         if (marker.getPosition().equals(currentSite.getPosition())) {
                             Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
                             intent.putExtra("arrayPosition", i);
-                            intent.putExtra("latitude", currentSite.getPosition().latitude);
-                            intent.putExtra("longitude", currentSite.getPosition().longitude);
+                            //intent.putExtra("latitude", currentSite.getPosition().latitude);
+                            //intent.putExtra("longitude", currentSite.getPosition().longitude);
                             intent.putExtra("cid", currentSite.getCid());
-                            intent.putExtra("title", currentSite.getTitle());
-                            intent.putExtra("description", currentSite.getDescription());
-                            intent.putExtra("rating", currentSite.getRating());
+                            //intent.putExtra("title", currentSite.getTitle());
+                            //intent.putExtra("description", currentSite.getDescription());
+                            /*intent.putExtra("rating", currentSite.getRating());
                             intent.putExtra("feature1", currentSite.getFeature1());
                             intent.putExtra("feature2", currentSite.getFeature2());
                             intent.putExtra("feature3", currentSite.getFeature3());
@@ -456,7 +450,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             intent.putExtra("feature8", currentSite.getFeature8());
                             intent.putExtra("feature9", currentSite.getFeature9());
                             intent.putExtra("feature10", currentSite.getFeature10());
-                            intent.putExtra("image", currentSite.getImage());
+                            //intent.putExtra("image", currentSite.getImage());*/
                             intent.putExtra("prevState", 0);
                             startActivity(intent);
                             getActivity().finish();

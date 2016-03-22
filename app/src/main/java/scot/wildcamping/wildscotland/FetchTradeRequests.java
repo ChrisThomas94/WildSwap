@@ -37,6 +37,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     SparseArray<Trade> sentTrades = new SparseArray<>();
     SparseArray<Trade> receivedTrades = new SparseArray<>();
 
+
     public FetchTradeRequests(Context context) {
         this.context = context;
     }

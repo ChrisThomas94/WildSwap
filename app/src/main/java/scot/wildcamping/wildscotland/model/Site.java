@@ -12,6 +12,7 @@ public class Site {
     private String cid;
     private String siteAdmin;
     private LatLng position;
+    private int popularity;
     private String title;
     private String description;
     private Double rating;
@@ -55,6 +56,14 @@ public class Site {
 
     public LatLng getPosition(){
         return position;
+    }
+
+    public void setPopularity(int pop){
+        this.popularity = pop;
+    }
+
+    public int getPopularity(){
+        return popularity;
     }
 
     public void setTitle(String title){
@@ -167,6 +176,22 @@ public class Site {
 
     public String getImage(){
         return image;
+    }
+
+    public void setImage2(String image2){
+        this.image2 = image2;
+    }
+
+    public String getImage2(){
+        return image2;
+    }
+
+    public void setImage3(String image3){
+        this.image3 = image3;
+    }
+
+    public String getImage3(){
+        return image3;
     }
 
     public void setFetchedImages(SparseArray<Image> images){

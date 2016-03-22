@@ -32,6 +32,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     int ownedSitesSize;
     int unknownSitesSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
+    SparseArray<Site> unknownSitesSorted = new SparseArray<>();     //sorted based on popularity
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
     Site recieveSite;
@@ -39,6 +40,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     String send_cid;
     String recieve_cid;
     int ownedSiteInit =0;
+    int prevSite = 0;
+    int nextSite = 0;
 
     TextView recieveTitle;
     ImageView features1;
@@ -87,7 +90,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         Button right = (Button)findViewById(R.id.btn_right);
         Button left = (Button)findViewById(R.id.btn_left);
 
-
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         features1 = (ImageView)findViewById(R.id.features1);
         features2 = (ImageView)findViewById(R.id.features2);
@@ -122,6 +124,10 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             System.out.println("Trade" + cluster + recieveSize);
         }
 
+        if(recieveSize == 1){
+            refresh.setVisibility(View.INVISIBLE);
+        }
+
         //where lat lng of cluster = lat lng of map
         //add to new map
 
@@ -131,14 +137,15 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 Site currentSite = unknownMap.get(j);
 
                 if (cluster.get(i).equals(currentSite.getPosition())) {
-                    System.out.println(currentSite.getPosition());
+                    System.out.println(currentSite.getTitle());
                     selectedUnknownSites.put(i, currentSite);
+                    unknownSitesSorted.put(i, currentSite);
                 }
             }
         }
 
         //initialise unknown site
-        genUnknownSite(0);
+        genUnknownSite(nextSite);
 
         //initialise known site
         genOwnedSite(ownedSiteInit);
@@ -212,6 +219,37 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     }
 
     public void genUnknownSite(int random){
+
+        /*int currentPop;
+        int leastPopularSite = 0;
+        int leastPop = 100;
+
+        if(unknownSitesSorted.size() == 0){
+            unknownSitesSorted = selectedUnknownSites.clone();
+            System.out.println("i am clonning");
+        }
+
+        for(int i = 0; i < unknownSitesSorted.size(); i++){
+
+            currentPop = unknownSitesSorted.valueAt(i).getPopularity();
+
+            if(currentPop <= leastPop){
+                leastPop = currentPop;
+                leastPopularSite = i;
+                System.out.println("lower: "+unknownSitesSorted.valueAt(i).getPosition());
+            } else {
+                System.out.println("over: "+unknownSitesSorted.valueAt(i).getPosition());
+            }
+        }*/
+
+        //System.out.println(leastPopularSite);
+        //recieveSite = unknownSitesSorted.valueAt(leastPopularSite);
+        //unknownSitesSorted = unknownSitesSorted.clone();
+        //unknownSitesSorted.remove(leastPopularSite);
+        //System.out.println("removed");
+
+        //System.out.println("recieve site: " + recieveSite);
+
         recieveSite = selectedUnknownSites.get(random);
 
         recieve_cid = recieveSite.getCid();
@@ -270,6 +308,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         }
 
         recieveRating.setRating((recieveSite.getRating()).floatValue());
+
     }
 
     @Override
@@ -290,8 +329,14 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             //on clicking the signin button check for the empty field then call the checkLogin() function
             case R.id.btnRefresh_Trade:
+
                 Random ran = new Random();
-                int nextSite = ran.nextInt(recieveSize);
+                if(nextSite == selectedUnknownSites.size()-1){
+                    nextSite = 0;
+                } else {
+                    nextSite++;
+                }
+                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.size()-1, nextSite);
                 genUnknownSite(nextSite);
                 break;
 
@@ -339,6 +384,17 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
+        int random = start + rnd.nextInt(end - start + 1 - exclude.length);
+        for (int ex : exclude) {
+            if (random < ex) {
+                break;
+            }
+            random++;
+        }
+        return random;
     }
 
 }

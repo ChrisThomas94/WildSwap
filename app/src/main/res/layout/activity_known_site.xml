@@ -144,17 +144,27 @@
                 <ImageView
                     android:id="@+id/image1"
                     android:layout_width="150dp"
-                    android:layout_height="150dp" />
+                    android:layout_height="150dp"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/image2"
                     android:layout_width="150dp"
-                    android:layout_height="150dp" />
+                    android:layout_height="150dp"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/image3"
                     android:layout_width="150dp"
-                    android:layout_height="150dp" />
+                    android:layout_height="150dp"
+                    android:visibility="gone"/>
+
+                <ImageButton
+                    android:id="@+id/addImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_add_a_photo_black_48dp"/>
 
             </LinearLayout>
 
