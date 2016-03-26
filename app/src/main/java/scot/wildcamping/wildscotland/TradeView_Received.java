@@ -230,12 +230,6 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             sendFeatures10.setVisibility(View.VISIBLE);
         }
 
-        if(sendSite.getImage() != null){
-            Bitmap image1 = StringToBitMap(sendSite.getImage());
-            sendPicture1.setImageBitmap(image1);
-            sendPicture1.setVisibility(View.VISIBLE);
-        }
-
         sendRating.setRating((sendSite.getRating()).floatValue());
 
         recieveTitle.setText(recieveSite.getTitle());

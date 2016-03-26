@@ -7,10 +7,20 @@
     android:layout_margin="15dp">
 
     <RelativeLayout
+        android:id="@+id/theirSite"
+        android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:background="@drawable/clear_shadow">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Their Site"
+            android:id="@+id/signpostTheirs"/>
 
         <TextView
             android:id="@+id/recieveTitle"
@@ -18,7 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="30sp"
-            android:text="Site title"/>
+            android:text="Site title"
+            android:layout_below="@+id/signpostTheirs"/>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -160,82 +171,33 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/yourSite"
+        android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:background="@drawable/clear_shadow">
 
-        <LinearLayout
-            android:id="@+id/titleAndFeat"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Your Site"
+            android:id="@+id/signpostYours"/>
 
         <TextView
             android:id="@+id/sendTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:textSize="30sp"
-            android:layout_gravity="center"
-            android:text="Site title"/>
-
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/sendPicture1"
-                        android:layout_width="100dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:visibility="gone"
-                        android:scaleType="fitXY"/>
-
-                    <ImageView
-                        android:id="@+id/sendPicture2"
-                        android:layout_width="100dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:visibility="gone"
-                        android:scaleType="fitXY"/>
-
-                    <ImageView
-                        android:id="@+id/sendPicture3"
-                        android:layout_width="100dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:visibility="gone"
-                        android:scaleType="fitXY"/>
-
-                    <ImageView
-                        android:id="@+id/sendPicture4"
-                        android:layout_width="100dp"
-                        android:layout_height="80dp"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:visibility="gone"
-                        android:scaleType="fitXY"/>
-                </LinearLayout>
-
-            </HorizontalScrollView>
+            android:text="Site title"
+            android:layout_below="@+id/signpostYours"/>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/sendPicture"
-            android:layout_toEndOf="@+id/sendPicture"
             android:layout_centerVertical="true">
 
             <LinearLayout
@@ -337,16 +299,14 @@
 
         </HorizontalScrollView>
 
-        </LinearLayout>
-
         <RatingBar
             android:id="@+id/sendRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="100dp"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:isIndicator="true"
-            android:layout_below="@+id/titleAndFeat"/>
+            android:isIndicator="true"/>
 
     </RelativeLayout>
 

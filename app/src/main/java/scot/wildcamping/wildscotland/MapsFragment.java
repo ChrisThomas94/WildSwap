@@ -37,6 +37,7 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -48,6 +49,7 @@ import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
@@ -93,14 +95,19 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     final int relatOwn = 90;
     final int relatTrade = 45;
     String user;
+    ClusterManager<AppClusterItem> mClusterManager;
     MarkerManager mMarkerManager;
     MarkerManager.Collection coll;
+    MarkerManager.Collection collKnown;
     knownSite inst = new knownSite();
     boolean clicked;
+    boolean zoomed = false;
+    boolean threshold = false;
 
 
     private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
-    private final int MAX_ZOOM = 13;
+    private final int MAX_ZOOM = 10;
+    private float prevZoom = 6;
     private final int MIN_ZOOM = 7;
     private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
 
@@ -175,6 +182,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // set listeners for buttons
         addSite.setOnClickListener(this);
 
+        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mClusterManager.onCameraChange(cameraPosition);
+
+                if(prevZoom>MAX_ZOOM && cameraPosition.zoom < MAX_ZOOM){
+                    //make clusters appear
+                    addClusterMarkers(mClusterManager);
+                } else if (prevZoom < MAX_ZOOM && cameraPosition.zoom > MAX_ZOOM){
+                    //make clusters dissapear
+                    mClusterManager.clearItems();
+                }
+
+                prevZoom = cameraPosition.zoom;
+
+            }
+        });
+
         //add the unknown sites as cluster items
         setUpClustering();
 
@@ -193,59 +219,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             add = false;
         }
 
-        //mOverscrollHandler.sendEmptyMessageDelayed(0,100);
-
         return v;
     }
-
-    /**
-     * Returns the correction for Lat and Lng if camera is trying to get outside of visible map
-     * @param cameraBounds Current camera bounds
-     * @return Latitude and Longitude corrections to get back into bounds.
-     */
-    private LatLng getLatLngCorrection(LatLngBounds cameraBounds) {
-        double latitude=0, longitude=0;
-        if(cameraBounds.southwest.latitude < BOUNDS.southwest.latitude) {
-            latitude = BOUNDS.southwest.latitude - cameraBounds.southwest.latitude;
-        }
-        if(cameraBounds.southwest.longitude < BOUNDS.southwest.longitude) {
-            longitude = BOUNDS.southwest.longitude - cameraBounds.southwest.longitude;
-        }
-        if(cameraBounds.northeast.latitude > BOUNDS.northeast.latitude) {
-            latitude = BOUNDS.northeast.latitude - cameraBounds.northeast.latitude;
-        }
-        if(cameraBounds.northeast.longitude > BOUNDS.northeast.longitude) {
-            longitude = BOUNDS.northeast.longitude - cameraBounds.northeast.longitude;
-        }
-        return new LatLng(latitude, longitude);
-    }
-
-    /**
-     * Bounds the user to the overlay.
-     */
-    private class OverscrollHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            CameraPosition position = googleMap.getCameraPosition();
-            VisibleRegion region = googleMap.getProjection().getVisibleRegion();
-            float zoom = 0;
-            if(position.zoom < MIN_ZOOM) zoom = MIN_ZOOM;
-            if(position.zoom > MAX_ZOOM) zoom = MAX_ZOOM;
-            LatLng correction = getLatLngCorrection(region.latLngBounds);
-            if(zoom != 0) {     //|| correction.latitude != 0 || correction.longitude != 0
-                zoom = (zoom==0)?position.zoom:zoom;
-                double lat = position.target.latitude + correction.latitude;
-                double lon = position.target.longitude + correction.longitude;
-                CameraPosition newPosition = new CameraPosition(new LatLng(lat, lon), zoom, position.tilt, position.bearing);
-                //CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position.target, zoom);
-                CameraUpdate update = CameraUpdateFactory.newCameraPosition(newPosition);
-                googleMap.moveCamera(update);
-            }
-        /* Recursively call handler every 100ms */
-            sendEmptyMessageDelayed(0,100);
-        }
-    }
-
 
     @Override
     public void onResume() {
@@ -388,18 +363,18 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     private void setUpClustering() {
         // Declare a variable for the cluster manager.
-        ClusterManager<AppClusterItem> mClusterManager;
         mMarkerManager = new MarkerManager(googleMap);
 
         // Initialize the manager with the context and the map.
         mClusterManager = new ClusterManager<>(this.getActivity(), googleMap, mMarkerManager);
 
+        collKnown = mMarkerManager.newCollection();
         coll = mMarkerManager.newCollection();
 
         if(knownSiteSize > 0) {
             for (int i = 0; i < knownSiteSize; i++) {
                 Site currentSite = knownSitesMap.get(i);
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()));
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             }
         } else {
             //no known sites
@@ -418,7 +393,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
-        googleMap.setOnCameraChangeListener(mClusterManager);
+        //googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mMarkerManager);
 
         //GoogleMap.OnMarkerClickListener markerClickListener
@@ -434,23 +409,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         if (marker.getPosition().equals(currentSite.getPosition())) {
                             Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
                             intent.putExtra("arrayPosition", i);
-                            //intent.putExtra("latitude", currentSite.getPosition().latitude);
-                            //intent.putExtra("longitude", currentSite.getPosition().longitude);
                             intent.putExtra("cid", currentSite.getCid());
-                            //intent.putExtra("title", currentSite.getTitle());
-                            //intent.putExtra("description", currentSite.getDescription());
-                            /*intent.putExtra("rating", currentSite.getRating());
-                            intent.putExtra("feature1", currentSite.getFeature1());
-                            intent.putExtra("feature2", currentSite.getFeature2());
-                            intent.putExtra("feature3", currentSite.getFeature3());
-                            intent.putExtra("feature4", currentSite.getFeature4());
-                            intent.putExtra("feature5", currentSite.getFeature5());
-                            intent.putExtra("feature6", currentSite.getFeature6());
-                            intent.putExtra("feature7", currentSite.getFeature7());
-                            intent.putExtra("feature8", currentSite.getFeature8());
-                            intent.putExtra("feature9", currentSite.getFeature9());
-                            intent.putExtra("feature10", currentSite.getFeature10());
-                            //intent.putExtra("image", currentSite.getImage());*/
                             intent.putExtra("prevState", 0);
                             startActivity(intent);
                             getActivity().finish();
@@ -551,11 +510,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
 
-        //knownSite inst = new knownSite();
-        SparseArray<Site> map = inst.getUnknownSitesMap();
-        int size = inst.getUnknownSitesSize();
-        //System.out.println("maps fragment "+size);
-
+    //knownSite inst = new knownSite();
+    SparseArray<Site> map = inst.getUnknownSitesMap();
+    int size = inst.getUnknownSitesSize();
+    //System.out.println("maps fragment "+size);
         // Add ten cluster items in close proximity, for purposes of this example.
         for (int i = 0; i < size; i++) {
             //System.out.println(i);
@@ -571,7 +529,30 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
             mClusterManager.addItem(unknownSitesList);
         }
+    }
 
+    private void removeClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
+
+
+        //knownSite inst = new knownSite();
+        SparseArray<Site> map = inst.getUnknownSitesMap();
+        int size = inst.getUnknownSitesSize();
+        //System.out.println("maps fragment "+size);
+
+        for (int i = 0; i < size; i++) {
+            //System.out.println(i);
+            Site currentSite = map.get(i);
+
+            LatLng point = currentSite.getPosition();
+            double lon = point.longitude;
+            double lat = point.latitude;
+
+            AppClusterItem unknownSitesList = new AppClusterItem(lat, lon);
+
+            //mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
+            //mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
+            mClusterManager.removeItem(unknownSitesList);
+        }
     }
 
     class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>
@@ -582,7 +563,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         @Override
         protected boolean shouldRenderAsCluster(Cluster<T> cluster) {
-            //start clustering if at least 2 items overlap
+            //cluster all items
             return cluster.getSize() >= 1;
         }
 
@@ -595,15 +576,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             super();
         }
 
-    }
-
-
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 

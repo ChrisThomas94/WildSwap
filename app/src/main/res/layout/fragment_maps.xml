@@ -17,6 +17,7 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:id="@+id/fab"
+        app:borderWidth="0dp"
         android:gravity="bottom|right"
         android:scaleType="centerInside"
         android:src="@drawable/red_fab"

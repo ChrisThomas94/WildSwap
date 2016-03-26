@@ -8,10 +8,20 @@
     android:layout_marginRight="15dp">
 
     <RelativeLayout
+        android:id="@+id/theirSite"
+        android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        android:background="@drawable/clear_shadow">
+
+        <TextView
+            android:id="@+id/signpostUnknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unknown Site"/>
 
         <TextView
             android:id="@+id/recieveTitle"
@@ -19,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="30sp"
+            android:layout_below="@+id/signpostUnknown"
             android:text="Site title"/>
 
         <HorizontalScrollView
@@ -162,7 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnSend_Trade"
-            android:text="Send Trade"
+            android:text="Send"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/btnRefresh_Trade"
             android:layout_toRightOf="@+id/btnRefresh_Trade"
@@ -171,10 +182,20 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/yourSite"
+        android:clickable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp">
+        android:layout_margin="15dp"
+        android:background="@drawable/clear_shadow"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/signpostKnown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Site"/>
 
         <TextView
             android:id="@+id/sendTitle"
@@ -183,6 +204,7 @@
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
             android:textSize="30sp"
+            android:layout_below="@+id/signpostKnown"
             android:text="Site title"/>
 
         <LinearLayout

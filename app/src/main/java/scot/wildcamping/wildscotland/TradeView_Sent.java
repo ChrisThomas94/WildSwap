@@ -256,12 +256,6 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
 
         recieveRating.setRating((recieveSite.getRating()).floatValue());
 
-        if(sendSite.getImage() != null){
-            Bitmap image1 = StringToBitMap(sendSite.getImage());
-            sendPicture1.setImageBitmap(image1);
-            sendPicture1.setVisibility(View.VISIBLE);
-        }
-
     }
 
     @Override
