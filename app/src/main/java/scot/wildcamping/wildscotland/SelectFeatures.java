@@ -285,6 +285,8 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                     //turn colour green
                     feature8box.setBackgroundColor(green);
                     newFeature8 = true;
+                    //display snackbar
+                    Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -300,6 +302,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                     //turn colour green
                     feature9box.setBackgroundColor(green);
                     newFeature9 = true;
+                    Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

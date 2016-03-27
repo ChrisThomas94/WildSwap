@@ -65,11 +65,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	
 	public MapsFragment(){}
 
-    public final MediaType JSON
-            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
-
-    OkHttpClient client = new OkHttpClient();
-
     MapView mMapView;
     private GoogleMap googleMap;
     private static final int MINIMUM_ZOOM_LEVEL_SERVER_REQUEST = 7;
@@ -85,9 +80,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button manualAdd;
     Button longLatAdd;
     Button btnDismiss;
-    List<LatLng> knownSites = new ArrayList<LatLng>();
-    List<LatLng> unknownSites = new ArrayList<LatLng>();
-    int unknownSitesSize;
     Cluster<AppClusterItem> clickedCluster;
     AppClusterItem clickedClusterItem;
     private ProgressDialog pDialog;
@@ -130,7 +122,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
 
-        System.out.println(ownedSitesMap.size());
+        System.out.println("owned size: "+ownedSitesMap.size());
 
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
@@ -172,9 +164,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             // Show rationale and request permission.
         }
 
-        if(add){
+        /*if(add){
             addMarker(bunSite);
-        }
+        }*/
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
@@ -216,7 +208,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                     .target(bunSite).zoom(9).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-            add = false;
+            getActivity().getIntent().removeExtra("add");
         }
 
         return v;

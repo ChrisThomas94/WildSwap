@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -47,8 +48,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     EditText Lon;
     EditText title;
     EditText description;
-    ImageButton addImage;
-    ImageButton addFeature;
+    RelativeLayout addImage;
+    RelativeLayout addFeature;
     ImageView image1;
     ImageView image2;
     ImageView image3;
@@ -112,16 +113,14 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         Lon = (EditText)findViewById(R.id.Long);
         title = (EditText)findViewById(R.id.title);
         description = (EditText)findViewById(R.id.description);
-        addImage = (ImageButton)findViewById(R.id.addImage);
-        addFeature = (ImageButton)findViewById(R.id.addFeature);
+        addImage = (RelativeLayout)findViewById(R.id.addPhotoRel);
+        addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         cancelCreation = (Button)findViewById(R.id.cancelCreation);
         image1 = (ImageView)findViewById(R.id.image1);
         image2 = (ImageView)findViewById(R.id.image2);
         image3 = (ImageView)findViewById(R.id.image3);
-
-        //title.setSelection(0);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -191,13 +190,13 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         switch (v.getId())
         {
-            case R.id.addImage:
+            case R.id.addPhotoRel:
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
 
                 break;
 
-            case R.id.addFeature:
+            case R.id.addFeaturesRel:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
                 intent.putExtra("image", imageUpload);

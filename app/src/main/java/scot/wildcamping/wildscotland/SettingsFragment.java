@@ -2,6 +2,8 @@ package scot.wildcamping.wildscotland;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class SettingsFragment extends Fragment {
-	
-	public SettingsFragment(){}
+
+    public SettingsFragment() {
+    }
 
     TextView txtName;
     TextView txtEmail;
@@ -19,9 +22,9 @@ public class SettingsFragment extends Fragment {
 
     private SessionManager session;
 
-	@Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
@@ -37,7 +40,7 @@ public class SettingsFragment extends Fragment {
         }
 
         String name = AppController.getString(getActivity().getApplicationContext(), "name");
-        String email = AppController.getString(getActivity().getApplicationContext(), "uid"); //email is currently blank so print uid instead
+        String email = AppController.getString(getActivity().getApplicationContext(), "email"); //email is currently blank so print uid instead
         txtName.setText(name);
         txtEmail.setText(email);
 
@@ -49,9 +52,15 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
-        //btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
-        //btnLogout.setOnClickListener(this);
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String version = pInfo.versionName;
+        TextView versionText = (TextView) rootView.findViewById(R.id.versionName);
+        versionText.setText("Version: " + version);
 
         return rootView;
     }

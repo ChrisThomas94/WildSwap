@@ -21,19 +21,17 @@
         <item >Your Sites</item>
         <item >Known Sites</item>
         <item >Open Trades</item>
-        <item >Site Search</item>
         <item >Settings</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_home</item>
-        <item>@drawable/ic_people</item>
-        <item>@drawable/ic_photos</item>
-        <item>@drawable/ic_communities</item>
-        <item>@drawable/ic_pages</item>
-        <item>@drawable/ic_settings</item>
+        <item>@drawable/map_location</item>
+        <item>@drawable/markerred</item>
+        <item>@drawable/markergreen</item>
+        <item>@drawable/arrows</item>
+        <item>@drawable/three</item>
     </array>
 
     <!-- Features List -->

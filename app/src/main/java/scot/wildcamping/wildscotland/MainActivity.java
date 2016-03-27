@@ -2,9 +2,12 @@ package scot.wildcamping.wildscotland;
 
 import scot.wildcamping.wildscotland.adapter.NavDrawerListAdapter;
 import scot.wildcamping.wildscotland.model.NavDrawerItem;
+import scot.wildcamping.wildscotland.model.StoredTrades;
+import scot.wildcamping.wildscotland.model.Trade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 //import android.support.v4.app.Fragment;
@@ -21,6 +24,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,11 +40,13 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	List<LatLng> knownSites = new ArrayList<LatLng>();
+	SparseArray<Trade> activeTrades;
+	StoredTrades trades;
+	String noOfTradesStr;
 
 	double latitude;
 	double longitude;
-	boolean add;
+	boolean add = false;
 	int fragment = 0;
 
 	// nav drawer title
@@ -75,6 +81,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
 		mTitle = mDrawerTitle = getTitle();
 
+		trades = new StoredTrades();
+		activeTrades = new SparseArray<>();
+		activeTrades = trades.getActiveTrades();
+
+		noOfTradesStr = Integer.toString(activeTrades.size());
+
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
@@ -95,11 +107,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 		// Photos
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-		// Pages
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, noOfTradesStr));
 		// What's hot, We  will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		
 
 		// Recycle the typed array
@@ -182,6 +192,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
 				}
 			}
+			//setUpClustering();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -257,9 +268,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			}
 			break;
 		case 4:
-			fragment = new SiteSearchFragment();
-			break;
-		case 5:
 			fragment = new SettingsFragment();
 			break;
 

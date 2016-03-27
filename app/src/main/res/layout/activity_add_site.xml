@@ -52,14 +52,30 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <ImageButton
-                android:id="@+id/addImage"
+            <RelativeLayout
+                android:id="@+id/addPhotoRel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_add_a_photo_black_48dp"
-                android:background="@color/counter_text_color"
-                android:layout_marginBottom="10dp"/>
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/counter_text_color">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/addPhoto"
+                    android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Image"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/addPhoto"/>
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/image1"
@@ -89,13 +105,29 @@
                 android:layout_marginBottom="10dp"/>
 
 
-            <ImageButton
-                android:id="@+id/addFeature"
+            <RelativeLayout
+                android:id="@+id/addFeaturesRel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_add_to_photos_black_48dp"
-                android:background="@color/counter_text_color"/>
+                android:clickable="true"
+                android:padding="15dp"
+                android:background="@color/counter_text_color">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/addFeatures"
+                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Features"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/addFeatures"/>
+            </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/addTitle"

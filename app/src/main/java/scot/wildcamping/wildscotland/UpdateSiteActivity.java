@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -43,8 +44,8 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     EditText Lon;
     EditText title;
     EditText description;
-    ImageButton addImage;
-    ImageButton addFeature;
+    RelativeLayout addPhoto;
+    RelativeLayout addFeatures;
     ImageView image1;
     RatingBar ratingBar;
     Button confirmCreation;
@@ -104,8 +105,8 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         Lon = (EditText)findViewById(R.id.Long);
         title = (EditText)findViewById(R.id.title);
         description = (EditText)findViewById(R.id.description);
-        addImage = (ImageButton)findViewById(R.id.addImage);
-        addFeature = (ImageButton)findViewById(R.id.addFeature);
+        addPhoto = (RelativeLayout)findViewById(R.id.addPhotoRel);
+        addFeatures = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         cancelCreation = (Button)findViewById(R.id.cancelCreation);
@@ -130,9 +131,9 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
             feature10 = extras.getBoolean("feature10");
 
             if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
-                addFeature.setBackgroundColor(green);
+                addFeatures.setBackgroundColor(green);
             } else {
-                addFeature.setBackgroundColor(gray);
+                addFeatures.setBackgroundColor(gray);
             }
 
             titlePassed = extras.getString("title");
@@ -174,8 +175,8 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         ratingBar.setRating((focused.getRating()).floatValue());
 
         //setting onclick listeners
-        addImage.setOnClickListener(this);
-        addFeature.setOnClickListener(this);
+        addPhoto.setOnClickListener(this);
+        addFeatures.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
         cancelCreation.setOnClickListener(this);
     }
@@ -185,13 +186,13 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
         switch (v.getId())
         {
-            case R.id.addImage:
+            case R.id.addPhotoRel:
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
 
                 break;
 
-            case R.id.addFeature:
+            case R.id.addFeaturesRel:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
                 intent.putExtra("arrayPosition", arrayPos);
