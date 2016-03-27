@@ -38,7 +38,9 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     String postResponse;
 
     private Context context;
+    Boolean owned;
     Boolean active = true;
+    String uid;
     String cid;
     String title;
     String description;
@@ -55,8 +57,9 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     Boolean feature10;
     String image;
 
-    public UpdateSite(Context context, Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
+    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         this.context = context;
+        this.owned = owned;
         this.active = active;
         this.cid = cid;
         this.title = title;
@@ -81,6 +84,8 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        uid = AppController.getString(context, "uid");
         pDialog = new ProgressDialog(context);
 
         if(!active){
@@ -99,7 +104,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        if(!active){
+        if(!active && owned){
             try {
                 String json = deleteSite(cid, active);
                 System.out.println("json: " + json);
@@ -109,7 +114,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if (active && owned) {
             // issue the post request
             try {
                 String json = updateSite(active, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
@@ -123,37 +128,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                     Boolean error = jObj.getBoolean("error");
                     //int size = jObj.getInt("size");
                     if (!error) {
-                        //for (int i = 0; i < size; i++) {
-                        /*JSONObject jsonSite = jObj.getJSONObject("site" + i);
-                        String longitude = jsonSite.getString("longitude");
-                        String latitude = jsonSite.getString("latitude");
-                        double lon = Double.parseDouble(longitude);
-                        double lat = Double.parseDouble(latitude);
-                        LatLng position = new LatLng(lat, lon);
 
-                        Site siteClass = new Site();
-                        siteClass.setPosition(position);
-                        siteClass.setCid(jsonSite.getString("unique_cid"));
-                        siteClass.setTitle(jsonSite.getString("title"));
-                        siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("rating"));
-                        siteClass.setFeature1(jsonSite.getString("feature1"));
-                        siteClass.setFeature2(jsonSite.getString("feature2"));
-                        siteClass.setFeature3(jsonSite.getString("feature3"));
-                        siteClass.setFeature4(jsonSite.getString("feature4"));
-                        siteClass.setFeature5(jsonSite.getString("feature5"));
-                        siteClass.setFeature6(jsonSite.getString("feature6"));
-                        siteClass.setFeature7(jsonSite.getString("feature7"));
-                        siteClass.setFeature8(jsonSite.getString("feature8"));
-                        siteClass.setFeature9(jsonSite.getString("feature9"));
-                        siteClass.setFeature10(jsonSite.getString("feature10"));*/
-
-                        //map.put(i, siteClass);
-                        // }
-
-                        //knownSite inst = new knownSite();
-                        //inst.setKnownSitesMap(map);
-                        //inst.setKnownSiteSize(size);
 
                     } else {
                         //error message
@@ -166,6 +141,18 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (active && !owned){
+            try {
+                String json = updateKnownSite(active, uid, cid, rating, image);
+                System.out.println("json: " + json);
+                postResponse = doPostRequest(Appconfig.URL, json);      //json
+                System.out.println("post response: " + postResponse);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //none
         }
 
         return null;
@@ -237,6 +224,15 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         return "{\"tag\":\"" + "deleteSite" + "\","
                 + "\"cid\":\"" + cid + "\","
                 + "\"active\":\"" + active + "\"}";
+    }
+
+    private String updateKnownSite(Boolean active, String uid, String cid, String rating, String image){
+        return "{\"tag\":\"" + "updateKnownSite" + "\","
+                + "\"active\":\"" + active + "\","
+                + "\"uid\":\"" + uid + "\","
+                + "\"cid\":\"" + cid + "\","
+                + "\"rating\":\"" + rating + "\","
+                + "\"image\":\"" + image + "\"}";
     }
 
 }

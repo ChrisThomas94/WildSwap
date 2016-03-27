@@ -16,6 +16,7 @@ public class Site {
     private String title;
     private String description;
     private Double rating;
+    private int ratedBy;
     private String feature1;
     private String feature2;
     private String feature3;
@@ -88,6 +89,14 @@ public class Site {
 
     public Double getRating(){
         return rating;
+    }
+
+    public void setRatedBy(int ratedBy){
+        this.ratedBy = ratedBy;
+    }
+
+    public int getRatedBy(){
+        return ratedBy;
     }
 
     public void setFeature1(String feature1){

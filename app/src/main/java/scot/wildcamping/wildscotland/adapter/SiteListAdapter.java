@@ -70,6 +70,7 @@ public class SiteListAdapter extends BaseAdapter {
         ImageView feature9 = (ImageView) convertView.findViewById(R.id.preview_feature9);
         ImageView feature10 = (ImageView) convertView.findViewById(R.id.preview_feature10);
         RatingBar rating = (RatingBar) convertView.findViewById(R.id.ratingThumbnail);
+        TextView ratedBy = (TextView) convertView.findViewById(R.id.ratedBy);
 
         //siteThumbnail.setImageResource(knownSites.get(position).getImage());
         title.setText(knownSites.get(position).getTitle());
@@ -144,6 +145,7 @@ public class SiteListAdapter extends BaseAdapter {
         }
 
         rating.setRating(knownSites.get(position).getRating().floatValue());
+        ratedBy.setText("Rated By: " + knownSites.get(position).getRatedBy());
 
         return convertView;
     }

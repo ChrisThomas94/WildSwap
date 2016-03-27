@@ -178,13 +178,20 @@
                 android:textSize="15sp"/>
 
         </RelativeLayout>
-        <RatingBar
-            android:id="@+id/siteViewRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:isIndicator="true"
-            android:layout_gravity="center"/>
+    <RatingBar
+        android:id="@+id/siteViewRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:isIndicator="true"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/ratedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/siteViewRating"
+        android:text="Rated By"/>
 
 
     <LinearLayout

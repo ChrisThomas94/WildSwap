@@ -32,6 +32,13 @@
             android:layout_below="@+id/signpostUnknown"
             android:text="Site title"/>
 
+        <LinearLayout
+            android:id="@+id/titleAndFeat1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/recieveTitle">
+
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,11 +142,13 @@
 
         </HorizontalScrollView>
 
+        </LinearLayout>
+
         <RatingBar
             android:id="@+id/recieveRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
+            android:layout_below="@+id/titleAndFeat1"
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"/>
@@ -208,7 +217,7 @@
             android:text="Site title"/>
 
         <LinearLayout
-            android:id="@+id/titleAndFeat"
+            android:id="@+id/titleAndFeat2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -383,7 +392,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"
-            android:layout_below="@+id/titleAndFeat"/>
+            android:layout_below="@+id/titleAndFeat2"/>
 
     </RelativeLayout>
 

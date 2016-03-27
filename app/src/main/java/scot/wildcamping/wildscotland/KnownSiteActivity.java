@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -53,6 +56,9 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     int RESULT_LOAD_IMAGE = 0;
     ImageView addImage;
 
+    RatingBar rating;
+    Site focused;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +71,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         Button contact = (Button)findViewById(R.id.contactSiteAdmin);
         TextView title = (TextView)findViewById(R.id.siteViewTitle);
         TextView description = (TextView)findViewById(R.id.siteViewDescription);
-        RatingBar rating = (RatingBar)findViewById(R.id.siteViewRating);
+        rating = (RatingBar)findViewById(R.id.siteViewRating);
         ImageView feature1Image = (ImageView)findViewById(R.id.preview_feature1);
         ImageView feature2Image = (ImageView)findViewById(R.id.preview_feature2);
         ImageView feature3Image = (ImageView)findViewById(R.id.preview_feature3);
@@ -80,6 +86,8 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView image2 = (ImageView)findViewById(R.id.image2);
         ImageView image3 = (ImageView)findViewById(R.id.image3);
         addImage = (ImageView)findViewById(R.id.addImage);
+        TextView ratedBy = (TextView)findViewById(R.id.ratedBy);
+        Button update = (Button)findViewById(R.id.updateKnown);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -92,11 +100,12 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         knownSite inst = new knownSite();
         known = inst.getKnownSitesMap();
 
-        Site focused = known.get(arrayPos);
+        focused = known.get(arrayPos);
 
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
         rating.setRating(focused.getRating().floatValue());
+        ratedBy.setText("Rated By: " + focused.getRatedBy());
 
         if(focused.getImage() != null) {
             imageBit = StringToBitMap(focused.getImage());
@@ -157,24 +166,43 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         }
 
         contact.setOnClickListener(this);
+        update.setOnClickListener(this);
         addImage.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
-        switch (v.getId())
-        {
+        Intent intent;
+        switch (v.getId()) {
             case R.id.contactSiteAdmin:
-                Intent i = new Intent(getApplicationContext(), ContactUser.class);
-                startActivity(i);
+                intent = new Intent(getApplicationContext(), ContactUser.class);
+                startActivity(intent);
                 break;
 
             case R.id.addImage:
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, RESULT_LOAD_IMAGE);
 
                 break;
+
+            case R.id.updateKnown:
+
+                if (rating.getRating() == focused.getRating().floatValue() && addImage != null) {
+                    //nothing has changed
+                    Snackbar.make(v, "You haven't uploaded a new image or updated the rating!", Snackbar.LENGTH_LONG).show();
+                } else {
+
+                    String imageSingleLine = null;
+                    boolean active = true;
+                    String newRating = Float.toString(rating.getRating());
+
+                    new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine).execute();
+
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
         }
 
     }
@@ -214,10 +242,10 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         if(resultCode == RESULT_OK){
             Uri targetUri = data.getData();
             try{
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                String image = getStringImage(bitmap);
+                Bitmap newBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                String newImage = getStringImage(newBitmap);
 
-                addImage.setImageBitmap(bitmap);
+                addImage.setImageBitmap(newBitmap);
             } catch (FileNotFoundException e){
                 e.printStackTrace();
             }

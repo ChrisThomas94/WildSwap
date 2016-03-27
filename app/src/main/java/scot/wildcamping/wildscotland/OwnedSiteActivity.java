@@ -176,7 +176,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 //String ratingReq = Double.toString(ratingBun);
                 intent = new Intent(getApplicationContext(),MainActivity.class);
                 //trigger php to deactivate site
-                new UpdateSite(this, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr).execute();
+                new UpdateSite(this, true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr).execute();
                 startActivity(intent);
                 finish();
                 break;

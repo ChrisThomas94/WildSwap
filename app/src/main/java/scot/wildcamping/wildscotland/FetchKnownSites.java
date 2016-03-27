@@ -108,7 +108,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("rating"));
+                        siteClass.setRating(jsonSite.getDouble("avr_rating"));
+                        siteClass.setRatedBy(jsonSite.getInt("no_of_raters"));
                         siteClass.setFeature1(jsonSite.getString("feature1"));
                         siteClass.setFeature2(jsonSite.getString("feature2"));
                         siteClass.setFeature3(jsonSite.getString("feature3"));
