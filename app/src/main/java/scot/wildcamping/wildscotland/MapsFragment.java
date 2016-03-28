@@ -404,7 +404,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
                             startActivity(intent);
-                            getActivity().finish();
                             break;
                         }
                     }
@@ -422,7 +421,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
                             startActivity(intent);
-                            getActivity().finish();
                             break;
                         }
                     }

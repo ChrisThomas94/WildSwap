@@ -199,8 +199,8 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
                     new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine).execute();
 
-                    intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    //intent = new Intent(getApplicationContext(), MainActivity.class);
+                    //startActivity(intent);
                     finish();
                 }
         }

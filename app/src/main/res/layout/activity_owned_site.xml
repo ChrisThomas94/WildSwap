@@ -191,7 +191,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/siteViewRating"
-        android:text="Rated By"/>
+        android:text="Rated By: 1"/>
 
 
     <LinearLayout

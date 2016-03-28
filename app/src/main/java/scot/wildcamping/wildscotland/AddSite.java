@@ -94,6 +94,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
 
     private Bitmap bitmap;
+    Bitmap compress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,9 +173,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             temp = inst.getTemp();
             image = temp.get(0).getImage();
             System.out.println(image);
-            bitmap = StringToBitMap(image);
+            compress = StringToBitMap(image);
             image1.setVisibility(View.VISIBLE);
-            image1.setImageBitmap(bitmap);
+            image1.setImageBitmap(compress);
         }
 
         //setting onclick listeners
@@ -272,8 +273,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         if(resultCode == RESULT_OK){
             targetUri = data.getData();
             try{
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                image = getStringImage(bitmap);
+                compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
+                image = getStringImage(compress);
                 imageUpload = true;
 
                 Image upload = new Image();
@@ -288,7 +290,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 inst.setTemp(temp);
 
                 image1.setVisibility(View.VISIBLE);
-                image1.setImageBitmap(bitmap);
+                image1.setImageBitmap(compress);
             } catch (FileNotFoundException e){
                 e.printStackTrace();
             }

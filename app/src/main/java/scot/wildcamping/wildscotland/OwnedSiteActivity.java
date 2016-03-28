@@ -1,6 +1,7 @@
 package scot.wildcamping.wildscotland;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -85,6 +87,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView image2 = (ImageView)findViewById(R.id.image2);
         ImageView image3 = (ImageView)findViewById(R.id.image3);
         addImage = (ImageView)findViewById(R.id.addImage);
+        TextView ratedBy = (TextView)findViewById(R.id.ratedBy);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -102,6 +105,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
         rating.setRating((focused.getRating()).floatValue());
+        ratedBy.setText("Rated By: " + focused.getRatedBy());
 
         if(focused.getImage() != null) {
             imageBit = StringToBitMap(focused.getImage());
@@ -162,6 +166,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
 
         back.setOnClickListener(this);
         edit.setOnClickListener(this);
+        image1.setOnClickListener(this);
 
     }
 
@@ -202,8 +207,6 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.image1:
-
-
 
                 break;
         }
