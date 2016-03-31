@@ -93,7 +93,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 }
             }
 
-            Intent intent = new Intent(Login.this, MainActivity.class);
+            Intent intent = new Intent(Login.this, MainActivity_Spinner.class);
             startActivity(intent);
             finish();
         }
@@ -144,7 +144,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
 
                         // Launching  main activity
                         Intent intent = new Intent(Login.this,
-                                MainActivity.class);
+                                MainActivity_Spinner.class);
                         startActivity(intent);
                         finish();
                     } else {

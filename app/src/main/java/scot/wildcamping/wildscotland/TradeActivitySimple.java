@@ -321,9 +321,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             case R.id.btnCancel_Trade:
 
                 Toast.makeText(this, "Trade Canceled!", Toast.LENGTH_LONG).show();
-                intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
-                startActivity(intent);
+                //intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                //startActivity(intent);
                 finish();
                 break;
 
@@ -345,7 +344,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 new CreateTrade(this, send_cid, recieve_cid).execute();
 
                 intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
+                        MainActivity_Spinner.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -378,8 +377,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                //startActivity(intent);
                 finish();
                 return true;
         }

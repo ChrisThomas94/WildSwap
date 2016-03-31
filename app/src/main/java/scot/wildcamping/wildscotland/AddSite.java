@@ -238,7 +238,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                     new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
 
                     intent = new Intent(getApplicationContext(),
-                            MainActivity.class);
+                            MainActivity_Spinner.class);
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("add", true);
@@ -257,7 +257,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
 
                 intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
+                        MainActivity_Spinner.class);
                 intent.putExtra("add", false);
                 startActivity(intent);
                 finish();

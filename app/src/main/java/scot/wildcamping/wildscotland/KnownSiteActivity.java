@@ -223,7 +223,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
 
                 if (prevState == 2){
                     intent.putExtra("fragment", 2);

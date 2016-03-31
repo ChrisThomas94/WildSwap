@@ -150,7 +150,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     AppController.setString(Register.this, "email", email);
 
                     intent = new Intent(Register.this,
-                            MainActivity.class);
+                            MainActivity_Spinner.class);
                     startActivity(intent);
                     finish();
                     } else {

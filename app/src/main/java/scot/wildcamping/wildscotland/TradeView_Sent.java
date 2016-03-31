@@ -267,7 +267,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 new UpdateTrade(this, unique_tid, negativeTradeStatus).execute();
 
                 Intent intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
+                        MainActivity_Spinner.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -286,7 +286,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 intent.putExtra("fragment", 3);
                 startActivity(intent);
                 finish();

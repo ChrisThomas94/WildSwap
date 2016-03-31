@@ -179,7 +179,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             case R.id.deactivateSite:
                 boolean active = false;
                 //String ratingReq = Double.toString(ratingBun);
-                intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 //trigger php to deactivate site
                 new UpdateSite(this, true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr).execute();
                 startActivity(intent);
@@ -229,7 +229,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 if(prevState == 1) {
                     intent.putExtra("fragment", 1);
                 }

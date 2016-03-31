@@ -366,7 +366,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         if(knownSiteSize > 0) {
             for (int i = 0; i < knownSiteSize; i++) {
                 Site currentSite = knownSitesMap.get(i);
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)));
             }
         } else {
             //no known sites
@@ -377,7 +377,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                 Site currentSite = ownedSitesMap.get(i);
                 System.out.println(i + "  " + currentSite.getTitle());
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()));
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin32)));
             }
 
         } else {

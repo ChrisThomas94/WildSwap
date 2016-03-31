@@ -34,6 +34,11 @@
         <item>@drawable/three</item>
     </array>
 
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings2">Settings</string>
+    <string name="title_activity_my">Details</string>
+    <string name="action_search">Search</string>
+
     <!-- Features List -->
     <string name="feature1">Car Access</string>
     <string name="feature2">Walk Required</string>

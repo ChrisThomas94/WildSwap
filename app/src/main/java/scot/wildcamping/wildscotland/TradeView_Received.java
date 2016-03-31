@@ -300,7 +300,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
 
                 intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
+                        MainActivity_Spinner.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -319,7 +319,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 //create new entry in user_has_trades with relat 45
 
                 intent = new Intent(getApplicationContext(),
-                        MainActivity.class);
+                        MainActivity_Spinner.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -331,7 +331,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 intent.putExtra("fragment", 3);
                 startActivity(intent);
                 finish();

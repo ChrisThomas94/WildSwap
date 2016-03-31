@@ -1,0 +1,294 @@
+package scot.wildcamping.wildscotland;
+
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
+import scot.wildcamping.wildscotland.adapter.NavDrawerListAdapter;
+import scot.wildcamping.wildscotland.model.NavDrawerItem;
+import scot.wildcamping.wildscotland.model.StoredTrades;
+import scot.wildcamping.wildscotland.model.Trade;
+
+public class MainActivity_Spinner extends AppCompatActivity {
+
+    private Toolbar toolbar;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+    SparseArray<Trade> activeTrades;
+    StoredTrades trades;
+    String noOfTradesStr;
+
+    double latitude;
+    double longitude;
+    boolean add = false;
+    int fragment = 0;
+    int currPosition;
+
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+
+    // used to store app title
+    private CharSequence mTitle;
+
+    // slide menu items
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
+
+    private ArrayList<NavDrawerItem> navDrawerItems;
+    private NavDrawerListAdapter adapter;
+
+    private Spinner spinner_nav;
+    ArrayList<String> list;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_spinner);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            latitude = extras.getDouble("latitude");
+            longitude = extras.getDouble("longitude");
+            add = extras.getBoolean("add");
+            fragment = extras.getInt("fragment");
+
+        }
+
+        //mTitle = mDrawerTitle = getTitle();
+
+        trades = new StoredTrades();
+        activeTrades = new SparseArray<>();
+        activeTrades = trades.getActiveTrades();
+
+        noOfTradesStr = Integer.toString(activeTrades.size());
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            //getSupportActionBar().setLogo(getDrawable(logo));
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        }
+        addItemsToSpinner();
+    }
+
+
+    // add items into spinner dynamically
+    public void addItemsToSpinner() {
+
+        list = new ArrayList<String>();
+        list.add("Map");
+        list.add("Your Sites");
+        list.add("Known Sites");
+        list.add("Trades");
+        list.add("Settings");
+
+        // Custom ArrayAdapter with spinner item layout to set popup background
+
+        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(
+                getApplicationContext(), list);
+
+
+
+        // Default ArrayAdapter with default spinner item layout, getting some
+        // view rendering problem in lollypop device, need to test in other
+        // devices
+
+		/*
+		 * ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this,
+		 * android.R.layout.simple_spinner_item, list);
+		 * spinAdapter.setDropDownViewResource
+		 * (android.R.layout.simple_spinner_dropdown_item);
+		 */
+
+        spinner_nav.setAdapter(spinAdapter);
+
+        spinner_nav.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapter, View v,
+                                       int position, long id) {
+                displayView(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+    }
+
+    private void displayView(int position) {
+        // update the main content by replacing fragments
+        Fragment fragment = null;
+        MapsFragment mapsFragment = null;
+        switch (position) {
+            case 0:
+                currPosition = 0;
+                mapsFragment = new MapsFragment();
+                if(isNetworkAvailable()) {
+                    try {
+                        String known_result = new FetchKnownSites(this).execute().get();
+                        String unknown_result = new FetchUnknownSites(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                break;
+            case 1:
+                currPosition = 1;
+                fragment = new YourSitesFragment();
+                if(isNetworkAvailable()) {
+                    try {
+                        String your_result = new FetchKnownSites(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                break;
+            case 2:
+                currPosition = 2;
+                fragment = new KnownSitesFragment();
+                if(isNetworkAvailable()) {
+                    try {
+                        String known_result = new FetchKnownSites(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                break;
+            case 3:
+                currPosition = 3;
+                fragment = new OpenTradesFragment();
+                if(isNetworkAvailable()) {
+                    try {
+                        String str_result = new FetchTradeRequests(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                break;
+            case 4:
+                currPosition = 4;
+                fragment = new SettingsFragment();
+                break;
+
+            default:
+                break;
+        }
+
+
+        if (fragment != null){
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
+
+            // update selected item and title, then close the drawer
+            //mDrawerList.setItemChecked(position, true);
+            //mDrawerList.setSelection(position);
+            setTitle(list.get(position));
+            //mDrawerLayout.closeDrawer(mDrawerList);
+        } else if(mapsFragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
+
+            // update selected item and title, then close the drawer
+            //mDrawerList.setItemChecked(position, true);
+            //mDrawerList.setSelection(position);
+            setTitle(list.get(position));
+            //mDrawerLayout.closeDrawer(mDrawerList);
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings1) {
+            Toast.makeText(getApplicationContext(), "Settings Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_search1) {
+            Toast.makeText(getApplicationContext(), "Search Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_add1) {
+            Toast.makeText(getApplicationContext(), "Add Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_delete1) {
+            Toast.makeText(getApplicationContext(), "Delete Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_refresh) {
+            if(isNetworkAvailable()) {
+                try {
+                    String known_result = new FetchKnownSites(this).execute().get();
+                    String unknown_result = new FetchUnknownSites(this).execute().get();
+                } catch (InterruptedException e) {
+
+                } catch (ExecutionException e) {
+
+                }
+            }
+            displayView(currPosition);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+}
