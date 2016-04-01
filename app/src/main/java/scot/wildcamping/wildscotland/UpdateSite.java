@@ -56,6 +56,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     Boolean feature9;
     Boolean feature10;
     String image;
+    String user;
 
     public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         this.context = context;
@@ -104,6 +105,8 @@ public class UpdateSite extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
+        user = AppController.getString(context, "uid");
+
         if(!active && owned){
             try {
                 String json = deleteSite(cid, active);
@@ -117,7 +120,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         } else if (active && owned) {
             // issue the post request
             try {
-                String json = updateSite(active, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
+                String json = updateSite(active, user, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -200,9 +203,10 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String updateSite(boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
+    private String updateSite(boolean active, String user, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
         return "{\"tag\":\"" + "updateSite" + "\","
                 + "\"active\":\"" + active + "\","
+                + "\"uid\":\"" + user + "\","
                 + "\"cid\":\"" + cid + "\","
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","

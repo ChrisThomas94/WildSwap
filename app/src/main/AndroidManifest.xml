@@ -117,6 +117,14 @@
             android:label="Contact User"
             android:theme= "@style/AppTheme"/>
 
+        <activity android:name=".SettingsFragment"
+            android:label="Settings"
+            android:theme= "@style/AppTheme"/>
+
+        <activity android:name=".Sites"
+            android:label="Sites"
+            android:theme= "@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".UpdateSiteActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"

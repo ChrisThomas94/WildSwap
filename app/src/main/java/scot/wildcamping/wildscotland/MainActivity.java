@@ -232,7 +232,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			}
 			break;
 		case 1:
-			fragment = new YourSitesFragment();
+			//fragment = new YourSitesFragment();
 			if(isNetworkAvailable()) {
 				try {
 					String your_result = new FetchKnownSites(this).execute().get();
@@ -244,7 +244,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			}
 			break;
 		case 2:
-			fragment = new KnownSitesFragment();
+			//fragment = new KnownSitesFragment();
 			if(isNetworkAvailable()) {
 				try {
 					String known_result = new FetchKnownSites(this).execute().get();
@@ -266,9 +266,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
 				}
 			}
-			break;
-		case 4:
-			fragment = new SettingsFragment();
 			break;
 
 		default:
