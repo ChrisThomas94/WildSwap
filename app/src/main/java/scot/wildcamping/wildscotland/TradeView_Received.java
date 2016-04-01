@@ -46,6 +46,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     int status;
 
     TextView recieveTitle;
+    TextView placeholderFeatures;
     ImageView features1;
     ImageView features2;
     ImageView features3;
@@ -59,6 +60,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     RatingBar recieveRating;
 
     TextView sendTitle;
+    TextView placeholderFeaturesYours;
     ImageView sendFeatures1;
     ImageView sendFeatures2;
     ImageView sendFeatures3;
@@ -107,6 +109,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
+        placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
         features1 = (ImageView)findViewById(R.id.features1);
         features2 = (ImageView)findViewById(R.id.features2);
         features3 = (ImageView)findViewById(R.id.features3);
@@ -120,6 +123,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         recieveRating = (RatingBar)findViewById(R.id.recieveRating);
 
         sendTitle = (TextView)findViewById(R.id.sendTitle);
+        placeholderFeaturesYours = (TextView)findViewById(R.id.placeholderFeaturesYours);
         sendFeatures1 = (ImageView)findViewById(R.id.sendFeatures1);
         sendFeatures2 = (ImageView)findViewById(R.id.sendFeatures2);
         sendFeatures3 = (ImageView)findViewById(R.id.sendFeatures3);
@@ -154,10 +158,10 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
-        System.out.println(sizeUnknown);
+        System.out.println("size unknown: " + sizeUnknown);
 
         int sizeOwn = inst.getOwnedSiteSize();
-        System.out.println(sizeOwn);
+        System.out.println("size own: " + sizeOwn);
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(send_cid)){
@@ -237,6 +241,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             sendFeatures10.setVisibility(View.VISIBLE);
         }
 
+        if (sendSite.getFeature1().equals("0") && sendSite.getFeature2().equals("0") && sendSite.getFeature3().equals("0") && sendSite.getFeature4().equals("0") && sendSite.getFeature5().equals("0") && sendSite.getFeature6().equals("0") && sendSite.getFeature7().equals("0") && sendSite.getFeature8().equals("0") && sendSite.getFeature9().equals("0") && sendSite.getFeature10().equals("0")){
+            placeholderFeaturesYours.setVisibility(View.VISIBLE);
+        } else {
+            placeholderFeaturesYours.setVisibility(View.INVISIBLE);
+        }
+
         sendRating.setRating((sendSite.getRating()).floatValue());
 
         recieveTitle.setText(recieveSite.getTitle());
@@ -292,6 +302,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             features10.setVisibility(View.VISIBLE);
         }
 
+        if (recieveSite.getFeature1().equals("0") && recieveSite.getFeature2().equals("0") && recieveSite.getFeature3().equals("0") && recieveSite.getFeature4().equals("0") && recieveSite.getFeature5().equals("0") && recieveSite.getFeature6().equals("0") && recieveSite.getFeature7().equals("0") && recieveSite.getFeature8().equals("0") && recieveSite.getFeature9().equals("0") && recieveSite.getFeature10().equals("0")){
+            placeholderFeatures.setVisibility(View.VISIBLE);
+        } else {
+            placeholderFeatures.setVisibility(View.INVISIBLE);
+        }
+
         recieveRating.setRating((recieveSite.getRating()).floatValue());
 
     }
@@ -306,9 +322,6 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
 
-                intent = new Intent(getApplicationContext(),
-                        MainActivity_Spinner.class);
-                startActivity(intent);
                 finish();
                 break;
 

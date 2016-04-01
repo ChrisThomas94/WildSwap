@@ -49,15 +49,22 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     String feature9;
     String feature10;
     String imageStr;
+    String newImage;
+    String image2Str;
+    String image3Str;
     Bitmap imageBit;
+    Bitmap newBitmap;
     int prevState;
     int arrayPos;
+    int imageNum;
     SparseArray<Site> known = new SparseArray<>();
     int RESULT_LOAD_IMAGE = 0;
     ImageView addImage;
-
+    Boolean imageUpload;
     RatingBar rating;
     Site focused;
+    knownSite inst = new knownSite();
+    SparseArray<Image> temp = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,19 +115,36 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
         if(focused.getImage() != null) {
-            imageBit = StringToBitMap(focused.getImage());
-            image1.setImageBitmap(imageBit);
-            image1.setVisibility(View.VISIBLE);
+            if (focused.getImage().equals("null")) {
+                image1.setVisibility(View.GONE);
+                imageNum = 1;
+            } else {
+                imageBit = StringToBitMap(focused.getImage());
+                image1.setImageBitmap(imageBit);
+                image1.setVisibility(View.VISIBLE);
+            }
         }
+
         if(focused.getImage2() != null) {
-            imageBit = StringToBitMap(focused.getImage2());
-            image2.setImageBitmap(imageBit);
-            image2.setVisibility(View.VISIBLE);
+            if (focused.getImage2().equals("null")) {
+                image2.setVisibility(View.GONE);
+                imageNum = 2;
+            } else {
+                imageBit = StringToBitMap(focused.getImage2());
+                image2.setImageBitmap(imageBit);
+                image2.setVisibility(View.VISIBLE);
+            }
         }
+
         if(focused.getImage3() != null) {
-            imageBit = StringToBitMap(focused.getImage3());
-            image3.setImageBitmap(imageBit);
-            image3.setVisibility(View.VISIBLE);
+            if (focused.getImage3().equals("null")) {
+                image3.setVisibility(View.GONE);
+                imageNum = 3;
+            } else {
+                imageBit = StringToBitMap(focused.getImage3());
+                image3.setImageBitmap(imageBit);
+                image3.setVisibility(View.VISIBLE);
+            }
         }
 
         feature1 = focused.getFeature1();
@@ -165,6 +189,15 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             feature10Image.setVisibility(View.GONE);
         }
 
+        /*if(imageUpload) {
+            temp = inst.getTemp();
+            newImage = temp.get(0).getImage();
+            newBitmap = StringToBitMap(newImage);
+            image1.setVisibility(View.VISIBLE);
+            image.setImageBitmap(compress);
+        }*/
+
+
         contact.setOnClickListener(this);
         update.setOnClickListener(this);
         addImage.setOnClickListener(this);
@@ -177,6 +210,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.contactSiteAdmin:
                 intent = new Intent(getApplicationContext(), ContactUser.class);
+                intent.putExtra("contact", focused.getSiteAdmin());
                 startActivity(intent);
                 break;
 
@@ -188,7 +222,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
             case R.id.updateKnown:
 
-                if (rating.getRating() == focused.getRating().floatValue() && addImage != null) {
+                if (rating.getRating() == focused.getRating().floatValue() && newImage == null) {
                     //nothing has changed
                     Snackbar.make(v, "You haven't uploaded a new image or updated the rating!", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -197,7 +231,11 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                     boolean active = true;
                     String newRating = Float.toString(rating.getRating());
 
-                    new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine).execute();
+                    if(newImage != null) {
+                        imageSingleLine = newImage.replaceAll("[\r\n]+", "");
+                    }
+
+                    new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum).execute();
 
                     //intent = new Intent(getApplicationContext(), MainActivity.class);
                     //startActivity(intent);
@@ -207,28 +245,11 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public Bitmap StringToBitMap(String encodedString){
-        try{
-            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-
-                if (prevState == 2){
-                    intent.putExtra("fragment", 2);
-                }
-                startActivity(intent);
                 finish();
                 return true;
         }
@@ -242,8 +263,19 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
         if(resultCode == RESULT_OK){
             Uri targetUri = data.getData();
             try{
-                Bitmap newBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                String newImage = getStringImage(newBitmap);
+                newBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                newImage = getStringImage(newBitmap);
+                //imageUpload = true;
+
+                //Image upload = new Image();
+                //upload.setImage(newImage);
+                //upload.setCid("temp");
+
+                //temp = inst.getTemp();
+
+                //temp.put(0, upload);
+
+                //inst.setTemp(temp);
 
                 addImage.setImageBitmap(newBitmap);
             } catch (FileNotFoundException e){
@@ -261,6 +293,17 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             return encodedImage;
         } else {
+            return null;
+        }
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
             return null;
         }
     }

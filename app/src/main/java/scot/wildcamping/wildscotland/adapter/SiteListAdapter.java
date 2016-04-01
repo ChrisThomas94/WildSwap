@@ -59,6 +59,7 @@ public class SiteListAdapter extends BaseAdapter {
         //ImageView siteThumbnail2 = (ImageView) convertView.findViewById(R.id.siteThumbnail2);
         //ImageView siteThumbnail3 = (ImageView) convertView.findViewById(R.id.siteThumbnail3);
         TextView title = (TextView) convertView.findViewById(R.id.title);
+        TextView placeholderFeatures = (TextView) convertView.findViewById(R.id.placeholderFeatures);
         ImageView feature1 = (ImageView) convertView.findViewById(R.id.preview_feature1);
         ImageView feature2 = (ImageView) convertView.findViewById(R.id.preview_feature2);
         ImageView feature3 = (ImageView) convertView.findViewById(R.id.preview_feature3);
@@ -142,6 +143,12 @@ public class SiteListAdapter extends BaseAdapter {
             feature10.setVisibility(View.GONE);
         } else {
             feature10.setVisibility(View.VISIBLE);
+        }
+
+        if (knownSites.get(position).getFeature1().equals("0") && knownSites.get(position).getFeature2().equals("0") && knownSites.get(position).getFeature3().equals("0") && knownSites.get(position).getFeature4().equals("0") && knownSites.get(position).getFeature5().equals("0") && knownSites.get(position).getFeature6().equals("0") && knownSites.get(position).getFeature7().equals("0") && knownSites.get(position).getFeature8().equals("0") && knownSites.get(position).getFeature9().equals("0") && knownSites.get(position).getFeature10().equals("0")){
+            placeholderFeatures.setVisibility(View.VISIBLE);
+        } else {
+            placeholderFeatures.setVisibility(View.INVISIBLE);
         }
 
         rating.setRating(knownSites.get(position).getRating().floatValue());

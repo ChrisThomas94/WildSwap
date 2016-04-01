@@ -18,6 +18,15 @@
         android:text="Title"
         android:textSize="30sp"/>
 
+    <TextView
+        android:id="@+id/placeholderFeatures"
+        android:layout_width="wrap_content"
+        android:layout_height="53dip"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="You have not added any features to this site!"
+        android:layout_below="@+id/title"/>
+
 
     <HorizontalScrollView
         android:id="@+id/features"
@@ -138,7 +147,7 @@
         android:id="@+id/ratingThumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/features"
+        android:layout_below="@+id/placeholderFeatures"
         android:layout_centerHorizontal="true"
         android:clickable="false"
         android:isIndicator="true"/>

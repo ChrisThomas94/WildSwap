@@ -57,8 +57,9 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     Boolean feature10;
     String image;
     String user;
+    int imageNum;
 
-    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
+    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, int imageNum) {
         this.context = context;
         this.owned = owned;
         this.active = active;
@@ -77,6 +78,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         this.feature9 = feature9;
         this.feature10 = feature10;
         this.image = image;
+        this.imageNum = imageNum;
     }
 
     /**
@@ -146,7 +148,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             }
         } else if (active && !owned){
             try {
-                String json = updateKnownSite(active, uid, cid, rating, image);
+                String json = updateKnownSite(active, uid, cid, rating, image, imageNum);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -230,13 +232,15 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 + "\"active\":\"" + active + "\"}";
     }
 
-    private String updateKnownSite(Boolean active, String uid, String cid, String rating, String image){
+    private String updateKnownSite(Boolean active, String uid, String cid, String rating, String image, int imageNum){
         return "{\"tag\":\"" + "updateKnownSite" + "\","
                 + "\"active\":\"" + active + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"cid\":\"" + cid + "\","
                 + "\"rating\":\"" + rating + "\","
-                + "\"image\":\"" + image + "\"}";
+                + "\"image\":\"" + image + "\","
+                + "\"imageNum\":\"" + imageNum + "\"}";
+
     }
 
 }

@@ -4,12 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <RelativeLayout
         android:id="@+id/theirSite"
         android:clickable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
@@ -30,6 +31,15 @@
             android:textSize="30sp"
             android:text="Site title"
             android:layout_below="@+id/signpostTheirs"/>
+
+        <TextView
+            android:id="@+id/placeholderFeatures"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:layout_below="@+id/recieveTitle"
+            android:text="The user has not added any features to this site!"/>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -139,7 +149,7 @@
             android:id="@+id/recieveRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
+            android:layout_below="@id/placeholderFeatures"
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"/>
@@ -184,7 +194,7 @@
     <RelativeLayout
         android:id="@+id/yourSite"
         android:clickable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
@@ -205,6 +215,15 @@
             android:layout_centerHorizontal="true"
             android:text="Site title"
             android:layout_below="@+id/signpostYours"/>
+
+        <TextView
+            android:id="@+id/placeholderFeaturesYours"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:layout_below="@+id/sendTitle"
+            android:text="You have not added any features to this site!"/>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -317,7 +336,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"
-            android:paddingTop="100dp"/>
+            android:layout_below="@id/placeholderFeaturesYours"/>
 
     </RelativeLayout>
 

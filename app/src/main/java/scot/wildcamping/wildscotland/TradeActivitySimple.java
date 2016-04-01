@@ -44,6 +44,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     int nextSite = 0;
 
     TextView recieveTitle;
+    TextView placeholderFeatures;
     ImageView features1;
     ImageView features2;
     ImageView features3;
@@ -57,6 +58,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     RatingBar recieveRating;
 
     TextView sendTitle;
+    TextView placeholderFeaturesYours;
     ImageView sendFeatures1;
     ImageView sendFeatures2;
     ImageView sendFeatures3;
@@ -91,6 +93,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         Button left = (Button)findViewById(R.id.btn_left);
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
+        placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
         features1 = (ImageView)findViewById(R.id.features1);
         features2 = (ImageView)findViewById(R.id.features2);
         features3 = (ImageView)findViewById(R.id.features3);
@@ -104,6 +107,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         recieveRating = (RatingBar)findViewById(R.id.recieveRating);
 
         sendTitle = (TextView)findViewById(R.id.sendTitle);
+        placeholderFeaturesYours = (TextView)findViewById(R.id.placeholderFeaturesYours);
         sendFeatures1 = (ImageView)findViewById(R.id.sendFeatures1);
         sendFeatures2 = (ImageView)findViewById(R.id.sendFeatures2);
         sendFeatures3 = (ImageView)findViewById(R.id.sendFeatures3);
@@ -215,6 +219,12 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             sendFeatures10.setVisibility(View.VISIBLE);
         }
 
+        if (sendSite.getFeature1().equals("0") && sendSite.getFeature2().equals("0") && sendSite.getFeature3().equals("0") && sendSite.getFeature4().equals("0") && sendSite.getFeature5().equals("0") && sendSite.getFeature6().equals("0") && sendSite.getFeature7().equals("0") && sendSite.getFeature8().equals("0") && sendSite.getFeature9().equals("0") && sendSite.getFeature10().equals("0")){
+            placeholderFeaturesYours.setVisibility(View.VISIBLE);
+        } else {
+            placeholderFeaturesYours.setVisibility(View.GONE);
+        }
+
         sendRating.setRating((sendSite.getRating()).floatValue());
     }
 
@@ -307,8 +317,13 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             features10.setVisibility(View.VISIBLE);
         }
 
-        recieveRating.setRating((recieveSite.getRating()).floatValue());
+        if (recieveSite.getFeature1().equals("0") && recieveSite.getFeature2().equals("0") && recieveSite.getFeature3().equals("0") && recieveSite.getFeature4().equals("0") && recieveSite.getFeature5().equals("0") && recieveSite.getFeature6().equals("0") && recieveSite.getFeature7().equals("0") && recieveSite.getFeature8().equals("0") && recieveSite.getFeature9().equals("0") && recieveSite.getFeature10().equals("0")){
+            placeholderFeatures.setVisibility(View.VISIBLE);
+        } else {
+            placeholderFeatures.setVisibility(View.GONE);
+        }
 
+        recieveRating.setRating((recieveSite.getRating()).floatValue());
     }
 
     @Override

@@ -4,13 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <RelativeLayout
         android:id="@+id/theirSite"
         android:clickable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
@@ -38,6 +38,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@+id/recieveTitle">
+
+        <TextView
+            android:id="@+id/placeholderFeatures"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="The user has not added any features to this site!"/>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -194,7 +202,7 @@
     <RelativeLayout
         android:id="@+id/yourSite"
         android:clickable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
@@ -223,6 +231,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@+id/sendTitle">
+
+            <TextView
+                android:id="@+id/placeholderFeaturesYours"
+                android:layout_width="wrap_content"
+                android:layout_height="48dip"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_below="@+id/sendTitle"
+                android:text="You have not added any features to this site!"/>
 
 
             <HorizontalScrollView

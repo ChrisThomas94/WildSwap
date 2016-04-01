@@ -203,8 +203,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 break;
             case 1:
                 currPosition = 1;
-                //fragment = new YourSitesFragment();
-                //fragment = new testFragment();
                 if(isNetworkAvailable()) {
                     try {
                         String your_result = new FetchKnownSites(this).execute().get();
@@ -215,7 +213,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     }
                 }
                 Intent intent = new Intent(getApplicationContext(), Sites.class);
-                //intent.putExtra("position", currPosition);
                 startActivity(intent);
                 break;
 

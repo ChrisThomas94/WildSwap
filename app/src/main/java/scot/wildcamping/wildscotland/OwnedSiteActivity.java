@@ -108,19 +108,33 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
         if(focused.getImage() != null) {
-            imageBit = StringToBitMap(focused.getImage());
-            image1.setImageBitmap(imageBit);
-            image1.setVisibility(View.VISIBLE);
+            if (focused.getImage().equals("null")) {
+                image1.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(focused.getImage());
+                image1.setImageBitmap(imageBit);
+                image1.setVisibility(View.VISIBLE);
+            }
         }
+
         if(focused.getImage2() != null) {
-            imageBit = StringToBitMap(focused.getImage2());
-            image2.setImageBitmap(imageBit);
-            image2.setVisibility(View.VISIBLE);
+            if (focused.getImage2().equals("null")) {
+                image2.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(focused.getImage2());
+                image2.setImageBitmap(imageBit);
+                image2.setVisibility(View.VISIBLE);
+            }
         }
+
         if(focused.getImage3() != null) {
-            imageBit = StringToBitMap(focused.getImage3());
-            image3.setImageBitmap(imageBit);
-            image3.setVisibility(View.VISIBLE);
+            if (focused.getImage3().equals("null")) {
+                image3.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(focused.getImage3());
+                image3.setImageBitmap(imageBit);
+                image3.setVisibility(View.VISIBLE);
+            }
         }
 
         if(focused.getFeature1().equals("0")){
@@ -167,6 +181,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         back.setOnClickListener(this);
         edit.setOnClickListener(this);
         image1.setOnClickListener(this);
+        addImage.setOnClickListener(this);
 
     }
 
@@ -181,7 +196,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 //String ratingReq = Double.toString(ratingBun);
                 intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 //trigger php to deactivate site
-                new UpdateSite(this, true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr).execute();
+                new UpdateSite(this, true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0).execute();
                 startActivity(intent);
                 finish();
                 break;
@@ -233,11 +248,11 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 if(prevState == 1) {
                     intent = new Intent(getApplicationContext(),Sites.class);
                     //intent.putExtra("fragment", 1);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                    finish();
                 }
-                startActivity(intent);
-                finish();
                 return true;
 
             case R.id.addImage:

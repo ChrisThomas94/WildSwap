@@ -349,24 +349,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // Initialize the manager with the context and the map.
         mClusterManager = new ClusterManager<>(this.getActivity(), googleMap, mMarkerManager);
 
-        collKnown = mMarkerManager.newCollection();
+        //collKnown = mMarkerManager.newCollection();
         coll = mMarkerManager.newCollection();
 
         if(knownSiteSize > 0) {
             for (int i = 0; i < knownSiteSize; i++) {
                 Site currentSite = knownSitesMap.get(i);
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)));
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription()));
             }
         } else {
             //no known sites
         }
 
         if(ownedSiteSize > 0){
+            System.out.println("I have an owned site");
             for(int i = 0; i< ownedSiteSize; i++){
 
                 Site currentSite = ownedSitesMap.get(i);
                 System.out.println(i + "  " + currentSite.getTitle());
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin32)));
+                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription()));
             }
 
         } else {
@@ -376,12 +377,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // Point the map's listeners at the listeners implemented by the cluster manager.
         //googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mMarkerManager);
+        googleMap.setInfoWindowAdapter(mMarkerManager);
 
-        //GoogleMap.OnMarkerClickListener markerClickListener
-        coll.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-
+            public void onInfoWindowClick(Marker marker) {
 
                 if(knownSiteSize > 0) {
                     for (int i = 0; i < knownSiteSize; i++) {
@@ -405,37 +405,17 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            System.out.println("owned site click");
-                            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            final View popupView = layoutInflater.inflate(R.layout.popup_known_site, null);
-                            final PopupWindow popupWindow = new PopupWindow(
-                                    popupView,
-                                    AbsListView.LayoutParams.WRAP_CONTENT,
-                                    AbsListView.LayoutParams.WRAP_CONTENT);
-
-                            LatLng centerBottom = new LatLng(currentSite.getPosition().latitude, (currentSite.getPosition().longitude - 0.05));
-
-
-                            CameraPosition cameraPosition = new CameraPosition.Builder()
-                                    .target(centerBottom).zoom(8).build();
-                            googleMap.animateCamera(CameraUpdateFactory
-                                    .newCameraPosition(cameraPosition));
-
-                            popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
-
-                            //Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
-                            //intent.putExtra("arrayPosition", i);
-                            //intent.putExtra("cid", currentSite.getCid());
-                            //intent.putExtra("prevState", 0);
-                            //startActivity(intent);
+                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            intent.putExtra("arrayPosition", i);
+                            intent.putExtra("cid", currentSite.getCid());
+                            intent.putExtra("prevState", 0);
+                            startActivity(intent);
                             break;
                         }
                     }
                 } else {
 
                 }
-
-                return true;
             }
         });
 

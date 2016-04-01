@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.R;
@@ -49,8 +50,17 @@ public class CustomSpinnerAdapter extends ArrayAdapter<String> {
         View row = inflater.inflate(R.layout.spinner_row, parent, false);
 
         TextView tvCategory = (TextView) row.findViewById(R.id.tvCategory);
+        ImageView icon = (ImageView) row.findViewById(R.id.icon);
 
         tvCategory.setText(data.get(position).toString());
+
+        if(position == 0){
+            icon.setImageResource(R.drawable.map_icon1);
+        } else if (position == 1){
+            icon.setImageResource(R.drawable.sites_icon1);
+        } else if (position == 2){
+            icon.setImageResource(R.drawable.trade_icon1);
+        }
 
         return row;
     }

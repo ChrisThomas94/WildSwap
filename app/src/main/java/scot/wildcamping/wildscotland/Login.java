@@ -81,7 +81,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
 
-            if(isNetworkAvailable()){
+            /*if(isNetworkAvailable()){
                 try {
                     String known_results = new FetchKnownSites(this).execute().get();
                     String unknown_result = new FetchUnknownSites(this).execute().get();
@@ -91,7 +91,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 } catch (InterruptedException e){
 
                 }
-            }
+            }*/
 
             Intent intent = new Intent(Login.this, MainActivity_Spinner.class);
             startActivity(intent);
