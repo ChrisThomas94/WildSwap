@@ -29,9 +29,12 @@
             android:layout_centerHorizontal="true"
             android:textSize="30sp"
             android:text="Site title"
+            android:layout_marginBottom="5dp"
             android:layout_below="@+id/signpostTheirs"/>
 
         <HorizontalScrollView
+            android:id="@+id/theirFeatures"
+            android:layout_below="@id/recieveTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
@@ -139,7 +142,7 @@
             android:id="@+id/recieveRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
+            android:layout_below="@+id/theirFeatures"
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"/>
@@ -192,10 +195,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="30sp"
+            android:layout_marginBottom="5dp"
             android:text="Site title"
             android:layout_below="@+id/signpostYours"/>
 
         <HorizontalScrollView
+            android:id="@+id/yourFeatures"
+            android:layout_below="@+id/sendTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
@@ -303,7 +309,7 @@
             android:id="@+id/sendRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
+            android:layout_below="@+id/yourFeatures"
             android:layout_centerHorizontal="true"
             android:clickable="false"
             android:isIndicator="true"/>

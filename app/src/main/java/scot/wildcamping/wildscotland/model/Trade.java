@@ -12,6 +12,7 @@ public class Trade {
     private String recieve_cid;
     private String date;
     private String userRelation;
+    private int status;
 
     public void setUnique_tid(String unique_tid){
         this.unique_tid = unique_tid;
@@ -67,6 +68,14 @@ public class Trade {
 
     public String getUserRelation(){
         return userRelation;
+    }
+
+    public void setStatus(int status){
+        this.status = status;
+    }
+
+    public int getStatus(){
+        return status;
     }
 
 }

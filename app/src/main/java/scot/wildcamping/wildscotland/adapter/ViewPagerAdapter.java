@@ -3,12 +3,13 @@ package scot.wildcamping.wildscotland.adapter;
 /**
  * Created by Chris on 01-Apr-16.
  */
-
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import scot.wildcamping.wildscotland.ClosedTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
+import scot.wildcamping.wildscotland.OpenTradesFragment;
 import scot.wildcamping.wildscotland.YourSitesFragment;
 
 /**
@@ -35,16 +36,24 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            Fragment tab1 = new YourSitesFragment();
+            Fragment tab1 = null;
+            if(Titles[0] == "Active"){
+                tab1 = new OpenTradesFragment();
+            } else {
+                tab1 = new YourSitesFragment();
+            }
             return tab1;
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            KnownSitesFragment tab2 = new KnownSitesFragment();
+            Fragment tab2 = null;
+            if(Titles[1] == "History"){
+                tab2 = new ClosedTradesFragment();
+            } else {
+                tab2 = new KnownSitesFragment();
+            }
             return tab2;
         }
-
-
     }
 
     // This method return the titles for the Tabs in the Tab Strip

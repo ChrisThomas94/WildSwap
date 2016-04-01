@@ -7,14 +7,36 @@ import android.util.SparseArray;
  */
 public class StoredTrades {
 
+    private static int allTradesSize;
+    private static SparseArray<Trade> allTrades = new SparseArray<>();
+
     private static int activeTradesSize;
     private static SparseArray<Trade> activeTrades = new SparseArray<>();
+
+    private static int inactiveTradesSize;
+    private static SparseArray<Trade> inactiveTrades = new SparseArray<>();
 
     private static int sentTradesSize;
     private static SparseArray<Trade> sentTrades = new SparseArray<>();
 
     private static int receivedTradesSize;
     private static SparseArray<Trade> receivedTrades = new SparseArray<>();
+
+    public void setAllTradesSize(int allTradesSize) {
+        this.allTradesSize = allTradesSize;
+    }
+
+    public int getAllTradesSize(){
+        return allTradesSize;
+    }
+
+    public void setAllTrades(SparseArray<Trade> map){
+        this.allTrades = map;
+    }
+
+    public SparseArray<Trade> getAllTrades(){
+        return allTrades;
+    }
 
     public void setActiveTradesSize(int activeTradesSize) {
         this.activeTradesSize = activeTradesSize;
@@ -30,6 +52,22 @@ public class StoredTrades {
 
     public SparseArray<Trade> getActiveTrades(){
         return activeTrades;
+    }
+
+    public void setInactiveTradesSize(int inactiveTradesSize) {
+        this.inactiveTradesSize = inactiveTradesSize;
+    }
+
+    public int getInactiveTradesSize(){
+        return inactiveTradesSize;
+    }
+
+    public void setInactiveTrades(SparseArray<Trade> map){
+        this.inactiveTrades = map;
+    }
+
+    public SparseArray<Trade> getInactiveTrades(){
+        return inactiveTrades;
     }
 
     public void setSentTrades(SparseArray<Trade> map) {

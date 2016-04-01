@@ -39,21 +39,13 @@ public class Sites extends AppCompatActivity {
     int Numboftabs =2;
     ArrayList<String> list;
     int currPosition;
-    int prevPosition;
+    boolean initialSelection = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sites);
-
-        Bundle extras = getIntent().getExtras();
-        if(extras != null)
-        {
-            prevPosition = extras.getInt("position");
-
-        }
-
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
@@ -118,13 +110,17 @@ public class Sites extends AppCompatActivity {
 		 */
 
         spinner_nav.setAdapter(spinAdapter);
-
+        spinner_nav.setSelection(1);
         spinner_nav.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
-                displayView(position);
+
+                if(initialSelection){
+                    displayView(position);
+                }
+                initialSelection = true;
             }
 
             @Override
@@ -133,7 +129,6 @@ public class Sites extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void displayView(int position) {
@@ -176,7 +171,7 @@ public class Sites extends AppCompatActivity {
 
             case 2:
                 currPosition = 2;
-                fragment = new OpenTradesFragment();
+                //fragment = new OpenTradesFragment();
                 if(isNetworkAvailable()) {
                     try {
                         String str_result = new FetchTradeRequests(this).execute().get();
@@ -186,6 +181,9 @@ public class Sites extends AppCompatActivity {
 
                     }
                 }
+                Intent in = new Intent(getApplicationContext(), Trades.class);
+                //i.putExtra("position", currPosition);
+                startActivity(in);
                 break;
 
             default:
@@ -233,7 +231,21 @@ public class Sites extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings1) {
+            Intent intent = new Intent(getApplicationContext(), SettingsFragment.class);
+            startActivity(intent);
             return true;
+        } else if (id == R.id.action_refresh) {
+            if(isNetworkAvailable()) {
+                try {
+                    String known_result = new FetchKnownSites(this).execute().get();
+                    String unknown_result = new FetchUnknownSites(this).execute().get();
+                } catch (InterruptedException e) {
+
+                } catch (ExecutionException e) {
+
+                }
+            }
+            displayView(1);
         }
 
         return super.onOptionsItemSelected(item);

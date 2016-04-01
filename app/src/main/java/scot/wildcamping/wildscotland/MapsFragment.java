@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -110,6 +111,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     int ownedSiteSize;
 
     Site newlyAdded;
+    View v;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -139,7 +141,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
 
         // inflate and return the layout
-        View v = inflater.inflate(R.layout.fragment_maps, container,
+        v = inflater.inflate(R.layout.fragment_maps, container,
                 false);
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
@@ -240,7 +242,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
 
         LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = layoutInflater.inflate(R.layout.popup, null);
@@ -300,20 +302,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                 popupWindow.dismiss();
 
-                //TODO make clusters dissaper before listening for map click so user is not restricted by clusters
-
-                //googleMap.clear();
-
-                /*LayoutInflater layoutInflater
-                        = (LayoutInflater) getActivity().getBaseContext()
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View popupView = layoutInflater.inflate(R.layout.popup_manualadd, null);
-                final PopupWindow popupWindow = new PopupWindow(
-                        popupView,
-                        AbsListView.LayoutParams.WRAP_CONTENT,
-                        AbsListView.LayoutParams.WRAP_CONTENT);
-
-                popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);*/
+                //Snackbar.make(v, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
 
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -416,11 +405,29 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
-                            intent.putExtra("arrayPosition", i);
-                            intent.putExtra("cid", currentSite.getCid());
-                            intent.putExtra("prevState", 0);
-                            startActivity(intent);
+                            System.out.println("owned site click");
+                            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            final View popupView = layoutInflater.inflate(R.layout.popup_known_site, null);
+                            final PopupWindow popupWindow = new PopupWindow(
+                                    popupView,
+                                    AbsListView.LayoutParams.WRAP_CONTENT,
+                                    AbsListView.LayoutParams.WRAP_CONTENT);
+
+                            LatLng centerBottom = new LatLng(currentSite.getPosition().latitude, (currentSite.getPosition().longitude - 0.05));
+
+
+                            CameraPosition cameraPosition = new CameraPosition.Builder()
+                                    .target(centerBottom).zoom(8).build();
+                            googleMap.animateCamera(CameraUpdateFactory
+                                    .newCameraPosition(cameraPosition));
+
+                            popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
+
+                            //Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            //intent.putExtra("arrayPosition", i);
+                            //intent.putExtra("cid", currentSite.getCid());
+                            //intent.putExtra("prevState", 0);
+                            //startActivity(intent);
                             break;
                         }
                     }

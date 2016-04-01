@@ -33,6 +33,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     String user;
     final int tradeStatus = 0;
     SparseArray<Trade> activeTrades = new SparseArray<>();
+    SparseArray<Trade> inactiveTrades = new SparseArray<>();
 
     SparseArray<Trade> sentTrades = new SparseArray<>();
     SparseArray<Trade> receivedTrades = new SparseArray<>();
@@ -75,31 +76,43 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 int size = jObj.getInt("size");
+                int openCnt = 0;
+                int closedCnt = 0;
 
                 if(!error) {
                     for (int i = 0; i < size; i++) {
 
                         JSONObject jsonTrade = jObj.getJSONObject("trade" + i);
 
-                        Trade activeTrade = new Trade();
-                        activeTrade.setUnique_tid(jsonTrade.getString("unique_tid"));
-                        activeTrade.setSender_uid(jsonTrade.getString("sender_uid_fk"));
-                        activeTrade.setReciever_uid(jsonTrade.getString("reciever_uid_fk"));
-                        activeTrade.setSend_cid(jsonTrade.getString("send_cid_fk"));
-                        activeTrade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
-                        activeTrade.setDate(jsonTrade.getString("created_at"));
+                        Trade trade = new Trade();
+                        trade.setUnique_tid(jsonTrade.getString("unique_tid"));
+                        trade.setSender_uid(jsonTrade.getString("sender_uid_fk"));
+                        trade.setReciever_uid(jsonTrade.getString("reciever_uid_fk"));
+                        trade.setSend_cid(jsonTrade.getString("send_cid_fk"));
+                        trade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
+                        trade.setDate(jsonTrade.getString("created_at"));
+                        trade.setStatus(jsonTrade.getInt("status"));
 
                         if(jsonTrade.getString("sender_uid_fk").equals(user)){
-                            activeTrade.setUserRelation("Sent");
+                            trade.setUserRelation("Sent");
                         } else {
-                            activeTrade.setUserRelation("Received");
+                            trade.setUserRelation("Received");
                         }
 
-                        activeTrades.put(i, activeTrade);
+                        if(jsonTrade.getInt("status") == 0){
+                            activeTrades.put(openCnt, trade);
+                            openCnt++;
+                        } else {
+                            inactiveTrades.put(closedCnt, trade);
+                            closedCnt++;
+                        }
                     }
                     StoredTrades inst = new StoredTrades();
                     inst.setActiveTrades(activeTrades);
-                    inst.setActiveTradesSize(size);
+                    inst.setActiveTradesSize(activeTrades.size());
+
+                    inst.setInactiveTrades(inactiveTrades);
+                    inst.setInactiveTradesSize(inactiveTrades.size());
 
                 } else {
                     //error message
@@ -146,9 +159,8 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     }
 
     private String getTradeRequests(String uid, int tradeStatus) {
-        return "{\"tag\":\"" + "activeTrades" + "\","
-                + "\"uid\":\"" + uid + "\","
-                + "\"tradeStatus\":\"" + tradeStatus+ "\"}";
+        return "{\"tag\":\"" + "allTrades" + "\","
+                + "\"uid\":\"" + uid+ "\"}";
     }
 
 }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
 import scot.wildcamping.wildscotland.model.Site;
@@ -34,9 +35,17 @@ public class KnownSitesFragment extends Fragment {
 
         mDrawerList = (ListView) rootView.findViewById(R.id.known_sites_listview);
 
+        TextView empty = (TextView) rootView.findViewById(R.id.empty);
+
         inst = new knownSite();
         knownSites = new SparseArray<>();
         knownSites = inst.getKnownSitesMap();
+
+        if(knownSites.size() == 0){
+            empty.setVisibility(View.VISIBLE);
+        } else {
+            empty.setVisibility(View.GONE);
+        }
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

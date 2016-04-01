@@ -37,6 +37,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     String send_cid;
     String recieve_cid;
     String unique_tid;
+    int status;
 
     TextView recieveTitle;
     ImageView features1;
@@ -85,11 +86,19 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
             send_cid = extras.getString("send_cid");
             recieve_cid = extras.getString("recieve_cid");
             date = extras.getString("date");
+            status = extras.getInt("status");
         }
 
 
         Button contact = (Button)findViewById(R.id.btnContact_User);
+        contact.setOnClickListener(this);
+
         Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
+        cancel.setOnClickListener(this);
+
+        if(status != 0){
+            cancel.setVisibility(View.GONE);
+        }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         features1 = (ImageView)findViewById(R.id.features1);
@@ -122,9 +131,6 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         sendPicture3 = (ImageView)findViewById(R.id.sendPicture3);
 
         configSites();
-
-        cancel.setOnClickListener(this);
-        contact.setOnClickListener(this);
     }
 
     public void configSites(){
@@ -286,9 +292,6 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                intent.putExtra("fragment", 3);
-                startActivity(intent);
                 finish();
                 return true;
         }

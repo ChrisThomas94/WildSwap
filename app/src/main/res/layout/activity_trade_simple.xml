@@ -55,7 +55,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/transport"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -64,7 +64,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/mountain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -73,6 +73,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/nature"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -81,7 +82,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/grassy_terrain3"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -90,7 +91,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/rocky_terrain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -99,7 +100,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/sandy_terrain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -108,7 +109,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/animals"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -117,7 +118,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/pint"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -126,7 +127,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/shop"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -135,7 +136,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/sheep"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
             </LinearLayout>
@@ -239,7 +240,7 @@
                         android:layout_height="80dp"
                         android:src="@drawable/ic_add_to_photos_black_48dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
+                        android:paddingRight="5dp"
                         android:visibility="gone"
                         android:scaleType="fitXY"/>
 
@@ -281,8 +282,6 @@
         <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/sendPicture"
-            android:layout_toEndOf="@+id/sendPicture"
             android:layout_centerVertical="true">
 
             <LinearLayout
@@ -296,7 +295,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/transport"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -305,7 +304,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/mountain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -314,7 +313,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/nature"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -323,6 +322,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/grassy_terrain3"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -331,7 +331,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/rocky_terrain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -340,7 +340,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/sandy_terrain"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -349,7 +349,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/animals"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -358,7 +358,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/pint"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -367,7 +367,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/shop"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
                 <ImageView
@@ -376,7 +376,7 @@
                     android:layout_height="48dip"
                     android:scaleType="fitXY"
                     android:src="@drawable/sheep"
-                    android:paddingRight="5dp"
+                    android:layout_marginRight="5dp"
                     android:visibility="visible"/>
 
             </LinearLayout>

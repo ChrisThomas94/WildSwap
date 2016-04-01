@@ -229,9 +229,12 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                Intent intent = null;
                 if(prevState == 1) {
-                    intent.putExtra("fragment", 1);
+                    intent = new Intent(getApplicationContext(),Sites.class);
+                    //intent.putExtra("fragment", 1);
+                } else {
+                    intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 }
                 startActivity(intent);
                 finish();

@@ -10,6 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import scot.wildcamping.wildscotland.R;
 import scot.wildcamping.wildscotland.model.Trade;
 
@@ -54,7 +58,23 @@ public class TradeListAdapter extends BaseAdapter{
         TextView titleTrade = (TextView)convertView.findViewById(R.id.titleTrade);
 
         title.setText(activeTrades.get(position).getUserRelation());
-        titleTrade.setText(activeTrades.get(position).getDate());
+        //titleTrade.setText(activeTrades.get(position).getDate());
+
+
+        //http://stackoverflow.com/questions/8573250/android-how-can-i-convert-string-to-date
+        Date date = null;
+        String dtStart = "2010-10-15T09:27:37Z";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = format.parse(activeTrades.get(position).getDate());
+            System.out.println(date);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        titleTrade.setText(android.text.format.DateUtils.getRelativeTimeSpanString(date.getTime()));
+
 
         return convertView;
     }

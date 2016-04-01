@@ -125,6 +125,10 @@
             android:label="Sites"
             android:theme= "@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".Trades"
+            android:label="Trades"
+            android:theme= "@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".UpdateSiteActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"

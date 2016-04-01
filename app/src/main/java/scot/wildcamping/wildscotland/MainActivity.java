@@ -256,7 +256,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 			}
 			break;
 		case 3:
-			fragment = new OpenTradesFragment();
+			//fragment = new OpenTradesFragment();
 			if(isNetworkAvailable()) {
 				try {
 					String str_result = new FetchTradeRequests(this).execute().get();

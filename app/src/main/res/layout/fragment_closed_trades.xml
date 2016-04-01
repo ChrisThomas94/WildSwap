@@ -7,7 +7,7 @@
     android:paddingRight="8dp">
 
     <ListView
-        android:id="@+id/open_trades_listview"
+        android:id="@+id/closed_trades_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -20,12 +20,9 @@
         android:id="@+id/empty"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="No Active Trades"
+        android:text="No Trade History"
         android:visibility="visible"
         android:layout_gravity="center"
         android:gravity="center"/>
 
 </LinearLayout>
-
-
-

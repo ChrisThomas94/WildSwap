@@ -1,5 +1,8 @@
 package scot.wildcamping.wildscotland;
 
+/**
+ * Created by Chris on 01-Apr-16.
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -19,34 +22,35 @@ import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
 
-public class OpenTradesFragment extends Fragment {
-	
-	public OpenTradesFragment(){}
+public class ClosedTradesFragment extends Fragment {
+
+    public ClosedTradesFragment(){}
 
     final String sent = "Sent";
     final String received = "Received";
 
-    SparseArray<Trade> activeTrades;
+    SparseArray<Trade> inactiveTrades;
     StoredTrades trades;
 
     private TradeListAdapter adapter;
     private ListView mDrawerList;
 
 
-	@Override
+    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_open_trades, container, false);      //fragment_open_trades
+        View rootView = inflater.inflate(R.layout.fragment_closed_trades, container, false);      //fragment_open_trades
 
-        mDrawerList = (ListView) rootView.findViewById(R.id.open_trades_listview);
+        mDrawerList = (ListView) rootView.findViewById(R.id.closed_trades_listview);
+
         TextView empty = (TextView) rootView.findViewById(R.id.empty);
-
+        
         trades = new StoredTrades();
-        activeTrades = new SparseArray<>();
-        activeTrades = trades.getActiveTrades();
+        inactiveTrades = new SparseArray<>();
+        inactiveTrades = trades.getInactiveTrades();
 
-        if(activeTrades.size() == 0){
+        if(inactiveTrades.size() == 0){
             empty.setVisibility(View.VISIBLE);
         } else {
             empty.setVisibility(View.GONE);
@@ -57,20 +61,21 @@ public class OpenTradesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent;
-                if(activeTrades.get(position).getUserRelation().equals(sent)){
+                if(inactiveTrades.get(position).getUserRelation().equals(sent)){
                     intent = new Intent(getActivity(), TradeView_Sent.class);
                 } else {
                     intent = new Intent(getActivity(), TradeView_Received.class);
                 }
-                intent.putExtra("unique_tid", activeTrades.get(position).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(position).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(position).getRecieve_cid());
-                intent.putExtra("date", activeTrades.get(position).getDate());
+                intent.putExtra("status", inactiveTrades.get(position).getStatus());
+                intent.putExtra("unique_tid", inactiveTrades.get(position).getUnique_tid());
+                intent.putExtra("send_cid", inactiveTrades.get(position).getSend_cid());
+                intent.putExtra("recieve_cid", inactiveTrades.get(position).getRecieve_cid());
+                intent.putExtra("date", inactiveTrades.get(position).getDate());
                 startActivity(intent);
             }
         });
 
-        adapter = new TradeListAdapter(getActivity(), activeTrades);
+        adapter = new TradeListAdapter(getActivity(), inactiveTrades);
         mDrawerList.setAdapter(adapter);
 
         return rootView;

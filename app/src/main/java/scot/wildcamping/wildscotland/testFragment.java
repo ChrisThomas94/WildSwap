@@ -1,8 +1,8 @@
 package scot.wildcamping.wildscotland;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -36,7 +36,7 @@ public class testFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.test_layout, container, false);
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        /*// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getFragmentManager(),Titles,Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
@@ -53,7 +53,7 @@ public class testFragment extends Fragment {
             public int getIndicatorColor(int position) {
                 return getResources().getColor(R.color.colorPrimaryDark);
             }
-        });
+        });*/
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);

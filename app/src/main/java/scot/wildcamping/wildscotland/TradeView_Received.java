@@ -43,6 +43,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     String unique_tid;
     int PositiveTradeStatus = 2;
     int NegativeTradeStatus = 1;
+    int status;
 
     TextView recieveTitle;
     ImageView features1;
@@ -93,11 +94,17 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             unique_tid = extras.getString("unique_tid");
             send_cid = extras.getString("send_cid");
             recieve_cid = extras.getString("recieve_cid");
+            status = extras.getInt("status");
         }
 
         Button reject = (Button)findViewById(R.id.btnReject_Trade);
         Button contactUser = (Button)findViewById(R.id.btnContact_User);
         Button accept = (Button)findViewById(R.id.btnAccept_Trade);
+
+        if(status != 0){
+            reject.setVisibility(View.GONE);
+            accept.setVisibility(View.GONE);
+        }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         features1 = (ImageView)findViewById(R.id.features1);
@@ -331,9 +338,6 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                intent.putExtra("fragment", 3);
-                startActivity(intent);
                 finish();
                 return true;
         }
