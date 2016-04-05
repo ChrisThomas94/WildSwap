@@ -1,8 +1,11 @@
 package scot.wildcamping.wildscotland;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
@@ -321,7 +325,18 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
+                if(isNetworkAvailable()) {
+                    try {
+                        String trades_result = new FetchTradeRequests(this).execute().get();
+                    } catch (InterruptedException e) {
 
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                Intent i = new Intent(getApplicationContext(), Trades.class);
+                startActivity(i);
+                overridePendingTransition(0, 0);
                 finish();
                 break;
 
@@ -366,6 +381,13 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             e.getMessage();
             return null;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

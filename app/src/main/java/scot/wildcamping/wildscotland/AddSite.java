@@ -63,7 +63,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String titleReq;
     String descReq;
     String ratingReq;
-    double rating;
+    float rating;
     String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
@@ -159,10 +159,10 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             title.setText(titlePassed);
             description.setText(descPassed);
 
-            rating = extras.getDouble("rating");
+            rating = extras.getFloat("rating");
 
-            float ratingFloat = (float)rating;
-            ratingBar.setRating(ratingFloat);
+            //float ratingFloat = (float)rating;
+            ratingBar.setRating(rating);
 
         }
 
@@ -216,7 +216,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature8", feature8);
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
-                intent.putExtra("rating", rating);
+                intent.putExtra("rating", ratingBar.getRating());
                 startActivity(intent);
                 break;
 
@@ -327,8 +327,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             case android.R.id.home:
 
                 Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
-                //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(intent);
+                intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                intent.putExtra("add", false);
+                startActivity(intent);
                 finish();
                 return true;
         }

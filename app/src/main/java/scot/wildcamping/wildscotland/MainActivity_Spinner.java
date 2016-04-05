@@ -51,6 +51,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     double latitude;
     double longitude;
     boolean add = false;
+    boolean trade = false;
     int fragment = 0;
     int currPosition;
 
@@ -112,6 +113,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             longitude = extras.getDouble("longitude");
             add = extras.getBoolean("add");
             fragment = extras.getInt("fragment");
+            trade = extras.getBoolean("trade");
 
         }
 
@@ -188,7 +190,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
         MapsFragment mapsFragment = null;
         switch (position) {
             case 0:
-                currPosition = 0;
                 mapsFragment = new MapsFragment();
                 if(isNetworkAvailable()) {
                     try {
@@ -202,10 +203,10 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 }
                 break;
             case 1:
-                currPosition = 1;
                 if(isNetworkAvailable()) {
                     try {
-                        String your_result = new FetchKnownSites(this).execute().get();
+                        String known_result = new FetchKnownSites(this).execute().get();
+                        String unknown_result = new FetchUnknownSites(this).execute().get();
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {
@@ -214,14 +215,14 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 }
                 Intent intent = new Intent(getApplicationContext(), Sites.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
                 break;
 
             case 2:
-                currPosition = 2;
-                //fragment = new OpenTradesFragment();
                 if(isNetworkAvailable()) {
                     try {
-                        String str_result = new FetchTradeRequests(this).execute().get();
+                        String trades_result = new FetchTradeRequests(this).execute().get();
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {
@@ -229,33 +230,20 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     }
                 }
                 Intent i = new Intent(getApplicationContext(), Trades.class);
-                //i.putExtra("position", currPosition);
                 startActivity(i);
+                overridePendingTransition(0,0);
+                finish();
                 break;
 
             default:
                 break;
         }
 
-
-        if (fragment != null){
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            //mDrawerList.setItemChecked(position, true);
-            //mDrawerList.setSelection(position);
-            setTitle(list.get(position));
-            //mDrawerLayout.closeDrawer(mDrawerList);
-        } else if(mapsFragment != null) {
+        if(mapsFragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
-            // update selected item and title, then close the drawer
-            //mDrawerList.setItemChecked(position, true);
-            //mDrawerList.setSelection(position);
             setTitle(list.get(position));
-            //mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
@@ -302,7 +290,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
                 }
             }
-            displayView(currPosition);
+            displayView(0);
         }
         return super.onOptionsItemSelected(item);
     }

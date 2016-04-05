@@ -74,6 +74,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
     LatLng bunSite;
     boolean add = false;
+    boolean trade = false;
     double newLat;
     double newLon;
     ImageButton addSite;
@@ -99,7 +100,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
 
     private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
-    private final int MAX_ZOOM = 10;
+    private final int MAX_ZOOM = 8;
     private float prevZoom = 6;
     private final int MIN_ZOOM = 7;
     private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
@@ -132,6 +133,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             newLat = extras.getDouble("latitude");
             newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
+            trade = extras.getBoolean("trade");
 
             System.out.println(newLat);
             System.out.println(newLon);
@@ -199,18 +201,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         setUpClustering();
 
         // center map on Scotland
-        if(!add){
+        if(add){
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(SCOTLAND.getCenter()).zoom(6).build();
-            googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
-
-        }else{//center map on newly created site
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(bunSite).zoom(9).build();
+                    .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
             getActivity().getIntent().removeExtra("add");
+        } else if (trade){
+            LatLng tradeSite = new LatLng(newLat, newLon);
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(tradeSite).zoom(7).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
+
+        } else {//center map on newly created site
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(SCOTLAND.getCenter()).zoom(prevZoom).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
         }
 
         return v;

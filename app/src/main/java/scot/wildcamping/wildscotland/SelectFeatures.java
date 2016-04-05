@@ -67,7 +67,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     double longitude;
     String title;
     String description;
-    double rating;
+    float rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 longitude = extras.getDouble("longitude");
                 title = extras.getString("title");
                 description = extras.getString("description");
-                rating = extras.getDouble("rating");
+                rating = extras.getFloat("rating");
             }
 
             feature1 = extras.getBoolean("feature1");

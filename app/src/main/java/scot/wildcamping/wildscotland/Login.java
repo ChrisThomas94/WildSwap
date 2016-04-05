@@ -17,9 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +41,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
     EditText etPasswordLogin;
     String email;
     String password;
+    String errorMsg;
+    Boolean error;
 
     private ProgressDialog progressDialog;
     private SessionManager session;
@@ -128,30 +127,31 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                 System.out.println("post response: " + postResponse);
                 try{
                     JSONObject jObj = new JSONObject(postResponse);
-                    String userId= jObj.getString("uid");
+                    error = jObj.getBoolean("error");
 
-                    JSONObject user = jObj.getJSONObject("user");
-                    String name = user.getString("name");
-                    String email = user.getString("email");
+                    if(!error) {
+                        String userId= jObj.getString("uid");
+                        JSONObject user = jObj.getJSONObject("user");
+                        String name = user.getString("name");
+                        String email = user.getString("email");
 
-                    AppController.setString(Login.this, "uid", userId);
-                    AppController.setString(Login.this, "name", name);
-                    AppController.setString(Login.this, "email", email);
-                    if (userId!=null) {
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
+                        AppController.setString(Login.this, "uid", userId);
+                        AppController.setString(Login.this, "name", name);
+                        AppController.setString(Login.this, "email", email);
+                        if (userId != null) {
+                            // user successfully logged in
+                            // Create login session
+                            session.setLogin(true);
 
-                        // Launching  main activity
-                        Intent intent = new Intent(Login.this,
-                                MainActivity_Spinner.class);
-                        startActivity(intent);
-                        finish();
+                            // Launching  main activity
+                            Intent intent = new Intent(Login.this,
+                                    MainActivity_Spinner.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         // login error
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        errorMsg = jObj.getString("error_msg");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,6 +169,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             progressDialog.dismiss();
+
+            if (error) {
+                Toast.makeText(getApplicationContext(),
+                        errorMsg, Toast.LENGTH_LONG).show();
+            }
         }
 
         private String doPostRequest(String url, String json) throws IOException {

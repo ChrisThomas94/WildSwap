@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     ImageView sendFeatures9;
     ImageView sendFeatures10;
     RatingBar sendRating;
+    RelativeLayout yourSite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +122,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
 
+        yourSite = (RelativeLayout)findViewById(R.id.yourSite);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -159,6 +163,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         send.setOnClickListener(this);
         right.setOnClickListener(this);
         left.setOnClickListener(this);
+        yourSite.setOnClickListener(this);
     }
 
     public void genOwnedSite(int random){
@@ -360,6 +365,9 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
                 intent = new Intent(getApplicationContext(),
                         MainActivity_Spinner.class);
+                intent.putExtra("trade", true);
+                intent.putExtra("latitude", recieveSite.getPosition().latitude);
+                intent.putExtra("longitude", recieveSite.getPosition().longitude);
                 startActivity(intent);
                 finish();
                 break;
@@ -383,6 +391,14 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 genOwnedSite(ownedSiteInit);
 
 
+                break;
+
+            case R.id.yourSite:
+
+                Intent i = new Intent(this, OwnedSiteActivity.class);
+                i.putExtra("cid", send_cid);
+                i.putExtra("prevState", 2);
+                startActivity(i);
                 break;
         }
     }

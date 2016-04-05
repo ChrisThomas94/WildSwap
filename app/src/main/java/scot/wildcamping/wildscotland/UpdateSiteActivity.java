@@ -157,11 +157,23 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         Lon.setText(Double.toString(focused.getPosition().latitude));
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
+
         if(focused.getImage() != null) {
+            if (focused.getImage().equals("null")) {
+                image1.setVisibility(View.GONE);
+            } else {
+                //imageBit = StringToBitMap(focused.getImage());
+                image1.setImageBitmap(StringToBitMap(focused.getImage()));
+                image1.setVisibility(View.VISIBLE);
+            }
+        }
+
+        /*if(focused.getImage() != null) {
             image = focused.getImage();
             image1.setVisibility(View.VISIBLE);
             image1.setImageBitmap(StringToBitMap(image));
-        }
+        }*/
+
         feature1.equals(focused.getFeature1());
         feature2.equals(focused.getFeature2());
         feature3.equals(focused.getFeature3());

@@ -102,7 +102,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                         if(jsonTrade.getInt("status") == 0){
                             activeTrades.put(openCnt, trade);
                             openCnt++;
-                        } else {
+                        } else if (jsonTrade.getInt("status") == 1 || jsonTrade.getInt("status") == 2) {
                             inactiveTrades.put(closedCnt, trade);
                             closedCnt++;
                         }

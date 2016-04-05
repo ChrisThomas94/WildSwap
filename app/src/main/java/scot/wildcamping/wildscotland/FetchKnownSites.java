@@ -79,7 +79,6 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
         try {
             String json = getKnownSites(user, relatOwn);
             System.out.println("json: " + json);
-            System.out.println("can anyone fucking hear me?");
 
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -140,11 +139,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
                         if (jsonSite.getString("site_admin").equals(email)) {
                             owned.put(ownedCnt, siteClass);
-                            System.out.println("owned site added");
                             ownedCnt++;
                         } else {
                             map.put(knownCnt, siteClass);
-                            System.out.println("known site added");
                             knownCnt++;
                         }
                     }
@@ -154,8 +151,6 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                     inst.setOwnedSitesMap(owned);
                     inst.setKnownSiteSize(knownCnt);
                     inst.setOwnedSiteSize(ownedCnt);
-
-                    System.out.println("SIZE OWNED: " + inst.getOwnedSiteSize());
 
                 } else {
                     //error message

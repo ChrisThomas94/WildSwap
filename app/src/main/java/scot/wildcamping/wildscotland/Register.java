@@ -56,6 +56,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     String email;
     String password;
     Intent intent;
+    String errorMsg;
+    Boolean error;
 
     SessionManager session;
 
@@ -137,7 +139,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 session.setLogin(true);
                 try {
                     JSONObject jObj = new JSONObject(postResponse);
-                    Boolean error = jObj.getBoolean("error");
+                    error = jObj.getBoolean("error");
 
                     if(!error){
                     String userId = jObj.getString("uid");
@@ -154,9 +156,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     startActivity(intent);
                     finish();
                     } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(Register.this,
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        errorMsg = jObj.getString("error_msg");
+
                     }
 
                 } catch (JSONException e){
@@ -176,7 +177,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
-
+            if (error) {
+                Toast.makeText(Register.this,
+                        errorMsg, Toast.LENGTH_LONG).show();
+            }
         }
 
         private String doGetRequest(String url)throws IOException{

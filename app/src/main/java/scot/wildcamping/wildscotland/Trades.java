@@ -138,8 +138,12 @@ public class Trades extends AppCompatActivity {
         MapsFragment mapsFragment = null;
         switch (position) {
             case 0:
-                currPosition = 0;
-                //mapsFragment = new MapsFragment();
+                Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                startActivity(i);
+                overridePendingTransition(0, 0);
+                finish();
+                break;
+            case 1:
                 if(isNetworkAvailable()) {
                     try {
                         String known_result = new FetchKnownSites(this).execute().get();
@@ -150,69 +154,30 @@ public class Trades extends AppCompatActivity {
 
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
-                startActivity(i);
-                break;
-            case 1:
-                currPosition = 1;
-                //fragment = new YourSitesFragment();
-                if(isNetworkAvailable()) {
-                    try {
-                        String your_result = new FetchKnownSites(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent intent = new Intent(getApplicationContext(), Sites.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
                 break;
 
             case 2:
-                currPosition = 2;
-                //fragment = new OpenTradesFragment();
                 if(isNetworkAvailable()) {
                     try {
-                        String str_result = new FetchTradeRequests(this).execute().get();
+                        String trades_result = new FetchTradeRequests(this).execute().get();
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {
 
                     }
                 }
-                //intent activity
                 Intent in = new Intent(getApplicationContext(), Trades.class);
-                //i.putExtra("position", currPosition);
                 startActivity(in);
+                overridePendingTransition(0,0);
+                finish();
                 break;
 
             default:
                 break;
-        }
-
-
-        if (fragment != null){
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.frame_container, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            //mDrawerList.setItemChecked(position, true);
-            //mDrawerList.setSelection(position);
-            setTitle(list.get(position));
-            //mDrawerLayout.closeDrawer(mDrawerList);
-        } else if(mapsFragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
-
-            // update selected item and title, then close the drawer
-            //mDrawerList.setItemChecked(position, true);
-            //mDrawerList.setSelection(position);
-            setTitle(list.get(position));
-            //mDrawerLayout.closeDrawer(mDrawerList);
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
         }
     }
 
@@ -238,8 +203,7 @@ public class Trades extends AppCompatActivity {
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
                 try {
-                    String known_result = new FetchKnownSites(this).execute().get();
-                    String unknown_result = new FetchUnknownSites(this).execute().get();
+                    String trades_result = new FetchTradeRequests(this).execute().get();
                 } catch (InterruptedException e) {
 
                 } catch (ExecutionException e) {

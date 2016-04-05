@@ -56,6 +56,8 @@ public class LogOut extends AppCompatActivity {
         SparseArray<Site> empty = inst.getOwnedSitesMap();
         empty.clear();
         inst.setOwnedSitesMap(empty);
+        //AppController.setString(getApplicationContext(), "uid", null);
+        //AppController.setString(getApplicationContext(), "email", null);
         //inst.setKnownSitesMap(empty);
         Intent intent = new Intent(LogOut.this, Login.class);
         startActivity(intent);

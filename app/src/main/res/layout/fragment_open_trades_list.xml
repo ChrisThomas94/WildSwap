@@ -6,15 +6,24 @@
     android:padding="15dp"
     android:layout_margin="15dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/shadow">
+    android:background="@drawable/clear_shadow">
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:padding="5dp"
         android:text="Sent/Received"/>
+
+    <TextView
+        android:id="@+id/outcomeTrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@+id/title"
+        android:text="Accepted/Rejected"/>
 
     <TextView
         android:id="@+id/titleTrade"
