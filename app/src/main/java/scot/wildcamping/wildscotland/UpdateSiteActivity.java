@@ -153,8 +153,11 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         Site focused = inst.getOwnedSitesMap().get(arrayPos);
 
         cid = focused.getCid();
-        Lat.setText(Double.toString(focused.getPosition().latitude));
-        Lon.setText(Double.toString(focused.getPosition().latitude));
+        latitude =focused.getPosition().latitude;
+        longitude = focused.getPosition().longitude;
+
+        Lat.setText(Double.toString(latitude));
+        Lon.setText(Double.toString(longitude));
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
 
@@ -242,12 +245,12 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
                     new UpdateSite(this, true, active, cid, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine, 0).execute();
 
-                    //intent = new Intent(getApplicationContext(),
-                            //MainActivity_Spinner.class);
-                    //intent.putExtra("latitude", latitude);
-                    //intent.putExtra("longitude", longitude);
-                    //intent.putExtra("add", true);
-                    //startActivity(intent);
+                    intent = new Intent(getApplicationContext(),
+                            MainActivity_Spinner.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("update", true);
+                    startActivity(intent);
                     finish();
 
                 } else {

@@ -95,7 +95,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                             if (knownSites.get(j).getCid().equals(jsonDetails.getString("unique_cid"))){
                                 System.out.print("This is actually a known site: " + jsonDetails.getString("unique_cid"));
                                 knownError = true;
-                                size--;
+                                //size--;
 
                             }
                         }
@@ -129,6 +129,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
 
                             unknownSites.put(counter, siteClass);
+                            System.out.println("Unknown Sites put: " + siteClass.getTitle());
                             counter++;
                         }
                     }

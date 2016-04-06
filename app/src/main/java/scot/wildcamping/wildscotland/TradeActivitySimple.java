@@ -163,7 +163,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         send.setOnClickListener(this);
         right.setOnClickListener(this);
         left.setOnClickListener(this);
-        yourSite.setOnClickListener(this);
+        //yourSite.setOnClickListener(this);
     }
 
     public void genOwnedSite(int random){

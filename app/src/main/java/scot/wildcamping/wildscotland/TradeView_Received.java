@@ -81,6 +81,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     ImageView sendPicture3;
     ImageView sendPicture4;
 
+    String date;
+
     Boolean siteAlreadyOwned;
 
     @Override
@@ -100,6 +102,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             unique_tid = extras.getString("unique_tid");
             send_cid = extras.getString("send_cid");
             recieve_cid = extras.getString("recieve_cid");
+            date = extras.getString("date");
             status = extras.getInt("status");
         }
 
@@ -342,6 +345,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
             case R.id.btnContact_User:
                 intent = new Intent(getApplicationContext(), ContactUser.class);
+                intent.putExtra("contact", recieveSite.getSiteAdmin());
+                intent.putExtra("date", date);
                 startActivity(intent);
                 //open email dialog
                 break;

@@ -7,13 +7,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.GestureDetector;
@@ -75,6 +79,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     LatLng bunSite;
     boolean add = false;
     boolean trade = false;
+    boolean update = false;
     double newLat;
     double newLon;
     ImageButton addSite;
@@ -134,6 +139,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             newLon = extras.getDouble("longitude");
             add = extras.getBoolean("add");
             trade = extras.getBoolean("trade");
+            update = extras.getBoolean("update");
 
             System.out.println(newLat);
             System.out.println(newLon);
@@ -215,6 +221,11 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
+        } else if(update){
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(bunSite).zoom(10).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
         } else {//center map on newly created site
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(SCOTLAND.getCenter()).zoom(prevZoom).build();
@@ -286,6 +297,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 double latitude = 0;
                 double longitude = 0;
 
+                Intent gpsOptionsIntent = new Intent(
+                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(gpsOptionsIntent);
+
                 if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
                     googleMap.getMyLocation();
@@ -293,6 +308,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                     longitude = googleMap.getMyLocation().getLongitude();
                 } else {
                     // Show rationale and request permission.
+
                 }
 
                 // start new activity
@@ -311,7 +327,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                 popupWindow.dismiss();
 
-                //Snackbar.make(v, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+                Snackbar.make(view, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+
+                addSite.setVisibility(View.GONE);
 
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -561,6 +579,28 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         public CustomAlgorithm(){
             super();
         }
+
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
 
     }
 }

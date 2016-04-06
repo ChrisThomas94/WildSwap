@@ -52,6 +52,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     double longitude;
     boolean add = false;
     boolean trade = false;
+    boolean update = false;
     int fragment = 0;
     int currPosition;
 
@@ -114,6 +115,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             add = extras.getBoolean("add");
             fragment = extras.getInt("fragment");
             trade = extras.getBoolean("trade");
+            update = extras.getBoolean("update");
 
         }
 
