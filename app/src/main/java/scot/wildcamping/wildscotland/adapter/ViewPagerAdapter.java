@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import scot.wildcamping.wildscotland.BioFragment;
 import scot.wildcamping.wildscotland.ClosedTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
 import scot.wildcamping.wildscotland.OpenTradesFragment;
+import scot.wildcamping.wildscotland.QuestionFragment;
 import scot.wildcamping.wildscotland.YourSitesFragment;
 
 /**
@@ -39,6 +41,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             Fragment tab1 = null;
             if(Titles[0] == "Active"){
                 tab1 = new OpenTradesFragment();
+            } else if (Titles[0] == "Bio"){
+                //Bio frag
+                tab1 = new BioFragment();
             } else {
                 tab1 = new YourSitesFragment();
             }
@@ -49,6 +54,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             Fragment tab2 = null;
             if(Titles[1] == "History"){
                 tab2 = new ClosedTradesFragment();
+            } else if(Titles[1] == "Questions"){
+                //Questions Frag
+                tab2 = new QuestionFragment();
             } else {
                 tab2 = new KnownSitesFragment();
             }

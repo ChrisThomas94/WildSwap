@@ -12,6 +12,7 @@ import android.media.audiofx.BassBoost;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -146,7 +147,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         list.add("Sites");
         //list.add("Known Sites");
         list.add("Trades");
-        //list.add("Settings");
+        list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
 
@@ -233,6 +234,13 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 }
                 Intent i = new Intent(getApplicationContext(), Trades.class);
                 startActivity(i);
+                overridePendingTransition(0,0);
+                finish();
+                break;
+
+            case 3:
+                Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(profile);
                 overridePendingTransition(0,0);
                 finish();
                 break;

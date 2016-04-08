@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,44 +16,49 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
 
-
-public class Sites extends AppCompatActivity {
-
-    // Declaring Your View and Variables
+/**
+ * Created by Chris on 08-Apr-16.
+ */
+public class ProfileActivity extends AppCompatActivity {
 
     private Spinner spinner_nav;
     Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Owned","Known"};
+    CharSequence Titles[]={"Bio","Questions"};
     int Numboftabs =2;
     ArrayList<String> list;
     int currPosition;
     boolean initialSelection = false;
-
+    TextView txtName;
+    TextView txtEmail;
+    Button btnLogout;
+    Button questions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sites);
+        setContentView(R.layout.activity_profile);
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
-
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
-
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
@@ -87,7 +91,6 @@ public class Sites extends AppCompatActivity {
         list = new ArrayList<String>();
         list.add("Map");
         list.add("Sites");
-        //list.add("Known Sites");
         list.add("Trades");
         list.add("Profile");
 
@@ -110,13 +113,12 @@ public class Sites extends AppCompatActivity {
 		 */
 
         spinner_nav.setAdapter(spinAdapter);
-        spinner_nav.setSelection(1);
+        spinner_nav.setSelection(3);
         spinner_nav.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
-
                 if(initialSelection){
                     displayView(position);
                 }
@@ -129,13 +131,11 @@ public class Sites extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void displayView(int position) {
         // update the main content by replacing fragments
-        FragmentActivity fragmentActivity = null;
-        Fragment fragment = null;
-        MapsFragment mapsFragment = null;
         switch (position) {
             case 0:
                 Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
@@ -170,9 +170,9 @@ public class Sites extends AppCompatActivity {
 
                     }
                 }
-                Intent in = new Intent(getApplicationContext(), Trades.class);
-                startActivity(in);
-                overridePendingTransition(0, 0);
+                Intent trade = new Intent(getApplicationContext(), Trades.class);
+                startActivity(trade);
+                overridePendingTransition(0,0);
                 finish();
                 break;
 
@@ -201,26 +201,25 @@ public class Sites extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings1) {
             Intent intent = new Intent(getApplicationContext(), SettingsFragment.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_search1) {
+            Toast.makeText(getApplicationContext(), "Search Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_add1) {
+            Toast.makeText(getApplicationContext(), "Add Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (id == R.id.action_delete1) {
+            Toast.makeText(getApplicationContext(), "Delete Clicked",
+                    Toast.LENGTH_SHORT).show();
+            return true;
         } else if (id == R.id.action_refresh) {
-            if(isNetworkAvailable()) {
-                try {
-                    String known_result = new FetchKnownSites(this).execute().get();
-                    String unknown_result = new FetchUnknownSites(this).execute().get();
-                } catch (InterruptedException e) {
-
-                } catch (ExecutionException e) {
-
-                }
-            }
-            displayView(1);
+            displayView(3);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -230,4 +229,5 @@ public class Sites extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 }

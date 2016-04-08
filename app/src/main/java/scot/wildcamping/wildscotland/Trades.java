@@ -89,7 +89,7 @@ public class Trades extends AppCompatActivity {
         list.add("Sites");
         //list.add("Known Sites");
         list.add("Trades");
-        //list.add("Settings");
+        list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
 
@@ -172,6 +172,13 @@ public class Trades extends AppCompatActivity {
                 }
                 Intent in = new Intent(getApplicationContext(), Trades.class);
                 startActivity(in);
+                overridePendingTransition(0,0);
+                finish();
+                break;
+
+            case 3:
+                Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(profile);
                 overridePendingTransition(0,0);
                 finish();
                 break;

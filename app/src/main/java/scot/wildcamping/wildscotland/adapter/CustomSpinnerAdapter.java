@@ -60,6 +60,8 @@ public class CustomSpinnerAdapter extends ArrayAdapter<String> {
             icon.setImageResource(R.drawable.sites_icon1);
         } else if (position == 2){
             icon.setImageResource(R.drawable.trade_icon1);
+        } else if (position == 3){
+            icon.setImageResource(R.drawable.profile_icon1);
         }
 
         return row;

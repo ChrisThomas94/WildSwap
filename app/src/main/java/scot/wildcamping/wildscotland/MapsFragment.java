@@ -30,8 +30,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
@@ -88,6 +91,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     Button longLatAdd;
     Button btnDismiss;
     Cluster<AppClusterItem> clickedCluster;
+    Cluster<AppClusterItem> previouslyClickedCluster = null;
     AppClusterItem clickedClusterItem;
     private ProgressDialog pDialog;
     private ProgressDialog pDialog2;
@@ -102,6 +106,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     boolean clicked;
     boolean zoomed = false;
     boolean threshold = false;
+    int clickedTwice = 0;
 
 
     private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
@@ -410,7 +415,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                if(knownSiteSize > 0) {
+                if (knownSiteSize > 0) {
                     for (int i = 0; i < knownSiteSize; i++) {
                         Site currentSite = knownSitesMap.get(i);
 
@@ -427,7 +432,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
                 }
 
-                if(ownedSiteSize > 0) {
+                if (ownedSiteSize > 0) {
                     for (int i = 0; i < ownedSiteSize; i++) {
                         Site currentSite = ownedSitesMap.get(i);
 
@@ -448,8 +453,10 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 
-        //instal custom infoWindowAdapter as the adpater for one or both of the marker collections
+        //install custom infoWindowAdapter as the adpater for one or both of the marker collections
         mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
+
+        //mClusterManager.setOnClusterClickListener();
 
         // Add cluster items (markers) to the cluster manager.
         addClusterMarkers(mClusterManager);
@@ -468,14 +475,23 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         @Override
         public View getInfoWindow(Marker marker){
 
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+
+            View view = getActivity().getLayoutInflater().inflate(R.layout.cluster_popup, null);
+
             if (clickedCluster != null) {
+                for (AppClusterItem item : clickedCluster.getItems()) {
+                    // Extract data from each item in the cluster as needed
+                    System.out.println(item);
+                }
 
-                if(inst.getOwnedSiteSize() == 0){
-
-                    Toast.makeText(getActivity(), "You do not own a site to trade!", Toast.LENGTH_LONG).show();
-
-                } else {
-
+            if(previouslyClickedCluster == clickedCluster) {
+                if (inst.getOwnedSiteSize() > 0) {
+                    previouslyClickedCluster = null;
                     ArrayList<LatLng> cluster = new ArrayList<>();
                     Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
 
@@ -483,31 +499,43 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                         // Extract data from each item in the cluster as needed
                         //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
                         cluster.add(item.getPosition());
-                        System.out.println("maps fragment"+item.getPosition());
+                        System.out.println("maps fragment" + item.getPosition());
                     }
 
                     intent.putParcelableArrayListExtra("cluster", cluster);
 
                     // Launching  main activity
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(), "You do not own a site to trade!", Toast.LENGTH_LONG).show();
                 }
             }
 
-            View view = getActivity().getLayoutInflater().inflate(R.layout.cluster_popup, null);
-            return view;
-        }
-
-        //for some reason this is not executing however the method above is instead so use that
-        @Override
-        public View getInfoContents(Marker marker) {
-            if (clickedCluster != null) {
-                for (AppClusterItem item : clickedCluster.getItems()) {
-                    // Extract data from each item in the cluster as needed
-                    System.out.println(item);
-                }
+                previouslyClickedCluster = clickedCluster;
             }
 
-            View view = getActivity().getLayoutInflater().inflate(R.layout.activity_login, null);
+            int size = clickedCluster.getSize();
+
+
+
+            TextView popup = (TextView)view.findViewById(R.id.popup_text);
+            LinearLayout cluster_popup = (LinearLayout)view.findViewById(R.id.cluster_popup);
+
+            cluster_popup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("hi");
+                }
+            });
+
+            if(size != 1){
+                popup.setText("There are " + size + " campsites in this area, click it again to trade one of your campsites for one of them.");
+
+            } else {
+                popup.setText("There is " + size + " campsite in this area, click it again to trade one of your campsites for it.");
+
+            }
+
             return view;
         }
     }
