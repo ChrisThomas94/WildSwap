@@ -6,8 +6,8 @@ package scot.wildcamping.wildscotland;
 public class Appconfig {
 
     //localhost
-    //public static String URL = "http://192.168.0.7:81/login_register_api/";
+    public static String URL = "http://192.168.0.7:81/login_register_api/";
 
     //webserver
-    public static String URL = "http://wild.nick-hope.co.uk/WildScotlandAPI/login_register_api/";
+    //public static String URL = "http://wild.nick-hope.co.uk/WildScotlandAPI/login_register_api/";
 }

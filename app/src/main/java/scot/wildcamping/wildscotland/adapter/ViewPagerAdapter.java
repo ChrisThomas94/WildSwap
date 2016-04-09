@@ -42,7 +42,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             if(Titles[0] == "Active"){
                 tab1 = new OpenTradesFragment();
             } else if (Titles[0] == "Bio"){
-                //Bio frag
                 tab1 = new BioFragment();
             } else {
                 tab1 = new YourSitesFragment();
@@ -55,7 +54,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             if(Titles[1] == "History"){
                 tab2 = new ClosedTradesFragment();
             } else if(Titles[1] == "Questions"){
-                //Questions Frag
                 tab2 = new QuestionFragment();
             } else {
                 tab2 = new KnownSitesFragment();

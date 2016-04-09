@@ -5,27 +5,56 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/info"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_margin="15dp"
-        android:textSize="25dp"
-        android:text="Question 1"/>
+        android:visibility="gone"
+        android:text="Complete this short quiz to help other users gain an impression of the kind of wild camper you are."/>
 
     <TextView
+        android:id="@+id/question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:layout_margin="15dp"
-        android:textSize="20dp"
-        android:text="Answer 1"/>
+        android:textSize="25sp"
+        android:text="Question"/>
+
+        <RadioGroup
+            android:id="@+id/answer_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp">
+
+            <RadioButton
+                android:id="@+id/answer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="answer 1"/>
+
+            <RadioButton
+                android:id="@+id/answer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="answer 2"/>
+
+            <RadioButton
+                android:id="@+id/answer3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="answer 3"/>
+
+            <RadioButton
+                android:id="@+id/answer4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="answer 4"/>
+
+        </RadioGroup>
 
     <View
         android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="#90909090"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        />
+        android:layout_width="5000dp"
+        android:background="#90909090"/>
 
 </LinearLayout>

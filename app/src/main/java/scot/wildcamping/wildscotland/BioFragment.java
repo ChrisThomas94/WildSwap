@@ -23,6 +23,7 @@ public class BioFragment extends Fragment {
     TextView txtName;
     TextView txtEmail;
     Button btnLogout;
+    TextView update;
 
     private SessionManager session;
 
@@ -35,6 +36,7 @@ public class BioFragment extends Fragment {
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
         btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
+        update = (TextView) rootView.findViewById(R.id.updateProfile);
 
         session = new SessionManager(getContext());
 
@@ -52,6 +54,14 @@ public class BioFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 logoutUser();
+            }
+        });
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),
+                        QuizActivity.class);
+                startActivity(intent);
             }
         });
 

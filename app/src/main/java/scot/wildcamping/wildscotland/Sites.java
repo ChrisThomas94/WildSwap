@@ -87,7 +87,6 @@ public class Sites extends AppCompatActivity {
         list = new ArrayList<String>();
         list.add("Map");
         list.add("Sites");
-        //list.add("Known Sites");
         list.add("Trades");
         list.add("Profile");
 
@@ -133,9 +132,6 @@ public class Sites extends AppCompatActivity {
 
     private void displayView(int position) {
         // update the main content by replacing fragments
-        FragmentActivity fragmentActivity = null;
-        Fragment fragment = null;
-        MapsFragment mapsFragment = null;
         switch (position) {
             case 0:
                 Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
@@ -177,6 +173,15 @@ public class Sites extends AppCompatActivity {
                 break;
 
             case 3:
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profile);
                 overridePendingTransition(0,0);

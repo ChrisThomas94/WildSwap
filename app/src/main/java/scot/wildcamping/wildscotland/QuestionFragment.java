@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.adapter.QuestionListAdapter;
 import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
+import scot.wildcamping.wildscotland.model.Question;
+import scot.wildcamping.wildscotland.model.Quiz;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -27,14 +29,10 @@ public class QuestionFragment extends Fragment {
     public QuestionFragment() {
     }
 
-    TextView txtName;
-    TextView txtEmail;
-    Button btnLogout;
     private QuestionListAdapter adapter;
     private ListView mDrawerList;
-    knownSite inst;
-    private SessionManager session;
-    SparseArray<Site> knownSites;
+    Quiz inst;
+    SparseArray<Question> question;
 
 
     @Override
@@ -45,34 +43,11 @@ public class QuestionFragment extends Fragment {
 
         mDrawerList = (ListView) rootView.findViewById(R.id.question_listview);
 
-        inst = new knownSite();
-        knownSites = new SparseArray<>();
-        knownSites = inst.getKnownSitesMap();
+        inst = new Quiz();
+        question = new SparseArray<>();
+        question = inst.getQuestions();
 
-        txtName = (TextView) rootView.findViewById(R.id.name);
-        txtEmail = (TextView) rootView.findViewById(R.id.email);
-        btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
-
-        session = new SessionManager(getContext());
-
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
-
-        String name = AppController.getString(getContext(), "name");
-        String email = AppController.getString(getContext(), "email"); //email is currently blank so print uid instead
-        txtName.setText(name);
-        txtEmail.setText(email);
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                logoutUser();
-            }
-        });
-
-        adapter = new SiteListAdapter(getActivity(), knownSites);
+        adapter = new QuestionListAdapter(getActivity(), question);
         mDrawerList.setAdapter(adapter);
 
         return rootView;
@@ -91,12 +66,6 @@ public class QuestionFragment extends Fragment {
         startActivity(intent);
     }*/
 
-    private void logoutUser() {
-        session.setLogin(false);
-        Intent intent = new Intent(getContext(), Login.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {

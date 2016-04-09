@@ -239,6 +239,15 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 break;
 
             case 3:
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(profile);
                 overridePendingTransition(0,0);

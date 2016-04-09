@@ -1,102 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/tool_bar"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="match_parent"/>
 
-        <include
-            layout="@layout/toolbar"
-            android:id="@+id/tool_bar"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+    <scot.wildcamping.wildscotland.SlidingTabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:background="@color/colorPrimary"/>
 
-        <scot.wildcamping.wildscotland.SlidingTabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="2dp"
-            android:background="@color/colorPrimary"/>
+    <View android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_dropshadow"/>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        ></android.support.v4.view.ViewPager>
 
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            ></android.support.v4.view.ViewPager>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:id="@+id/profilePicture"
-                android:src="@drawable/logo_transparent"/>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="Chris"
-                android:textColor="#333333"
-                android:textSize="25dp" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="chris@gmail"
-                android:textColor="#333333"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/bio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
-                android:textColor="#333333"
-                android:textSize="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Click here to update your profile."
-                android:id="@+id/updateProfile"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="@color/colorPrimaryDark"
-            android:layout_margin="20dp"
-            android:text="LOGOUT"
-            android:textColor="#ffffff"
-            android:textSize="15dp" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

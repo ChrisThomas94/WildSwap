@@ -138,6 +138,10 @@
             android:label="Questions"
             android:theme= "@style/AppTheme"/>
 
+        <activity android:name=".QuizActivity"
+            android:label="Quiz"
+            android:theme= "@style/AppTheme"/>
+
         <activity android:name=".UpdateSiteActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"
