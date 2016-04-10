@@ -40,12 +40,15 @@ public class Trades extends AppCompatActivity {
     ArrayList<String> list;
     int currPosition;
     boolean initialSelection = false;
+    String user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sites);
+
+        user = AppController.getString(this, "user");
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
@@ -179,7 +182,7 @@ public class Trades extends AppCompatActivity {
             case 3:
                 if(isNetworkAvailable()) {
                     try {
-                        String questions = new FetchQuestions(this).execute().get();
+                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {

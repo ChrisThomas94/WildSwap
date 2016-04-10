@@ -49,6 +49,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     StoredTrades trades;
     String noOfTradesStr;
 
+    String user;
     double latitude;
     double longitude;
     boolean add = false;
@@ -85,6 +86,8 @@ public class MainActivity_Spinner extends AppCompatActivity {
         setContentView(R.layout.activity_main_spinner);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
+
+        user = AppController.getString(this, "user");
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         pageAdapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
@@ -241,7 +244,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             case 3:
                 if(isNetworkAvailable()) {
                     try {
-                        String questions = new FetchQuestions(this).execute().get();
+                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {

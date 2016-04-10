@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_contact"
+        android:icon="@drawable/letter"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="ifRoom"
+        android:title="email"/>
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/shape"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="ifRoom"
+        android:title="profile"/>
+
+    <item
+        android:id="@+id/action_submit"
+        android:icon="@drawable/submit"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="ifRoom"
+        android:title="submit"/>
+
+</menu>

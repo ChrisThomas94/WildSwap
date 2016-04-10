@@ -134,10 +134,6 @@
             android:label="Profile"
             android:theme= "@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".Questions"
-            android:label="Questions"
-            android:theme= "@style/AppTheme"/>
-
         <activity android:name=".QuizActivity"
             android:label="Quiz"
             android:theme= "@style/AppTheme"/>

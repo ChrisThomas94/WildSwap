@@ -1,10 +1,15 @@
 package scot.wildcamping.wildscotland;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
@@ -404,6 +410,13 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.trade, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
@@ -412,6 +425,42 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 //startActivity(intent);
                 finish();
                 return true;
+
+            case R.id.action_contact:
+                Intent i = new Intent(getApplicationContext(), ContactUser.class);
+                i.putExtra("contact", recieveSite.getSiteAdmin());
+                //intent.putExtra("date", date); instance of date
+                startActivity(i);
+                break;
+
+            case R.id.profile:
+                //open that user's profile
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
+                in.putExtra("email", recieveSite.getSiteAdmin());
+                //intent.putExtra("date", date); instance of date
+                startActivity(in);
+                break;
+
+            case R.id.action_submit:
+                new CreateTrade(this, send_cid, recieve_cid).execute();
+
+                Intent intent = new Intent(getApplicationContext(),
+                        MainActivity_Spinner.class);
+                intent.putExtra("trade", true);
+                intent.putExtra("latitude", recieveSite.getPosition().latitude);
+                intent.putExtra("longitude", recieveSite.getPosition().longitude);
+                startActivity(intent);
+                finish();
+                break;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
@@ -425,6 +474,13 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             random++;
         }
         return random;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

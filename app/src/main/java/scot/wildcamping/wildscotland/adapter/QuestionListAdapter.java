@@ -30,10 +30,12 @@ public class QuestionListAdapter extends BaseAdapter {
 
     private Context context;
     private SparseArray<Question> questions;
+    private boolean update;
 
-    public QuestionListAdapter(Context context, SparseArray<Question> questions){
+    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update){
         this.context = context;
         this.questions = questions;
+        this.update = update;
     }
 
     @Override
@@ -52,14 +54,14 @@ public class QuestionListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.question_list, null);
         }
 
-        if(position == 0){
+        if(position == 0 && update){
             TextView info = (TextView) convertView.findViewById(R.id.info);
             info.setVisibility(View.VISIBLE);
         }
@@ -78,9 +80,44 @@ public class QuestionListAdapter extends BaseAdapter {
         answer3.setText(questions.get(position).getAnswer3());
         answer4.setText(questions.get(position).getAnswer4());
 
-        answers.check(questions.get(position).getAnswer());
+        answers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-        //questions.get(position).setAnswer(answers.getCheckedRadioButtonId());
+                if (checkedId == R.id.answer1) {
+                    questions.get(position).setAnswer(1);
+                } else if (checkedId == R.id.answer2) {
+                    questions.get(position).setAnswer(2);
+                } else if (checkedId == R.id.answer3) {
+                    questions.get(position).setAnswer(3);
+                } else if (checkedId == R.id.answer4) {
+                    questions.get(position).setAnswer(4);
+                }
+            }
+        });
+
+        if(questions.get(position).getAnswer() == 1){
+            answers.check(R.id.answer1);
+        }
+
+        if(questions.get(position).getAnswer() == 2){
+            answers.check(R.id.answer2);
+        }
+
+        if(questions.get(position).getAnswer() == 3){
+            answers.check(R.id.answer3);
+        }
+
+        if(questions.get(position).getAnswer() == 4){
+            answers.check(R.id.answer4);
+        }
+
+        if(update){
+            answer1.setClickable(true);
+            answer2.setClickable(true);
+            answer3.setClickable(true);
+            answer4.setClickable(true);
+        }
 
         return convertView;
     }

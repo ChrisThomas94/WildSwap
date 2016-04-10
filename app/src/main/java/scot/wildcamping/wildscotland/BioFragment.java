@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import scot.wildcamping.wildscotland.model.User;
+
 public class BioFragment extends Fragment {
 
     public BioFragment() {
@@ -22,6 +24,7 @@ public class BioFragment extends Fragment {
 
     TextView txtName;
     TextView txtEmail;
+    TextView txtBio;
     Button btnLogout;
     TextView update;
 
@@ -35,6 +38,7 @@ public class BioFragment extends Fragment {
 
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
+        txtBio = (TextView) rootView.findViewById(R.id.bio);
         btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
         update = (TextView) rootView.findViewById(R.id.updateProfile);
 
@@ -44,10 +48,19 @@ public class BioFragment extends Fragment {
             logoutUser();
         }
 
-        String name = AppController.getString(getContext(), "name");
-        String email = AppController.getString(getContext(), "email"); //email is currently blank so print uid instead
-        txtName.setText(name);
-        txtEmail.setText(email);
+        //User user = new User();
+
+        //String name = user.getName();
+        //String email = user.getEmail();
+        //String bio = user.getBio();
+
+        //txtName.setText(name);
+        //txtEmail.setText(email);
+        //txtBio.setText(bio);
+
+        txtName.setText(AppController.getString(getContext(), "name"));
+        txtEmail.setText(AppController.getString(getContext(), "email"));
+        txtBio.setText(AppController.getString(getContext(), "bio"));
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -61,6 +74,7 @@ public class BioFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),
                         QuizActivity.class);
+                intent.putExtra("update", true);
                 startActivity(intent);
             }
         });

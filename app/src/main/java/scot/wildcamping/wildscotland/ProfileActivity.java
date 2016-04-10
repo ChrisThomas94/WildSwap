@@ -43,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     ArrayList<String> list;
     int currPosition;
     boolean initialSelection = false;
+    String user;
     TextView txtName;
     TextView txtEmail;
     Button btnLogout;
@@ -57,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        user = AppController.getString(this, "user");
 
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
@@ -218,6 +221,15 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.action_refresh) {
+            if(isNetworkAvailable()) {
+                try {
+                    String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+                } catch (InterruptedException e) {
+
+                } catch (ExecutionException e) {
+
+                }
+            }
             displayView(3);
         }
         return super.onOptionsItemSelected(item);

@@ -30,6 +30,7 @@ public class QuizActivity extends AppCompatActivity {
     private ListView mDrawerList;
     Quiz inst;
     SparseArray<Question> question;
+    boolean update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +41,19 @@ public class QuizActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            update = extras.getBoolean("update");
+        }
+
         mDrawerList = (ListView)findViewById(R.id.question_listview);
 
         inst = new Quiz();
         question = new SparseArray<>();
         question = inst.getQuestions();
 
-        adapter = new QuestionListAdapter(this, question);
+        adapter = new QuestionListAdapter(this, question, update);
         mDrawerList.setAdapter(adapter);
 
     }
@@ -72,7 +79,10 @@ public class QuizActivity extends AppCompatActivity {
 
                 question = inst.getQuestions();
                 int answer1 = question.get(0).getAnswer();
+                System.out.println("new asnwer " + answer1);
                 int answer2 = question.get(1).getAnswer();
+                System.out.println("new asnwer " + answer2);
+
                 int answer3 = 0; //question.get(2).getAnswer();
                 int answer4 = 0; //question.get(3).getAnswer();
                 int answer5 = 0; //question.get(4).getAnswer();

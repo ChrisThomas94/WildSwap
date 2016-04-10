@@ -24,6 +24,7 @@ import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Question;
 import scot.wildcamping.wildscotland.model.Quiz;
 import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.User;
 import scot.wildcamping.wildscotland.model.knownSite;
 
 /**
@@ -40,13 +41,11 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     String email;
-    final int relatOwn = 90;
-    final int relatTrade = 45;
-    String image;
     SparseArray<Question> arrayQuestions = new SparseArray<>();
 
-    public FetchQuestions(Context context) {
+    public FetchQuestions(Context context, String email) {
         this.context = context;
+        this.email = email;
     }
 
     /**
@@ -67,8 +66,9 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
-        email = AppController.getString(context, "email");
+        if(email == null){
+            user = AppController.getString(context, "user");
+        }
 
         // issue the post request
         try {
@@ -84,12 +84,21 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
                     int size = jObj.getInt("size");
+                    //User user = new User();
+
+                    AppController.setString(context, "name", jObj.getString("name"));
+                    AppController.setString(context, "email", jObj.getString("email"));
+                    AppController.setString(context, "bio", jObj.getString("bio"));
+                    //user.setName(jObj.getString("name"));
+                    //user.setEmail(jObj.getString("email"));
+                    //user.setBio(jObj.getString("bio"));
 
                     JSONObject jsonQuestion;
                     Question question;
                     for (int i = 0; i < size; i++) {
                         jsonQuestion = jObj.getJSONObject("question" + i);
                         question = new Question();
+
                         question.setQuestion(jsonQuestion.getString("question"));
                         question.setAnswer1(jsonQuestion.getString("answer1"));
                         question.setAnswer2(jsonQuestion.getString("answer2"));
@@ -160,7 +169,7 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
 
     private String getQuestions(String uid) {
         return "{\"tag\":\"" + "questions" + "\","
-                + "\"uid\":\"" + uid+ "\"}";
+                + "\"email\":\"" + email+ "\"}";
     }
 
 }
