@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -296,11 +297,18 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btnContact_User:
-                intent = new Intent(getApplicationContext(), ContactUser.class);
-                intent.putExtra("contact", recieveSite.getSiteAdmin());
-                intent.putExtra("date", date);
-                startActivity(intent);
+                //intent = new Intent(getApplicationContext(), ContactUser.class);
+                //intent.putExtra("contact", recieveSite.getSiteAdmin());
+                //intent.putExtra("date", date);
+
                 //open email dialog
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:"));
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                intent.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
+                startActivity(intent);
                 break;
         }
     }
@@ -321,9 +329,16 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 return true;
 
             case R.id.action_contact:
-                Intent i = new Intent(getApplicationContext(), ContactUser.class);
-                i.putExtra("contact", recieveSite.getSiteAdmin());
+                //Intent i = new Intent(getApplicationContext(), ContactUser.class);
+                //i.putExtra("contact", recieveSite.getSiteAdmin());
                 //intent.putExtra("date", date); instance of date
+
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setData(Uri.parse("mailto:"));
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
                 startActivity(i);
                 break;
 

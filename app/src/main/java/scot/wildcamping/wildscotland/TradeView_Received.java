@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -346,11 +347,18 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.btnContact_User:
-                intent = new Intent(getApplicationContext(), ContactUser.class);
-                intent.putExtra("contact", recieveSite.getSiteAdmin());
-                intent.putExtra("date", date);
-                startActivity(intent);
+                //intent = new Intent(getApplicationContext(), ContactUser.class);
+                //intent.putExtra("contact", recieveSite.getSiteAdmin());
+                //intent.putExtra("date", date);
+
                 //open email dialog
+                intent = new Intent(Intent.ACTION_SEND);
+                intent.setData(Uri.parse("mailto:"));
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                intent.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
+                startActivity(intent);
                 break;
 
             case R.id.btnAccept_Trade:
@@ -384,16 +392,32 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                 return true;
 
             case R.id.action_contact:
-                Intent i = new Intent(getApplicationContext(), ContactUser.class);
-                i.putExtra("contact", recieveSite.getSiteAdmin());
+                //Intent i = new Intent(getApplicationContext(), ContactUser.class);
+                //i.putExtra("contact", recieveSite.getSiteAdmin());
                 //intent.putExtra("date", date); instance of date
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setData(Uri.parse("mailto:"));
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
                 startActivity(i);
                 break;
 
             case R.id.profile:
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
                 //open that user's profile
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
                 in.putExtra("user", recieveSite.getSiteAdmin());
+                in.putExtra("this_user", false);
                 //intent.putExtra("date", date); instance of date
                 startActivity(in);
                 break;

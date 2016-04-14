@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import scot.wildcamping.wildscotland.model.User;
 
 public class BioFragment extends Fragment {
@@ -27,6 +29,7 @@ public class BioFragment extends Fragment {
     TextView txtBio;
     Button btnLogout;
     TextView update;
+    Boolean this_user = false;
 
     private SessionManager session;
 
@@ -35,6 +38,12 @@ public class BioFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_bio, container, false);
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        if(extras != null)
+        {
+            this_user = extras.getBoolean("this_user");
+        }
 
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
@@ -58,9 +67,15 @@ public class BioFragment extends Fragment {
         //txtEmail.setText(email);
         //txtBio.setText(bio);
 
-        txtName.setText(AppController.getString(getContext(), "name"));
-        txtEmail.setText(AppController.getString(getContext(), "email"));
-        txtBio.setText(AppController.getString(getContext(), "bio"));
+        if(this_user){
+            txtName.setText(AppController.getString(getContext(), "name"));
+            txtEmail.setText(AppController.getString(getContext(), "email"));
+            txtBio.setText(AppController.getString(getContext(), "bio"));
+        } else {
+            txtName.setText(AppController.getString(getContext(), "user_name"));
+            txtEmail.setText(AppController.getString(getContext(), "user_email"));
+            txtBio.setText(AppController.getString(getContext(), "user_bio"));
+        }
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -72,6 +87,7 @@ public class BioFragment extends Fragment {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(),
                         QuizActivity.class);
                 intent.putExtra("update", true);

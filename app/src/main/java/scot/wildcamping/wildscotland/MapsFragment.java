@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -107,6 +108,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     boolean zoomed = false;
     boolean threshold = false;
     int clickedTwice = 0;
+    FrameLayout layout_main;
 
 
     private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
@@ -156,6 +158,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // inflate and return the layout
         v = inflater.inflate(R.layout.fragment_maps, container,
                 false);
+
+        layout_main = (FrameLayout) v.findViewById(R.id.mainrl);
+        layout_main.getForeground().setAlpha(0);
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -276,6 +281,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 AbsListView.LayoutParams.WRAP_CONTENT,
                 AbsListView.LayoutParams.WRAP_CONTENT);
 
+        layout_main.getForeground().setAlpha(150);
+
         //initialize views
         btnDismiss = (Button)popupView.findViewById(R.id.cancelNewSite);
         gpsAdd = (Button)popupView.findViewById(R.id.gps);
@@ -289,6 +296,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
+                layout_main.getForeground().setAlpha(0);
             }
         });
 
@@ -321,6 +329,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 getActivity().startActivity(intent);
+                layout_main.getForeground().setAlpha(0);
             }
         });
 
@@ -331,6 +340,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             public void onClick(View v) {
 
                 popupWindow.dismiss();
+                layout_main.getForeground().setAlpha(0);
 
                 Snackbar.make(view, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
 

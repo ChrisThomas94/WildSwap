@@ -159,6 +159,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Description"
                     android:inputType="text"
+                    android:text=""
                     android:singleLine="false"/>
 
 

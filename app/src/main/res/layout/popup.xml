@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:background="@color/counter_text_color"
+    android:background="@color/list_item_title"
     android:minWidth="300dp">
 
         <Button
@@ -12,21 +12,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@color/list_item_title"
+            android:background="@color/counter_text_color"
             android:text="Current Position"/>
         <Button
             android:id="@+id/manual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@color/list_item_title"
+            android:background="@color/counter_text_color"
             android:text="Point on Map"/>
         <Button
             android:id="@+id/longlat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@color/list_item_title"
+            android:background="@color/counter_text_color"
             android:text="Longitude and Latitude"/>
 
         <Button

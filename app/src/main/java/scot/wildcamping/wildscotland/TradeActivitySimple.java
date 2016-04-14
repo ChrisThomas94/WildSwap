@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -427,9 +428,16 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 return true;
 
             case R.id.action_contact:
-                Intent i = new Intent(getApplicationContext(), ContactUser.class);
-                i.putExtra("contact", recieveSite.getSiteAdmin());
+                //Intent i = new Intent(getApplicationContext(), ContactUser.class);
+                //i.putExtra("contact", recieveSite.getSiteAdmin());
                 //intent.putExtra("date", date); instance of date
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setData(Uri.parse("mailto:"));
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
+
                 startActivity(i);
                 break;
 

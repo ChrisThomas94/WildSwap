@@ -86,9 +86,9 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                     int size = jObj.getInt("size");
                     //User user = new User();
 
-                    AppController.setString(context, "name", jObj.getString("name"));
-                    AppController.setString(context, "email", jObj.getString("email"));
-                    AppController.setString(context, "bio", jObj.getString("bio"));
+                    AppController.setString(context, "user_name", jObj.getString("name"));
+                    AppController.setString(context, "user_email", jObj.getString("email"));
+                    AppController.setString(context, "user_bio", jObj.getString("bio"));
                     //user.setName(jObj.getString("name"));
                     //user.setEmail(jObj.getString("email"));
                     //user.setBio(jObj.getString("bio"));

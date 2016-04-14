@@ -143,6 +143,10 @@
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity android:name=".BioActivity"
+            android:label="Bio"
+            android:theme= "@style/AppTheme"/>
+
     </application>
 
     <!-- Used by the Google Maps API to download map tiles from Google Maps servers. -->

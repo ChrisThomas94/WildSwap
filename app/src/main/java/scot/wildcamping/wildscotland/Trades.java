@@ -190,6 +190,7 @@ public class Trades extends AppCompatActivity {
                     }
                 }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
+                profile.putExtra("this_user", true);
                 startActivity(profile);
                 overridePendingTransition(0,0);
                 finish();

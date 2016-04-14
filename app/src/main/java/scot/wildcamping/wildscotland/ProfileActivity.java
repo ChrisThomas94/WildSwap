@@ -48,11 +48,19 @@ public class ProfileActivity extends AppCompatActivity {
     TextView txtEmail;
     Button btnLogout;
     Button questions;
+    Boolean this_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            this_user = extras.getBoolean("this_user");
+
+        }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -181,6 +189,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             case 3:
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
+                profile.putExtra("this_user", true);
                 startActivity(profile);
                 overridePendingTransition(0,0);
                 finish();

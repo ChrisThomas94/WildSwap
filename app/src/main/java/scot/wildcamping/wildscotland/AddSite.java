@@ -166,6 +166,14 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         }
 
+        if(titlePassed == null){
+            title.setText("My cool wild location...");
+        }
+
+        if(descPassed == null){
+            description.setText("It's really cool here...");
+        }
+
         System.out.println(imageUpload);
 
 

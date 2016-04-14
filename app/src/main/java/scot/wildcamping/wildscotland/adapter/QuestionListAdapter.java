@@ -2,8 +2,10 @@ package scot.wildcamping.wildscotland.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -64,6 +66,16 @@ public class QuestionListAdapter extends BaseAdapter {
         if(position == 0 && update){
             TextView info = (TextView) convertView.findViewById(R.id.info);
             info.setVisibility(View.VISIBLE);
+
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = "http://www.outdooraccess-scotland.com/public/camping";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    context.startActivity(i);
+                }
+            });
         }
 
         final TextView question = (TextView)convertView.findViewById(R.id.question);

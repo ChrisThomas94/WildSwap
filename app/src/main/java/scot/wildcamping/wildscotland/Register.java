@@ -2,7 +2,10 @@ package scot.wildcamping.wildscotland;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -142,19 +146,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     error = jObj.getBoolean("error");
 
                     if(!error){
-                    String userId = jObj.getString("uid");
+                        String userId = jObj.getString("uid");
 
-                    JSONObject user = jObj.getJSONObject("user");
-                    String name = user.getString("name");
-                    String email = user.getString("email");
-                    AppController.setString(Register.this, "uid", userId);
-                    AppController.setString(Register.this, "name", name);
-                    AppController.setString(Register.this, "email", email);
+                        JSONObject user = jObj.getJSONObject("user");
+                        String name = user.getString("name");
+                        String email = user.getString("email");
+                        AppController.setString(Register.this, "uid", userId);
+                        AppController.setString(Register.this, "name", name);
+                        AppController.setString(Register.this, "email", email);
 
-                    intent = new Intent(Register.this,
-                            MainActivity_Spinner.class);
-                    startActivity(intent);
-                    finish();
                     } else {
                         errorMsg = jObj.getString("error_msg");
 
@@ -237,13 +237,42 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 password = etPasswordRegister.getText().toString();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    new CreateNewProduct().execute();
-                        //registerUser(name, email, password);
+                    if(isNetworkAvailable()) {
+                        try {
+                            String user = new CreateNewProduct().execute().get();
+                        } catch (InterruptedException e) {
+
+                        } catch (ExecutionException e) {
+
+                        }
+                    }
                 } else {
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
                 }
+
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, AppController.getString(Register.this, "email")).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+
+                intent = new Intent(Register.this, BioActivity.class);
+                startActivity(intent);
+                finish();
+
                 break;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
