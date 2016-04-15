@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.concurrent.ExecutionException;
@@ -33,12 +34,9 @@ public class BioActivity extends AppCompatActivity {
     SparseArray<Question> question;
     boolean update = false;
 
-    String newName;
-    String newEmail;
     String newBio;
-    EditText name;
-    EditText email;
     EditText bio;
+    ImageView prof;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +53,11 @@ public class BioActivity extends AppCompatActivity {
             update = extras.getBoolean("update");
         }
 
-        if(update){
-            name = (EditText) findViewById(R.id.name);
-            email = (EditText) findViewById(R.id.email);
-
-            name.setVisibility(View.VISIBLE);
-            email.setVisibility(View.VISIBLE);
-        }
-
-
         bio = (EditText) findViewById(R.id.bio);
+        prof = (ImageView) findViewById(R.id.profilePicture);
+
+        //if profile picture is null then display snackbar suggestign they upload one
+
     }
 
     @Override
@@ -86,22 +79,14 @@ public class BioActivity extends AppCompatActivity {
 
             case R.id.action_submit:
 
-                if(name.getText().toString().equals("")) {
-                    newName = name.getText().toString();
-                }
-
-                if(email.getText().toString().equals("")) {
-                    newEmail = email.getText().toString();
-                }
-
-                if(bio.getText().toString().equals("")) {
+                if(!bio.getText().toString().equals("")) {
                     newBio = bio.getText().toString();
                     AppController.setString(this, "bio", newBio);
                 }
 
                 //asynk task updating bio
                 try {
-                    String update = new UpdateProfile(this, newName, newEmail, newBio).execute().get();
+                    String update = new UpdateProfile(this, newBio).execute().get();
                 } catch (InterruptedException e){
 
                 } catch(ExecutionException e){

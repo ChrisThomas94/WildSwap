@@ -96,8 +96,16 @@ public class QuizActivity extends AppCompatActivity {
                     } catch (ExecutionException e) {
 
                     }
+
+                    try {
+                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
                 }
-                finish();
+
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));

@@ -32,14 +32,10 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
 
     private Context context;
     String user;
-    String name;
-    String email;
     String bio;
 
-    public UpdateProfile(Context context, String name, String email, String bio) {
+    public UpdateProfile(Context context, String bio) {
         this.context = context;
-        this.name = name;
-        this.email = email;
         this.bio = bio;
     }
 
@@ -64,7 +60,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         user = AppController.getString(context, "uid");
 
         try {
-            String json = updateKnownSite(user, name, email, bio);
+            String json = updateKnownSite(user, bio);
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -114,11 +110,9 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     }
 
 
-    private String updateKnownSite(String uid, String name, String email, String bio){
+    private String updateKnownSite(String uid, String bio){
         return "{\"tag\":\"" + "updateProfile" + "\","
                 + "\"uid\":\"" + uid + "\","
-                + "\"name\":\"" + name + "\","
-                + "\"email\":\"" + email + "\","
                 + "\"bio\":\"" + bio + "\"}";
     }
 }

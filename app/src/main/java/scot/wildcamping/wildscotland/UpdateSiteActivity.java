@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -82,6 +84,9 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
     Boolean update = true;
     Boolean lonLat;
+    Boolean imageUpload = false;
+    SparseArray<Image> temp = new SparseArray<>();
+    knownSite inst = new knownSite();
 
     int arrayPos;
 
@@ -118,6 +123,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         if(extras != null)
         {
             arrayPos = extras.getInt("arrayPosition");
+            imageUpload = extras.getBoolean("image");
 
             feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
@@ -149,7 +155,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
         }
 
-        knownSite inst = new knownSite();
+
         Site focused = inst.getOwnedSitesMap().get(arrayPos);
 
         cid = focused.getCid();
@@ -161,7 +167,16 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
 
-        if(focused.getImage() != null) {
+        if(imageUpload) {
+            temp = inst.getTemp();
+            image = temp.get(0).getImage();
+            System.out.println(image);
+            bitmap = StringToBitMap(image);
+            image1.setVisibility(View.VISIBLE);
+            image1.setImageBitmap(bitmap);
+        }
+
+        /*if(focused.getImage() != null) {
             if (focused.getImage().equals("null")) {
                 image1.setVisibility(View.GONE);
             } else {
@@ -169,7 +184,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
                 image1.setImageBitmap(StringToBitMap(focused.getImage()));
                 image1.setVisibility(View.VISIBLE);
             }
-        }
+        }*/
 
         /*if(focused.getImage() != null) {
             image = focused.getImage();
@@ -210,6 +225,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
             case R.id.addFeaturesRel:
 
                 Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                intent.putExtra("image", imageUpload);
                 intent.putExtra("arrayPosition", arrayPos);
                 intent.putExtra("update", update);
                 intent.putExtra("feature1", feature1);
@@ -282,6 +298,21 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
             try{
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 image = getStringImage(bitmap);
+
+                imageUpload = true;
+
+                Image upload = new Image();
+                upload.setImage(image);
+                upload.setCid("temp");
+
+                temp = inst.getTemp();
+
+
+                temp.put(0, upload);
+
+                inst.setTemp(temp);
+
+                image1.setVisibility(View.VISIBLE);
                 image1.setImageBitmap(bitmap);
             } catch (FileNotFoundException e){
                 e.printStackTrace();

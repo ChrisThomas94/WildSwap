@@ -1,6 +1,9 @@
 package scot.wildcamping.wildscotland;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,12 +19,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -230,33 +237,111 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.confirmCreation:
 
-                latReq = Lat.getText().toString();
-                lonReq = Lon.getText().toString();
-                titleReq = title.getText().toString();
-                descReq = description.getText().toString();
-                ratingReq = Float.toString(ratingBar.getRating());
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSite.this);
+                builder1.setTitle("Attention!");
+                builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
 
-                if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
+                builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        latReq = Lat.getText().toString();
+                        lonReq = Lon.getText().toString();
+                        titleReq = title.getText().toString();
+                        descReq = description.getText().toString();
+                        ratingReq = Float.toString(ratingBar.getRating());
 
-                    String imageSingleLine = null;
-                    if(image != null) {
-                        imageSingleLine = image.replaceAll("[\r\n]+", "");
+                        if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
+
+                            String imageSingleLine = null;
+                            if(image != null) {
+                                imageSingleLine = image.replaceAll("[\r\n]+", "");
+                            }
+
+                            try {
+                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
+                            } catch (ExecutionException e){
+
+                            } catch (InterruptedException e){
+
+                            }
+                            Intent intent = new Intent(getApplicationContext(),
+                                    MainActivity_Spinner.class);
+                            intent.putExtra("latitude", latitude);
+                            intent.putExtra("longitude", longitude);
+                            intent.putExtra("add", true);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            //Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
+                        }
                     }
+                });
 
-                    new CreateSite(this, relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
+                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
-                    intent = new Intent(getApplicationContext(),
-                            MainActivity_Spinner.class);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("add", true);
-                    startActivity(intent);
-                    finish();
+                AlertDialog alert1 = builder1.create();
+                alert1.show();
 
-                } else {
-                    Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
-                }
 
+
+                /*LayoutInflater layoutInflater = (LayoutInflater)this.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View popupView = layoutInflater.inflate(R.layout.popup_add_site, null);
+                final PopupWindow popupWindow = new PopupWindow(
+                        popupView,
+                        AbsListView.LayoutParams.WRAP_CONTENT,
+                        AbsListView.LayoutParams.WRAP_CONTENT);
+
+                Button cancel = (Button) popupView.findViewById(R.id.cancelPopup);
+                Button accept = (Button) popupView.findViewById(R.id.acceptPopup);
+
+                cancel.setOnClickListener(new Button.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+                accept.setOnClickListener(new Button.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                        latReq = Lat.getText().toString();
+                        lonReq = Lon.getText().toString();
+                        titleReq = title.getText().toString();
+                        descReq = description.getText().toString();
+                        ratingReq = Float.toString(ratingBar.getRating());
+
+                        if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
+
+                            String imageSingleLine = null;
+                            if(image != null) {
+                                imageSingleLine = image.replaceAll("[\r\n]+", "");
+                            }
+
+                            new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
+
+                            Intent intent = new Intent(getApplicationContext(),
+                                    MainActivity_Spinner.class);
+                            intent.putExtra("latitude", latitude);
+                            intent.putExtra("longitude", longitude);
+                            intent.putExtra("add", true);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });*/
 
                 break;
 

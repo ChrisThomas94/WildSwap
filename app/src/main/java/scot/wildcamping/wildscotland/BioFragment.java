@@ -75,6 +75,9 @@ public class BioFragment extends Fragment {
             txtName.setText(AppController.getString(getContext(), "user_name"));
             txtEmail.setText(AppController.getString(getContext(), "user_email"));
             txtBio.setText(AppController.getString(getContext(), "user_bio"));
+
+            update.setVisibility(View.GONE);
+            btnLogout.setVisibility(View.GONE);
         }
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +92,7 @@ public class BioFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(),
-                        QuizActivity.class);
-                intent.putExtra("update", true);
+                        BioActivity.class);
                 startActivity(intent);
             }
         });

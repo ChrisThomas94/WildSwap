@@ -7,34 +7,34 @@
     android:background="@color/list_item_title"
     android:minWidth="300dp">
 
-        <Button
-            android:id="@+id/gps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/counter_text_color"
-            android:text="Current Position"/>
-        <Button
-            android:id="@+id/manual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/counter_text_color"
-            android:text="Point on Map"/>
-        <Button
-            android:id="@+id/longlat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/counter_text_color"
-            android:text="Longitude and Latitude"/>
+    <Button
+        android:id="@+id/gps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/counter_text_color"
+        android:text="Current Position"/>
+    <Button
+        android:id="@+id/manual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/counter_text_color"
+        android:text="Point on Map"/>
+    <Button
+        android:id="@+id/longlat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/counter_text_color"
+        android:text="Longitude and Latitude"/>
 
-        <Button
-            android:id="@+id/cancelNewSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_gravity="right"/>
+    <Button
+        android:id="@+id/cancelNewSite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_gravity="right"/>
 
 </LinearLayout>

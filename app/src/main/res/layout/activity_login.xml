@@ -70,18 +70,6 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign In with facebook"
-        android:textSize="18sp"
-        android:id="@+id/signin_button_facebook"
-        android:background="#0065BD"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="#ffffff"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Register Here"
         android:textSize="18sp"
         android:id="@+id/registerhere_button"

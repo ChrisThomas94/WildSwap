@@ -2,6 +2,9 @@ package scot.wildcamping.wildscotland;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,6 +27,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +45,7 @@ import scot.wildcamping.wildscotland.model.Trade;
 
 public class MainActivity_Spinner extends AppCompatActivity {
 
+    private Menu optionsMenu;
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -182,8 +187,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-
             }
         });
 
@@ -201,6 +204,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     try {
                         String known_result = new FetchKnownSites(this).execute().get();
                         String unknown_result = new FetchUnknownSites(this).execute().get();
+
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {
@@ -267,6 +271,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
             setTitle(list.get(position));
+            setRefreshActionButtonState(false);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
@@ -276,8 +281,12 @@ public class MainActivity_Spinner extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        this.optionsMenu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
+        //return true;
     }
 
     @Override
@@ -303,17 +312,9 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.action_refresh) {
-            if(isNetworkAvailable()) {
-                try {
-                    String known_result = new FetchKnownSites(this).execute().get();
-                    String unknown_result = new FetchUnknownSites(this).execute().get();
-                } catch (InterruptedException e) {
-
-                } catch (ExecutionException e) {
-
-                }
-            }
+            setRefreshActionButtonState(true);
             displayView(0);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -323,5 +324,19 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu
+                    .findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }

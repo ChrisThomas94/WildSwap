@@ -31,7 +31,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialogAddSite;
+    //private ProgressDialog pDialogAddSite;
     private Context context;
     int relat;
     String lat;
@@ -102,11 +102,11 @@ public class CreateSite extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialogAddSite = new ProgressDialog(context);
-        pDialogAddSite.setMessage("Adding site ...");
-        pDialogAddSite.setIndeterminate(false);
-        pDialogAddSite.setCancelable(true);
-        pDialogAddSite.show();
+        //pDialogAddSite = new ProgressDialog(context);
+        //pDialogAddSite.setMessage("Adding site ...");
+        //pDialogAddSite.setIndeterminate(false);
+        //pDialogAddSite.setCancelable(true);
+        //pDialogAddSite.show();
 
         uid = AppController.getString(context, "uid");
         email = AppController.getString(context, "email");
@@ -185,7 +185,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialogAddSite.dismiss();
+        //pDialogAddSite.dismiss();
         try {
             JSONObject resp = new JSONObject(postResponse);
 
