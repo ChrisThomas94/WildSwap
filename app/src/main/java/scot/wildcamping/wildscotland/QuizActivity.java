@@ -105,7 +105,9 @@ public class QuizActivity extends AppCompatActivity {
 
                     }
                 }
-
+                Intent intent = new Intent(this, MainActivity_Spinner.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));

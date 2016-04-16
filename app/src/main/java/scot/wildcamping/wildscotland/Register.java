@@ -262,6 +262,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 intent = new Intent(Register.this, BioActivity.class);
+                intent.putExtra("new", true);
                 startActivity(intent);
                 finish();
 

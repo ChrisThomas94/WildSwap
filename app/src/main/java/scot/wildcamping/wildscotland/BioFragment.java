@@ -1,6 +1,13 @@
 package scot.wildcamping.wildscotland;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -8,11 +15,13 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -30,6 +39,7 @@ public class BioFragment extends Fragment {
     Button btnLogout;
     TextView update;
     Boolean this_user = false;
+    ImageView profile_pic;
 
     private SessionManager session;
 
@@ -50,12 +60,15 @@ public class BioFragment extends Fragment {
         txtBio = (TextView) rootView.findViewById(R.id.bio);
         btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
         update = (TextView) rootView.findViewById(R.id.updateProfile);
+        profile_pic = (ImageView) rootView.findViewById(R.id.profilePicture);
 
         session = new SessionManager(getContext());
 
         if (!session.isLoggedIn()) {
             logoutUser();
         }
+
+
 
         //User user = new User();
 
@@ -71,10 +84,26 @@ public class BioFragment extends Fragment {
             txtName.setText(AppController.getString(getContext(), "name"));
             txtEmail.setText(AppController.getString(getContext(), "email"));
             txtBio.setText(AppController.getString(getContext(), "bio"));
+            String image = AppController.getString(getContext(), "profile_pic");
+
+            if(!image.equals("null") || !image.equals("")){
+                Bitmap bit = StringToBitMap(image);
+                Bitmap circle = getCroppedBitmap(bit);
+                profile_pic.setImageBitmap(circle);
+            }
+
         } else {
             txtName.setText(AppController.getString(getContext(), "user_name"));
             txtEmail.setText(AppController.getString(getContext(), "user_email"));
             txtBio.setText(AppController.getString(getContext(), "user_bio"));
+            String image = AppController.getString(getContext(), "user_profile_pic");
+
+            if(!image.equals("null") || !image.equals("")){
+                System.out.print(image);
+                Bitmap bit = StringToBitMap(image);
+                Bitmap circle = getCroppedBitmap(bit);
+                profile_pic.setImageBitmap(circle);
+            }
 
             update.setVisibility(View.GONE);
             btnLogout.setVisibility(View.GONE);
@@ -131,6 +160,40 @@ public class BioFragment extends Fragment {
                 return true;
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 }
 

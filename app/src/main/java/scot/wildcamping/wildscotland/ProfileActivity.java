@@ -188,6 +188,15 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
 
             case 3:
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 profile.putExtra("this_user", true);
                 startActivity(profile);

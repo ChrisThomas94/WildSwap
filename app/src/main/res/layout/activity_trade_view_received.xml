@@ -171,6 +171,7 @@
             android:layout_toStartOf="@+id/btnContact_User"/>
 
         <Button
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnContact_User"

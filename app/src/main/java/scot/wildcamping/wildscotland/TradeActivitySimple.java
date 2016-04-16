@@ -101,6 +101,9 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         Button right = (Button)findViewById(R.id.btn_right);
         Button left = (Button)findViewById(R.id.btn_left);
 
+        ImageView rightArrow = (ImageView)findViewById(R.id.right_arrow);
+        ImageView leftArrow = (ImageView)findViewById(R.id.left_arrow);
+
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
         features1 = (ImageView)findViewById(R.id.features1);
@@ -170,6 +173,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         send.setOnClickListener(this);
         right.setOnClickListener(this);
         left.setOnClickListener(this);
+        rightArrow.setOnClickListener(this);
+        leftArrow.setOnClickListener(this);
         //yourSite.setOnClickListener(this);
     }
 
@@ -390,6 +395,27 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_left:
+
+                if(ownedSiteInit == 0){
+                    ownedSiteInit = ownedSitesSize;
+                }
+                ownedSiteInit--;
+                genOwnedSite(ownedSiteInit);
+
+
+                break;
+
+            case R.id.right_arrow:
+
+                if(ownedSiteInit == ownedSitesSize-1){
+                    ownedSiteInit = -1;
+                }
+                ownedSiteInit++;
+                genOwnedSite(ownedSiteInit);
+
+                break;
+
+            case R.id.left_arrow:
 
                 if(ownedSiteInit == 0){
                     ownedSiteInit = ownedSitesSize;
