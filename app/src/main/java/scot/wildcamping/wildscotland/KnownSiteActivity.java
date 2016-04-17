@@ -1,8 +1,11 @@
 package scot.wildcamping.wildscotland;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +25,7 @@ import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
@@ -200,7 +204,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
         contact.setOnClickListener(this);
         update.setOnClickListener(this);
-        addImage.setOnClickListener(this);
+        //addImage.setOnClickListener(this);
     }
 
     @Override
@@ -241,10 +245,19 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                         imageSingleLine = newImage.replaceAll("[\r\n]+", "");
                     }
 
-                    new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum).execute();
+                    if(isNetworkAvailable()) {
+                        try {
+                            String update = new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum).execute().get();
+                            String known_result = new FetchKnownSites(this).execute().get();
+                            String unknown_result = new FetchUnknownSites(this).execute().get();
 
-                    //intent = new Intent(getApplicationContext(), MainActivity.class);
-                    //startActivity(intent);
+                        } catch (InterruptedException e) {
+
+                        } catch (ExecutionException e) {
+
+                        }
+                    }
+
                     finish();
                 }
         }
@@ -312,6 +325,13 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             e.getMessage();
             return null;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

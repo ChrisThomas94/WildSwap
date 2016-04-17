@@ -1,8 +1,11 @@
 package scot.wildcamping.wildscotland;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -19,6 +22,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -95,11 +99,13 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         }
 
 
-        Button contact = (Button)findViewById(R.id.btnContact_User);
-        contact.setOnClickListener(this);
+        //Button contact = (Button)findViewById(R.id.btnContact_User);
+        //contact.setOnClickListener(this);
 
-        Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
-        cancel.setOnClickListener(this);
+        //Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
+        //cancel.setOnClickListener(this);
+
+        ImageView cancel = (ImageView)findViewById(R.id.reject_trade);
 
         if(status != 0){
             cancel.setVisibility(View.GONE);
@@ -286,7 +292,18 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnCancel_Trade:
+            case R.id.reject_trade:
+
+                //update trade record in db
+                new UpdateTrade(this, unique_tid, negativeTradeStatus).execute();
+
+                Intent intent = new Intent(getApplicationContext(),
+                        MainActivity_Spinner.class);
+                startActivity(intent);
+                finish();
+                break;
+
+            /*case R.id.btnCancel_Trade:
 
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, negativeTradeStatus).execute();
@@ -309,7 +326,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
                 intent.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
                 startActivity(intent);
-                break;
+                break;*/
         }
     }
 
@@ -344,8 +361,19 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
 
             case R.id.profile:
                 //open that user's profile
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
-                in.putExtra("user", recieveSite.getSiteAdmin());
+                in.putExtra("email", recieveSite.getSiteAdmin());
+                in.putExtra("this_user", false);
                 //intent.putExtra("date", date); instance of date
                 startActivity(in);
                 break;
@@ -362,5 +390,12 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
             e.getMessage();
             return null;
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

@@ -1,7 +1,9 @@
 package scot.wildcamping.wildscotland;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -192,13 +194,39 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         switch (v.getId())
         {
             case R.id.deactivateSite:
-                boolean active = false;
-                //String ratingReq = Double.toString(ratingBun);
-                intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //trigger php to deactivate site
-                new UpdateSite(this, true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0).execute();
-                startActivity(intent);
-                finish();
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setTitle("Attention!");
+                builder1.setMessage("Are you sure you want to delete this site?");
+
+                builder1.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        boolean active = false;
+                        //String ratingReq = Double.toString(ratingBun);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                        //trigger php to deactivate site
+                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0).execute();
+                        startActivity(intent);
+                        finish();
+
+
+                    }
+
+                });
+
+                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert1 = builder1.create();
+                alert1.show();
+
                 break;
 
             case R.id.editSite:

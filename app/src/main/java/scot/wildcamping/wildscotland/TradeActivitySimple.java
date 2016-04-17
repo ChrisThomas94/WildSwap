@@ -94,15 +94,16 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         unknownSitesSize = inst.getUnknownSitesSize();
         ownedSitesSize = inst.getOwnedSiteSize();
 
-        Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
-        Button refresh = (Button)findViewById(R.id.btnRefresh_Trade);
-        Button send = (Button)findViewById(R.id.btnSend_Trade);
+        //Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
+        //Button refresh = (Button)findViewById(R.id.btnRefresh_Trade);
+        //Button send = (Button)findViewById(R.id.btnSend_Trade);
 
-        Button right = (Button)findViewById(R.id.btn_right);
-        Button left = (Button)findViewById(R.id.btn_left);
+        //Button right = (Button)findViewById(R.id.btn_right);
+        //Button left = (Button)findViewById(R.id.btn_left);
 
         ImageView rightArrow = (ImageView)findViewById(R.id.right_arrow);
         ImageView leftArrow = (ImageView)findViewById(R.id.left_arrow);
+        ImageView refreshTrade = (ImageView)findViewById(R.id.refresh_trade);
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
@@ -143,7 +144,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         }
 
         if(recieveSize == 1){
-            refresh.setVisibility(View.INVISIBLE);
+            //refresh.setVisibility(View.INVISIBLE);
+            refreshTrade.setVisibility(View.INVISIBLE);
         }
 
         //where lat lng of cluster = lat lng of map
@@ -168,13 +170,14 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         //initialise known site
         genOwnedSite(ownedSiteInit);
 
-        cancel.setOnClickListener(this);
-        refresh.setOnClickListener(this);
-        send.setOnClickListener(this);
-        right.setOnClickListener(this);
-        left.setOnClickListener(this);
+        //cancel.setOnClickListener(this);
+        //refresh.setOnClickListener(this);
+        //send.setOnClickListener(this);
+        //right.setOnClickListener(this);
+        //left.setOnClickListener(this);
         rightArrow.setOnClickListener(this);
         leftArrow.setOnClickListener(this);
+        refreshTrade.setOnClickListener(this);
         //yourSite.setOnClickListener(this);
     }
 
@@ -350,7 +353,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         switch (v.getId())
         {
             //on clicking register button move to Register Activity
-            case R.id.btnCancel_Trade:
+            /*case R.id.btnCancel_Trade:
 
                 Toast.makeText(this, "Trade Canceled!", Toast.LENGTH_LONG).show();
                 //intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
@@ -402,8 +405,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 ownedSiteInit--;
                 genOwnedSite(ownedSiteInit);
 
-
-                break;
+                break;*/
 
             case R.id.right_arrow:
 
@@ -424,6 +426,18 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 genOwnedSite(ownedSiteInit);
 
 
+                break;
+
+            case R.id.refresh_trade:
+
+                Random ran = new Random();
+                if(nextSite == selectedUnknownSites.size()-1){
+                    nextSite = 0;
+                } else {
+                    nextSite++;
+                }
+                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.size()-1, nextSite);
+                genUnknownSite(nextSite);
                 break;
 
             case R.id.yourSite:
@@ -480,6 +494,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 }
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
                 in.putExtra("email", recieveSite.getSiteAdmin());
+                in.putExtra("this_user", false);
                 //intent.putExtra("date", date); instance of date
                 startActivity(in);
                 break;

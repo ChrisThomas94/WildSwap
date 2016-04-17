@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:padding="15dp"
         android:background="@drawable/clear_shadow">
 
@@ -181,12 +183,21 @@
             android:layout_marginEnd="15dp" />
 
         <Button
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnRefresh_Trade"
             android:text="Next"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/refresh_trade"
+            android:src="@drawable/refresh_trade"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
         <Button
             android:visibility="gone"
@@ -207,7 +218,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/clear_shadow"
         android:padding="15dp">
 

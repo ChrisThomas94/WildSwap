@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -174,11 +175,11 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         }
 
         if(titlePassed == null){
-            title.setText("My cool wild location...");
+            title.setText("Cool wild location");
         }
 
         if(descPassed == null){
-            description.setText("It's really cool here...");
+            description.setText("It is really cool here...");
         }
 
         System.out.println(imageUpload);
@@ -258,8 +259,10 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                                 imageSingleLine = image.replaceAll("[\r\n]+", "");
                             }
 
-                            titleReq = titleReq.replace("'","\'");
-                            descReq = descReq.replace("'","\'");
+                            titleReq = titleReq.replace("'", "\'");
+                            descReq = descReq.replace("'", "\'");
+                            //titleReq = DatabaseUtils.sqlEscapeString(titleReq);
+                            //descReq = DatabaseUtils.sqlEscapeString(descReq);
 
                             try {
                                 String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();

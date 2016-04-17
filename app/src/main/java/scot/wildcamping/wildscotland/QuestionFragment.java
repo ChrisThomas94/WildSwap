@@ -47,7 +47,7 @@ public class QuestionFragment extends Fragment {
         question = new SparseArray<>();
         question = inst.getQuestions();
 
-        adapter = new QuestionListAdapter(getActivity(), question, false);
+        adapter = new QuestionListAdapter(getActivity(), question, false, false);
         mDrawerList.setAdapter(adapter);
 
         return rootView;

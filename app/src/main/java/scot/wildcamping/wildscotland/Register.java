@@ -251,16 +251,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             .show();
                 }
 
-                if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, AppController.getString(Register.this, "email")).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
-
                 intent = new Intent(Register.this, BioActivity.class);
                 intent.putExtra("new", true);
                 startActivity(intent);

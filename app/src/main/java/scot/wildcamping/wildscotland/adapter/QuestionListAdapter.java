@@ -21,6 +21,9 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import scot.wildcamping.wildscotland.R;
 import scot.wildcamping.wildscotland.model.Question;
 import scot.wildcamping.wildscotland.model.Site;
@@ -33,11 +36,13 @@ public class QuestionListAdapter extends BaseAdapter {
     private Context context;
     private SparseArray<Question> questions;
     private boolean update;
+    private boolean isNew;
 
-    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update){
+    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean isNew){
         this.context = context;
         this.questions = questions;
         this.update = update;
+        this.isNew = isNew;
     }
 
     @Override
@@ -61,21 +66,6 @@ public class QuestionListAdapter extends BaseAdapter {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.question_list, null);
-        }
-
-        if(position == 0 && update){
-            TextView info = (TextView) convertView.findViewById(R.id.info);
-            info.setVisibility(View.VISIBLE);
-
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String url = "http://www.outdooraccess-scotland.com/public/camping";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    context.startActivity(i);
-                }
-            });
         }
 
         final TextView question = (TextView)convertView.findViewById(R.id.question);
@@ -108,23 +98,22 @@ public class QuestionListAdapter extends BaseAdapter {
             }
         });
 
-        if(questions.get(position).getAnswer() == 1){
-            answers.check(R.id.answer1);
+        if(!isNew) {
+
+            if(questions.get(position).getAnswer() == 0){
+
+            } else if (questions.get(position).getAnswer() == 1) {
+                answers.check(R.id.answer1);
+            } else if (questions.get(position).getAnswer() == 2) {
+                answers.check(R.id.answer2);
+            } else if (questions.get(position).getAnswer() == 3) {
+                answers.check(R.id.answer3);
+            } else if (questions.get(position).getAnswer() == 4) {
+                answers.check(R.id.answer4);
+            }
         }
 
-        if(questions.get(position).getAnswer() == 2){
-            answers.check(R.id.answer2);
-        }
-
-        if(questions.get(position).getAnswer() == 3){
-            answers.check(R.id.answer3);
-        }
-
-        if(questions.get(position).getAnswer() == 4){
-            answers.check(R.id.answer4);
-        }
-
-        if(update){
+        if(update || isNew){
             answer1.setClickable(true);
             answer2.setClickable(true);
             answer3.setClickable(true);

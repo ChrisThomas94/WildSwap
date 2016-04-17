@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,9 +29,11 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.adapter.QuestionListAdapter;
@@ -49,7 +53,6 @@ public class BioActivity extends AppCompatActivity {
     boolean update = false;
     int RESULT_LOAD_IMAGE = 0;
 
-    String newBio;
     EditText bio;
     ImageView prof;
     String image;
@@ -75,19 +78,31 @@ public class BioActivity extends AppCompatActivity {
 
         bio = (EditText) findViewById(R.id.bio);
         prof = (ImageView) findViewById(R.id.profilePicture);
+        TextView skip = (TextView)findViewById(R.id.skip);
 
         if(!isNew){
-            bio.setText(AppController.getString(this, "bio"));
+
+            if(AppController.getString(this, "bio").equals("null")){
+                bio.setText("");
+            } else {
+                bio.setText(AppController.getString(this, "bio"));
+            }
 
             image = AppController.getString(this, "profile_pic");
 
-            if(!image.equals("null")){
-                Bitmap profile_pic = StringToBitMap(image);
-                Bitmap circle = getCroppedBitmap(profile_pic);
-                prof.setImageBitmap(circle);
-            } else {
-                Snackbar.make(parentLayout, "Why not add a profile picture?", Snackbar.LENGTH_LONG).show();
+            if(image != null){
+
+                if(image.equals("null")){
+                    Snackbar.make(parentLayout, "Why not add a profile picture?", Snackbar.LENGTH_LONG).show();
+
+                } else {
+                    Bitmap profile_pic = StringToBitMap(image);
+                    Bitmap circle = getCroppedBitmap(profile_pic);
+                    prof.setImageBitmap(circle);
+                }
+
             }
+
         }
 
         prof.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +111,20 @@ public class BioActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
 
+            }
+        });
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
+                if(isNew){
+                    intent.putExtra("new", true);
+                } else if (update) {
+                    intent.putExtra("update", true);
+                }
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -120,15 +149,17 @@ public class BioActivity extends AppCompatActivity {
 
             case R.id.action_submit:
 
-                if(!bio.getText().toString().equals("")) {
-                    newBio = bio.getText().toString();
-                    AppController.setString(this, "bio", newBio);
-                }
+                AppController.setString(this, "bio", bio.getText().toString());
+
+                String newBio = bio.getText().toString();
 
                 String imageSingleLine = null;
+
                 if(image != null) {
                     imageSingleLine = image.replaceAll("[\r\n]+", "");
                     AppController.setString(this, "profile_pic", image);
+                } else {
+                    AppController.setString(this, "profile_pic", "null");
                 }
 
                 //asynk task updating bio
@@ -140,8 +171,25 @@ public class BioActivity extends AppCompatActivity {
 
                 }
 
+                if(isNetworkAvailable()) {
+                    try {
+                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+
                 Intent intent = new Intent(this, QuizActivity.class);
-                intent.putExtra("update", true);
+
+                if(update){
+                    intent.putExtra("update", true);
+
+                } else if (isNew){
+                    intent.putExtra("new", true);
+
+                }
                 startActivity(intent);
                 finish();
                 break;
@@ -155,9 +203,27 @@ public class BioActivity extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
             Uri targetUri = data.getData();
+
             try{
                 Bitmap compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
+
+                try {
+                    ExifInterface ei = new ExifInterface(targetUri.getPath());
+                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            compress = rotateImage(compress, 90);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            compress = rotateImage(compress, 180);
+                            break;
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+                compress = Bitmap.createScaledBitmap(compress, 300, 300, true);
                 image = getStringImage(compress);
 
                 Bitmap circle = getCroppedBitmap(compress);
@@ -222,6 +288,16 @@ public class BioActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Bitmap retVal;
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+
+        return retVal;
     }
 
 }

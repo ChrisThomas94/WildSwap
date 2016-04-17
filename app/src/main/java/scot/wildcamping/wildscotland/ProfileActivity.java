@@ -59,7 +59,6 @@ public class ProfileActivity extends AppCompatActivity {
         if(extras != null)
         {
             this_user = extras.getBoolean("this_user");
-
         }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity

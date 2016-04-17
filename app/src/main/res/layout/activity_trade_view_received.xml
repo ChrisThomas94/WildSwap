@@ -161,14 +161,26 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:id="@+id/btnReject_Trade"
             android:text="Reject"
             android:layout_alignParentTop="true"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@+id/btnContact_User"
             android:layout_toStartOf="@+id/btnContact_User"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reject_trade"
+            android:src="@drawable/close"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/btnContact_User"
+            android:layout_toStartOf="@+id/btnContact_User"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
         <Button
             android:visibility="invisible"
@@ -180,6 +192,7 @@
             android:layout_centerHorizontal="true" />
 
         <Button
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnAccept_Trade"
@@ -188,6 +201,17 @@
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/btnContact_User"
             android:layout_toEndOf="@+id/btnContact_User"/>
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/accept_trade"
+            android:src="@drawable/check"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/btnContact_User"
+            android:layout_toEndOf="@+id/btnContact_User"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
 
     </RelativeLayout>

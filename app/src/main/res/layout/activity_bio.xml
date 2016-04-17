@@ -21,14 +21,13 @@
             android:clickable="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_add_a_photo_black_48dp"/>
-
     </RelativeLayout>
 
     <TextView
         android:id="@+id/enter_bio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter a short bio here."
+        android:text="Enter a short bio here. This may be viewed by other users and will help them to decide whether or not to trade locations with you."
         android:layout_margin="20dp"/>
 
     <EditText
@@ -62,5 +61,15 @@
             android:singleLine="true"/>
 
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make no changes"
+        android:id="@+id/skip"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,15 +38,24 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
     int answer3;
     int answer4;
     int answer5;
+    int answer6;
+    int answer7;
+    int answer8;
+    int answer9;
     SparseArray<Question> arrayQuestions = new SparseArray<>();
+    String postResponse;
 
-    public SubmitQuiz(Context context, int answer1, int answer2, int answer3, int answer4, int answer5) {
+    public SubmitQuiz(Context context, int answer1, int answer2, int answer3, int answer4, int answer5, int answer6, int answer7, int answer8, int answer9) {
         this.context = context;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
         this.answer5 = answer5;
+        this.answer6 = answer6;
+        this.answer7 = answer7;
+        this.answer8 = answer8;
+        this.answer9 = answer9;
     }
 
     /**
@@ -74,7 +84,7 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
             String json = submitAnswers(user);
             System.out.println("json: " + json);
 
-            String postResponse = doPostRequest(Appconfig.URL, json);      //json
+            postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
             try {
@@ -134,6 +144,24 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
         } finally {
             this.pDialogKnownSites = null;
         }
+
+        try {
+            JSONObject resp = new JSONObject(postResponse);
+
+            boolean error = resp.getBoolean("error");
+            if (!error) {
+
+                Toast.makeText(context, "Answers Submitted!", Toast.LENGTH_LONG).show();
+
+            } else {
+                String errMsg = resp.getString("error_msg");
+                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
+            }
+
+        } catch (JSONException e){
+
+        }
+
     }
 
     private String doGetRequest(String url) throws IOException {
@@ -164,7 +192,11 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
                 + "\"question2\":\"" + answer2 + "\","
                 + "\"question3\":\"" + answer3 + "\","
                 + "\"question4\":\"" + answer4 + "\","
-                + "\"question5\":\"" + answer5 + "\"}";
+                + "\"question5\":\"" + answer5 + "\","
+                + "\"question6\":\"" + answer6 + "\","
+                + "\"question7\":\"" + answer7 + "\","
+                + "\"question8\":\"" + answer8 + "\","
+                + "\"question9\":\"" + answer9 + "\"}";
     }
 
 }

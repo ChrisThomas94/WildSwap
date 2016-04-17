@@ -89,17 +89,16 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         super.onPreExecute();
 
         uid = AppController.getString(context, "uid");
-        pDialog = new ProgressDialog(context);
 
         if(!active){
-            pDialog.setMessage("Deleting site...");
+      //      pDialog.setMessage("Deleting site...");
         } else {
+            pDialog = new ProgressDialog(context);
             pDialog.setMessage("Updating site...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
         }
-
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
     }
 
     /**
@@ -168,7 +167,6 @@ public class UpdateSite extends AsyncTask<String, String, String> {
      **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -179,6 +177,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 Toast.makeText(context, "Site Deleted!", Toast.LENGTH_LONG).show();
 
             } else if(!error && active) {
+                pDialog.dismiss();
 
                 Toast.makeText(context, "Site Updated!", Toast.LENGTH_LONG).show();
 

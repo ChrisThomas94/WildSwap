@@ -109,9 +109,13 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             status = extras.getInt("status");
         }
 
-        Button reject = (Button)findViewById(R.id.btnReject_Trade);
-        Button contactUser = (Button)findViewById(R.id.btnContact_User);
-        Button accept = (Button)findViewById(R.id.btnAccept_Trade);
+        //Button reject = (Button)findViewById(R.id.btnReject_Trade);
+        //Button contactUser = (Button)findViewById(R.id.btnContact_User);
+        //Button accept = (Button)findViewById(R.id.btnAccept_Trade);
+
+        ImageView accept = (ImageView)findViewById(R.id.accept_trade);
+        ImageView reject = (ImageView)findViewById(R.id.reject_trade);
+
 
         if(status != 0){
             reject.setVisibility(View.GONE);
@@ -157,7 +161,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         }
 
         reject.setOnClickListener(this);
-        contactUser.setOnClickListener(this);
+        //contactUser.setOnClickListener(this);
         accept.setOnClickListener(this);
 
     }
@@ -327,7 +331,41 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         Intent intent;
 
         switch (v.getId()) {
-            case R.id.btnReject_Trade:
+
+            case R.id.accept_trade:
+
+                //update trade record in db positively
+                new UpdateTrade(this, unique_tid, PositiveTradeStatus).execute();
+
+                //create new entry in user_has_trades with relat 45
+
+                intent = new Intent(getApplicationContext(),
+                        MainActivity_Spinner.class);
+                startActivity(intent);
+                finish();
+                break;
+
+
+            case R.id.reject_trade:
+
+                //update trade record in db
+                new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
+                if(isNetworkAvailable()) {
+                    try {
+                        String trades_result = new FetchTradeRequests(this).execute().get();
+                    } catch (InterruptedException e) {
+
+                    } catch (ExecutionException e) {
+
+                    }
+                }
+                Intent i = new Intent(getApplicationContext(), Trades.class);
+                startActivity(i);
+                overridePendingTransition(0, 0);
+                finish();
+                break;
+
+            /*case R.id.btnReject_Trade:
 
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
@@ -372,7 +410,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
                         MainActivity_Spinner.class);
                 startActivity(intent);
                 finish();
-                break;
+                break;*/
         }
     }
 

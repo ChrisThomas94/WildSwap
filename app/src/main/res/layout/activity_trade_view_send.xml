@@ -164,7 +164,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reject_trade"
+            android:src="@drawable/close"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/btnContact_User"
+            android:layout_toStartOf="@+id/btnContact_User"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
         <Button
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnCancel_Trade"

@@ -134,11 +134,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
                         String email = user.getString("email");
+                        String bio = user.getString("bio");
                         String profile_pic = user.getString("profile_pic");
 
                         AppController.setString(Login.this, "uid", userId);
                         AppController.setString(Login.this, "name", name);
                         AppController.setString(Login.this, "email", email);
+                        AppController.setString(Login.this, "bio", bio);
                         AppController.setString(Login.this, "profile_pic", profile_pic);
 
                         if (userId != null) {

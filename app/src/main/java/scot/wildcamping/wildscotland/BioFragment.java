@@ -83,11 +83,22 @@ public class BioFragment extends Fragment {
         if(this_user){
             txtName.setText(AppController.getString(getContext(), "name"));
             txtEmail.setText(AppController.getString(getContext(), "email"));
-            txtBio.setText(AppController.getString(getContext(), "bio"));
+
+            String bio = AppController.getString(getContext(), "bio");
+
+            if(bio.equals("null")){
+                txtBio.setText("");
+            } else {
+                txtBio.setText(bio);
+            }
+
             String image = AppController.getString(getContext(), "profile_pic");
 
-            if(!image.equals("null") || !image.equals("")){
+            if(image.equals("null") || image.equals("")){
+
+            } else {
                 Bitmap bit = StringToBitMap(image);
+                bit = Bitmap.createScaledBitmap(bit, 300, 300, true);
                 Bitmap circle = getCroppedBitmap(bit);
                 profile_pic.setImageBitmap(circle);
             }
@@ -95,11 +106,20 @@ public class BioFragment extends Fragment {
         } else {
             txtName.setText(AppController.getString(getContext(), "user_name"));
             txtEmail.setText(AppController.getString(getContext(), "user_email"));
-            txtBio.setText(AppController.getString(getContext(), "user_bio"));
+
+            String bio = AppController.getString(getContext(), "user_bio");
+
+            if(bio.equals("null")){
+                txtBio.setText("");
+            } else {
+                txtBio.setText(bio);
+            }
+
             String image = AppController.getString(getContext(), "user_profile_pic");
 
-            if(!image.equals("null") || !image.equals("")){
-                System.out.print(image);
+            if(image.equals("null") || image.equals("")){
+
+            } else {
                 Bitmap bit = StringToBitMap(image);
                 Bitmap circle = getCroppedBitmap(bit);
                 profile_pic.setImageBitmap(circle);
@@ -122,6 +142,7 @@ public class BioFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(),
                         BioActivity.class);
+                intent.putExtra("update", true);
                 startActivity(intent);
             }
         });

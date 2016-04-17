@@ -3,13 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-            <ListView
-                android:layout_below="@+id/info"
-                android:id="@+id/question_listview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="#00000000"
-                android:clickable="true"
-                android:focusable="true"/>
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:visibility="visible"
+        android:text="Complete this short quiz to help other users gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code and can be found here."
+        android:clickable="true"/>
+
+    <ListView
+        android:layout_below="@+id/info"
+        android:id="@+id/question_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="#00000000"
+        android:clickable="true"
+        android:focusable="true"/>
 
 </LinearLayout>

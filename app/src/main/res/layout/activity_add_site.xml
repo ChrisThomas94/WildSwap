@@ -142,6 +142,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Title"
                     android:inputType="text"
+                    android:maxLength="21"
                     android:singleLine="true"/>
 
 
