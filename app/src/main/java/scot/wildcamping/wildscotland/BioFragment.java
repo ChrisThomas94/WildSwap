@@ -121,6 +121,8 @@ public class BioFragment extends Fragment {
 
             } else {
                 Bitmap bit = StringToBitMap(image);
+                bit = Bitmap.createScaledBitmap(bit, 300, 300, true);
+
                 Bitmap circle = getCroppedBitmap(bit);
                 profile_pic.setImageBitmap(circle);
             }

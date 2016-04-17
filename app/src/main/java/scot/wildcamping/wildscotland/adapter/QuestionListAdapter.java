@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +47,15 @@ public class QuestionListAdapter extends BaseAdapter {
         this.isNew = isNew;
     }
 
+    public static final class ViewHolder {
+        TextView question;
+        RadioGroup answers;
+        RadioButton answer1;
+        RadioButton answer2;
+        RadioButton answer3;
+        RadioButton answer4;
+    }
+
     @Override
     public int getCount() {
         return questions.size();
@@ -62,62 +73,109 @@ public class QuestionListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+        ViewHolder holder = null;
+
+
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.question_list, null);
+            holder = new ViewHolder();
+            holder.question = (TextView)convertView.findViewById(R.id.question);
+            holder.answers = (RadioGroup)convertView.findViewById(R.id.answer_group);
+            holder.answer1 = (RadioButton)convertView.findViewById(R.id.answer1);
+            holder.answer2 = (RadioButton)convertView.findViewById(R.id.answer2);
+            holder.answer3 = (RadioButton)convertView.findViewById(R.id.answer3);
+            holder.answer4 = (RadioButton)convertView.findViewById(R.id.answer4);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        final TextView question = (TextView)convertView.findViewById(R.id.question);
 
-        RadioGroup answers = (RadioGroup)convertView.findViewById(R.id.answer_group);
-        RadioButton answer1 = (RadioButton)convertView.findViewById(R.id.answer1);
-        RadioButton answer2 = (RadioButton)convertView.findViewById(R.id.answer2);
-        RadioButton answer3 = (RadioButton)convertView.findViewById(R.id.answer3);
-        RadioButton answer4 = (RadioButton)convertView.findViewById(R.id.answer4);
+        if(questions.get(position) != null){
+            holder.question.setText(questions.get(position).getQuestion());
+            holder.answer1.setText(questions.get(position).getAnswer1());
+            holder.answer2.setText(questions.get(position).getAnswer2());
+            holder.answer3.setText(questions.get(position).getAnswer3());
+            holder.answer4.setText(questions.get(position).getAnswer4());
 
-        question.setText(questions.get(position).getQuestion());
-        answer1.setText(questions.get(position).getAnswer1());
-        answer2.setText(questions.get(position).getAnswer2());
-        answer3.setText(questions.get(position).getAnswer3());
-        answer4.setText(questions.get(position).getAnswer4());
+        } else {
+            holder.question.setText("");
+        }
 
-        answers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        holder.answers.setOnCheckedChangeListener(null);
+        holder.answers.clearCheck();
+
+        if(questions.get(position).getAnswer()>-1){
+            holder.answers.check(questions.get(position).getAnswer());
+        } else {
+            holder.answers.clearCheck();
+        }
+
+        holder.answers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                if (checkedId == R.id.answer1) {
-                    questions.get(position).setAnswer(1);
-                } else if (checkedId == R.id.answer2) {
-                    questions.get(position).setAnswer(2);
-                } else if (checkedId == R.id.answer3) {
-                    questions.get(position).setAnswer(3);
-                } else if (checkedId == R.id.answer4) {
-                    questions.get(position).setAnswer(4);
+                if (checkedId > -1) {
+                    questions.get(position).setAnswer(checkedId);
+                } else {
+                    if (questions.get(position).getAnswer() > -1) {
+                        questions.removeAt(questions.get(position).getAnswer());
+                    }
                 }
+
+                /*switch (checkedId) {
+
+                    case R.id.answer1:
+                        questions.get(position).setAnswer(1);
+                        break;
+
+                    case R.id.answer2:
+                        questions.get(position).setAnswer(2);
+                        break;
+
+                    case R.id.answer3:
+                        questions.get(position).setAnswer(3);
+                        break;
+
+                    case R.id.answer4:
+                        questions.get(position).setAnswer(4);
+                        break;
+
+                }*/
             }
         });
 
-        if(!isNew) {
 
-            if(questions.get(position).getAnswer() == 0){
 
-            } else if (questions.get(position).getAnswer() == 1) {
-                answers.check(R.id.answer1);
-            } else if (questions.get(position).getAnswer() == 2) {
-                answers.check(R.id.answer2);
-            } else if (questions.get(position).getAnswer() == 3) {
-                answers.check(R.id.answer3);
-            } else if (questions.get(position).getAnswer() == 4) {
-                answers.check(R.id.answer4);
+        /*if(!isNew) {
+
+            if(checked.indexOfKey(position)>-1) {
+
+
+
+                if (questions.get(position).getAnswer() == 0) {
+
+                } else if (questions.get(position).getAnswer() == 1) {
+                    answers.check(R.id.answer1);
+                } else if (questions.get(position).getAnswer() == 2) {
+                    answers.check(R.id.answer2);
+                } else if (questions.get(position).getAnswer() == 3) {
+                    answers.check(R.id.answer3);
+                } else if (questions.get(position).getAnswer() == 4) {
+                    answers.check(R.id.answer4);
+                }
             }
-        }
+        }*/
+
 
         if(update || isNew){
-            answer1.setClickable(true);
-            answer2.setClickable(true);
-            answer3.setClickable(true);
-            answer4.setClickable(true);
+            holder.answer1.setClickable(true);
+            holder.answer2.setClickable(true);
+            holder.answer3.setClickable(true);
+            holder.answer4.setClickable(true);
         }
 
         return convertView;
