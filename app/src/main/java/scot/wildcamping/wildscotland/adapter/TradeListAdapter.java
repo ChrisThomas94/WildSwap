@@ -78,12 +78,11 @@ public class TradeListAdapter extends BaseAdapter{
         Date date = null;
         String dtStart = "2010-10-15T09:27:37Z";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        format.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        format.setTimeZone(TimeZone.getTimeZone("London")); //"Europe/London"
         try {
             date = format.parse(activeTrades.get(position).getDate());
             System.out.println(date);
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

@@ -39,6 +39,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
+    SparseArray<Site> knownMap;
     Site recieveSite;
     Site sendSite;
     String send_cid;
@@ -79,6 +80,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     ImageView sendPicture3;
 
     String date;
+    boolean siteAlreadyOwned;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +110,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         ImageView cancel = (ImageView)findViewById(R.id.reject_trade);
 
         if(status != 0){
-            cancel.setVisibility(View.GONE);
+            cancel.setVisibility(View.INVISIBLE);
         }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
@@ -148,10 +150,12 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
 
     public void configSites(){
 
+        knownMap = inst.getKnownSitesMap();
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
         int sizeOwned = inst.getOwnedSiteSize();
+        System.out.println("size unknown: " + sizeUnknown);
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(recieve_cid)){
@@ -162,6 +166,16 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         for(int j=0; j<sizeOwned; j++){
             if (ownedMap.get(j).getCid().equals(send_cid)){
                 sendSite = ownedMap.get(j);
+            }
+        }
+
+        if(recieveSite == null){
+            System.out.println("recieveSite == null");
+            for(int j=0; j<knownMap.size(); j++){
+                if (knownMap.get(j).getCid().equals(recieve_cid)){
+                    recieveSite = knownMap.get(j);
+                    siteAlreadyOwned=true;
+                }
             }
         }
 

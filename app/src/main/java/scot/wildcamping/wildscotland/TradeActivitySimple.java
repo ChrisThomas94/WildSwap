@@ -148,6 +148,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             refreshTrade.setVisibility(View.INVISIBLE);
         }
 
+        if(ownedSitesSize == 1){
+            rightArrow.setVisibility(View.INVISIBLE);
+            leftArrow.setVisibility(View.INVISIBLE);
+        }
+
         //where lat lng of cluster = lat lng of map
         //add to new map
 

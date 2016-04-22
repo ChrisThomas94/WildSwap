@@ -82,6 +82,8 @@ public class BioActivity extends AppCompatActivity {
 
         if(!isNew){
 
+            skip.setVisibility(View.VISIBLE);
+
             if(AppController.getString(this, "bio").equals("null")){
                 bio.setText("");
             } else {

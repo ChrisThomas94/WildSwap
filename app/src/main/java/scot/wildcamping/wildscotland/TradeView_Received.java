@@ -118,8 +118,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
 
         if(status != 0){
-            reject.setVisibility(View.GONE);
-            accept.setVisibility(View.GONE);
+            reject.setVisibility(View.INVISIBLE);
+            accept.setVisibility(View.INVISIBLE);
         }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
@@ -156,7 +156,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
         configSites();
 
-        if(siteAlreadyOwned){
+        if(siteAlreadyOwned && status == 0){
             Snackbar.make(parentLayout, "Attention! You already own the site being offered!", Snackbar.LENGTH_LONG).show();
         }
 

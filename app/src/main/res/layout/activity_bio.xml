@@ -67,6 +67,7 @@
         android:layout_height="wrap_content"
         android:text="Make no changes"
         android:id="@+id/skip"
+        android:visibility="invisible"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"

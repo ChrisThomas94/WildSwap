@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -17,6 +18,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -116,6 +118,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     private float prevZoom = 6;
     private final int MIN_ZOOM = 7;
     private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
+    LocationManager manager = null;
 
     SparseArray<Site> knownSitesMap;
     int knownSiteSize;
@@ -158,6 +161,9 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // inflate and return the layout
         v = inflater.inflate(R.layout.fragment_maps, container,
                 false);
+
+        //check gps
+        manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
 
         layout_main = (FrameLayout) v.findViewById(R.id.mainrl);
         layout_main.getForeground().setAlpha(0);
@@ -310,26 +316,42 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                 double latitude = 0;
                 double longitude = 0;
 
-                Intent gpsOptionsIntent = new Intent(
-                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(gpsOptionsIntent);
+                //Intent gpsOptionsIntent = new Intent(
+                  //      android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                //startActivity(gpsOptionsIntent);
 
-                if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
+                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+                                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+                                    dialog.cancel();
+                                    System.out.println("no");
+                                }
+                            });
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
+                if(manager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
+
                     googleMap.getMyLocation();
                     latitude = googleMap.getMyLocation().getLatitude();
                     longitude = googleMap.getMyLocation().getLongitude();
-                } else {
-                    // Show rationale and request permission.
 
+                    // start new activity
+                    Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    getActivity().startActivity(intent);
+                    layout_main.getForeground().setAlpha(0);
                 }
-
-                // start new activity
-                Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                getActivity().startActivity(intent);
-                layout_main.getForeground().setAlpha(0);
             }
         });
 

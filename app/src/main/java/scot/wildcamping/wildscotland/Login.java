@@ -217,7 +217,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
             progressDialog.dismiss();
     }
 
-
+    @Override
+    public void onBackPressed() {
+    }
 
     @Override
     public void onClick(View v) {
