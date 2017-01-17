@@ -19,6 +19,7 @@ import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -48,6 +49,8 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -73,7 +76,10 @@ import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
 public class MapsFragment extends MapFragment implements View.OnClickListener  {
-	
+
+    //implements View.OnClickListener
+    //implements OnMapReadyCallback
+
 	public MapsFragment(){}
 
     MapView mMapView;
@@ -171,16 +177,21 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume();// needed to get the map to display immediately
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+                mMapView.onResume();// needed to get the map to display immediately
+
+            }
+        });
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        googleMap = mMapView.getMap();
-
+        
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -200,21 +211,22 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         // set listeners for buttons
         addSite.setOnClickListener(this);
 
-        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
 
             @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                mClusterManager.onCameraChange(cameraPosition);
+            public void onCameraMove() {
+                //mClusterManager.onCameraIdle();
+                //mClusterManager.onCameraChange(cameraPosition);
 
-                if(prevZoom>MAX_ZOOM && cameraPosition.zoom < MAX_ZOOM){
+                if (prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM) {
                     //make clusters appear
                     addClusterMarkers(mClusterManager);
-                } else if (prevZoom < MAX_ZOOM && cameraPosition.zoom > MAX_ZOOM){
+                } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
                     //make clusters dissapear
                     mClusterManager.clearItems();
                 }
 
-                prevZoom = cameraPosition.zoom;
+                prevZoom = googleMap.getCameraPosition().zoom;
 
             }
         });
