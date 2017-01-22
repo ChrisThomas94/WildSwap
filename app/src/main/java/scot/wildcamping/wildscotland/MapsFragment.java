@@ -70,12 +70,13 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
-public class MapsFragment extends MapFragment implements View.OnClickListener  {
+public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
     //implements View.OnClickListener
     //implements OnMapReadyCallback
@@ -83,7 +84,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 	public MapsFragment(){}
 
     MapView mMapView;
-    private GoogleMap googleMap;
     private static final int MINIMUM_ZOOM_LEVEL_SERVER_REQUEST = 7;
     private static final int DEFAULT_ZOOM_LEVEL = 4;
 
@@ -176,22 +176,25 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-
-                mMapView.onResume();// needed to get the map to display immediately
-
-            }
-        });
+        mMapView.onResume();// needed to get the map to display immediately
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
+        //initialize views
+        addSite = (ImageButton)v.findViewById(R.id.fab);
+
+        mMapView.getMapAsync(this);
+
+        return v;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -200,39 +203,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         } else {
             // Show rationale and request permission.
         }
-
-        /*if(add){
-            addMarker(bunSite);
-        }*/
-
-        //initialize views
-        addSite = (ImageButton)v.findViewById(R.id.fab);
-
-        // set listeners for buttons
-        addSite.setOnClickListener(this);
-
-        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-
-            @Override
-            public void onCameraMove() {
-                //mClusterManager.onCameraIdle();
-                //mClusterManager.onCameraChange(cameraPosition);
-
-                if (prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM) {
-                    //make clusters appear
-                    addClusterMarkers(mClusterManager);
-                } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
-                    //make clusters dissapear
-                    mClusterManager.clearItems();
-                }
-
-                prevZoom = googleMap.getCameraPosition().zoom;
-
-            }
-        });
-
-        //add the unknown sites as cluster items
-        setUpClustering();
 
         // center map on Scotland
         if(add){
@@ -261,7 +231,206 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
                     .newCameraPosition(cameraPosition));
         }
 
-        return v;
+        //hide clusters if zoom to close
+        googleMap.setOnCameraMoveStartedListener(new MyOnCameraMoveStartedListener(googleMap));
+        //googleMap.setOnCameraMoveListener(new MyOnCameraMoveListener(googleMap));
+        googleMap.setOnCameraIdleListener(new MyOnCameraIdleListener(googleMap));
+
+        // set listeners for buttons
+        addSite.setOnClickListener(new MyOnClickListener(googleMap));
+
+        //add the unknown sites as cluster items
+        setUpClustering(googleMap);
+
+    }
+
+    class MyOnClickListener implements View.OnClickListener{
+
+        GoogleMap googleMap;
+
+        public MyOnClickListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onClick(final View view) {
+
+            LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View popupView = layoutInflater.inflate(R.layout.popup, null);
+            final PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    AbsListView.LayoutParams.WRAP_CONTENT,
+                    AbsListView.LayoutParams.WRAP_CONTENT);
+
+            layout_main.getForeground().setAlpha(150);
+
+            //initialize views
+            btnDismiss = (Button)popupView.findViewById(R.id.cancelNewSite);
+            gpsAdd = (Button)popupView.findViewById(R.id.gps);
+            manualAdd = (Button)popupView.findViewById(R.id.manual);
+            longLatAdd = (Button)popupView.findViewById(R.id.longlat);
+
+
+            //set on click listeners
+            btnDismiss.setOnClickListener(new Button.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    popupWindow.dismiss();
+                    layout_main.getForeground().setAlpha(0);
+                }
+            });
+
+
+
+            gpsAdd.setOnClickListener(new Button.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    double latitude = 0;
+                    double longitude = 0;
+
+                    //Intent gpsOptionsIntent = new Intent(
+                    //      android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    //startActivity(gpsOptionsIntent);
+
+                    if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(final DialogInterface dialog, final int id) {
+                                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(final DialogInterface dialog, final int id) {
+                                        dialog.cancel();
+                                        System.out.println("no");
+                                    }
+                                });
+                        final AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    if(manager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
+
+                        googleMap.getMyLocation();
+                        latitude = googleMap.getMyLocation().getLatitude();
+                        longitude = googleMap.getMyLocation().getLongitude();
+
+                        // start new activity
+                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                        intent.putExtra("latitude", latitude);
+                        intent.putExtra("longitude", longitude);
+                        getActivity().startActivity(intent);
+                        layout_main.getForeground().setAlpha(0);
+                    }
+                }
+            });
+
+            manualAdd.setOnClickListener(new Button.OnClickListener() {
+
+
+                @Override
+                public void onClick(View v) {
+
+                    popupWindow.dismiss();
+                    layout_main.getForeground().setAlpha(0);
+
+                    Snackbar.make(view, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+
+                    addSite.setVisibility(View.GONE);
+
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                        @Override
+                        public void onMapClick(LatLng point) {
+                            clicked = true;
+                            newLat = point.latitude;
+                            newLon = point.longitude;
+
+                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                            intent.putExtra("latitude", point.latitude);
+                            intent.putExtra("longitude", point.longitude);
+                            getActivity().startActivity(intent);
+                        }
+                    });
+                }
+            });
+
+            longLatAdd.setOnClickListener(new Button.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity().getApplicationContext(),
+                            AddSite.class);
+                    getActivity().startActivity(intent);
+                }
+            });
+
+            popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
+        }
+
+
+    }
+
+    class MyOnCameraMoveStartedListener implements GoogleMap.OnCameraMoveStartedListener{
+
+        GoogleMap googleMap;
+
+        public MyOnCameraMoveStartedListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onCameraMoveStarted(int reason) {
+
+            if(reason == REASON_GESTURE) {
+
+                prevZoom = googleMap.getCameraPosition().zoom;
+            }
+        }
+
+    }
+
+    class MyOnCameraMoveListener implements GoogleMap.OnCameraMoveListener{
+
+        GoogleMap googleMap;
+
+        public MyOnCameraMoveListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onCameraMove() {
+        }
+    }
+
+    class MyOnCameraIdleListener implements GoogleMap.OnCameraIdleListener{
+
+        GoogleMap googleMap;
+
+        public MyOnCameraIdleListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onCameraIdle(){
+
+            if(prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM){
+                //make clusters appear
+                addClusterMarkers(mClusterManager, googleMap);
+
+            } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
+                //make clusters dissapear
+                mClusterManager.clearItems();
+            }
+
+            updateMap(mClusterManager, googleMap);
+
+        }
     }
 
     @Override
@@ -289,136 +458,19 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
     }
 
 
-    @Override
-    public void onClick(final View view) {
-
-        LayoutInflater layoutInflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View popupView = layoutInflater.inflate(R.layout.popup, null);
-        final PopupWindow popupWindow = new PopupWindow(
-                popupView,
-                AbsListView.LayoutParams.WRAP_CONTENT,
-                AbsListView.LayoutParams.WRAP_CONTENT);
-
-        layout_main.getForeground().setAlpha(150);
-
-        //initialize views
-        btnDismiss = (Button)popupView.findViewById(R.id.cancelNewSite);
-        gpsAdd = (Button)popupView.findViewById(R.id.gps);
-        manualAdd = (Button)popupView.findViewById(R.id.manual);
-        longLatAdd = (Button)popupView.findViewById(R.id.longlat);
-
-
-        //set on click listeners
-        btnDismiss.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-                layout_main.getForeground().setAlpha(0);
-            }
-        });
-
-
-
-        gpsAdd.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                double latitude = 0;
-                double longitude = 0;
-
-                //Intent gpsOptionsIntent = new Intent(
-                  //      android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                //startActivity(gpsOptionsIntent);
-
-                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                            .setCancelable(false)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                    dialog.cancel();
-                                    System.out.println("no");
-                                }
-                            });
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-                }
-
-                if(manager.isProviderEnabled( LocationManager.GPS_PROVIDER )) {
-
-                    googleMap.getMyLocation();
-                    latitude = googleMap.getMyLocation().getLatitude();
-                    longitude = googleMap.getMyLocation().getLongitude();
-
-                    // start new activity
-                    Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    getActivity().startActivity(intent);
-                    layout_main.getForeground().setAlpha(0);
-                }
-            }
-        });
-
-        manualAdd.setOnClickListener(new Button.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-
-                popupWindow.dismiss();
-                layout_main.getForeground().setAlpha(0);
-
-                Snackbar.make(view, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
-
-                addSite.setVisibility(View.GONE);
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-                    @Override
-                    public void onMapClick(LatLng point) {
-                        clicked = true;
-                        newLat = point.latitude;
-                        newLon = point.longitude;
-
-                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
-                        intent.putExtra("latitude", point.latitude);
-                        intent.putExtra("longitude", point.longitude);
-                        getActivity().startActivity(intent);
-                    }
-                });
-            }
-        });
-
-        longLatAdd.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        AddSite.class);
-                getActivity().startActivity(intent);
-            }
-        });
-
-        popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
-    }
-
-    private void addMarker(LatLng newSite){
+    //not used?
+    /*private void addMarker(LatLng newSite){
 
         MarkerOptions marker = new MarkerOptions().position(newSite);
 
         googleMap.addMarker(marker);
 
-    }
+    }*/
 
-    private void setUpClustering() {
+    private void setUpClustering(GoogleMap googleMap) {
+
+        System.out.println("SET UP CLUSTERING");
+
         // Declare a variable for the cluster manager.
         mMarkerManager = new MarkerManager(googleMap);
 
@@ -431,7 +483,7 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         if(knownSiteSize > 0) {
             for (int i = 0; i < knownSiteSize; i++) {
                 Site currentSite = knownSitesMap.get(i);
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription()));
+                coll.addMarker((new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription())));
             }
         } else {
             //no known sites
@@ -500,10 +552,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         //install custom infoWindowAdapter as the adpater for one or both of the marker collections
         mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForClusters());
 
-        //mClusterManager.setOnClusterClickListener();
-
         // Add cluster items (markers) to the cluster manager.
-        addClusterMarkers(mClusterManager);
+        addClusterMarkers(mClusterManager, googleMap);
 
         mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<AppClusterItem>() {
             @Override
@@ -584,13 +634,13 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
     }
 
-    private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
+    private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager, GoogleMap googleMap) {
 
-    //knownSite inst = new knownSite();
-    SparseArray<Site> map = inst.getUnknownSitesMap();
-    int size = inst.getUnknownSitesSize();
-    //System.out.println("maps fragment "+size);
-        // Add ten cluster items in close proximity, for purposes of this example.
+        //knownSite inst = new knownSite();
+        SparseArray<Site> map = inst.getUnknownSitesMap();
+        int size = inst.getUnknownSitesSize();
+
+        // Add cluster items
         for (int i = 0; i < size; i++) {
             //System.out.println(i);
             Site currentSite = map.get(i);
@@ -607,28 +657,8 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
         }
     }
 
-    private void removeClusterMarkers(ClusterManager<AppClusterItem> mClusterManager) {
-
-
-        //knownSite inst = new knownSite();
-        SparseArray<Site> map = inst.getUnknownSitesMap();
-        int size = inst.getUnknownSitesSize();
-        //System.out.println("maps fragment "+size);
-
-        for (int i = 0; i < size; i++) {
-            //System.out.println(i);
-            Site currentSite = map.get(i);
-
-            LatLng point = currentSite.getPosition();
-            double lon = point.longitude;
-            double lat = point.latitude;
-
-            AppClusterItem unknownSitesList = new AppClusterItem(lat, lon);
-
-            //mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
-            //mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
-            mClusterManager.removeItem(unknownSitesList);
-        }
+    private void updateMap(ClusterManager<AppClusterItem> mClusterManager, GoogleMap googleMap){
+        mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
     }
 
     class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>
@@ -642,8 +672,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
             //cluster all items
             return cluster.getSize() >= 1;
         }
-
-
     }
 
     class CustomAlgorithm<T extends ClusterItem> extends NonHierarchicalDistanceBasedAlgorithm<T>{
@@ -654,27 +682,6 @@ public class MapsFragment extends MapFragment implements View.OnClickListener  {
 
     }
 
-    public static boolean isLocationEnabled(Context context) {
-        int locationMode = 0;
-        String locationProviders;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            try {
-                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-        }else{
-            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            return !TextUtils.isEmpty(locationProviders);
-        }
-
-
-    }
 }
 
 

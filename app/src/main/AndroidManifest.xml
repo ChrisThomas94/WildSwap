@@ -2,11 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="scot.wildcamping.wildscotland">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
+    <!-- Used by the Google Maps API to download map tiles from Google Maps servers. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Allows the Google Maps API to check the connection status in order to determine whether data can be downloaded. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Allows the Google Maps API to cache map tile data in the device's external storage area. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Allows the Google Maps API to use WiFi or mobile cell data (or both) to determine the device's location. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Allows the Google Maps API to use the Global Positioning System (GPS) to determine the device's location to within a very small area. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="scot.wildcamping.wildscotland.AppController"
@@ -46,16 +59,20 @@
         <activity
             android:name=".LogOut"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme">
+
+
+        </activity>
 
         <activity
             android:name="SplashActivity"
             android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
 
         <activity
@@ -128,7 +145,9 @@
 
         <activity android:name=".Trades"
             android:label="Trades"
-            android:theme= "@style/AppTheme.NoActionBar"/>
+            android:theme= "@style/AppTheme.NoActionBar">
+
+        </activity>
 
         <activity android:name=".ProfileActivity"
             android:label="Profile"
@@ -148,24 +167,5 @@
             android:theme= "@style/AppTheme"/>
 
     </application>
-
-    <!-- Used by the Google Maps API to download map tiles from Google Maps servers. -->
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-
-    <!-- Allows the Google Maps API to check the connection status in order to determine whether data can be downloaded. -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!-- Allows the Google Maps API to cache map tile data in the device's external storage area. -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- Allows the Google Maps API to use WiFi or mobile cell data (or both) to determine the device's location. -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Allows the Google Maps API to use the Global Positioning System (GPS) to determine the device's location to within a very small area. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>
