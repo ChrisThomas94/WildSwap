@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Full Name"
                 android:inputType="text"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
 
 
         </android.support.design.widget.TextInputLayout>
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
 
 
         </android.support.design.widget.TextInputLayout>
@@ -64,35 +64,38 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:singleLine="true"/>
+                android:maxLines="1"/>
 
 
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_above="@+id/tv_signin"
         android:text="Register"
         android:textSize="18sp"
         android:id="@+id/register_button"
-        android:background="#267326"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:background="@color/colorLight"
         android:textColor="#ffffff"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
         android:text="Already have an account? Sign In"
+        android:textSize="18sp"
         android:id="@+id/tv_signin"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#ffffff"/>
+
+    </RelativeLayout>
 
 
 </LinearLayout>

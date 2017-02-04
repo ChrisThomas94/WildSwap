@@ -48,7 +48,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     OkHttpClient client = new OkHttpClient();
 
-    TextView tvLogin;
+    Button tvLogin;
     TextInputLayout fullName;
     TextInputLayout emailRegister;
     TextInputLayout passwordRegister;
@@ -73,6 +73,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_register);
 
         //initializing Views
+        tvLogin = (Button) findViewById(R.id.tv_signin);
         registerButton = (Button) findViewById(R.id.register_button);
         fullName = (TextInputLayout) findViewById(R.id.fullname_registerlayout);
         emailRegister = (TextInputLayout) findViewById(R.id.email_registerlayout);
@@ -80,8 +81,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         etFullName = (EditText) findViewById(R.id.fullname_register);
         etEmailRegister = (EditText) findViewById(R.id.email_register);
         etPasswordRegister = (EditText) findViewById(R.id.password_register);
-        tvLogin = (TextView) findViewById(R.id.tv_signin);
-
 
         tvLogin.setOnClickListener(this);
         registerButton.setOnClickListener(this);
@@ -227,10 +226,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_signin:
-                intent = new Intent(getApplicationContext(),
-                        Login.class);
+
+                intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
+
             case R.id.register_button:
                 name = etFullName.getText().toString();
                 email = etEmailRegister.getText().toString();
@@ -240,6 +240,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     if(isNetworkAvailable()) {
                         try {
                             String user = new CreateNewProduct().execute().get();
+
+                            intent = new Intent(Register.this, BioActivity.class);
+                            intent.putExtra("new", true);
+                            startActivity(intent);
+                            finish();
+
                         } catch (InterruptedException e) {
 
                         } catch (ExecutionException e) {
@@ -250,11 +256,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)
                             .show();
                 }
-
-                intent = new Intent(Register.this, BioActivity.class);
-                intent.putExtra("new", true);
-                startActivity(intent);
-                finish();
 
                 break;
         }

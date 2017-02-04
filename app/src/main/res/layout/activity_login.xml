@@ -55,29 +55,30 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:textSize="18sp"
-        android:id="@+id/signin_button"
-        android:background="@color/colorPrimaryDark"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="#ffffff"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register Here"
-        android:textSize="18sp"
-        android:id="@+id/registerhere_button"
-        android:background="@color/colorPrimaryDark"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="#ffffff"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/registerhere_button"
+            android:text="Sign In"
+            android:textSize="18sp"
+            android:id="@+id/signin_button"
+            android:background="@color/colorLight"
+            android:textColor="#ffffff"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:text="Register Here"
+            android:textSize="18sp"
+            android:id="@+id/registerhere_button"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

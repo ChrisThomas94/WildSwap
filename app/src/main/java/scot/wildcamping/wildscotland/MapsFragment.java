@@ -231,7 +231,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     .newCameraPosition(cameraPosition));
         }
 
-        //hide clusters if zoom to close
+        //hide clusters if zoom too much
         googleMap.setOnCameraMoveStartedListener(new MyOnCameraMoveStartedListener(googleMap));
         //googleMap.setOnCameraMoveListener(new MyOnCameraMoveListener(googleMap));
         googleMap.setOnCameraIdleListener(new MyOnCameraIdleListener(googleMap));
@@ -388,8 +388,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         public void onCameraMoveStarted(int reason) {
 
             if(reason == REASON_GESTURE) {
-
+                System.out.println("This is a normal animation!!");
                 prevZoom = googleMap.getCameraPosition().zoom;
+            } else if (reason == REASON_DEVELOPER_ANIMATION){
+                System.out.println("This is a developer animation!!");
+                prevZoom = 99;
             }
         }
 
@@ -419,17 +422,20 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         @Override
         public void onCameraIdle(){
 
-            if(prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM){
+            if (prevZoom == 99){
+
+                
+            } else if(prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM){
                 //make clusters appear
                 addClusterMarkers(mClusterManager, googleMap);
+                updateMap(mClusterManager, googleMap);
 
             } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
                 //make clusters dissapear
                 mClusterManager.clearItems();
+                updateMap(mClusterManager, googleMap);
+
             }
-
-            updateMap(mClusterManager, googleMap);
-
         }
     }
 
@@ -659,6 +665,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
     private void updateMap(ClusterManager<AppClusterItem> mClusterManager, GoogleMap googleMap){
         mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
+        mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
+
     }
 
     class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>
