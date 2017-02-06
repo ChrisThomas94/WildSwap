@@ -123,6 +123,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     private final int MAX_ZOOM = 8;
     private float prevZoom = 6;
     private final int MIN_ZOOM = 7;
+    Boolean API = false;
     private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
     LocationManager manager = null;
 
@@ -233,7 +234,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         //hide clusters if zoom too much
         googleMap.setOnCameraMoveStartedListener(new MyOnCameraMoveStartedListener(googleMap));
-        //googleMap.setOnCameraMoveListener(new MyOnCameraMoveListener(googleMap));
+        googleMap.setOnCameraMoveListener(new MyOnCameraMoveListener(googleMap));
         googleMap.setOnCameraIdleListener(new MyOnCameraIdleListener(googleMap));
 
         // set listeners for buttons
@@ -388,11 +389,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         public void onCameraMoveStarted(int reason) {
 
             if(reason == REASON_GESTURE) {
-                System.out.println("This is a normal animation!!");
                 prevZoom = googleMap.getCameraPosition().zoom;
-            } else if (reason == REASON_DEVELOPER_ANIMATION){
-                System.out.println("This is a developer animation!!");
-                prevZoom = 99;
+                API = false;
+            } else if (reason == REASON_API_ANIMATION){
+                API = true;
             }
         }
 
@@ -408,6 +408,17 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         @Override
         public void onCameraMove() {
+
+            if(!API) {
+                if (googleMap.getCameraPosition().zoom > MAX_ZOOM) {
+                    //make clusters dissapear
+                    mClusterManager.clearItems();
+                    updateMap(mClusterManager, googleMap);
+
+                }
+            }else{
+
+            }
         }
     }
 
@@ -422,20 +433,28 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         @Override
         public void onCameraIdle(){
 
-            if (prevZoom == 99){
+            if(!API) {
+                if (prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM) {
+                    //make clusters appear
+                    addClusterMarkers(mClusterManager, googleMap);
+                    updateMap(mClusterManager, googleMap);
 
-                
-            } else if(prevZoom > MAX_ZOOM && googleMap.getCameraPosition().zoom < MAX_ZOOM){
-                //make clusters appear
-                addClusterMarkers(mClusterManager, googleMap);
-                updateMap(mClusterManager, googleMap);
+                } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
+                    //make clusters dissapear
+                    mClusterManager.clearItems();
+                    updateMap(mClusterManager, googleMap);
 
-            } else if (prevZoom < MAX_ZOOM && googleMap.getCameraPosition().zoom > MAX_ZOOM) {
-                //make clusters dissapear
-                mClusterManager.clearItems();
-                updateMap(mClusterManager, googleMap);
+                } else if (prevZoom == googleMap.getCameraPosition().zoom){
+                    // do nothing
 
+                } else{
+                    updateMap(mClusterManager, googleMap);
+
+                }
+            }else{
+                //do nothing
             }
+
         }
     }
 
