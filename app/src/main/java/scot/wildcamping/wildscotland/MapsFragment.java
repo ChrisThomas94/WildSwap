@@ -36,10 +36,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -92,6 +99,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean add = false;
     boolean trade = false;
     boolean update = false;
+    boolean register = false;
     double newLat;
     double newLon;
     ImageButton addSite;
@@ -190,7 +198,29 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         mMapView.getMapAsync(this);
 
+
+        if(!register) {
+
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            // This aligns button to the bottom left side of screen
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            lps.setMargins(90,0,0,90);
+
+            ShowcaseView sv = new ShowcaseView.Builder(getActivity())
+                    .setTarget(new ViewTarget(addSite))
+                    .setContentTitle("Adding Wild Locations")
+                    .setContentText("This button allows you to add a wild location to the map.")
+                    .hideOnTouchOutside()
+                    .blockAllTouches()
+                    .setStyle(R.style.CustomShowcaseTheme)
+                    .build();
+
+            sv.setButtonPosition(lps);
+        }
+
         return v;
+
     }
 
     @Override
