@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
@@ -165,6 +166,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             add = extras.getBoolean("add");
             trade = extras.getBoolean("trade");
             update = extras.getBoolean("update");
+            register = extras.getBoolean("new");
 
             System.out.println(newLat);
             System.out.println(newLon);
@@ -198,30 +200,67 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         mMapView.getMapAsync(this);
 
-
-        if(!register) {
-
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            // This aligns button to the bottom left side of screen
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            lps.setMargins(90,0,0,90);
-
-            ShowcaseView sv = new ShowcaseView.Builder(getActivity())
-                    .setTarget(new ViewTarget(addSite))
-                    .setContentTitle("Adding Wild Locations")
-                    .setContentText("This button allows you to add a wild location to the map.")
-                    .hideOnTouchOutside()
-                    .blockAllTouches()
-                    .setStyle(R.style.CustomShowcaseTheme)
-                    .build();
-
-            sv.setButtonPosition(lps);
+        if(register){
+            showcase();
         }
 
         return v;
 
     }
+
+    public void showcase(){
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        lps.setMargins(90,0,0,90);
+
+        ShowcaseView sv = new ShowcaseView.Builder(getActivity())
+                .setTarget(new ViewTarget(addSite))
+                .setContentTitle("Adding Wild Locations")
+                .setContentText("This button allows you to add a wild location to the map.")
+                .blockAllTouches()
+                .setStyle(R.style.CustomShowcaseTheme)
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        // This aligns button to the bottom left side of screen
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                        lps.setMargins(90,0,0,90);
+
+                        ShowcaseView sv2 = new ShowcaseView.Builder(getActivity())
+                                .setTarget(new ViewTarget(R.id.spinner_nav, getActivity()))
+                                .setContentTitle("Main Menu")
+                                .setContentText("Other screens can be accessed via this menu.")
+                                .blockAllTouches()
+                                .setStyle(R.style.CustomShowcaseTheme)
+                                .build();
+                        sv2.setButtonPosition(lps);
+                    }
+
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                    }
+                })
+                .build();
+
+        sv.setButtonPosition(lps);
+
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

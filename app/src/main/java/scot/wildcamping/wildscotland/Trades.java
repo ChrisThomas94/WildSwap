@@ -15,9 +15,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +33,7 @@ import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
 
 
-public class Trades extends AppCompatActivity {
+public class Trades extends AppCompatActivity implements OnShowcaseEventListener {
 
     // Declaring Your View and Variables
 
@@ -41,6 +48,9 @@ public class Trades extends AppCompatActivity {
     int currPosition;
     boolean initialSelection = false;
     String user;
+    boolean register = false;
+    boolean tradesTutorial = false;
+    boolean sitesTutorial;
 
 
     @Override
@@ -49,6 +59,14 @@ public class Trades extends AppCompatActivity {
         setContentView(R.layout.activity_sites);
 
         user = AppController.getString(this, "user");
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            register = extras.getBoolean("new");
+            sitesTutorial = extras.getBoolean("sitesTutorial");
+            tradesTutorial = extras.getBoolean("tradesTutorial");
+        }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
@@ -81,7 +99,68 @@ public class Trades extends AppCompatActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
+        if(register && !tradesTutorial){
+            showcase();
+        }
+
         addItemsToSpinner();
+    }
+
+    public void showcase(){
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        lps.setMargins(90,0,0,90);
+
+        //ViewTarget t = new ViewTarget();
+        PointTarget t = new PointTarget(280, 300);
+
+        ShowcaseView sv = new ShowcaseView.Builder(this)
+                .setTarget(t)
+                .setContentTitle("Active Trades")
+                .setContentText("Trades that are awaiting a response are listed here.")
+                .blockAllTouches()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(this)
+                .build();
+
+        sv.setButtonPosition(lps);
+
+    }
+
+    @Override
+    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        lps.setMargins(90,0,0,90);
+
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget( new PointTarget(810, 300))
+                .setContentTitle("Trade History")
+                .setContentText("Trades that have been responded to are listed here.")
+                .blockAllTouches()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
+        showcaseView.setButtonPosition(lps);
+        tradesTutorial = true;
+    }
+
+    @Override
+    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
     }
 
     // add items into spinner dynamically
@@ -158,6 +237,9 @@ public class Trades extends AppCompatActivity {
                     }
                 }
                 Intent intent = new Intent(getApplicationContext(), Sites.class);
+                intent.putExtra("new", register);
+                intent.putExtra("sitesTutorial", sitesTutorial);
+                intent.putExtra("tradesTutorial", tradesTutorial);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();

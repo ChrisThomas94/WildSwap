@@ -8,11 +8,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import org.w3c.dom.Text;
 
@@ -28,6 +36,7 @@ public class YourSitesFragment extends Fragment {
     SparseArray<Site> ownedSites;
     private SiteListAdapter adapter;
     private ListView mDrawerList;
+    boolean register = false;
 
 
     @Override
@@ -67,6 +76,7 @@ public class YourSitesFragment extends Fragment {
 
         return rootView;
     }
+
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

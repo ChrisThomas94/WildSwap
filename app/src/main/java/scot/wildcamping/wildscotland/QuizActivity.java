@@ -136,6 +136,7 @@ public class QuizActivity extends AppCompatActivity {
 
                 if(isNew) {
                     Intent intent = new Intent(this, MainActivity_Spinner.class);
+                    intent.putExtra("new", true);
                     startActivity(intent);
                     finish();
                 } else {

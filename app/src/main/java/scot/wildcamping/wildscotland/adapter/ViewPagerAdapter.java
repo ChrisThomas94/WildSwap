@@ -38,7 +38,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            Fragment tab1 = null;
+            Fragment tab1;
             if(Titles[0] == "Active"){
                 tab1 = new OpenTradesFragment();
             } else if (Titles[0] == "Bio"){
@@ -50,7 +50,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            Fragment tab2 = null;
+            Fragment tab2;
             if(Titles[1] == "History"){
                 tab2 = new ClosedTradesFragment();
             } else if(Titles[1] == "Questions"){

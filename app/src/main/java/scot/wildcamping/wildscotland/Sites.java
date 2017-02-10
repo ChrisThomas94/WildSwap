@@ -1,23 +1,25 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +28,7 @@ import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
 
 
-public class Sites extends AppCompatActivity {
+public class Sites extends AppCompatActivity implements OnShowcaseEventListener{
 
     // Declaring Your View and Variables
 
@@ -41,6 +43,9 @@ public class Sites extends AppCompatActivity {
     int currPosition;
     boolean initialSelection = false;
     String user;
+    boolean register = false;
+    boolean sitesTutorial = false;
+    boolean tradesTutorial;
 
 
     @Override
@@ -49,6 +54,14 @@ public class Sites extends AppCompatActivity {
         setContentView(R.layout.activity_sites);
 
         user = AppController.getString(this, "user");
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            register = extras.getBoolean("new");
+            sitesTutorial = extras.getBoolean("sitesTutorial");
+            tradesTutorial = extras.getBoolean("tradesTutorial");
+        }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
@@ -59,7 +72,7 @@ public class Sites extends AppCompatActivity {
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles for the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
@@ -81,7 +94,67 @@ public class Sites extends AppCompatActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
+        if(register && !sitesTutorial){
+            showcase();
+        }
+
         addItemsToSpinner();
+    }
+
+    public void showcase(){
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        lps.setMargins(90,0,0,90);
+
+        //ViewTarget t = new ViewTarget();
+        PointTarget t = new PointTarget(280, 300);
+
+        ShowcaseView sv = new ShowcaseView.Builder(this)
+                .setTarget(t)
+                .setContentTitle("Owned Locations")
+                .setContentText("All of the locations that you add to the map interface will be listed here.")
+                .blockAllTouches()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(this)
+                .build();
+
+        sv.setButtonPosition(lps);
+    }
+
+    @Override
+    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        lps.setMargins(90,0,0,90);
+
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget( new PointTarget(810, 300))
+                .setContentTitle("Known Locations")
+                .setContentText("All of the locations that you acquire through trading with other users will be listed here.")
+                .blockAllTouches()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
+        showcaseView.setButtonPosition(lps);
+        sitesTutorial = true;
+    }
+
+    @Override
+    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
     }
 
     // add items into spinner dynamically
@@ -170,6 +243,9 @@ public class Sites extends AppCompatActivity {
                     }
                 }
                 Intent in = new Intent(getApplicationContext(), Trades.class);
+                in.putExtra("new", register);
+                in.putExtra("sitesTutorial", sitesTutorial);
+                in.putExtra("tradesTutorial", tradesTutorial);
                 startActivity(in);
                 overridePendingTransition(0, 0);
                 finish();

@@ -62,6 +62,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     boolean update = false;
     int fragment = 0;
     int currPosition;
+    boolean isNew;
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -125,7 +126,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             fragment = extras.getInt("fragment");
             trade = extras.getBoolean("trade");
             update = extras.getBoolean("update");
-
+            isNew = extras.getBoolean("new");
         }
 
         //mTitle = mDrawerTitle = getTitle();
@@ -224,6 +225,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     }
                 }
                 Intent intent = new Intent(getApplicationContext(), Sites.class);
+                intent.putExtra("new", isNew);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -240,6 +242,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     }
                 }
                 Intent i = new Intent(getApplicationContext(), Trades.class);
+                i.putExtra("new", isNew);
                 startActivity(i);
                 overridePendingTransition(0,0);
                 finish();
@@ -257,6 +260,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 profile.putExtra("this_user", true);
+                profile.putExtra("new", isNew);
                 startActivity(profile);
                 overridePendingTransition(0,0);
                 finish();
