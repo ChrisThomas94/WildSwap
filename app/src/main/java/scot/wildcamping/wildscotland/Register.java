@@ -39,6 +39,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildscotland.Firebase.MyFirebaseInstanceIDService;
 
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
@@ -57,6 +58,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     EditText etPasswordRegister;
     Button registerButton;
     String name;
+    String token;
     String email;
     String password;
     Intent intent;
@@ -119,6 +121,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             pDialog.show();
 
             name = etFullName.getText().toString();
+            token = AppController.getString(getBaseContext(), "token");
             email = etEmailRegister.getText().toString();
             password = etPasswordRegister.getText().toString();
 
@@ -134,7 +137,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
             // issue the post request
             try {
-                String json = register(name, email, password);
+                String json = register(name, token, email, password);
                 System.out.println("json: " + json);
                 String postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -204,9 +207,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return response.body().string();
         }
 
-        private String register(String name, String email, String password) {
+        private String register(String name, String token, String email, String password) {
             return "{\"tag\":\"" + "register" + "\","
                     + "\"name\":\"" + name + "\","
+                    + "\"token\":\"" + token + "\","
                     + "\"email\":\"" + email + "\","
                     + "\"password\":\"" + password + "\"}";
         }

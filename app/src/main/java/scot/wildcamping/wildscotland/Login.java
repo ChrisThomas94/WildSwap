@@ -30,6 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildscotland.Firebase.MyFirebaseInstanceIDService;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{    //***
 
@@ -96,6 +97,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
             startActivity(intent);
             finish();
         }
+
     }
 
     class checkLogin extends AsyncTask<String, String, String> {
