@@ -1,26 +1,13 @@
-package scot.wildcamping.wildscotland.Firebase;
+package scot.wildcamping.wildscotland.firebase;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
-import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.Register;
 
 
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {

@@ -1,42 +1,94 @@
 {
   "project_info": {
-    "project_id": "vernal-buffer-115717",
     "project_number": "1029895688201",
-    "name": "Wild Scotland"
+    "firebase_url": "https://vernal-buffer-115717.firebaseio.com",
+    "project_id": "vernal-buffer-115717",
+    "storage_bucket": "vernal-buffer-115717.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:1029895688201:android:27d689d63f1b7a06",
-        "client_id": "android:com.google.samples.quickstart.signin",
-        "client_type": 1,
         "android_client_info": {
           "package_name": "com.google.samples.quickstart.signin"
         }
       },
-      "oauth_client": [],
-      "api_key": [],
+      "oauth_client": [
+        {
+          "client_id": "1029895688201-o1asboqu85amq66bl92idvsdueqh3dgl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1029895688201-ealbaeojr71qqtscae5m2tefv91b9m15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi4bTH3dVaFY5rPa3x6mXrl28CC0tyZTs"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
-        },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
         },
-        "google_signin_service": {
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029895688201:android:2077c67df524a7bc",
+        "android_client_info": {
+          "package_name": "scot.wildcamping.wildscotland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029895688201-heakd0q0coq1dpd68ghekf0grqqjrc28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "scot.wildcamping.wildscotland",
+            "certificate_hash": "0E1FDABD0D1FDE327B7E05A083AC01F2A7746AD3"
+          }
+        },
+        {
+          "client_id": "1029895688201-o1asboqu85amq66bl92idvsdueqh3dgl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1029895688201-ealbaeojr71qqtscae5m2tefv91b9m15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi4bTH3dVaFY5rPa3x6mXrl28CC0tyZTs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
           "status": 1
         },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029895688201-o1asboqu85amq66bl92idvsdueqh3dgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }
