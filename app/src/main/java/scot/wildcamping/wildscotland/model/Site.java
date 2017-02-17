@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class Site {
 
     private String cid;
+    private String token;
     private String siteAdmin;
     private LatLng position;
     private int popularity;
@@ -41,6 +42,14 @@ public class Site {
 
     public String getCid(){
         return cid;
+    }
+
+    public void setToken(String token){
+        this.token = token;
+    }
+
+    public String getToken(){
+        return token;
     }
 
     public void setSiteAdmin(String admin){

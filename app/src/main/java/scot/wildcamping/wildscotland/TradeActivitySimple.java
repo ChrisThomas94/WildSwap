@@ -47,6 +47,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     Site sendSite;
     String send_cid;
     String recieve_cid;
+    String recieve_token;
     int ownedSiteInit =0;
     int prevSite = 0;
     int nextSite = 0;
@@ -255,39 +256,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
     public void genUnknownSite(int random){
 
-        /*int currentPop;
-        int leastPopularSite = 0;
-        int leastPop = 100;
-
-        if(unknownSitesSorted.size() == 0){
-            unknownSitesSorted = selectedUnknownSites.clone();
-            System.out.println("i am clonning");
-        }
-
-        for(int i = 0; i < unknownSitesSorted.size(); i++){
-
-            currentPop = unknownSitesSorted.valueAt(i).getPopularity();
-
-            if(currentPop <= leastPop){
-                leastPop = currentPop;
-                leastPopularSite = i;
-                System.out.println("lower: "+unknownSitesSorted.valueAt(i).getPosition());
-            } else {
-                System.out.println("over: "+unknownSitesSorted.valueAt(i).getPosition());
-            }
-        }*/
-
-        //System.out.println(leastPopularSite);
-        //recieveSite = unknownSitesSorted.valueAt(leastPopularSite);
-        //unknownSitesSorted = unknownSitesSorted.clone();
-        //unknownSitesSorted.remove(leastPopularSite);
-        //System.out.println("removed");
-
-        //System.out.println("recieve site: " + recieveSite);
-
         recieveSite = selectedUnknownSites.get(random);
 
         recieve_cid = recieveSite.getCid();
+
+        recieve_token = recieveSite.getToken();
 
         recieveTitle.setText(recieveSite.getTitle());
 
@@ -357,61 +330,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         Intent intent;
         switch (v.getId())
         {
-            //on clicking register button move to Register Activity
-            /*case R.id.btnCancel_Trade:
-
-                Toast.makeText(this, "Trade Canceled!", Toast.LENGTH_LONG).show();
-                //intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
-                finish();
-                break;
-
-            //on clicking the signin button check for the empty field then call the checkLogin() function
-            case R.id.btnRefresh_Trade:
-
-                Random ran = new Random();
-                if(nextSite == selectedUnknownSites.size()-1){
-                    nextSite = 0;
-                } else {
-                    nextSite++;
-                }
-                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.size()-1, nextSite);
-                genUnknownSite(nextSite);
-                break;
-
-            case R.id.btnSend_Trade:
-                //send trade
-                new CreateTrade(this, send_cid, recieve_cid).execute();
-
-                intent = new Intent(getApplicationContext(),
-                        MainActivity_Spinner.class);
-                intent.putExtra("trade", true);
-                intent.putExtra("latitude", recieveSite.getPosition().latitude);
-                intent.putExtra("longitude", recieveSite.getPosition().longitude);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.btn_right:
-
-                if(ownedSiteInit == ownedSitesSize-1){
-                    ownedSiteInit = -1;
-                }
-                ownedSiteInit++;
-                genOwnedSite(ownedSiteInit);
-
-                break;
-
-            case R.id.btn_left:
-
-                if(ownedSiteInit == 0){
-                    ownedSiteInit = ownedSitesSize;
-                }
-                ownedSiteInit--;
-                genOwnedSite(ownedSiteInit);
-
-                break;*/
-
             case R.id.right_arrow:
 
                 if(ownedSiteInit == ownedSitesSize-1){
@@ -506,6 +424,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             case R.id.action_submit:
                 new CreateTrade(this, send_cid, recieve_cid).execute();
+                new CreateNotification(this, recieve_token).execute();
 
                 Intent intent = new Intent(getApplicationContext(),
                         MainActivity_Spinner.class);

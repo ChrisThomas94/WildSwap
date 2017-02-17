@@ -126,7 +126,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                             siteClass.setFeature9(jsonDetails.getString("feature9"));
                             siteClass.setFeature10(jsonDetails.getString("feature10"));
                             siteClass.setSiteAdmin(jsonDetails.getString("site_admin"));
-
+                            siteClass.setToken(jsonDetails.getString("token"));
 
                             unknownSites.put(counter, siteClass);
                             System.out.println("Unknown Sites put: " + siteClass.getTitle());
