@@ -6,7 +6,7 @@ package scot.wildcamping.wildscotland;
 public class Appconfig {
 
     //localhost
-    public static String URL = "http://192.168.0.4:81/WildScotland_API/";
+    public static String URL = "https://192.168.0.14:81/WildScotland_API/";
 
     public static String firebase = "https://fcm.googleapis.com/fcm/send";
 

@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -11,15 +12,45 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Chris on 03-Mar-16.
  */
-public class SelectFeatures extends AppCompatActivity implements View.OnClickListener {
+public class SiteBuilder extends AppCompatActivity implements View.OnClickListener {
 
     ImageView distantTerrain;
     ImageView nearbyTerrain;
     ImageView immediateTerrain;
+
+    ImageView feature1circle;
+    ImageView feature2circle;
+    ImageView feature3circle;
+    ImageView feature4circle;
+    ImageView feature5circle;
+    ImageView feature6circle;
+    ImageView feature7circle;
+    ImageView feature8circle;
+    ImageView feature9circle;
+
+
+    TextView distant;
+    TextView nearby;
+    TextView immediate;
+
+    int feature1count = 0;
+    int feature2count = 0;
+    int feature3count = 0;
+    int feature4count = 0;
+    int feature5count = 0;
+    int feature6count = 0;
+    int feature7count = 0;
+    int feature8count = 0;
+    int feature9count = 0;
+
+
     RelativeLayout feature1box;
     RelativeLayout feature2box;
     RelativeLayout feature3box;
@@ -68,7 +99,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_features);
+        setContentView(R.layout.activity_site_builder);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -80,6 +111,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         distantTerrain = (ImageView)findViewById(R.id.distantTerrainFeatures);
         nearbyTerrain = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         immediateTerrain = (ImageView)findViewById(R.id.immediateTerrainFeatures);
+
+        feature1circle = (ImageView)findViewById(R.id.feature1circle);
+        feature2circle = (ImageView)findViewById(R.id.feature2circle);
+
+        distant = (TextView)findViewById(R.id.distantPlaceholderText);
 
         feature1box = (RelativeLayout)findViewById(R.id.feature1box);
         feature2box = (RelativeLayout)findViewById(R.id.feature2box);
@@ -172,15 +208,33 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature1box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(newFeature1){
-                    //turn colour grey
-                    feature1box.setBackgroundColor(gray);
-                    newFeature1 = false;
+                distant.setVisibility(GONE);
+                resetProgressCircle(feature1circle, feature2circle);
+                feature2count = 0;
+                if(feature1count == 0){
+                    distantTerrain.setImageResource(R.drawable.hill1);
+                    feature1circle.setImageResource(R.drawable.quarter);
+                    feature1count++;
+
+                } else if(feature1count == 1) {
+                    distantTerrain.setImageResource(R.drawable.hill2);
+                    feature1circle.setImageResource(R.drawable.half);
+                    feature1count++;
+
+                } else if(feature1count == 2) {
+                    distantTerrain.setImageResource(R.drawable.hill3);
+                    feature1circle.setImageResource(R.drawable.threequarter);
+                    feature1count++;
+
+                } else if(feature1count == 3) {
+                    distantTerrain.setImageResource(R.drawable.hill4);
+                    feature1circle.setImageResource(R.drawable.full);
+                    feature1count++;
+
                 } else {
-                    //turn colour green
-                    feature1box.setBackgroundColor(green);
-                    nearbyTerrain.setImageResource(R.drawable.forest3nearby);
-                    newFeature1 = true;
+                    feature1count = 1;
+                    distantTerrain.setImageResource(R.drawable.hill1);
+                    feature1circle.setImageResource(R.drawable.quarter);
                 }
             }
         });
@@ -188,15 +242,33 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         feature2box.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(newFeature2){
-                    //turn colour grey
-                    feature2box.setBackgroundColor(gray);
-                    newFeature2 = false;
+                distant.setVisibility(GONE);
+                resetProgressCircle(feature1circle, feature2circle);
+                feature1count = 0;
+                if(feature2count == 0){
+                    distantTerrain.setImageResource(R.drawable.mountains);
+                    feature2circle.setImageResource(R.drawable.quarter);
+                    feature2count++;
+
+                } else if(feature2count == 1) {
+                    distantTerrain.setImageResource(R.drawable.mountains2);
+                    feature2circle.setImageResource(R.drawable.half);
+                    feature2count++;
+
+                } else if(feature2count == 2) {
+                    distantTerrain.setImageResource(R.drawable.mountains3);
+                    feature2circle.setImageResource(R.drawable.threequarter);
+                    feature2count++;
+
+                } else if(feature2count == 3) {
+                    distantTerrain.setImageResource(R.drawable.mountains4);
+                    feature2circle.setImageResource(R.drawable.full);
+                    feature2count++;
+
                 } else {
-                    //turn colour green
-                    feature2box.setBackgroundColor(green);
-                    distantTerrain.setImageResource(R.drawable.hill3);
-                    newFeature2 = true;
+                    feature2count = 1;
+                    distantTerrain.setImageResource(R.drawable.mountains);
+                    feature2circle.setImageResource(R.drawable.quarter);
                 }
             }
         });
@@ -206,12 +278,12 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature3){
                     //turn colour grey
-                    feature3box.setBackgroundColor(gray);
+                    //feature3box.setBackgroundColor(gray);
                     newFeature3 = false;
                 } else {
                     //turn colour green
-                    feature3box.setBackgroundColor(green);
-                    immediateTerrain.setImageResource(R.drawable.grass);
+                    //feature3box.setBackgroundColor(green);
+                    distantTerrain.setImageResource(R.drawable.plains);
                     newFeature3 = true;
                 }
             }
@@ -222,11 +294,12 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature4){
                     //turn colour grey
-                    feature4box.setBackgroundColor(gray);
+                    //feature4box.setBackgroundColor(gray);
                     newFeature4 = false;
                 } else {
                     //turn colour green
-                    feature4box.setBackgroundColor(green);
+                    //feature4box.setBackgroundColor(green);
+                    distantTerrain.setImageResource(R.drawable.forest1);
                     newFeature4 = true;
                 }
             }
@@ -237,11 +310,12 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature5){
                     //turn colour grey
-                    feature5box.setBackgroundColor(gray);
+                    //feature5box.setBackgroundColor(gray);
                     newFeature5 = false;
                 } else {
                     //turn colour green
-                    feature5box.setBackgroundColor(green);
+                    //feature5box.setBackgroundColor(green);
+                    distantTerrain.setImageResource(R.drawable.ocean);
                     newFeature5 = true;
                 }
             }
@@ -252,11 +326,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature6){
                     //turn colour grey
-                    feature6box.setBackgroundColor(gray);
+                    //feature6box.setBackgroundColor(gray);
                     newFeature6 = false;
                 } else {
                     //turn colour green
-                    feature6box.setBackgroundColor(green);
+                    //feature6box.setBackgroundColor(green);
                     newFeature6 = true;
                 }
             }
@@ -267,11 +341,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature7){
                     //turn colour grey
-                    feature7box.setBackgroundColor(gray);
+                    //feature7box.setBackgroundColor(gray);
                     newFeature7 = false;
                 } else {
                     //turn colour green
-                    feature7box.setBackgroundColor(green);
+                    //feature7box.setBackgroundColor(green);
                     newFeature7 = true;
                 }
             }
@@ -282,14 +356,14 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature8){
                     //turn colour grey
-                    feature8box.setBackgroundColor(gray);
+                    //feature8box.setBackgroundColor(gray);
                     newFeature8 = false;
                 } else {
                     //turn colour green
-                    feature8box.setBackgroundColor(green);
+                    //feature8box.setBackgroundColor(green);
                     newFeature8 = true;
                     //display snackbar
-                    Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -299,31 +373,24 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature9){
                     //turn colour grey
-                    feature9box.setBackgroundColor(gray);
+                    //feature9box.setBackgroundColor(gray);
                     newFeature9 = false;
                 } else {
                     //turn colour green
-                    feature9box.setBackgroundColor(green);
+                    //feature9box.setBackgroundColor(green);
                     newFeature9 = true;
-                    Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
+                    //Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
 
-        feature10box.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(newFeature10){
-                    //turn colour grey
-                    feature10box.setBackgroundColor(gray);
-                    newFeature10 = false;
-                } else {
-                    //turn colour green
-                    feature10box.setBackgroundColor(green);
-                    newFeature10 = true;
-                }
-            }
-        });
+    }
+
+    public void resetProgressCircle(ImageView circle1, ImageView circle2){
+
+        //reset all progress circles
+        circle1.setImageResource(0);
+        circle2.setImageResource(0);
 
     }
 

@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:layout_height="100dp"
+            android:id="@+id/distantTerrainFeatures"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:id="@+id/nearbyTerrainFeatures"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:layout_height="100dp"
+            android:layout_below="@+id/nearbyTerrainFeatures"
+            android:id="@+id/immediateTerrainFeatures"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -301,4 +337,6 @@
 
     </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</LinearLayout>

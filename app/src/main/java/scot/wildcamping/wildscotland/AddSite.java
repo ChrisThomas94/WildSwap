@@ -215,7 +215,10 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.addFeaturesRel:
 
-                Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                Intent intent = new Intent(getApplicationContext(), SiteBuilder.class);
+
+                //21/02 commented out to test new site builder
+                /*Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
                 intent.putExtra("image", imageUpload);
                 //intent.putExtra("temp", tempLocation);
                 intent.putExtra("latitude", latitude);
@@ -232,7 +235,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature8", feature8);
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
-                intent.putExtra("rating", ratingBar.getRating());
+                intent.putExtra("rating", ratingBar.getRating());*/
                 startActivity(intent);
                 break;
 

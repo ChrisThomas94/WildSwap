@@ -51,6 +51,9 @@
     <string name="feature10">Grazing Animals</string>
     <string name="feature11">Playing Field</string>
 
+    <!--Site Builder-->
+    <string name="distantTerrain">Let\'s start by selecting the distant terrain.</string>
+
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
 </resources>

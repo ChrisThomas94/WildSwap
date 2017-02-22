@@ -139,6 +139,10 @@
             android:label="Select Features"
             android:theme= "@style/AppTheme"/>
 
+        <activity android:name=".SiteBuilder"
+            android:label="Site Builder"
+            android:theme= "@style/AppTheme"/>
+
         <activity android:name=".ContactUser"
             android:label="Contact User"
             android:theme= "@style/AppTheme"/>
