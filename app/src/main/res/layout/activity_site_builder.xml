@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="No Distant Terrain Selected"/>
+                android:text="Your creation will appear here."/>
 
         </RelativeLayout>
 
@@ -41,18 +41,19 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
                 android:layout_height="100dp"
-                android:layout_marginTop="30dp"
-                android:src="@drawable/placeholder"/>
+                android:layout_marginTop="30dp"/>
 
             <TextView
+                android:id="@+id/nearbyPlaceholderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="No Nearby Terrain Selected"/>
+                android:text=""/>
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/immediateTerrainFeaturesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nearbyTerrainFeaturesLayout"
@@ -63,25 +64,18 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
                 android:layout_height="100dp"
-                android:visibility="visible"
-                android:src="@drawable/placeholder"/>
+                android:visibility="visible"/>
 
             <TextView
+                android:id="@+id/immediatePlaceholderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="No Immediate Terrain Selected"/>
+                android:text=""/>
 
         </RelativeLayout>
 
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_gravity="center"
-        android:text="@string/distantTerrain"/>
 
     <ScrollView
         android:orientation="vertical"
@@ -92,6 +86,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:text="@string/distantTerrain"/>
 
 
         <RelativeLayout
@@ -114,8 +116,8 @@
 
                 <ImageView
                     android:id="@+id/feature1circle"
-                    android:layout_width="97dp"
-                    android:layout_height="97dp"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
                     android:layout_centerInParent="true"/>
 
                 <View
@@ -126,12 +128,12 @@
                     android:background="@drawable/circle"/>
 
                 <ImageView
+                    android:id="@+id/feature1thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill_thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -151,8 +153,8 @@
 
                 <ImageView
                     android:id="@+id/feature2circle"
-                    android:layout_width="97dp"
-                    android:layout_height="97dp"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
                     android:layout_centerInParent="true"/>
 
                 <View
@@ -163,12 +165,12 @@
                     android:background="@drawable/circle"/>
 
                 <ImageView
+                    android:id="@+id/feature2thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/mountains_thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -186,13 +188,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature3circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature3thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -216,13 +231,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature4circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature4thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -240,13 +268,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature5circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature5thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -264,13 +305,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature6circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature6thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -294,13 +348,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature7circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature7thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -318,13 +385,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature8circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature8thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 
@@ -342,13 +422,26 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/circle"/>
 
+                <ImageView
+                    android:id="@+id/feature9circle"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"/>
+
                 <View
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/circle"/>
+
+                <ImageView
+                    android:id="@+id/feature9thumbnail"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/hill1thumbnail"/>
+                    android:background="@drawable/circle"/>
 
             </RelativeLayout>
 

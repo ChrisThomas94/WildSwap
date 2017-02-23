@@ -57,6 +57,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     EditText title;
     EditText description;
     RelativeLayout addImage;
+    RelativeLayout siteBuilder;
     RelativeLayout addFeature;
     ImageView image1;
     ImageView image2;
@@ -123,6 +124,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         title = (EditText)findViewById(R.id.title);
         description = (EditText)findViewById(R.id.description);
         addImage = (RelativeLayout)findViewById(R.id.addPhotoRel);
+        siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
@@ -196,6 +198,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         //setting onclick listeners
         addImage.setOnClickListener(this);
+        siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
         cancelCreation.setOnClickListener(this);
@@ -213,12 +216,15 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                 break;
 
+            case R.id.siteBuilder:
+
+                Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilder.class);
+                startActivity(siteBuilder);
+                break;
+
             case R.id.addFeaturesRel:
 
-                Intent intent = new Intent(getApplicationContext(), SiteBuilder.class);
-
-                //21/02 commented out to test new site builder
-                /*Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
                 intent.putExtra("image", imageUpload);
                 //intent.putExtra("temp", tempLocation);
                 intent.putExtra("latitude", latitude);
@@ -235,7 +241,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature8", feature8);
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
-                intent.putExtra("rating", ratingBar.getRating());*/
+                intent.putExtra("rating", ratingBar.getRating());
                 startActivity(intent);
                 break;
 

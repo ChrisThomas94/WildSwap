@@ -1,224 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp">
+    android:background="@drawable/add_site_background">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_text_container"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="10dp">
+            android:background="@color/cardview_light_background">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/addLat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/Lat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Latitude"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"/>
-
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/addLong"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:id="@+id/edit_text_container"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="10dp">
 
-                <EditText
-                    android:id="@+id/Long"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addLat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/Lat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Latitude"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"/>
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addLong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Longitude"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"/>
+                    android:layout_marginBottom="10dp">
+
+                    <EditText
+                        android:id="@+id/Long"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Longitude"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"/>
 
 
-            </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
-            <RelativeLayout
-                android:id="@+id/addPhotoRel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/counter_text_color">
+                <RelativeLayout
+                    android:id="@+id/addPhotoRel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/counter_text_color">
+
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/addPhoto"
+                        android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Image"
+                        android:padding="15dp"
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/addPhoto"/>
+                </RelativeLayout>
 
                 <ImageView
-                    android:layout_width="53dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:id="@+id/addPhoto"
-                    android:src="@drawable/ic_add_a_photo_black_48dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Image"
-                    android:padding="15dp"
-                    android:textSize="@dimen/feature_text"
-                    android:layout_toRightOf="@+id/addPhoto"/>
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"/>
-
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"/>
-
-            <ImageView
-                android:id="@+id/image3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"/>
-
-
-            <RelativeLayout
-                android:id="@+id/addFeaturesRel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/counter_text_color">
+                    android:id="@+id/image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"
+                    android:layout_marginBottom="10dp"/>
 
                 <ImageView
-                    android:layout_width="53dip"
-                    android:layout_height="53dip"
-                    android:scaleType="fitXY"
-                    android:id="@+id/addFeatures"
-                    android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                    android:id="@+id/image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"
+                    android:layout_marginBottom="10dp"/>
 
-                <TextView
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"
+                    android:layout_marginBottom="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/siteBuilder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/counter_text_color">
+
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/siteBuilderIcon"
+                        android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Site Builder"
+                        android:padding="15dp"
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/siteBuilderIcon"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/addFeaturesRel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/counter_text_color">
+
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/addFeatures"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Features"
+                        android:padding="15dp"
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/addFeatures"/>
+                </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <EditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Title"
+                        android:inputType="text"
+                        android:maxLength="21"
+                        android:maxLines="1"/>
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <EditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Description"
+                        android:inputType="text"
+                        android:text=""
+                        android:maxLines="1"/>
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add Features"
-                    android:padding="15dp"
-                    android:textSize="@dimen/feature_text"
-                    android:layout_toRightOf="@+id/addFeatures"/>
-            </RelativeLayout>
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:rating="0.0"
+                    android:layout_gravity="center"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/addTitle"
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/cardview_light_background">
 
-                <EditText
-                    android:id="@+id/title"
+                <View
+                    android:layout_height="1dp"
                     android:layout_width="match_parent"
+                    android:background="#90909090"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Title"
-                    android:inputType="text"
-                    android:maxLength="21"
-                    android:singleLine="true"/>
+                    android:layout_gravity="end">
 
 
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/addDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                    <Button
+                        android:id="@+id/confirmCreation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OK"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_toRightOf="@+id/cancelCreation"/>
 
-                <EditText
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Description"
-                    android:inputType="text"
-                    android:text=""
-                    android:singleLine="false"/>
+                    <Button
+                        android:id="@+id/cancelCreation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        style="?android:attr/borderlessButtonStyle"/>
 
+                </RelativeLayout>
 
-            </android.support.design.widget.TextInputLayout>
-
-            <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="5"
-                android:stepSize="0.5"
-                android:rating="0.0"
-                android:layout_gravity="center"/>
+            </LinearLayout>
 
         </LinearLayout>
 
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <View
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="#90909090"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end">
-
-
-
-                <Button
-                    android:id="@+id/confirmCreation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="OK"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_toRightOf="@+id/cancelCreation"/>
-
-                <Button
-                    android:id="@+id/cancelCreation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    style="?android:attr/borderlessButtonStyle"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

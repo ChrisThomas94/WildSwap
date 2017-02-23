@@ -53,6 +53,9 @@
 
     <!--Site Builder-->
     <string name="distantTerrain">Let\'s start by selecting the distant terrain.</string>
+    <string name="nearbyTerrain">Now select an option that best describes the terrain nearby.</string>
+    <string name="immediateTerrain">Finally select the most accurate immediate terrain.</string>
+
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
