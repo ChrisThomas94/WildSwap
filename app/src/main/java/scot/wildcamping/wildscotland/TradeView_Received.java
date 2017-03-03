@@ -47,6 +47,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     Site sendSite;
     String send_cid;
     String recieve_cid;
+    String recieve_token;
     String unique_tid;
     int PositiveTradeStatus = 2;
     int NegativeTradeStatus = 1;
@@ -265,6 +266,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
         recieveTitle.setText(recieveSite.getTitle());
 
+        recieve_token = recieveSite.getToken();
+
         if(recieveSite.getFeature1().equals("0")){
             features1.setVisibility(View.GONE);
         }else{
@@ -336,6 +339,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
                 //update trade record in db positively
                 new UpdateTrade(this, unique_tid, PositiveTradeStatus).execute();
+                new CreateNotification(this, recieve_token).execute();
 
                 //create new entry in user_has_trades with relat 45
 
@@ -350,6 +354,8 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
                 //update trade record in db
                 new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
+                new CreateNotification(this, recieve_token).execute();
+
                 if(isNetworkAvailable()) {
                     try {
                         String trades_result = new FetchTradeRequests(this).execute().get();

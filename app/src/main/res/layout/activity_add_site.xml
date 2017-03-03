@@ -5,253 +5,250 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/add_site_background">
+    android:background="@drawable/add_site_background2">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/cardview_light_background">
+            android:paddingTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_text_container"
                 android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:background="@drawable/rounded_linear_layout"
                 android:padding="10dp">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/addLat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/Lat"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addLat"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Latitude"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"/>
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/Lat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"/>
 
 
-                </android.support.design.widget.TextInputLayout>
+                    </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/addLong"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
-
-                    <EditText
-                        android:id="@+id/Long"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addLong"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Longitude"
-                        android:inputType="numberDecimal"
-                        android:maxLines="1"/>
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/Long"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"/>
 
 
-                </android.support.design.widget.TextInputLayout>
-
-                <RelativeLayout
-                    android:id="@+id/addPhotoRel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:padding="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@color/counter_text_color">
-
-                    <ImageView
-                        android:layout_width="53dip"
-                        android:layout_height="53dip"
-                        android:scaleType="fitXY"
-                        android:id="@+id/addPhoto"
-                        android:src="@drawable/ic_add_a_photo_black_48dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Image"
-                        android:padding="15dp"
-                        android:textSize="@dimen/feature_text"
-                        android:layout_toRightOf="@+id/addPhoto"/>
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/image1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:visibility="gone"
-                    android:layout_marginBottom="10dp"/>
-
-                <ImageView
-                    android:id="@+id/image2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:visibility="gone"
-                    android:layout_marginBottom="10dp"/>
-
-                <ImageView
-                    android:id="@+id/image3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:visibility="gone"
-                    android:layout_marginBottom="10dp"/>
-
-                <RelativeLayout
-                    android:id="@+id/siteBuilder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:padding="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@color/counter_text_color">
-
-                    <ImageView
-                        android:layout_width="53dip"
-                        android:layout_height="53dip"
-                        android:scaleType="fitXY"
-                        android:id="@+id/siteBuilderIcon"
-                        android:src="@drawable/ic_add_a_photo_black_48dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Site Builder"
-                        android:padding="15dp"
-                        android:textSize="@dimen/feature_text"
-                        android:layout_toRightOf="@+id/siteBuilderIcon"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/addFeaturesRel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:padding="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@color/counter_text_color">
-
-                    <ImageView
-                        android:layout_width="53dip"
-                        android:layout_height="53dip"
-                        android:scaleType="fitXY"
-                        android:id="@+id/addFeatures"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Features"
-                        android:padding="15dp"
-                        android:textSize="@dimen/feature_text"
-                        android:layout_toRightOf="@+id/addFeatures"/>
-                </RelativeLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/addTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
-
-                    <EditText
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Title"
-                        android:inputType="text"
-                        android:maxLength="21"
-                        android:maxLines="1"/>
+                    </android.support.design.widget.TextInputLayout>
 
 
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/addDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
-
-                    <EditText
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Description"
-                        android:inputType="text"
-                        android:text=""
-                        android:maxLines="1"/>
-
-
-                </android.support.design.widget.TextInputLayout>
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:rating="0.0"
-                    android:layout_gravity="center"/>
-
-            </LinearLayout>
-
+                </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@color/cardview_light_background">
+                android:background="@drawable/rounded_linear_layout"
+                android:padding="10dp"
+                android:layout_marginTop="20dp">
 
-                <View
-                    android:layout_height="1dp"
-                    android:layout_width="match_parent"
-                    android:background="#90909090"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    />
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end">
-
-
-
-                    <Button
-                        android:id="@+id/confirmCreation"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/addPhotoRel"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="OK"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_toRightOf="@+id/cancelCreation"/>
+                        android:clickable="true"
+                        android:padding="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/counter_text_color">
 
-                    <Button
-                        android:id="@+id/cancelCreation"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add Image"
+                            android:padding="15dp"
+                            android:textSize="@dimen/feature_text"
+                            android:layout_toRightOf="@+id/addPhoto"/>
+
+                        <ImageView
+                            android:layout_width="53dip"
+                            android:layout_height="53dip"
+                            android:scaleType="fitXY"
+                            android:id="@+id/addPhoto"
+                            android:src="@drawable/ic_add_a_photo_black_48dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"/>
+
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"/>
+
+                    <ImageView
+                        android:id="@+id/image3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"/>
+
+                    <RelativeLayout
+                        android:id="@+id/siteBuilder"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Cancel"
-                        style="?android:attr/borderlessButtonStyle"/>
+                        android:clickable="true"
+                        android:padding="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/counter_text_color">
 
-                </RelativeLayout>
+                        <ImageView
+                            android:layout_width="53dip"
+                            android:layout_height="53dip"
+                            android:scaleType="fitXY"
+                            android:id="@+id/siteBuilderIcon"
+                            android:src="@drawable/ic_site_builder_48dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Site Builder"
+                            android:padding="15dp"
+                            android:textSize="@dimen/feature_text"
+                            android:layout_toRightOf="@+id/siteBuilderIcon"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/addFeaturesRel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/counter_text_color">
+
+                        <ImageView
+                            android:layout_width="53dip"
+                            android:layout_height="53dip"
+                            android:scaleType="fitXY"
+                            android:id="@+id/addFeatures"
+                            android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Add Features"
+                            android:padding="15dp"
+                            android:textSize="@dimen/feature_text"
+                            android:layout_toRightOf="@+id/addFeatures"/>
+                    </RelativeLayout>
+
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Allow other users to view this info"/>
+
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_linear_layout"
+                android:padding="10dp"
+                android:layout_marginTop="20dp">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <EditText
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Title"
+                            android:inputType="text"
+                            android:maxLength="21"
+                            android:maxLines="1"/>
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/addDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Description"
+                            android:inputType="text"
+                            android:text=""
+                            android:maxLines="1"/>
+
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:rating="0.0"
+                        android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="Confirm"
+                android:textSize="18sp"
+                android:id="@+id/confirmCreation"
+                android:background="@color/colorLight"
+                android:textColor="#ffffff"/>
 
         </LinearLayout>
 

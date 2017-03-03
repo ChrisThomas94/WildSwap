@@ -39,6 +39,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     String title;
     String description;
     String rating;
+
     Boolean feature1;
     Boolean feature2;
     Boolean feature3;
@@ -49,6 +50,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
+
+    int distant;
+    int nearby;
+    int immediate;
     String image;
     String tag = "addSite";
     String email;
@@ -72,6 +77,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.title = title;
         this.description = description;
         this.rating = rating;
+
         this.feature1 = feature1;
         this.feature2 = feature2;
         this.feature3 = feature3;
@@ -82,6 +88,11 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature8 = feature8;
         this.feature9 = feature9;
         this.feature10 = feature10;
+
+        this.distant = distant;
+        this.nearby = nearby;
+        this.immediate = immediate;
+
         this.image = image;
 
 
@@ -149,6 +160,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setTitle(jsonSite.getString("title"));
                     newSite.setDescription(jsonSite.getString("description"));
                     newSite.setRating(jsonSite.getDouble("rating"));
+
                     newSite.setFeature1(jsonSite.getString("feature1"));
                     newSite.setFeature2(jsonSite.getString("feature2"));
                     newSite.setFeature3(jsonSite.getString("feature3"));
@@ -159,6 +171,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature8(jsonSite.getString("feature8"));
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
+
+                    newSite.setDistant(jsonSite.getInt("distant"));
+                    newSite.setNearby(jsonSite.getInt("nearby"));
+                    newSite.setImmediate(jsonSite.getInt("immediate"));
                     newSite.setImage(jsonSite.getString("image"));
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 

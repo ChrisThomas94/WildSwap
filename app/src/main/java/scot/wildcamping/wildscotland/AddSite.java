@@ -64,7 +64,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     ImageView image3;
     RatingBar ratingBar;
     Button confirmCreation;
-    Button cancelCreation;
     double latitude;
     double longitude;
     String latReq;
@@ -73,6 +72,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String descReq;
     String ratingReq;
     float rating;
+    int distant;
+    int nearby;
+    int immediate;
     String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
@@ -83,7 +85,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String titlePassed;
     String descPassed;
 
-    int relat = 90;
     Boolean feature1;
     Boolean feature2;
     Boolean feature3;
@@ -94,6 +95,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
+
+
+    int relat = 90;
     Boolean update;
     Boolean lonLat;
     Boolean imageUpload = false;
@@ -128,7 +132,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
-        cancelCreation = (Button)findViewById(R.id.cancelCreation);
         image1 = (ImageView)findViewById(R.id.image1);
         image2 = (ImageView)findViewById(R.id.image2);
         image3 = (ImageView)findViewById(R.id.image3);
@@ -171,6 +174,10 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             rating = extras.getFloat("rating");
 
+            distant = extras.getInt("distant");
+            nearby = extras.getInt("nearby");
+            immediate = extras.getInt("immediate");
+
             //float ratingFloat = (float)rating;
             ratingBar.setRating(rating);
 
@@ -201,7 +208,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
-        cancelCreation.setOnClickListener(this);
 
     }
 
@@ -275,6 +281,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                             try {
                                 String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
+                                //String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
                             } catch (ExecutionException e){
 
                             } catch (InterruptedException e){
@@ -304,72 +311,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 AlertDialog alert1 = builder1.create();
                 alert1.show();
 
-
-
-                /*LayoutInflater layoutInflater = (LayoutInflater)this.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final View popupView = layoutInflater.inflate(R.layout.popup_add_site, null);
-                final PopupWindow popupWindow = new PopupWindow(
-                        popupView,
-                        AbsListView.LayoutParams.WRAP_CONTENT,
-                        AbsListView.LayoutParams.WRAP_CONTENT);
-
-                Button cancel = (Button) popupView.findViewById(R.id.cancelPopup);
-                Button accept = (Button) popupView.findViewById(R.id.acceptPopup);
-
-                cancel.setOnClickListener(new Button.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
-
-                accept.setOnClickListener(new Button.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                        latReq = Lat.getText().toString();
-                        lonReq = Lon.getText().toString();
-                        titleReq = title.getText().toString();
-                        descReq = description.getText().toString();
-                        ratingReq = Float.toString(ratingBar.getRating());
-
-                        if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
-
-                            String imageSingleLine = null;
-                            if(image != null) {
-                                imageSingleLine = image.replaceAll("[\r\n]+", "");
-                            }
-
-                            new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute();
-
-                            Intent intent = new Intent(getApplicationContext(),
-                                    MainActivity_Spinner.class);
-                            intent.putExtra("latitude", latitude);
-                            intent.putExtra("longitude", longitude);
-                            intent.putExtra("add", true);
-                            startActivity(intent);
-                            finish();
-
-                        } else {
-                            Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-                });*/
-
                 break;
 
-            case R.id.cancelCreation:
-
-                Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
-
-                intent = new Intent(getApplicationContext(),
-                        MainActivity_Spinner.class);
-                intent.putExtra("add", false);
-                startActivity(intent);
-                finish();
-                break;
         }
 
     }

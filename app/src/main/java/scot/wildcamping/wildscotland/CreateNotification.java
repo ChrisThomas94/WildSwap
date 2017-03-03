@@ -30,7 +30,7 @@ public class CreateNotification extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private Context context;
+    public Context context;
     String user;
     String postResponse;
     String token;
@@ -59,7 +59,15 @@ public class CreateNotification extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = tradeNotification(token);
+            System.out.println("context " + context);
+            String json;
+            if(context instanceof TradeActivitySimple){
+                json = tradeNotification(token);
+            } else if (context instanceof TradeView_Received) {
+                json = tradeResponseNotification(token);
+            } else {
+                json = "";
+            }
             System.out.println("json: " + json);
 
             postResponse = doPostRequest(Appconfig.firebase, json);      //json
@@ -120,8 +128,17 @@ public class CreateNotification extends AsyncTask<String, String, String> {
     private String tradeNotification(String token) {
         return "{\"notification\"" + ":{" +
                 "\"title\":\"" + "Trade Request" + "\","
-                + "\"body\":\"" + "You have received a trade request."
+                + "\"body\":\"" + "You have received a trade request!"
                 + "\"},"
                 + "\"to\":\"" + token + "\"}";
     }
+
+    private String tradeResponseNotification(String token) {
+        return "{\"notification\"" + ":{" +
+                "\"title\":\"" + "Trade Response" + "\","
+                + "\"body\":\"" + "You have received a response to your trade request!"
+                + "\"},"
+                + "\"to\":\"" + token + "\"}";
+    }
+
 }

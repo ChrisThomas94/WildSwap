@@ -51,6 +51,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     int ownedSiteInit =0;
     int prevSite = 0;
     int nextSite = 0;
+    String trade = "trade";
 
     TextView recieveTitle;
     TextView placeholderFeatures;

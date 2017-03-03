@@ -80,415 +80,517 @@
     <ScrollView
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/instructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:text="@string/distantTerrain"/>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/feature1box"
-                android:layout_toLeftOf="@+id/feature2box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature1circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature1thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature2box"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature2circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature2thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature3box"
-                android:layout_toRightOf="@+id/feature2box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature3circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature3thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/feature4box"
-                android:layout_toLeftOf="@+id/feature5box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature4circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature4thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature5box"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature5circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature5thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature6box"
-                android:layout_toRightOf="@+id/feature5box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature6circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature6thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/feature7box"
-                android:layout_toLeftOf="@+id/feature8box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature7circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature7thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature8box"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature8circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature8thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/feature9box"
-                android:layout_toRightOf="@+id/feature8box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature9circle"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_centerInParent="true"/>
-
-                <View
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-                <ImageView
-                    android:id="@+id/feature9thumbnail"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle"/>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <View
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="#90909090"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                />
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/instructions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end">
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:text="@string/distantTerrain"/>
 
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/confirmFeatures"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OK"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_toRightOf="@+id/cancelFeatures"/>
+                    android:orientation="vertical"
+                    android:layout_toLeftOf="@+id/feature2Linear">
 
-                <Button
-                    android:id="@+id/cancelFeatures"
+                    <RelativeLayout
+                        android:id="@+id/feature1box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature1circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature1thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature1Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/feature2Linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    style="?android:attr/borderlessButtonStyle"/>
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true">
+
+                    <RelativeLayout
+                        android:id="@+id/feature2box"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature2circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature2thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/feature2Linear">
+
+                <RelativeLayout
+                    android:id="@+id/feature3box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="10dp">
+
+                    <View
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/circle"/>
+
+                    <ImageView
+                        android:id="@+id/feature3circle"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_centerInParent="true"/>
+
+                    <View
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/circle"/>
+
+                    <ImageView
+                        android:id="@+id/feature3thumbnail"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/circle"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/feature3Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=""/>
+
+            </LinearLayout>
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toLeftOf="@+id/feature5Linear">
+
+                    <RelativeLayout
+                        android:id="@+id/feature4box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature4circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature4thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature4Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/feature5Linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true">
+
+                    <RelativeLayout
+                        android:id="@+id/feature5box"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature5circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature5thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature5Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/feature5Linear">
+
+                    <RelativeLayout
+                        android:id="@+id/feature6box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature6circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"
+                            android:id="@+id/view" />
+
+                        <ImageView
+                            android:id="@+id/feature6thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature6Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toLeftOf="@+id/feature8Linear">
+
+                    <RelativeLayout
+                        android:id="@+id/feature7box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature7circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature7thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature7Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/feature8Linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true">
+
+                    <RelativeLayout
+                        android:id="@+id/feature8box"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature8circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature8thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature8Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/feature8Linear">
+
+                    <RelativeLayout
+                        android:id="@+id/feature9box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:padding="10dp">
+
+                        <View
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature9circle"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                        <ImageView
+                            android:id="@+id/feature9thumbnail"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/circle"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/feature9Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/confirmSelection"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
+                android:text="Continue"
+                android:textSize="18sp"
+                android:background="@color/colorLight"
+                android:textColor="#ffffff"/>
 
         </LinearLayout>
-
-    </LinearLayout>
 
     </ScrollView>
 

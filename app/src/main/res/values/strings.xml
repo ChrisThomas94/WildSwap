@@ -56,6 +56,40 @@
     <string name="nearbyTerrain">Now select an option that best describes the terrain nearby.</string>
     <string name="immediateTerrain">Finally select the most accurate immediate terrain.</string>
 
+    <string name="distantFeature1">Hills</string>
+    <string name="distantFeature2">Forest</string>
+    <string name="distantFeature3">Plains</string>
+    <string name="distantFeature4">Loch</string>
+    <string name="distantFeature5">Mountains</string>
+    <string name="distantFeature6">Valley</string>
+    <string name="distantFeature7">Ocean</string>
+    <string name="distantFeature8"></string>
+    <string name="distantFeature9"></string>
+
+    <string name="nearbyFeature1">Hills</string>
+    <string name="nearbyFeature2">Forest</string>
+    <string name="nearbyFeature3">Plains</string>
+    <string name="nearbyFeature4">Loch</string>
+    <string name="nearbyFeature5">Beach</string>
+    <string name="nearbyFeature6">Cliff</string>
+    <string name="nearbyFeature7"></string>
+    <string name="nearbyFeature8"></string>
+    <string name="nearbyFeature9"></string>
+
+    <string name="immediateFeature1">Grass</string>
+    <string name="immediateFeature2">Pebbles</string>
+    <string name="immediateFeature3">Sand</string>
+    <string name="immediateFeature4"></string>
+    <string name="immediateFeature5"></string>
+    <string name="immediateFeature6"></string>
+    <string name="immediateFeature7"></string>
+    <string name="immediateFeature8"></string>
+    <string name="immediateFeature9"></string>
+
+
+
+
+
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>

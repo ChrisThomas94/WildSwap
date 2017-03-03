@@ -18,6 +18,7 @@ public class Site {
     private String description;
     private Double rating;
     private int ratedBy;
+
     private String feature1;
     private String feature2;
     private String feature3;
@@ -28,6 +29,11 @@ public class Site {
     private String feature8;
     private String feature9;
     private String feature10;
+
+    private int distant;
+    private int nearby;
+    private int immediate;
+
     private String image;
     private String image2;
     private String image3;
@@ -108,6 +114,7 @@ public class Site {
         return ratedBy;
     }
 
+
     public void setFeature1(String feature1){
         this.feature1 = feature1;
     }
@@ -186,6 +193,26 @@ public class Site {
 
     public String getFeature10(){
         return feature10;
+    }
+
+    public void setDistant(int distant){
+        this.distant = distant;
+    }
+
+    public int getDistant(){
+        return distant;
+    }
+
+    public void setNearby(int nearby){
+        this.nearby = nearby;
+    }
+
+    public int getNearby(){
+        return nearby;
+    }
+
+    public void setImmediate(int immediate){
+        this.immediate = immediate;
     }
 
     public void setImage(String image){
