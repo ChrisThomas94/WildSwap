@@ -5,337 +5,293 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="100dp"
-            android:id="@+id/distantTerrainFeatures"
-            android:visibility="visible"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:id="@+id/nearbyTerrainFeatures"
-            android:visibility="visible"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="100dp"
-            android:layout_below="@+id/nearbyTerrainFeatures"
-            android:id="@+id/immediateTerrainFeatures"
-            android:visibility="visible"/>
-
-    </RelativeLayout>
-
     <ScrollView
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="15dp">
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:id="@+id/feature1box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature1"
-                android:src="@drawable/transport"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature1"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature1"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature2box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature2"
-                android:src="@drawable/mountain"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature2"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature2"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature3box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature3"
-                android:src="@drawable/nature"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature3"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature3"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature4box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature4"
-                android:src="@drawable/grassy_terrain3"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature4"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature4"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature5box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature5"
-                android:src="@drawable/rocky_terrain"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature5"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature5"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature6box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature6"
-                android:src="@drawable/sandy_terrain"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature6"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature6"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature7box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:id="@+id/feature7"
-                android:scaleType="fitXY"
-                android:src="@drawable/animals"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature7"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature7"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature8box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature8"
-                android:src="@drawable/pint"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature8"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature8"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature9box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature9"
-                android:src="@drawable/shop"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature9"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature9"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/feature10box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@color/counter_text_color">
-
-            <ImageView
-                android:layout_width="53dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:id="@+id/feature10"
-                android:src="@drawable/sheep"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/feature10"
-                android:padding="15dp"
-                android:textSize="@dimen/feature_text"
-                android:layout_toRightOf="@+id/feature10"/>
-        </RelativeLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <View
-                android:layout_height="1dp"
-                android:layout_width="match_parent"
-                android:background="#90909090"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/feature1box"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end">
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/rounded_grey_button">
 
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature1"
+                    android:src="@drawable/transport"/>
 
-
-                <Button
-                    android:id="@+id/confirmFeatures"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OK"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_toRightOf="@+id/cancelFeatures"/>
-
-                <Button
-                    android:id="@+id/cancelFeatures"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel"
-                    style="?android:attr/borderlessButtonStyle"/>
-
+                    android:text="@string/feature1"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature1"/>
             </RelativeLayout>
 
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/feature2box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
 
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature2"
+                    android:src="@drawable/mountain"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature2"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature2"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature3box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature3"
+                    android:src="@drawable/nature"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature3"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature3"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature4box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature4"
+                    android:src="@drawable/grassy_terrain3"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature4"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature4"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature5box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature5"
+                    android:src="@drawable/rocky_terrain"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature5"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature5"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature6box"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature6"
+                    android:src="@drawable/sandy_terrain"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature6"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature6"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature7box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:id="@+id/feature7"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/animals"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature7"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature7"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature8box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature8"
+                    android:src="@drawable/pint"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature8"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature8"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature9box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature9"
+                    android:src="@drawable/shop"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature9"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature9"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/feature10box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="15dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/rounded_grey_button">
+
+                <ImageView
+                    android:layout_width="53dip"
+                    android:layout_height="53dip"
+                    android:scaleType="fitXY"
+                    android:id="@+id/feature10"
+                    android:src="@drawable/sheep"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature10"
+                    android:padding="15dp"
+                    android:textSize="@dimen/feature_text"
+                    android:layout_toRightOf="@+id/feature10"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/confirmFeatures"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="COMPLETE"
+                android:textSize="18sp"
+                android:background="@color/colorLight"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
 
     </ScrollView>
 

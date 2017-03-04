@@ -39,6 +39,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     String title;
     String description;
     String rating;
+    String json;
 
     Boolean feature1;
     Boolean feature2;
@@ -54,7 +55,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     int distant;
     int nearby;
     int immediate;
-    String image;
+    String[] images;
     String tag = "addSite";
     String email;
     Double latUpperBound;
@@ -68,7 +69,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     SparseArray<Site> ownedSites = new SparseArray<>();
     int ownedSitesSize;
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] images) {
 
         this.context = context;
         this.relat = relationship;
@@ -93,7 +94,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.nearby = nearby;
         this.immediate = immediate;
 
-        this.image = image;
+        this.images = images;
 
 
         Double latDouble = Double.parseDouble(lat);
@@ -133,11 +134,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, email, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
+            String json = addSite(uid, email, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, images, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
-
             try {
 
                 JSONObject jObj = new JSONObject(postResponse);
@@ -172,19 +172,23 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
 
-                    newSite.setDistant(jsonSite.getInt("distant"));
-                    newSite.setNearby(jsonSite.getInt("nearby"));
-                    newSite.setImmediate(jsonSite.getInt("immediate"));
-                    newSite.setImage(jsonSite.getString("image"));
+                    //newSite.setDistant(jsonSite.getInt("distant"));
+                    //newSite.setNearby(jsonSite.getInt("nearby"));
+                    //newSite.setImmediate(jsonSite.getInt("immediate"));
+                    //newSite.setImage(jsonSite.getString("image"));
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
                     knownSite inst = new knownSite();
                     ownedSites = inst.getOwnedSitesMap();
                     ownedSitesSize = inst.getOwnedSiteSize();
+                    System.out.println("owned site added");
                     ownedSites.put(ownedSitesSize, newSite);
                     inst.setOwnedSitesMap(ownedSites);
-                }
 
+
+                } else {
+
+                }
             } catch (JSONException e){
 
             }
@@ -202,6 +206,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         //pDialogAddSite.dismiss();
+
         try {
             JSONObject resp = new JSONObject(postResponse);
 
@@ -218,6 +223,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         } catch (JSONException e){
 
         }
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -230,7 +236,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
         return "{\"tag\":\"" + tag + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"email\":\"" + email + "\","
@@ -250,7 +256,9 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"feature8\":\"" + feature8 + "\","
                 + "\"feature9\":\"" + feature9 + "\","
                 + "\"feature10\":\"" + feature10 + "\","
-                + "\"image\":\"" + image + "\","
+                + "\"image1\":\"" + image[0] + "\","
+                + "\"image2\":\"" + image[1] + "\","
+                + "\"image3\":\"" + image[2] + "\","
                 + "\"latLowerBound\":\"" + latLowerBound + "\","
                 + "\"latUpperBound\":\"" + latUpperBound + "\","
                 + "\"lonLowerBound\":\"" + lonLowerBound + "\","

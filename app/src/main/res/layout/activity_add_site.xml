@@ -12,8 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,6 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/rounded_linear_layout"
                 android:padding="10dp">
 
@@ -66,6 +70,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:orientation="vertical"
                 android:background="@drawable/rounded_linear_layout"
                 android:padding="10dp"
@@ -77,8 +83,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:padding="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="@color/counter_text_color">
+                        android:background="@drawable/rounded_grey_button">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -106,7 +111,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginTop="10dp"/>
 
                     <ImageView
                         android:id="@+id/image2"
@@ -115,7 +120,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginTop="10dp"/>
 
                     <ImageView
                         android:id="@+id/image3"
@@ -124,64 +129,80 @@
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:visibility="gone"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginTop="10dp"/>
 
-                    <RelativeLayout
-                        android:id="@+id/siteBuilder"
-                        android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OR"
+                    android:layout_gravity="center"
+                    android:padding="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/siteBuilder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rounded_grey_button">
+
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/siteBuilderIcon"
+                        android:src="@drawable/ic_site_builder_48dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
+                        android:text="Site Builder"
                         android:padding="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="@color/counter_text_color">
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/siteBuilderIcon"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/preview">
+
 
                         <ImageView
-                            android:layout_width="53dip"
-                            android:layout_height="53dip"
+                            android:id="@+id/distantTerrainFeatures"
+                            android:layout_width="match_parent"
                             android:scaleType="fitXY"
-                            android:id="@+id/siteBuilderIcon"
-                            android:src="@drawable/ic_site_builder_48dp"/>
+                            android:layout_height="100dp"
+                            android:src="@drawable/placeholder"
+                            android:visibility="gone"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Site Builder"
-                            android:padding="15dp"
-                            android:textSize="@dimen/feature_text"
-                            android:layout_toRightOf="@+id/siteBuilderIcon"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/addFeaturesRel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:padding="15dp"
-                        android:layout_marginBottom="15dp"
-                        android:background="@color/counter_text_color">
 
                         <ImageView
-                            android:layout_width="53dip"
-                            android:layout_height="53dip"
+                            android:id="@+id/nearbyTerrainFeatures"
+                            android:layout_width="match_parent"
                             android:scaleType="fitXY"
-                            android:id="@+id/addFeatures"
-                            android:src="@drawable/ic_add_to_photos_black_48dp"/>
+                            android:layout_height="100dp"
+                            android:layout_marginTop="30dp"
+                            android:visibility="gone"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Add Features"
-                            android:padding="15dp"
-                            android:textSize="@dimen/feature_text"
-                            android:layout_toRightOf="@+id/addFeatures"/>
-                    </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/immediateTerrainFeatures"
+                            android:layout_below="@+id/nearbyTerrainFeatures"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:layout_height="100dp"
+                            android:visibility="gone"/>
 
+                </RelativeLayout>
 
                     <CheckBox
+                        android:id="@+id/imagePermission"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Allow other users to view this info"/>
+                        android:text="Allow other users to see this image"/>
 
 
             </LinearLayout>
@@ -189,6 +210,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:orientation="vertical"
                 android:background="@drawable/rounded_linear_layout"
                 android:padding="10dp"
@@ -229,6 +252,30 @@
 
                     </android.support.design.widget.TextInputLayout>
 
+                <RelativeLayout
+                    android:id="@+id/addFeaturesRel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:background="@drawable/rounded_grey_button">
+
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/addFeatures"
+                        android:src="@drawable/ic_add_to_photos_black_48dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Features"
+                        android:padding="15dp"
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/addFeatures"/>
+                </RelativeLayout>
+
                     <RatingBar
                         android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
@@ -244,7 +291,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Confirm"
+                android:text="Complete"
                 android:textSize="18sp"
                 android:id="@+id/confirmCreation"
                 android:background="@color/colorLight"

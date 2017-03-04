@@ -261,6 +261,8 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         distant.setVisibility(GONE);
                     } else {
                         nearby.setVisibility(GONE);
+                        nearbyTerrainLayout.setVisibility(View.VISIBLE);
+
                     }
 
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
@@ -340,9 +342,16 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     }
                 }
                 else if(selectImmediateTerrain){
-                    immediate.setVisibility(GONE);
+                    resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
+                    feature2count = 0;
+                    feature3count = 0;
+
+                    //immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                     immediateTerrain.setImageResource(R.drawable.grass);
+                    immediateTerrain.setTag("grass");
+                    feature1circle.setImageResource(R.drawable.full);
                 }
 
                 break;
@@ -360,6 +369,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         distant.setVisibility(GONE);
                     } else {
                         nearby.setVisibility(GONE);
+                        nearbyTerrainLayout.setVisibility(View.VISIBLE);
                     }
 
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
@@ -373,8 +383,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     if (feature2count == 0) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.forest1);
+                            distantTerrain.setTag("forest1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.forest1nearby);
+                            nearbyTerrain.setTag("forest1nearby");
+
                         }
 
                         feature2circle.setImageResource(R.drawable.quarter);
@@ -383,8 +397,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature2count == 1) {
                         if (selectDistantTerrain){
                             distantTerrain.setImageResource(R.drawable.forest2);
+                            distantTerrain.setTag("forest2");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.forest2nearby);
+                            nearbyTerrain.setTag("forest2nearby");
+
                         }
 
                         feature2circle.setImageResource(R.drawable.half);
@@ -393,8 +411,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature2count == 2) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.forest3);
+                            distantTerrain.setTag("forest3");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.forest3nearby);
+                            nearbyTerrain.setTag("forest3nearby");
+
                         }
                         feature2circle.setImageResource(R.drawable.threequartercurve);
                         feature2count++;
@@ -402,8 +424,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature2count == 3) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.forest4);
+                            distantTerrain.setTag("forest4");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.forest4nearby);
+                            nearbyTerrain.setTag("forest4nearby");
+
                         }
                         feature2circle.setImageResource(R.drawable.full);
                         feature2count++;
@@ -412,21 +438,32 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         feature2count = 1;
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.forest1);
+                            distantTerrain.setTag("forest1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.forest1nearby);
+                            nearbyTerrain.setTag("forest1nearby");
+
                         }
                         feature2circle.setImageResource(R.drawable.quarter);
                     }
                 }
                 else if(selectImmediateTerrain){
+                    resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
+                    feature1count = 0;
+                    feature3count = 0;
+
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                     immediateTerrain.setImageResource(R.drawable.pebbles);
+                    immediateTerrain.setTag("pebbles");
+                    feature2circle.setImageResource(R.drawable.full);
                 }
                 break;
 
-            //plains
-            //plains
+            //plains1
+            //plains1
             //sand
             case R.id.feature3box:
 
@@ -438,6 +475,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         distant.setVisibility(GONE);
                     } else {
                         nearby.setVisibility(GONE);
+                        nearbyTerrainLayout.setVisibility(View.VISIBLE);
                     }
 
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
@@ -450,9 +488,13 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
                     if (feature3count == 0) {
                         if(selectDistantTerrain) {
-                            distantTerrain.setImageResource(R.drawable.plains);
+                            distantTerrain.setImageResource(R.drawable.plains1);
+                            distantTerrain.setTag("plains1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.plains1nearby);
+                            nearbyTerrain.setTag("plains1nearby");
+
                         }
 
                         feature3circle.setImageResource(R.drawable.quarter);
@@ -461,8 +503,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature3count == 1) {
                         if (selectDistantTerrain){
                             distantTerrain.setImageResource(R.drawable.plains2);
+                            distantTerrain.setTag("plains2");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.plains2nearby);
+                            nearbyTerrain.setTag("plains2nearby");
+
                         }
 
                         feature3circle.setImageResource(R.drawable.half);
@@ -471,8 +517,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature3count == 2) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.plains3);
+                            distantTerrain.setTag("plains3");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.plains3nearby);
+                            nearbyTerrain.setTag("plains3nearby");
+
                         }
                         feature3circle.setImageResource(R.drawable.threequartercurve);
                         feature3count++;
@@ -480,8 +530,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature3count == 3) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.plains4);
+                            distantTerrain.setTag("plains4");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.plains4nearby);
+                            nearbyTerrain.setTag("plains4nearby");
+
                         }
                         feature3circle.setImageResource(R.drawable.full);
                         feature3count++;
@@ -489,17 +543,28 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else {
                         feature3count = 1;
                         if(selectDistantTerrain) {
-                            distantTerrain.setImageResource(R.drawable.plains);
+                            distantTerrain.setImageResource(R.drawable.plains1);
+                            distantTerrain.setTag("plains1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.plains1nearby);
+                            nearbyTerrain.setTag("plains1nearby");
+
                         }
                         feature3circle.setImageResource(R.drawable.quarter);
                     }
                 }
                 else if(selectImmediateTerrain){
+                    resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
+                    feature1count = 0;
+                    feature2count = 0;
+
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                     immediateTerrain.setImageResource(R.drawable.sand);
+                    immediateTerrain.setTag("sand");
+                    feature3circle.setImageResource(R.drawable.full);
                 }
                 break;
 
@@ -516,6 +581,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         distant.setVisibility(GONE);
                     } else {
                         nearby.setVisibility(GONE);
+                        nearbyTerrainLayout.setVisibility(View.VISIBLE);
                     }
 
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
@@ -529,8 +595,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     if (feature4count == 0) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.loch1);
+                            distantTerrain.setTag("loch1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.loch1nearby);
+                            nearbyTerrain.setTag("loch1nearby");
+
                         }
 
                         feature4circle.setImageResource(R.drawable.quarter);
@@ -539,8 +609,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature4count == 1) {
                         if (selectDistantTerrain){
                             distantTerrain.setImageResource(R.drawable.loch2);
+                            distantTerrain.setTag("loch2");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.loch2nearby);
+                            nearbyTerrain.setTag("loch2nearby");
+
                         }
 
                         feature4circle.setImageResource(R.drawable.half);
@@ -549,8 +623,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature4count == 2) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.loch3);
+                            distantTerrain.setTag("loch3");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.loch3nearby);
+                            nearbyTerrain.setTag("loch3nearby");
+
                         }
                         feature4circle.setImageResource(R.drawable.threequartercurve);
                         feature4count++;
@@ -558,8 +636,12 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     } else if (feature4count == 3) {
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.loch4);
+                            distantTerrain.setTag("loch4");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.loch4nearby);
+                            nearbyTerrain.setTag("loch4nearby");
+
                         }
                         feature4circle.setImageResource(R.drawable.full);
                         feature4count++;
@@ -568,14 +650,19 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                         feature4count = 1;
                         if(selectDistantTerrain) {
                             distantTerrain.setImageResource(R.drawable.loch1);
+                            distantTerrain.setTag("loch1");
+
                         } else {
                             nearbyTerrain.setImageResource(R.drawable.loch1nearby);
+                            nearbyTerrain.setTag("loch1nearby");
+
                         }
                         feature4circle.setImageResource(R.drawable.quarter);
                     }
                 }
                 else if(selectImmediateTerrain) {
-                        immediate.setVisibility(GONE);
+                    immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -596,33 +683,40 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature7count = 0;
 
                     if (feature5count == 0) {
-                        distantTerrain.setImageResource(R.drawable.mountains);
+                        distantTerrain.setImageResource(R.drawable.mountains1);
+                        distantTerrain.setTag("mountains1");
                         feature5circle.setImageResource(R.drawable.quarter);
                         feature5count++;
 
                     } else if (feature5count == 1) {
                         distantTerrain.setImageResource(R.drawable.mountains2);
+                        distantTerrain.setTag("mountains2");
                         feature5circle.setImageResource(R.drawable.half);
                         feature5count++;
 
                     } else if (feature5count == 2) {
                         distantTerrain.setImageResource(R.drawable.mountains3);
+                        distantTerrain.setTag("mountains3");
                         feature5circle.setImageResource(R.drawable.threequartercurve);
                         feature5count++;
 
                     } else if (feature5count == 3) {
                         distantTerrain.setImageResource(R.drawable.mountains4);
+                        distantTerrain.setTag("mountains4");
                         feature5circle.setImageResource(R.drawable.full);
                         feature5count++;
 
                     } else {
                         feature5count = 1;
-                        distantTerrain.setImageResource(R.drawable.mountains);
+                        distantTerrain.setImageResource(R.drawable.mountains1);
+                        distantTerrain.setTag("mountains1");
                         feature5circle.setImageResource(R.drawable.quarter);
                     }
 
                 } else if(selectNearbyTerrain){
                     nearby.setVisibility(GONE);
+                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
+
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
                     feature1count = 0;
                     feature2count = 0;
@@ -632,15 +726,18 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature7count = 0;
 
                     nearbyTerrain.setImageResource(R.drawable.beach1nearby);
+                    nearbyTerrain.setTag("beach1nearby");
                     feature5circle.setImageResource(R.drawable.full);
 
                 } else if(selectImmediateTerrain){
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                 }
                 break;
 
             //Valley
+            //Cliff
             case R.id.feature6box:
 
                 confirmSelection.setVisibility(View.VISIBLE);
@@ -657,35 +754,54 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
                     if (feature6count == 0) {
                         distantTerrain.setImageResource(R.drawable.valley1);
+                        distantTerrain.setTag("valley1");
                         feature6circle.setImageResource(R.drawable.quarter);
                         feature6count++;
 
                     } else if (feature6count == 1) {
                         distantTerrain.setImageResource(R.drawable.valley2);
+                        distantTerrain.setTag("valley2");
                         feature6circle.setImageResource(R.drawable.half);
                         feature6count++;
 
                     } else if (feature6count == 2) {
                         distantTerrain.setImageResource(R.drawable.valley3);
+                        distantTerrain.setTag("valley3");
                         feature6circle.setImageResource(R.drawable.threequartercurve);
                         feature6count++;
 
                     } else if (feature6count == 3) {
                         distantTerrain.setImageResource(R.drawable.valley4);
+                        distantTerrain.setTag("valley4");
                         feature6circle.setImageResource(R.drawable.full);
                         feature6count++;
 
                     } else {
                         feature6count = 1;
                         distantTerrain.setImageResource(R.drawable.valley1);
+                        distantTerrain.setTag("valley1");
                         feature6circle.setImageResource(R.drawable.quarter);
                     }
 
                 } else if(selectNearbyTerrain){
                     nearby.setVisibility(GONE);
+                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
+
+                    resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
+                    feature1count = 0;
+                    feature2count = 0;
+                    feature3count = 0;
+                    feature4count = 0;
+                    feature5count = 0;
+                    feature7count = 0;
+
+                    nearbyTerrain.setImageResource(R.drawable.cliff1nearby);
+                    nearbyTerrain.setTag("cliff1nearby");
+                    feature6circle.setImageResource(R.drawable.full);
 
                 } else if(selectImmediateTerrain){
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                 }
                 break;
@@ -705,13 +821,16 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature5count = 0;
                     feature6count = 0;
 
-                    distantTerrain.setImageResource(R.drawable.ocean);
+                    distantTerrain.setImageResource(R.drawable.ocean1);
+                    distantTerrain.setTag("ocean1");
                     feature7circle.setImageResource(R.drawable.full);
                 } else if(selectNearbyTerrain){
                     nearby.setVisibility(GONE);
+                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
 
                 } else if(selectImmediateTerrain){
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                 }
                 break;
@@ -724,9 +843,11 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
                 } else if(selectNearbyTerrain){
                     nearby.setVisibility(GONE);
+                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
 
                 } else if(selectImmediateTerrain){
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                 }
                 break;
@@ -739,9 +860,11 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
                 } else if(selectNearbyTerrain){
                     nearby.setVisibility(GONE);
+                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
 
                 } else if(selectImmediateTerrain){
                     immediate.setVisibility(GONE);
+                    immediateTerrainLayout.setVisibility(View.VISIBLE);
 
                 }
                 break;
@@ -754,13 +877,13 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     selectNearbyTerrain = true;
                     instructions.setText(R.string.nearbyTerrain);
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
-                    //change thumbnail images?
+                    //change thumbnail imagesUri?
                     feature1Thumbnail.setImageResource(R.drawable.hillthumbnail);
                     feature2Thumbnail.setImageResource(R.drawable.forestthumbnail);
                     feature3Thumbnail.setImageResource(R.drawable.plainsthumbnail);
                     feature4Thumbnail.setImageResource(R.drawable.lochthumbnail);
                     feature5Thumbnail.setImageResource(R.drawable.beachthumbnail);
-                    feature6Thumbnail.setImageResource(0);
+                    feature6Thumbnail.setImageResource(R.drawable.cliffthumbnail);
                     feature7box.setVisibility(GONE);
                     feature8box.setVisibility(GONE);
                     feature9box.setVisibility(GONE);
@@ -775,9 +898,6 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature7Text.setText(R.string.nearbyFeature7);
                     feature8Text.setText(R.string.nearbyFeature8);
                     feature9Text.setText(R.string.nearbyFeature9);
-
-                    nearbyTerrainLayout.setVisibility(View.VISIBLE);
-
 
                 } else if (selectNearbyTerrain){
                     selectNearbyTerrain = false;
@@ -807,13 +927,8 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature8Text.setText(R.string.immediateFeature8);
                     feature9Text.setText(R.string.immediateFeature9);
 
-                    immediateTerrainLayout.setVisibility(View.VISIBLE);
                 } else if(selectImmediateTerrain){
 
-
-                    //bundle the various selections.
-                    //i.e. distant terrain
-                    //nearby terrain etc...
 
                     Intent i = new Intent(getApplicationContext(), AddSite.class);
 
@@ -821,9 +936,18 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     System.out.println("nearby terrain: " + nearbyTerrain.getTag().toString());
                     System.out.println("immediate terrain: " + immediateTerrain.getTag().toString());
 
-                    //i.putExtra("distantTerrain", distantTerrain.getTag().toString());
-                    //i.putExtra("nearbyTerrain", nearbyTerrain.getTag().toString());
-                    //i.putExtra("immediateTerrain", immediateTerrain.getTag().toString());
+                    //bundle other site data
+                    i.putExtra("image", image);
+                    i.putExtra("latitude", latitude);
+                    i.putExtra("longitude", longitude);
+                    i.putExtra("title", title);
+                    i.putExtra("description", description);
+                    i.putExtra("rating", rating);
+
+                    //bundle the various selections.
+                    i.putExtra("distantTerrain", distantTerrain.getTag().toString());
+                    i.putExtra("nearbyTerrain", nearbyTerrain.getTag().toString());
+                    i.putExtra("immediateTerrain", immediateTerrain.getTag().toString());
 
                     startActivity(i);
                     finish();

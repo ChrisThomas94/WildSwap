@@ -307,6 +307,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         googleMap.setOnCameraIdleListener(new MyOnCameraIdleListener(googleMap));
 
         // set listeners for buttons
+        addSite.setClickable(true);
         addSite.setOnClickListener(new MyOnClickListener(googleMap));
 
         //add the unknown sites as cluster items
@@ -340,6 +341,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             manualAdd = (Button)popupView.findViewById(R.id.manual);
             longLatAdd = (Button)popupView.findViewById(R.id.longlat);
 
+            addSite.setClickable(false);
+            //layout_main.setClickable(false);
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
 
             //set on click listeners
             btnDismiss.setOnClickListener(new Button.OnClickListener() {
@@ -348,6 +352,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 public void onClick(View v) {
                     popupWindow.dismiss();
                     layout_main.getForeground().setAlpha(0);
+                    addSite.setClickable(true);
+                    googleMap.getUiSettings().setAllGesturesEnabled(true);
                 }
             });
 
@@ -406,6 +412,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 @Override
                 public void onClick(View v) {
 
+                    googleMap.getUiSettings().setAllGesturesEnabled(true);
                     popupWindow.dismiss();
                     layout_main.getForeground().setAlpha(0);
 
@@ -583,6 +590,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             //no known sites
         }
 
+        System.out.println("owned sites map frag: " + ownedSiteSize);
+
         if(ownedSiteSize > 0){
             System.out.println("I have an owned site");
             for(int i = 0; i< ownedSiteSize; i++){
@@ -733,6 +742,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         //knownSite inst = new knownSite();
         SparseArray<Site> map = inst.getUnknownSitesMap();
         int size = inst.getUnknownSitesSize();
+
+        System.out.println("add cluster markers");
 
         // Add cluster items
         for (int i = 0; i < size; i++) {

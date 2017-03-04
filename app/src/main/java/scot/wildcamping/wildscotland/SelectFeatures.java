@@ -57,7 +57,6 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     Boolean update;
 
     Button confirmFeatures;
-    Button cancelFeatures;
 
     double latitude;
     double longitude;
@@ -164,10 +163,8 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         }
 
         confirmFeatures = (Button)findViewById(R.id.confirmFeatures);
-        cancelFeatures = (Button)findViewById(R.id.cancelFeatures);
 
         confirmFeatures.setOnClickListener(this);
-        cancelFeatures.setOnClickListener(this);
 
         feature1box.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,39 +329,6 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
 
         switch (v.getId())
         {
-            case R.id.cancelFeatures:
-                Intent intent;
-                if(update){
-                    intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
-
-                    //bundle for update
-                    intent.putExtra("arrayPosition", arrayPos);
-                    intent.putExtra("feature1", feature1);
-                    intent.putExtra("feature2", feature2);
-                    intent.putExtra("feature3", feature3);
-                    intent.putExtra("feature4", feature4);
-                    intent.putExtra("feature5", feature5);
-                    intent.putExtra("feature6", feature6);
-                    intent.putExtra("feature7", feature7);
-                    intent.putExtra("feature8", feature8);
-                    intent.putExtra("feature9", feature9);
-                    intent.putExtra("feature10", feature10);
-                } else {
-                    intent = new Intent(getApplicationContext(), AddSite.class);
-
-                    //bundle for add
-                    intent.putExtra("image", image);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("title", title);
-                    intent.putExtra("description", description);
-                    intent.putExtra("rating", rating);
-                }
-
-                startActivity(intent);
-                finish();
-                break;
-
             case R.id.confirmFeatures:
 
                 Intent i;

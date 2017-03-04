@@ -89,7 +89,6 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
                     int size = jObj.getInt("size");
-                    int sizeImages = jObj.getInt("sizeImages");
                     int ownedCnt = 0;
                     int knownCnt = 0;
 
@@ -123,21 +122,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature10(jsonSite.getString("feature10"));
                         siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
 
-                        for (int j = 0; j < sizeImages; j++) {
-
-                            JSONObject jsonImage = jObj.getJSONObject("image" + j);
-                            //Image imageClass = new Image();
-                            //imageClass.setImage(jsonImage.getString("image"));
-                            //imageClass.setCid(jsonImage.getString("campsite_fk"));
-
-                            //images.put(j, imageClass);
-
-                            if(siteClass.getCid().equals(jsonImage.getString("campsite_fk"))){
-                                siteClass.setImage(jsonImage.getString("image"));
-                            }
-                        }
-
                         if (jsonSite.getString("site_admin").equals(email)) {
+                            System.out.println("owned site FOUND!");
                             owned.put(ownedCnt, siteClass);
                             ownedCnt++;
                         } else {

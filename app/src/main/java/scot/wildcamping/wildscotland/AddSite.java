@@ -1,53 +1,34 @@
 package scot.wildcamping.wildscotland;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.model.Image;
-import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
 public class AddSite extends AppCompatActivity implements View.OnClickListener {
@@ -59,9 +40,16 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     RelativeLayout addImage;
     RelativeLayout siteBuilder;
     RelativeLayout addFeature;
+    TextView or;
+
     ImageView image1;
     ImageView image2;
     ImageView image3;
+
+    ImageView distantTerrainFeatures;
+    ImageView nearbyTerrainFeatures;
+    ImageView immediateTerrainFeatures;
+
     RatingBar ratingBar;
     Button confirmCreation;
     double latitude;
@@ -72,14 +60,15 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     String descReq;
     String ratingReq;
     float rating;
-    int distant;
-    int nearby;
-    int immediate;
+    String distant;
+    String nearby;
+    String immediate;
+    CheckBox imagePermission;
+    Boolean permission;
     String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
     Uri targetUri;
-    String image;
     String imageMultiLine;
 
     String titlePassed;
@@ -103,6 +92,13 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     Boolean imageUpload = false;
     knownSite inst = new knownSite();
     int tempLocation;
+
+    Uri uri1;
+    Uri uri2;
+    Uri uri3;
+
+    SparseArray<Uri> imagesUri = new SparseArray<>();
+    SparseArray<String> image = new SparseArray<>();
     SparseArray<Image> temp = new SparseArray<>();
 
 
@@ -130,11 +126,22 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         addImage = (RelativeLayout)findViewById(R.id.addPhotoRel);
         siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
+        imagePermission = (CheckBox)findViewById(R.id.imagePermission);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         image1 = (ImageView)findViewById(R.id.image1);
         image2 = (ImageView)findViewById(R.id.image2);
         image3 = (ImageView)findViewById(R.id.image3);
+
+        or = (TextView)findViewById(R.id.or);
+
+        distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
+        nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
+        immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
+
+        distantTerrainFeatures.setVisibility(View.GONE);
+        nearbyTerrainFeatures.setVisibility(View.GONE);
+        immediateTerrainFeatures.setVisibility(View.GONE);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -149,6 +156,27 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             Lat.setText(lat);
             Lon.setText(lon);
 
+            distant = extras.getString("distantTerrain");
+            nearby = extras.getString("nearbyTerrain");
+            immediate = extras.getString("immediateTerrain");
+
+            if(distant != null && nearby != null && immediate != null){
+                int distantID = this.getResources().getIdentifier("drawable/"+ distant, null, this.getPackageName());
+                int nearbyID = this.getResources().getIdentifier("drawable/"+ nearby, null, this.getPackageName());
+                int immediateID = this.getResources().getIdentifier("drawable/"+ immediate, null, this.getPackageName());
+
+                distantTerrainFeatures.setImageResource(distantID);
+                nearbyTerrainFeatures.setImageResource(nearbyID);
+                immediateTerrainFeatures.setImageResource(immediateID);
+
+                distantTerrainFeatures.setVisibility(View.VISIBLE);
+                nearbyTerrainFeatures.setVisibility(View.VISIBLE);
+                immediateTerrainFeatures.setVisibility(View.VISIBLE);
+
+                addImage.setVisibility(View.GONE);
+                or.setVisibility(View.GONE);
+            }
+
             feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
             feature3 = extras.getBoolean("feature3");
@@ -161,9 +189,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             feature10 = extras.getBoolean("feature10");
 
             if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
-                addFeature.setBackgroundColor(green);
+                //addFeature.setBackgroundColor(green);
             } else {
-                addFeature.setBackgroundColor(gray);
+                //addFeature.setBackgroundColor(gray);
             }
 
             titlePassed = extras.getString("title");
@@ -173,10 +201,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             description.setText(descPassed);
 
             rating = extras.getFloat("rating");
-
-            distant = extras.getInt("distant");
-            nearby = extras.getInt("nearby");
-            immediate = extras.getInt("immediate");
 
             //float ratingFloat = (float)rating;
             ratingBar.setRating(rating);
@@ -195,12 +219,29 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
 
         if(imageUpload) {
-            temp = inst.getTemp();
-            image = temp.get(0).getImage();
-            System.out.println(image);
-            compress = StringToBitMap(image);
-            image1.setVisibility(View.VISIBLE);
-            image1.setImageBitmap(compress);
+
+            for(int i = 0; i < image.size(); i++) {
+                temp = inst.getTemp();
+                image.append(i, temp.get(i).getImage());
+                //System.out.println(image);
+                compress = StringToBitMap(image.get(i));
+
+                if(i == 0){
+                    image1.setVisibility(View.VISIBLE);
+                    image1.setImageBitmap(compress);
+                    siteBuilder.setVisibility(View.GONE);
+                    or.setVisibility(View.GONE);
+                } else if(i == 1){
+                    image2.setVisibility(View.VISIBLE);
+                    image2.setImageBitmap(compress);
+                } else if(i == 2){
+                    image3.setVisibility(View.VISIBLE);
+                    image3.setImageBitmap(compress);
+                }
+            }
+
+            siteBuilder.setVisibility(View.GONE);
+            or.setVisibility(View.GONE);
         }
 
         //setting onclick listeners
@@ -218,6 +259,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         {
             case R.id.addPhotoRel:
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
 
                 break;
@@ -225,6 +267,13 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             case R.id.siteBuilder:
 
                 Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilder.class);
+                siteBuilder.putExtra("image", imageUpload);
+                //intent.putExtra("temp", tempLocation);
+                siteBuilder.putExtra("latitude", latitude);
+                siteBuilder.putExtra("longitude", longitude);
+                siteBuilder.putExtra("title", title.getText().toString());
+                siteBuilder.putExtra("description", description.getText().toString());
+                siteBuilder.putExtra("rating", ratingBar.getRating());
                 startActivity(siteBuilder);
                 break;
 
@@ -269,9 +318,17 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                         if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                            String imageSingleLine = null;
-                            if(image != null) {
-                                imageSingleLine = image.replaceAll("[\r\n]+", "");
+                            //String imageSingleLine1 = null;
+                            //String imageSingleLine2 = null;
+                            //String imageSingleLine3 = null;
+
+                            //init number of images to be sent
+                            String[] imagesSingleLine = new String[3];
+                            if(image.size() != 0) {
+                                for(int i = 0; i< image.size(); i++){
+                                    imagesSingleLine[i] = image.get(i).toString().replaceAll("[\r\n]+", "");
+                                }
+                                //imageSingleLine1 = image.replaceAll("[\r\n]+", "");
                             }
 
                             titleReq = titleReq.replace("'", "\'");
@@ -280,7 +337,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                             //descReq = DatabaseUtils.sqlEscapeString(descReq);
 
                             try {
-                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
+                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imagesSingleLine).execute().get();
                                 //String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
                             } catch (ExecutionException e){
 
@@ -322,28 +379,65 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            targetUri = data.getData();
-            try{
-                compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
-                image = getStringImage(compress);
-                imageUpload = true;
 
-                Image upload = new Image();
-                upload.setImage(image);
-                upload.setCid("temp");
+            ClipData clip = data.getClipData();
 
-                temp = inst.getTemp();
+            for(int i = 0; i<clip.getItemCount(); i++){
+                ClipData.Item item = clip.getItemAt(i);
+
+                Uri uri = item.getUri();
+
+                imagesUri.append(i, uri);
+
+                /*if(i==1){
+                    uri1 = item.getUri();
+                } else if(i==2){
+                    uri2 = item.getUri();
+                } else if(i==3){
+                    uri3 = item.getUri();
+                }*/
+            }
+
+            //targetUri = data.getData();
 
 
-                temp.put(0, upload);
 
-                inst.setTemp(temp);
+            System.out.println("targetUri " + imagesUri.size());
 
-                image1.setVisibility(View.VISIBLE);
-                image1.setImageBitmap(compress);
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
+            for(int i = 0; i < imagesUri.size(); i++) {
+                System.out.println("image " + imagesUri.get(i));
+
+                try {
+                    compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(imagesUri.get(i)));
+                    //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
+                    image.append(i, getStringImage(compress));
+                    imageUpload = true;
+
+
+                    Image upload = new Image();
+                    upload.setImage(image.get(i));
+                    upload.setCid("temp"+i);
+
+                    temp = inst.getTemp();
+                    temp.put(i, upload);
+                    inst.setTemp(temp);
+
+                    if(i == 0){
+                        image1.setVisibility(View.VISIBLE);
+                        image1.setImageBitmap(compress);
+                        siteBuilder.setVisibility(View.GONE);
+                        or.setVisibility(View.GONE);
+                    } else if(i == 1){
+                        image2.setVisibility(View.VISIBLE);
+                        image2.setImageBitmap(compress);
+                    } else if(i == 2){
+                        image3.setVisibility(View.VISIBLE);
+                        image3.setImageBitmap(compress);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 
         }

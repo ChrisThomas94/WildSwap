@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:orientation="vertical">
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="15dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -191,45 +191,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/siteViewRating"
-        android:text="Rated By: 1"/>
+        android:text="Rated By: 1"
+        android:layout_margin="15dp"/>
 
+        <Button
+            android:id="@+id/editSite"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/registerhere_button"
+            android:text="Update"
+            android:textSize="18sp"
+            android:background="@color/colorLight"
+            android:textColor="#ffffff"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-
-    <View
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="#90909090"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
-
-            <Button
-                android:id="@+id/editSite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Update"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_toRightOf="@+id/deactivateSite"/>
-
-            <Button
-                android:id="@+id/deactivateSite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"
-                style="?android:attr/borderlessButtonStyle"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+        <Button
+            android:id="@+id/deactivateSite"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Delete"
+            android:layout_gravity="bottom"
+            android:textSize="18sp"
+            android:background="@color/cancel_anything"
+            android:textColor="#ffffff"/>
 
 </LinearLayout>
