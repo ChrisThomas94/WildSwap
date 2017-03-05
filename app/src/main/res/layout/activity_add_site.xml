@@ -77,59 +77,69 @@
                 android:padding="10dp"
                 android:layout_marginTop="20dp">
 
-                    <RelativeLayout
-                        android:id="@+id/addPhotoRel"
-                        android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/addPhotoRel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:padding="15dp"
+                    android:background="@drawable/rounded_grey_button">
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
+                        android:text="Add Image"
                         android:padding="15dp"
-                        android:background="@drawable/rounded_grey_button">
+                        android:textSize="@dimen/feature_text"
+                        android:layout_toRightOf="@+id/addPhoto"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Add Image"
-                            android:padding="15dp"
-                            android:textSize="@dimen/feature_text"
-                            android:layout_toRightOf="@+id/addPhoto"/>
+                    <ImageView
+                        android:layout_width="53dip"
+                        android:layout_height="53dip"
+                        android:scaleType="fitXY"
+                        android:id="@+id/addPhoto"
+                        android:src="@drawable/ic_add_a_photo_black_48dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
 
-                        <ImageView
-                            android:layout_width="53dip"
-                            android:layout_height="53dip"
-                            android:scaleType="fitXY"
-                            android:id="@+id/addPhoto"
-                            android:src="@drawable/ic_add_a_photo_black_48dp"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true" />
-                    </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/addedImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/image1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="fitXY"
                         android:adjustViewBounds="true"
-                        android:scaleType="centerInside"
                         android:visibility="gone"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"/>
 
                     <ImageView
                         android:id="@+id/image2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/image1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:visibility="gone"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"/>
 
                     <ImageView
                         android:id="@+id/image3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/image2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:adjustViewBounds="true"
                         android:scaleType="centerInside"
                         android:visibility="gone"
                         android:layout_marginTop="10dp"/>
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/or"

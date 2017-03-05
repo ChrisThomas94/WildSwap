@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:orientation="vertical">
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -193,45 +193,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ratingThumbnail"
-        android:text="Rated By"/>
+        android:text="Rated By"
+        android:padding="15dp"/>
 
-    <LinearLayout
+
+    <Button
+        android:id="@+id/contactSiteAdmin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="80dp"
+        android:layout_above="@+id/registerhere_button"
+        android:text="Contact Site Admin"
+        android:textSize="18sp"
+        android:background="@color/colorLight"
+        android:textColor="#ffffff"/>
 
-        <View
-            android:layout_height="1dp"
-            android:layout_width="match_parent"
-            android:background="#90909090"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"/>
+    <Button
+        android:id="@+id/updateKnown"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="Update"
+        android:layout_gravity="bottom"
+        android:textSize="18sp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#ffffff"/>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
-
-            <Button
-                android:id="@+id/contactSiteAdmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact Site Admin"
-                style="?android:attr/borderlessButtonStyle"/>
-
-            <Button
-                android:id="@+id/updateKnown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Update"
-                android:layout_toRightOf="@+id/contactSiteAdmin"
-                style="?android:attr/borderlessButtonStyle"/>
-
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/reportKnown"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="Report"
+        android:layout_gravity="bottom"
+        android:textSize="18sp"
+        android:background="@color/cancel_anything"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

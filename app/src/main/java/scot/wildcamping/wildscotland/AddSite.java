@@ -249,7 +249,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
-
     }
 
     @Override
@@ -315,6 +314,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                         titleReq = title.getText().toString();
                         descReq = description.getText().toString();
                         ratingReq = Float.toString(ratingBar.getRating());
+                        permission = imagePermission.isSelected();
 
                         if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
@@ -338,7 +338,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                             try {
                                 String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imagesSingleLine).execute().get();
-                                //String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
+                                //String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
                             } catch (ExecutionException e){
 
                             } catch (InterruptedException e){
@@ -378,69 +378,66 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
+        if(resultCode == RESULT_OK) {
 
             ClipData clip = data.getClipData();
 
-            for(int i = 0; i<clip.getItemCount(); i++){
-                ClipData.Item item = clip.getItemAt(i);
+            if (clip == null) {
+                Uri uri = data.getData();
+                imagesUri.append(0, uri);
+            } else {
 
-                Uri uri = item.getUri();
+                System.out.println("clip data: " + clip.getItemCount());
 
-                imagesUri.append(i, uri);
+                for (int i = 0; i < clip.getItemCount(); i++) {
+                    ClipData.Item item = clip.getItemAt(i);
 
-                /*if(i==1){
-                    uri1 = item.getUri();
-                } else if(i==2){
-                    uri2 = item.getUri();
-                } else if(i==3){
-                    uri3 = item.getUri();
-                }*/
-            }
+                    Uri uri = item.getUri();
 
-            //targetUri = data.getData();
+                    imagesUri.append(i, uri);
 
-
-
-            System.out.println("targetUri " + imagesUri.size());
-
-            for(int i = 0; i < imagesUri.size(); i++) {
-                System.out.println("image " + imagesUri.get(i));
-
-                try {
-                    compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(imagesUri.get(i)));
-                    //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
-                    image.append(i, getStringImage(compress));
-                    imageUpload = true;
-
-
-                    Image upload = new Image();
-                    upload.setImage(image.get(i));
-                    upload.setCid("temp"+i);
-
-                    temp = inst.getTemp();
-                    temp.put(i, upload);
-                    inst.setTemp(temp);
-
-                    if(i == 0){
-                        image1.setVisibility(View.VISIBLE);
-                        image1.setImageBitmap(compress);
-                        siteBuilder.setVisibility(View.GONE);
-                        or.setVisibility(View.GONE);
-                    } else if(i == 1){
-                        image2.setVisibility(View.VISIBLE);
-                        image2.setImageBitmap(compress);
-                    } else if(i == 2){
-                        image3.setVisibility(View.VISIBLE);
-                        image3.setImageBitmap(compress);
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 }
             }
-
         }
+
+        System.out.println("targetUri " + imagesUri.size());
+
+        for(int i = 0; i < imagesUri.size(); i++) {
+            System.out.println("image " + imagesUri.get(i));
+
+            try {
+                compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(imagesUri.get(i)));
+                //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
+                image.append(i, getStringImage(compress));
+                imageUpload = true;
+
+
+                Image upload = new Image();
+                upload.setImage(image.get(i));
+                upload.setCid("temp"+i);
+
+                temp = inst.getTemp();
+                temp.put(i, upload);
+                inst.setTemp(temp);
+
+                if(i == 0){
+                    image1.setVisibility(View.VISIBLE);
+                    image1.setImageBitmap(compress);
+                    siteBuilder.setVisibility(View.GONE);
+                    or.setVisibility(View.GONE);
+                } else if(i == 1){
+                    image2.setVisibility(View.VISIBLE);
+                    image2.setImageBitmap(compress);
+                } else if(i == 2){
+                    image3.setVisibility(View.VISIBLE);
+                    image3.setImageBitmap(compress);
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public String getStringImage(Bitmap bmp){

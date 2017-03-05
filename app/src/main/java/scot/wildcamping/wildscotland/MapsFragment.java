@@ -201,24 +201,41 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         mMapView.getMapAsync(this);
 
         if(register){
-            showcase();
+            Boolean newCamper = false;
+            String answer = AppController.getString(this.getActivity(),"newCamper");
+            System.out.println("new camper answer: "+answer);
+            if(answer.equals("2131755550")){
+                newCamper = true;
+                showcase(newCamper);
+            } else {
+                showcase(newCamper);
+            }
         }
 
         return v;
 
     }
 
-    public void showcase(){
+    public void showcase(Boolean newCamper){
         RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         // This aligns button to the bottom left side of screen
         lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lps.setMargins(90,0,0,90);
 
+        String addWildLocationString = "";
+
+        if(newCamper){
+            //Create better text for when a new camper installs the app, point them to additional info
+            addWildLocationString = "I see that you have never been wild camping before...";
+        } else {
+            addWildLocationString = "This button allows you to add a wild location to the map.";
+        }
+
         ShowcaseView sv = new ShowcaseView.Builder(getActivity())
                 .setTarget(new ViewTarget(addSite))
                 .setContentTitle("Adding Wild Locations")
-                .setContentText("This button allows you to add a wild location to the map.")
+                .setContentText(addWildLocationString)
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme)
                 .setShowcaseEventListener(new OnShowcaseEventListener() {
@@ -258,7 +275,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 .build();
 
         sv.setButtonPosition(lps);
-
     }
 
 
@@ -312,6 +328,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         //add the unknown sites as cluster items
         setUpClustering(googleMap);
+
+        //show initial popup if user is newCamper
 
     }
 

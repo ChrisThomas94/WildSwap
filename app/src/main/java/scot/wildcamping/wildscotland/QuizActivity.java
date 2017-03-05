@@ -124,17 +124,10 @@ public class QuizActivity extends AppCompatActivity {
                     } catch (ExecutionException e) {
 
                     }
-
-                    /*try {     unnecessary??
-                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }*/
                 }
 
                 if(isNew) {
+                    AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answer2));
                     Intent intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("new", true);
                     startActivity(intent);
