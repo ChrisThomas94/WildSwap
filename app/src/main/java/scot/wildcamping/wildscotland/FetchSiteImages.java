@@ -2,9 +2,14 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.SparseArray;
 
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,13 +20,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.model.Question;
-import scot.wildcamping.wildscotland.model.Quiz;
+import scot.wildcamping.wildscotland.model.Gallery;
+import scot.wildcamping.wildscotland.model.Site;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 /**
- * Created by Chris on 09-Apr-16.
+ * Created by Chris on 04-Mar-16.
  */
-public class FetchQuestions extends AsyncTask<String, String, String> {
+public class FetchSiteImages extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -31,12 +37,22 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
     private ProgressDialog pDialogKnownSites;
     private Context context;
     String user;
+    String cid;
     String email;
-    SparseArray<Question> arrayQuestions = new SparseArray<>();
+    final int relatOwn = 90;
+    final int relatTrade = 45;
+    String image;
+    SparseArray<Site> map = new SparseArray<>();
+    SparseArray<Site> owned = new SparseArray<>();
+    SparseArray<Gallery> images = new SparseArray<>();
+    SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
+    SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
 
-    public FetchQuestions(Context context, String email) {
+
+
+    public FetchSiteImages(Context context, String cid) {
         this.context = context;
-        this.email = email;
+        this.cid = cid;
     }
 
     /**
@@ -46,7 +62,7 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         pDialogKnownSites = new ProgressDialog(context);
-        pDialogKnownSites.setMessage("Fetching Questions ...");
+        pDialogKnownSites.setMessage("Fetching Images ...");
         pDialogKnownSites.setIndeterminate(false);
         pDialogKnownSites.setCancelable(true);
         pDialogKnownSites.show();
@@ -57,13 +73,12 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        if(email == null){
-            user = AppController.getString(context, "user");
-        }
+        //user = AppController.getString(context, "uid");
+        //email = AppController.getString(context, "email");
 
         // issue the post request
         try {
-            String json = getQuestions(user);
+            String json = getImages(cid);
             System.out.println("json: " + json);
 
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
@@ -74,32 +89,29 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
-                    int size = jObj.getInt("size");
 
-                    AppController.setString(context, "user_name", jObj.getString("name"));
-                    AppController.setString(context, "user_email", jObj.getString("email"));
-                    AppController.setString(context, "user_bio", jObj.getString("bio"));
-                    AppController.setString(context, "user_profile_pic", jObj.getString("profile_pic"));
+                    JSONArray jsonArr = jObj.getJSONArray("images");
+                    JSONObject jsonImages = jsonArr.getJSONObject(0);
+                    String image1 = jsonImages.getString("image1");
+                    String image2 = jsonImages.getString("image2");
+                    String image3 = jsonImages.getString("image3");
 
-                    JSONObject jsonQuestion;
-                    Question question;
-                    for (int i = 0; i < size; i++) {
-                        jsonQuestion = jObj.getJSONObject("question" + i);
-                        question = new Question();
+                    Gallery images = new Gallery();
+                    images.setCid(cid);
+                    images.setImage1(image1);
+                    images.setImage2(image2);
+                    images.setImage3(image3);
 
-                        question.setQuestion(jsonQuestion.getString("question"));
-                        question.setAnswer1(jsonQuestion.getString("answer1"));
-                        question.setAnswer2(jsonQuestion.getString("answer2"));
-                        question.setAnswer3(jsonQuestion.getString("answer3"));
-                        question.setAnswer4(jsonQuestion.getString("answer4"));
-                        question.setAnswer(jsonQuestion.getInt("answer"));
+                    String id = cid.substring(cid.length()-8);
+                    int cidEnd = Integer.parseInt(id);
 
-                        arrayQuestions.put(i, question);
+                    System.out.println("cid End: "+cidEnd);
 
-                    }
+                    SparseArray<Gallery> gallery = new SparseArray<>();
+                    gallery.put(cidEnd, images);
 
-                    Quiz inst = new Quiz();
-                    inst.setQuestions(arrayQuestions);
+                    knownSite inst = new knownSite();
+                    inst.setImages(gallery);
 
                 } else {
                     //error message
@@ -155,9 +167,20 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String getQuestions(String uid) {
-        return "{\"tag\":\"" + "questions" + "\","
-                + "\"email\":\"" + email+ "\"}";
+    private String getImages(String cid) {
+        return "{\"tag\":\"" + "images" + "\","
+                + "\"cid\":\"" + cid + "\"}";
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
 }

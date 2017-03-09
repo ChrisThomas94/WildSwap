@@ -12,11 +12,20 @@ public class knownSite {
     private static int ownedSitesSize;
     private static int tempSize;
 
-
+    private static SparseArray<Gallery> images = new SparseArray<>();
     private static SparseArray<Site> knownSitesMap = new SparseArray<>();
     private static SparseArray<Site> unknownSitesMap = new SparseArray<>();
     private static SparseArray<Site> ownedSitesMap = new SparseArray<>();
-    private static SparseArray<Image> temp = new SparseArray<>();
+    private static SparseArray<Gallery> temp = new SparseArray<>();
+
+
+    public void setImages(SparseArray<Gallery> images){
+        this.images = images;
+    }
+
+    public SparseArray<Gallery> getImages(){
+        return images;
+    }
 
 
     public void setKnownSiteSize(int siteSize) {
@@ -67,11 +76,11 @@ public class knownSite {
         return ownedSitesMap;
     }
 
-    public void setTemp(SparseArray<Image> temp){
+    public void setTemp(SparseArray<Gallery> temp){
         this.temp = temp;
     }
 
-    public SparseArray<Image> getTemp(){
+    public SparseArray<Gallery> getTemp(){
         return temp;
     }
 

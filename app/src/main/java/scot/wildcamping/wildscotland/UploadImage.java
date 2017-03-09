@@ -80,7 +80,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
             boolean error = resp.getBoolean("error");
             if (!error) {
 
-                Toast.makeText(context, "Image Uploaded!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Gallery Uploaded!", Toast.LENGTH_LONG).show();
 
             }else {
                 String errMsg = resp.getString("error_msg");

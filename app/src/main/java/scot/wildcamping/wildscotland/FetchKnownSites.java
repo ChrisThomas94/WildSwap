@@ -21,7 +21,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -44,9 +44,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     String image;
     SparseArray<Site> map = new SparseArray<>();
     SparseArray<Site> owned = new SparseArray<>();
-    SparseArray<Image> images = new SparseArray<>();
-    SparseArray<Image> imagesOwnedSite = new SparseArray<>();
-    SparseArray<Image> imagesKnownSite = new SparseArray<>();
+    SparseArray<Gallery> images = new SparseArray<>();
+    SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
+    SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
 
 
 

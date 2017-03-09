@@ -28,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.knownSite;
 
 public class AddSite extends AppCompatActivity implements View.OnClickListener {
@@ -99,7 +99,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
     SparseArray<Uri> imagesUri = new SparseArray<>();
     SparseArray<String> image = new SparseArray<>();
-    SparseArray<Image> temp = new SparseArray<>();
+    SparseArray<Gallery> temp = new SparseArray<>();
 
 
     private Bitmap bitmap;
@@ -222,7 +222,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             for(int i = 0; i < image.size(); i++) {
                 temp = inst.getTemp();
-                image.append(i, temp.get(i).getImage());
+                image.append(i, temp.get(i).getImage1());
                 //System.out.println(image);
                 compress = StringToBitMap(image.get(i));
 
@@ -412,8 +412,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 imageUpload = true;
 
 
-                Image upload = new Image();
-                upload.setImage(image.get(i));
+                Gallery upload = new Gallery();
+                upload.setImage1(image.get(i));
                 upload.setCid("temp"+i);
 
                 temp = inst.getTemp();

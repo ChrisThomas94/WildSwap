@@ -1,8 +1,6 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,25 +8,23 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -60,6 +56,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
     SparseArray<Site> owned = new SparseArray<>();
     int RESULT_LOAD_IMAGE = 0;
     ImageView addImage;
+    SparseArray<Gallery> images = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +94,30 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             arrayPos = extras.getInt("arrayPosition");
             cid = extras.getString("cid");
             prevState = extras.getInt("prevState");
+
+            try{
+                String images = new FetchSiteImages(this,cid).execute().get();
+
+            } catch (InterruptedException e) {
+
+            }catch (ExecutionException e) {
+
+            }
         }
 
         knownSite inst = new knownSite();
         owned = inst.getOwnedSitesMap();
+
+        knownSite im = new knownSite();
+        images = im.getImages();
+
+        String id = cid.substring(cid.length()-8);
+        int cidEnd = Integer.parseInt(id);
+
+        System.out.println("cid End2: "+cidEnd);
+
+        Gallery gallery = images.get(cidEnd);
+        //System.out.println("gallery: " + gallery.getCid());
 
         Site focused = owned.get(arrayPos);
 
@@ -109,31 +126,31 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         rating.setRating((focused.getRating()).floatValue());
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
-        if(focused.getImage() != null) {
-            if (focused.getImage().equals("null")) {
+        if(gallery.getImage1() != null) {
+            if (gallery.getImage1().equals("null")) {
                 image1.setVisibility(View.GONE);
             } else {
-                imageBit = StringToBitMap(focused.getImage());
+                imageBit = StringToBitMap(gallery.getImage1());
                 image1.setImageBitmap(imageBit);
                 image1.setVisibility(View.VISIBLE);
             }
         }
 
-        if(focused.getImage2() != null) {
-            if (focused.getImage2().equals("null")) {
+        if(gallery.getImage2() != null) {
+            if (gallery.getImage2().equals("null")) {
                 image2.setVisibility(View.GONE);
             } else {
-                imageBit = StringToBitMap(focused.getImage2());
+                imageBit = StringToBitMap(gallery.getImage2());
                 image2.setImageBitmap(imageBit);
                 image2.setVisibility(View.VISIBLE);
             }
         }
 
-        if(focused.getImage3() != null) {
-            if (focused.getImage3().equals("null")) {
+        if(gallery.getImage3() != null) {
+            if (gallery.getImage3().equals("null")) {
                 image3.setVisibility(View.GONE);
             } else {
-                imageBit = StringToBitMap(focused.getImage3());
+                imageBit = StringToBitMap(gallery.getImage3());
                 image3.setImageBitmap(imageBit);
                 image3.setVisibility(View.VISIBLE);
             }

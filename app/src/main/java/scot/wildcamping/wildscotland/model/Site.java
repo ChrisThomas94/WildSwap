@@ -40,7 +40,7 @@ public class Site {
     private String image4;
     private String image5;
 
-    private SparseArray<Image> images;
+    private SparseArray<Gallery> images;
 
     public void setCid(String cid){
         this.cid = cid;
@@ -239,11 +239,11 @@ public class Site {
         return image3;
     }
 
-    public void setFetchedImages(SparseArray<Image> images){
+    public void setFetchedImages(SparseArray<Gallery> images){
         this.images = images;
     }
 
-    public SparseArray<Image> getFetchedImages(){
+    public SparseArray<Gallery> getFetchedImages(){
         return images;
     }
 }

@@ -1,42 +1,29 @@
 package scot.wildcamping.wildscotland;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -85,7 +72,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     Boolean update = true;
     Boolean lonLat;
     Boolean imageUpload = false;
-    SparseArray<Image> temp = new SparseArray<>();
+    SparseArray<Gallery> temp = new SparseArray<>();
     knownSite inst = new knownSite();
 
     int arrayPos;
@@ -169,7 +156,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
         if(imageUpload) {
             temp = inst.getTemp();
-            image = temp.get(0).getImage();
+            image = temp.get(0).getImage1();
             System.out.println(image);
             bitmap = StringToBitMap(image);
             image1.setVisibility(View.VISIBLE);
@@ -301,8 +288,8 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
                 imageUpload = true;
 
-                Image upload = new Image();
-                upload.setImage(image);
+                Gallery upload = new Gallery();
+                upload.setImage1(image);
                 upload.setCid("temp");
 
                 temp = inst.getTemp();

@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.adapter.QuestionListAdapter;
-import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Question;
 import scot.wildcamping.wildscotland.model.Quiz;
 

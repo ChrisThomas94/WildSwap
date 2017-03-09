@@ -21,13 +21,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Image;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -68,7 +66,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     RatingBar rating;
     Site focused;
     knownSite inst = new knownSite();
-    SparseArray<Image> temp = new SparseArray<>();
+    SparseArray<Gallery> temp = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,7 +284,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                 newImage = getStringImage(newBitmap);
                 //imageUpload = true;
 
-                //Image upload = new Image();
+                //Gallery upload = new Gallery();
                 //upload.setImage(newImage);
                 //upload.setCid("temp");
 

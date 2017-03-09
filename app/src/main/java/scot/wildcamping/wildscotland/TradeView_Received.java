@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Image;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
