@@ -160,6 +160,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             nearby = extras.getString("nearbyTerrain");
             immediate = extras.getString("immediateTerrain");
 
+            System.out.println("nearby get string: " + nearby);
+
             if(distant != null && nearby != null && immediate != null){
                 int distantID = this.getResources().getIdentifier("drawable/"+ distant, null, this.getPackageName());
                 int nearbyID = this.getResources().getIdentifier("drawable/"+ nearby, null, this.getPackageName());
@@ -314,7 +316,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                         titleReq = title.getText().toString();
                         descReq = description.getText().toString();
                         ratingReq = Float.toString(ratingBar.getRating());
-                        permission = imagePermission.isSelected();
+                        permission = imagePermission.isChecked();
 
                         if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
@@ -337,8 +339,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                             //descReq = DatabaseUtils.sqlEscapeString(descReq);
 
                             try {
-                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imagesSingleLine).execute().get();
-                                //String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine).execute().get();
+                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imagesSingleLine).execute().get();
                             } catch (ExecutionException e){
 
                             } catch (InterruptedException e){

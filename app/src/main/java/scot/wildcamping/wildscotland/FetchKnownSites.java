@@ -106,10 +106,25 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setPosition(position);
                         siteClass.setCid(jsonSite.getString("unique_cid"));
                         siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
+                        siteClass.setLat(lat);
+                        siteClass.setLon(lon);
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("avr_rating"));
                         siteClass.setRatedBy(jsonSite.getInt("no_of_raters"));
+
+                        siteClass.setPermission(jsonSite.getString("permission"));
+                        siteClass.setDistant(jsonSite.getString("distantTerrain"));
+                        siteClass.setNearby(jsonSite.getString("nearbyTerrain"));
+                        siteClass.setImmediate(jsonSite.getString("immediateTerrain"));
+
+                        /*SparseArray<String> features = new SparseArray<>();
+
+                        for(int j = 1; j<11; j++){
+                            features.append(j, jsonSite.getString("feature"+j));
+                        }
+                        siteClass.setFeatures(features);*/
+
                         siteClass.setFeature1(jsonSite.getString("feature1"));
                         siteClass.setFeature2(jsonSite.getString("feature2"));
                         siteClass.setFeature3(jsonSite.getString("feature3"));

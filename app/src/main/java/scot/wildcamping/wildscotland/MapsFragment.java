@@ -655,7 +655,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            //Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);

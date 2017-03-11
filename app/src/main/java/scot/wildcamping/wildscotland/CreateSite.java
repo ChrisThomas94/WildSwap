@@ -52,9 +52,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Boolean feature9;
     Boolean feature10;
 
-    int distant;
-    int nearby;
-    int immediate;
+    Boolean permission;
+    String distant;
+    String nearby;
+    String immediate;
     String[] images;
     String tag = "addSite";
     String email;
@@ -62,14 +63,13 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Double latLowerBound;
     Double lonUpperBound;
     Double lonLowerBound;
-    Double distance;
 
     String uid;
     String postResponse;
     SparseArray<Site> ownedSites = new SparseArray<>();
     int ownedSitesSize;
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] images) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating,Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] images) {
 
         this.context = context;
         this.relat = relationship;
@@ -90,6 +90,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.feature9 = feature9;
         this.feature10 = feature10;
 
+        this.permission = permission;
         this.distant = distant;
         this.nearby = nearby;
         this.immediate = immediate;
@@ -134,7 +135,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, email, relat, lat, lon, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, images, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
+            String json = addSite(uid, email, relat, lat, lon, title, description, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, images, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
@@ -161,6 +162,11 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setDescription(jsonSite.getString("description"));
                     newSite.setRating(jsonSite.getDouble("rating"));
 
+                    newSite.setPermission(jsonSite.getString("permission"));
+                    newSite.setDistant(jsonSite.getString("distantTerrain"));
+                    newSite.setNearby(jsonSite.getString("nearbyTerrain"));
+                    newSite.setImmediate(jsonSite.getString("immediateTerrain"));
+
                     newSite.setFeature1(jsonSite.getString("feature1"));
                     newSite.setFeature2(jsonSite.getString("feature2"));
                     newSite.setFeature3(jsonSite.getString("feature3"));
@@ -172,10 +178,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setFeature9(jsonSite.getString("feature9"));
                     newSite.setFeature10(jsonSite.getString("feature10"));
 
-                    //newSite.setDistant(jsonSite.getInt("distant"));
-                    //newSite.setNearby(jsonSite.getInt("nearby"));
-                    //newSite.setImmediate(jsonSite.getInt("immediate"));
-                    //newSite.setImage(jsonSite.getString("image"));
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
                     knownSite inst = new knownSite();
@@ -184,7 +186,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     System.out.println("owned site added");
                     ownedSites.put(ownedSitesSize, newSite);
                     inst.setOwnedSitesMap(ownedSites);
-
 
                 } else {
 
@@ -236,7 +237,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
         return "{\"tag\":\"" + tag + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"email\":\"" + email + "\","
@@ -246,6 +247,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
                 + "\"rating\":\"" + rating + "\","
+                + "\"permission\":\"" + permission + "\","
+                + "\"distant\":\"" + distant + "\","
+                + "\"nearby\":\"" + nearby + "\","
+                + "\"immediate\":\"" + immediate + "\","
                 + "\"feature1\":\"" + feature1 + "\","
                 + "\"feature2\":\"" + feature2 + "\","
                 + "\"feature3\":\"" + feature3 + "\","

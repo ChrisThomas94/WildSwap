@@ -18,6 +18,10 @@ public class Site {
     private String description;
     private Double rating;
     private int ratedBy;
+    private Double lat;
+    private Double lon;
+
+    private SparseArray<String> features;
 
     private String feature1;
     private String feature2;
@@ -30,9 +34,10 @@ public class Site {
     private String feature9;
     private String feature10;
 
-    private int distant;
-    private int nearby;
-    private int immediate;
+    private String permission;
+    private String distant;
+    private String nearby;
+    private String immediate;
 
     private String image;
     private String image2;
@@ -41,6 +46,30 @@ public class Site {
     private String image5;
 
     private SparseArray<Gallery> images;
+
+    public void setFeatures(SparseArray<String> features){
+        this.features = features;
+    }
+
+    public SparseArray<String> getFeatures(){
+        return features;
+    }
+
+    public void setLat(Double lat){
+        this.lat = lat;
+    }
+
+    public Double getLat(){
+        return lat;
+    }
+
+    public void setLon(Double lon){
+        this.lon = lon;
+    }
+
+    public Double getLon(){
+        return lon;
+    }
 
     public void setCid(String cid){
         this.cid = cid;
@@ -195,24 +224,36 @@ public class Site {
         return feature10;
     }
 
-    public void setDistant(int distant){
+    public void setPermission(String permission){
+        this.permission = permission;
+    }
+
+    public String getPermission(){
+        return permission;
+    }
+
+    public void setDistant(String distant){
         this.distant = distant;
     }
 
-    public int getDistant(){
+    public String getDistant(){
         return distant;
     }
 
-    public void setNearby(int nearby){
+    public void setNearby(String nearby){
         this.nearby = nearby;
     }
 
-    public int getNearby(){
+    public String getNearby(){
         return nearby;
     }
 
-    public void setImmediate(int immediate){
+    public void setImmediate(String immediate){
         this.immediate = immediate;
+    }
+
+    public String getImmediate(){
+        return immediate;
     }
 
     public void setImage(String image){

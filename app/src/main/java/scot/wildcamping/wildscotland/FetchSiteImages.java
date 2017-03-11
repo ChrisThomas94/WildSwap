@@ -105,8 +105,6 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
                     String id = cid.substring(cid.length()-8);
                     int cidEnd = Integer.parseInt(id);
 
-                    System.out.println("cid End: "+cidEnd);
-
                     SparseArray<Gallery> gallery = new SparseArray<>();
                     gallery.put(cidEnd, images);
 

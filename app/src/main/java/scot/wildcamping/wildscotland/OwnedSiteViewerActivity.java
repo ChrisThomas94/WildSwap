@@ -8,15 +8,17 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -31,7 +33,7 @@ import scot.wildcamping.wildscotland.model.knownSite;
 /**
  * Created by Chris on 26-Feb-16.
  */
-public class OwnedSiteActivity extends AppCompatActivity implements View.OnClickListener {
+public class OwnedSiteViewerActivity extends AppCompatActivity implements View.OnClickListener {
 
     int arrayPos;
     Double latitude;
@@ -40,6 +42,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
     String titleBun;
     String descriptionBun;
     Double ratingBun;
+    SparseArray<String> features;
     Boolean feature1 = true;
     Boolean feature2 = true;
     Boolean feature3 = true;
@@ -69,6 +72,8 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
 
         Button back = (Button)findViewById(R.id.deactivateSite);
         Button edit = (Button)findViewById(R.id.editSite);
+        TextView lat = (TextView)findViewById(R.id.lat);
+        TextView lon = (TextView)findViewById(R.id.lon);
         TextView title = (TextView)findViewById(R.id.siteViewTitle);
         TextView description = (TextView)findViewById(R.id.siteViewDescription);
         RatingBar rating = (RatingBar)findViewById(R.id.siteViewRating);
@@ -85,8 +90,12 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ImageView image1 = (ImageView)findViewById(R.id.image1);
         ImageView image2 = (ImageView)findViewById(R.id.image2);
         ImageView image3 = (ImageView)findViewById(R.id.image3);
+        ImageView distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
+        ImageView nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
+        ImageView immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
         addImage = (ImageView)findViewById(R.id.addImage);
         TextView ratedBy = (TextView)findViewById(R.id.ratedBy);
+        LinearLayout featuresBackground = (LinearLayout)findViewById(R.id.featuresBackground);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -116,6 +125,12 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
 
         Gallery gallery = images.get(cidEnd);
         Site focused = owned.get(arrayPos);
+
+        latitude = focused.getLat();
+        longitude = focused.getLon();
+
+        lat.setText("Latitude: "+latitude.toString());
+        lon.setText("Longitude: "+longitude.toString());
 
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
@@ -158,6 +173,41 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             image3.setVisibility(View.GONE);
         }
 
+        if(focused.getDistant().equals("null") && focused.getNearby().equals("null") && focused.getImmediate().equals("null")) {
+            distantTerrainFeatures.setVisibility(View.GONE);
+            nearbyTerrainFeatures.setVisibility(View.GONE);
+            immediateTerrainFeatures.setVisibility(View.GONE);
+
+        } else if(!focused.getDistant().equals("") && !focused.getNearby().equals("") && !focused.getImmediate().equals("")){
+            int distantID = this.getResources().getIdentifier("drawable/"+ focused.getDistant(), null, this.getPackageName());
+            int nearbyID = this.getResources().getIdentifier("drawable/"+ focused.getNearby(), null, this.getPackageName());
+            int immediateID = this.getResources().getIdentifier("drawable/"+ focused.getImmediate(), null, this.getPackageName());
+
+            distantTerrainFeatures.setImageResource(distantID);
+            nearbyTerrainFeatures.setImageResource(nearbyID);
+            immediateTerrainFeatures.setImageResource(immediateID);
+
+            distantTerrainFeatures.setVisibility(View.VISIBLE);
+            nearbyTerrainFeatures.setVisibility(View.VISIBLE);
+            immediateTerrainFeatures.setVisibility(View.VISIBLE);
+
+            addImage.setVisibility(View.GONE);
+        } else {
+            distantTerrainFeatures.setVisibility(View.GONE);
+            nearbyTerrainFeatures.setVisibility(View.GONE);
+            immediateTerrainFeatures.setVisibility(View.GONE);
+        }
+
+        /*features = focused.getFeatures();
+        for (int i = 0; i<features.size(); i++){
+            if(features.get(i+1).equals("0")){
+                String featureID = "feature"+(i+1)+"Image";
+
+                feature1Image.setVisibility(View.GONE);
+                feature1 = false;
+            }
+        }*/
+
         if(focused.getFeature1().equals("0")){
             feature1Image.setVisibility(View.GONE);
             feature1 = false;
@@ -197,6 +247,10 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         if(focused.getFeature10().equals("0")){
             feature10Image.setVisibility(View.GONE);
             feature10 = false;
+        }
+
+        if(!feature1 && !feature2 && !feature3 && !feature4 && !feature5 && !feature6 && !feature7 && !feature8 && !feature9 && !feature10){
+            featuresBackground.setVisibility(View.GONE);
         }
 
         back.setOnClickListener(this);
@@ -249,7 +303,7 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.editSite:
-                intent = new Intent(getApplicationContext(),UpdateSiteActivity.class);
+                intent = new Intent(getApplicationContext(),UpdateSiteViewerActivity.class);
                 //bundle all current details into "add site"
                 intent.putExtra("arrayPosition", arrayPos);
 
@@ -291,22 +345,25 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                Intent intent = null;
+                //Intent intent = null;
                 if(prevState == 1) {
-                    intent = new Intent(getApplicationContext(),Sites.class);
+                    //intent = new Intent(getApplicationContext(),Sites.class);
                     //intent.putExtra("fragment", 1);
-                    startActivity(intent);
-                    finish();
+                    //startActivity(intent);
+                    //finish();
                 } else {
                     finish();
                 }
                 return true;
 
-            case R.id.addImage:
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            case R.id.showOnMap:
+                Intent intent = new Intent(this, MainActivity_Spinner.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("add", true);
+                startActivity(intent);
+                finish();
 
-                break;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
@@ -327,6 +384,13 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             }
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.site_viewer, menu);
+        return true;
     }
 
     public String getStringImage(Bitmap bmp){

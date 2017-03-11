@@ -131,6 +131,11 @@
             android:theme="@style/AppTheme"/>
 
         <activity
+            android:name=".OwnedSiteViewerActivity"
+            android:label="Owned Site"
+            android:theme="@style/AppTheme"/>
+
+        <activity
             android:name=".KnownSiteActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
@@ -170,6 +175,11 @@
             android:theme= "@style/AppTheme"/>
 
         <activity android:name=".UpdateSiteActivity"
+            android:label="Update Site"
+            android:theme= "@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".UpdateSiteViewerActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
