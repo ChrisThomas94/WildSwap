@@ -8,9 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import scot.wildcamping.wildscotland.BioFragment;
-import scot.wildcamping.wildscotland.ClosedTradesFragment;
+import scot.wildcamping.wildscotland.SentTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
-import scot.wildcamping.wildscotland.OpenTradesFragment;
+import scot.wildcamping.wildscotland.ReceivedTradesFragment;
 import scot.wildcamping.wildscotland.QuestionFragment;
 import scot.wildcamping.wildscotland.YourSitesFragment;
 
@@ -39,8 +39,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         if(position == 0) // if the position is 0 we are returning the First tab
         {
             Fragment tab1;
-            if(Titles[0] == "Active"){
-                tab1 = new OpenTradesFragment();
+            if(Titles[0] == "Received"){
+                tab1 = new ReceivedTradesFragment();
             } else if (Titles[0] == "Bio"){
                 tab1 = new BioFragment();
             } else {
@@ -51,8 +51,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
             Fragment tab2;
-            if(Titles[1] == "History"){
-                tab2 = new ClosedTradesFragment();
+            if(Titles[1] == "Sent"){
+                tab2 = new SentTradesFragment();
             } else if(Titles[1] == "Questions"){
                 tab2 = new QuestionFragment();
             } else {

@@ -22,9 +22,9 @@ import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
 
-public class ClosedTradesFragment extends Fragment {
+public class TradeHistoryActivity extends Fragment {
 
-    public ClosedTradesFragment(){}
+    public TradeHistoryActivity(){}
 
     final String sent = "Sent";
     final String received = "Received";

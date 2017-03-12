@@ -76,6 +76,8 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 int size = jObj.getInt("size");
+                int sentCnt = 0;
+                int receivedCnt = 0;
                 int openCnt = 0;
                 int closedCnt = 0;
 
@@ -95,8 +97,12 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
                         if(jsonTrade.getString("sender_uid_fk").equals(user)){
                             trade.setUserRelation("Sent");
+                            sentTrades.put(sentCnt, trade);
+                            sentCnt++;
                         } else {
                             trade.setUserRelation("Received");
+                            receivedTrades.put(receivedCnt, trade);
+                            receivedCnt++;
                         }
 
                         if(jsonTrade.getInt("status") == 0){
@@ -113,6 +119,9 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
                     inst.setInactiveTrades(inactiveTrades);
                     inst.setInactiveTradesSize(inactiveTrades.size());
+
+                    inst.setSentTrades(sentTrades);
+                    inst.setReceivedTrades(receivedTrades);
 
                 } else {
                     //error message

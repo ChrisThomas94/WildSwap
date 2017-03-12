@@ -111,6 +111,8 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
 
         if(status != 0){
             cancel.setVisibility(View.INVISIBLE);
+        } else {
+            cancel.setOnClickListener(this);
         }
 
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);

@@ -6,7 +6,7 @@
     android:padding="15dp"
     android:layout_margin="15dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/clear_shadow">
+    android:background="@drawable/rounded_linear_layout">
 
     <TextView
         android:id="@+id/title"

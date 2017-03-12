@@ -12,19 +12,15 @@
         android:title="Refresh"/>
 
     <item
-        android:id="@+id/action_search1"
-        android:icon="@drawable/interface128"
-        android:orderInCategory="100"
-        android:layout_width="28dip"
-        android:layout_height="28dip"
-        android:scaleType="fitXY"
-        android:title="@string/action_search"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_settings1"
         android:orderInCategory="100"
         android:title="@string/action_settings"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_settings2"
+        android:orderInCategory="100"
+        android:title="Trade History"
         app:showAsAction="never"/>
 
 </menu>

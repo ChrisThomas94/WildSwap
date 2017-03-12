@@ -51,7 +51,7 @@ public class TradeListAdapter extends BaseAdapter{
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.fragment_open_trades_list, null);
+            convertView = mInflater.inflate(R.layout.fragment_trades_list, null);
         }
 
         RelativeLayout trade = (RelativeLayout) convertView.findViewById(R.id.trade);

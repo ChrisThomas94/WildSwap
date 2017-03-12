@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +18,16 @@ import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
 
-public class OpenTradesFragment extends Fragment {
+public class ReceivedTradesFragment extends Fragment {
 	
-	public OpenTradesFragment(){}
+	public ReceivedTradesFragment(){}
 
     final String sent = "Sent";
     final String received = "Received";
 
-    SparseArray<Trade> activeTrades;
+    //SparseArray<Trade> activeTrades;
+    SparseArray<Trade> receivedTrades = new SparseArray<>();
+
     StoredTrades trades;
 
     private TradeListAdapter adapter;
@@ -43,12 +44,9 @@ public class OpenTradesFragment extends Fragment {
         TextView empty = (TextView) rootView.findViewById(R.id.empty);
 
         trades = new StoredTrades();
-        activeTrades = new SparseArray<>();
-        activeTrades = trades.getActiveTrades();
+        receivedTrades = trades.getReceivedTrades();
 
-        if(activeTrades.size() == 0){
-            empty.setVisibility(View.VISIBLE);
-        } else {
+        if(receivedTrades.size() > 0){
             empty.setVisibility(View.GONE);
         }
 
@@ -57,20 +55,20 @@ public class OpenTradesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent;
-                if(activeTrades.get(position).getUserRelation().equals(sent)){
+                if(receivedTrades.get(position).getUserRelation().equals(sent)){
                     intent = new Intent(getActivity(), TradeView_Sent.class);
                 } else {
                     intent = new Intent(getActivity(), TradeView_Received.class);
                 }
-                intent.putExtra("unique_tid", activeTrades.get(position).getUnique_tid());
-                intent.putExtra("send_cid", activeTrades.get(position).getSend_cid());
-                intent.putExtra("recieve_cid", activeTrades.get(position).getRecieve_cid());
-                intent.putExtra("date", activeTrades.get(position).getDate());
+                intent.putExtra("unique_tid", receivedTrades.get(position).getUnique_tid());
+                intent.putExtra("send_cid", receivedTrades.get(position).getSend_cid());
+                intent.putExtra("recieve_cid", receivedTrades.get(position).getRecieve_cid());
+                intent.putExtra("date", receivedTrades.get(position).getDate());
                 startActivity(intent);
             }
         });
 
-        adapter = new TradeListAdapter(getActivity(), activeTrades);
+        adapter = new TradeListAdapter(getActivity(), receivedTrades);
         mDrawerList.setAdapter(adapter);
 
         return rootView;

@@ -158,11 +158,11 @@
 
         <activity android:name=".Sites"
             android:label="Sites"
-            android:theme= "@style/AppTheme.NoActionBar"/>
+            android:theme= "@style/MainActivity"/>
 
         <activity android:name=".Trades"
             android:label="Trades"
-            android:theme= "@style/AppTheme.NoActionBar">
+            android:theme= "@style/MainActivity">
 
         </activity>
 

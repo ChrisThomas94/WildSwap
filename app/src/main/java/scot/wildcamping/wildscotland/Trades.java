@@ -42,7 +42,8 @@ public class Trades extends AppCompatActivity implements OnShowcaseEventListener
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Active","History"};
+    CharSequence Titles[]={"Received","Sent"};
+    //CharSequence Titles[] =
     int Numboftabs =2;
     ArrayList<String> list;
     int currPosition;

@@ -23,6 +23,11 @@
         <item >Settings</item>
     </string-array>
 
+    <string-array name= "trade_tab_titles">
+        <item>Received</item>
+        <item>Sent</item>
+    </string-array>
+
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
