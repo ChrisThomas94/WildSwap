@@ -18,7 +18,7 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_settings2"
+        android:id="@+id/action_tradeHistory"
         android:orderInCategory="100"
         android:title="Trade History"
         app:showAsAction="never"/>

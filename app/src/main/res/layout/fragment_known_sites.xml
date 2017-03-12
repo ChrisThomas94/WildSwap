@@ -19,10 +19,11 @@
     <TextView
         android:id="@+id/empty"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="No Known Sites"
-        android:visibility="visible"
         android:layout_gravity="center"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/rounded_linear_layout"/>
 
 </LinearLayout>

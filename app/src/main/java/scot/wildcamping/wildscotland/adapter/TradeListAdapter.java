@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class TradeListAdapter extends BaseAdapter{
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.fragment_trades_list, null);
+            convertView = mInflater.inflate(R.layout.adapter_list_trades, null);
         }
 
         RelativeLayout trade = (RelativeLayout) convertView.findViewById(R.id.trade);
@@ -67,8 +68,10 @@ public class TradeListAdapter extends BaseAdapter{
 
         if(status == 1){
             outcomeTrade.setText("- Rejected");
+            trade.setBackgroundResource(R.drawable.rounded_linear_layout_red);
         } else if (status == 2){
             outcomeTrade.setText("- Accepted");
+            trade.setBackgroundResource(R.drawable.rounded_linear_layout_green);
         } else if (status == 0){
             outcomeTrade.setText("- Pending");
         }

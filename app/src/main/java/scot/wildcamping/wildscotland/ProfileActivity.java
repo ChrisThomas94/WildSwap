@@ -1,17 +1,13 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
@@ -222,7 +217,7 @@ public class ProfileActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsFragment.class);
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_search1) {
@@ -248,6 +243,10 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
             displayView(3);
+        } else if(id == R.id.action_tradeHistory){
+            Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

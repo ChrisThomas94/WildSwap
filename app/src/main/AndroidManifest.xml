@@ -152,7 +152,7 @@
             android:label="Contact User"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".SettingsFragment"
+        <activity android:name=".SettingsActivity"
             android:label="Settings"
             android:theme= "@style/AppTheme"/>
 
@@ -162,9 +162,11 @@
 
         <activity android:name=".Trades"
             android:label="Trades"
-            android:theme= "@style/MainActivity">
+            android:theme= "@style/MainActivity"/>
 
-        </activity>
+        <activity android:name=".TradeHistoryActivity"
+            android:label="Trade History"
+            android:theme= "@style/AppTheme"/>
 
         <activity android:name=".ProfileActivity"
             android:label="Profile"

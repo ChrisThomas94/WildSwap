@@ -8,12 +8,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
 
-public class TradeHistoryActivity extends Fragment {
+public class TradeHistoryActivity extends AppCompatActivity {
 
     public TradeHistoryActivity(){}
 
@@ -37,14 +36,20 @@ public class TradeHistoryActivity extends Fragment {
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_closed_trades, container, false);      //fragment_open_trades
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trade_history);
 
-        mDrawerList = (ListView) rootView.findViewById(R.id.closed_trades_listview);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true);
 
-        TextView empty = (TextView) rootView.findViewById(R.id.empty);
+        //View rootView = inflater.inflate(R.layout.activity_trade_history, container, false);      //fragment_open_trades
+
+        mDrawerList = (ListView)findViewById(R.id.closed_trades_listview);
+
+        TextView empty = (TextView)findViewById(R.id.empty);
         
         trades = new StoredTrades();
         inactiveTrades = new SparseArray<>();
@@ -62,9 +67,9 @@ public class TradeHistoryActivity extends Fragment {
 
                 Intent intent;
                 if(inactiveTrades.get(position).getUserRelation().equals(sent)){
-                    intent = new Intent(getActivity(), TradeView_Sent.class);
+                    intent = new Intent(getBaseContext(), TradeView_Sent.class);
                 } else {
-                    intent = new Intent(getActivity(), TradeView_Received.class);
+                    intent = new Intent(getBaseContext(), TradeView_Received.class);
                 }
                 intent.putExtra("status", inactiveTrades.get(position).getStatus());
                 intent.putExtra("unique_tid", inactiveTrades.get(position).getUnique_tid());
@@ -75,17 +80,27 @@ public class TradeHistoryActivity extends Fragment {
             }
         });
 
-        adapter = new TradeListAdapter(getActivity(), inactiveTrades);
+        adapter = new TradeListAdapter(getBaseContext(), inactiveTrades);
         mDrawerList.setAdapter(adapter);
-
-        return rootView;
     }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+
+                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                //startActivity(intent);
+                finish();
+                return true;
+        }
+        return (super.onOptionsItemSelected(menuItem));
+    }
 }

@@ -289,7 +289,7 @@ public class Sites extends AppCompatActivity implements OnShowcaseEventListener{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsFragment.class);
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
@@ -304,6 +304,10 @@ public class Sites extends AppCompatActivity implements OnShowcaseEventListener{
                 }
             }
             displayView(1);
+        } else if(id == R.id.action_tradeHistory){
+            Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

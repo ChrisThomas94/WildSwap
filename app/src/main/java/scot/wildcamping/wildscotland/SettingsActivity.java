@@ -1,23 +1,19 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SettingsFragment extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
-    public SettingsFragment() {
+    public SettingsActivity() {
     }
 
     TextView txtName;
@@ -29,8 +25,8 @@ public class SettingsFragment extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_settings);
-        //View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+        setContentView(R.layout.activity_settings);
+        //View rootView = inflater.inflate(R.layout.activity_settings, container, false);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -69,19 +65,6 @@ public class SettingsFragment extends AppCompatActivity {
         TextView versionText = (TextView) findViewById(R.id.versionName);
         versionText.setText("Version: " + version);
     }
-/*
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnLogout:
-                goToAttract(v);
-        }
-    }*/
-/*
-    public void goToAttract(View v){
-        Intent intent = new Intent(getActivity(), Login.class);
-        startActivity(intent);
-    }*/
 
     private void logoutUser() {
         session.setLogin(false);
@@ -94,9 +77,6 @@ public class SettingsFragment extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
                 finish();
                 return true;
         }

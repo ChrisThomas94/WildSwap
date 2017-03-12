@@ -2,26 +2,18 @@ package scot.wildcamping.wildscotland;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.media.audiofx.BassBoost;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,8 +28,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.adapter.NavDrawerListAdapter;
@@ -208,6 +198,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     try {
                         String known_result = new FetchKnownSites(this).execute().get();
                         String unknown_result = new FetchUnknownSites(this).execute().get();
+                        String trades = new FetchTradeRequests(this).execute().get();
 
                     } catch (InterruptedException e) {
 
@@ -303,7 +294,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsFragment.class);
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_search1) {
@@ -321,6 +312,10 @@ public class MainActivity_Spinner extends AppCompatActivity {
         } else if (id == R.id.action_refresh) {
             setRefreshActionButtonState(true);
             displayView(0);
+            return true;
+        } else if(id == R.id.action_tradeHistory){
+            Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
