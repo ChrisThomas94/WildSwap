@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -33,9 +34,13 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     EditText Lon;
     EditText title;
     EditText description;
+    TextView or;
     RelativeLayout addPhoto;
     RelativeLayout addFeatures;
+    RelativeLayout siteBuilder;
     ImageView image1;
+    ImageView image2;
+    ImageView image3;
     RatingBar ratingBar;
     Button confirmCreation;
     Button cancelCreation;
@@ -53,6 +58,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
     Uri targetUri;
     String image;
     String imageMultiLine;
+    Bitmap imageBit;
     String cid;
 
     String titlePassed;
@@ -103,14 +109,15 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         cancelCreation = (Button)findViewById(R.id.cancelCreation);
         image1 = (ImageView)findViewById(R.id.image1);
-
-        //title.setSelection(0);
+        image2 = (ImageView)findViewById(R.id.image2);
+        image3 = (ImageView)findViewById(R.id.image3);
+        siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
+        or = (TextView)findViewById(R.id.or);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
             arrayPos = extras.getInt("arrayPosition");
-            imageUpload = extras.getBoolean("image");
 
             feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
@@ -139,7 +146,6 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
             float ratingFloat = (float)rating;
             ratingBar.setRating(ratingFloat);
-
         }
 
 
@@ -154,13 +160,53 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
 
-        if(imageUpload) {
-            temp = inst.getTemp();
-            image = temp.get(0).getImage1();
-            System.out.println(image);
-            bitmap = StringToBitMap(image);
-            image1.setVisibility(View.VISIBLE);
-            image1.setImageBitmap(bitmap);
+        knownSite im = new knownSite();
+        SparseArray<Gallery> images = im.getImages();
+
+        System.out.println("sparse array: "+images);
+
+        String id = cid.substring(cid.length()-8);
+        int cidEnd = Integer.parseInt(id);
+        Gallery gallery = images.get(cidEnd);
+
+        System.out.println("gallery update: "+gallery);
+
+        if(gallery.getImage1() != null) {
+            if (gallery.getImage1().equals("null")) {
+                image1.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(gallery.getImage1());
+                image1.setImageBitmap(imageBit);
+                image1.setVisibility(View.VISIBLE);
+                siteBuilder.setVisibility(View.GONE);
+                or.setVisibility(View.GONE);
+            }
+        } else {
+            image1.setVisibility(View.GONE);
+        }
+
+        if(gallery.getImage2() != null) {
+            if (gallery.getImage2().equals("null")) {
+                image2.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(gallery.getImage2());
+                image2.setImageBitmap(imageBit);
+                image2.setVisibility(View.VISIBLE);
+            }
+        }else {
+            image2.setVisibility(View.GONE);
+        }
+
+        if(gallery.getImage3() != null) {
+            if (gallery.getImage3().equals("null")) {
+                image3.setVisibility(View.GONE);
+            } else {
+                imageBit = StringToBitMap(gallery.getImage3());
+                image3.setImageBitmap(imageBit);
+                image3.setVisibility(View.VISIBLE);
+            }
+        }else {
+            image3.setVisibility(View.GONE);
         }
 
         /*if(focused.getImage() != null) {
@@ -211,7 +257,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.addFeaturesRel:
 
-                Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                Intent intent = new Intent(getApplicationContext(), FeaturesActivity.class);
                 intent.putExtra("image", imageUpload);
                 intent.putExtra("arrayPosition", arrayPos);
                 intent.putExtra("update", update);

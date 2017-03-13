@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -99,8 +100,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
     SparseArray<Uri> imagesUri = new SparseArray<>();
     SparseArray<String> image = new SparseArray<>();
+    String[] imageUris = new String[3];
     SparseArray<Gallery> temp = new SparseArray<>();
-
 
     private Bitmap bitmap;
     Bitmap compress;
@@ -146,7 +147,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
-            imageUpload = extras.getBoolean("image");
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
 
@@ -159,8 +159,6 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             distant = extras.getString("distantTerrain");
             nearby = extras.getString("nearbyTerrain");
             immediate = extras.getString("immediateTerrain");
-
-            System.out.println("nearby get string: " + nearby);
 
             if(distant != null && nearby != null && immediate != null){
                 int distantID = this.getResources().getIdentifier("drawable/"+ distant, null, this.getPackageName());
@@ -191,9 +189,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             feature10 = extras.getBoolean("feature10");
 
             if (feature1 || feature2 || feature3 || feature4 || feature5 || feature6 || feature7 || feature8 || feature9 || feature10) {
-                //addFeature.setBackgroundColor(green);
+                addFeature.setBackgroundResource(R.drawable.rounded_green_button);
             } else {
-                //addFeature.setBackgroundColor(gray);
+                addFeature.setBackgroundResource(R.drawable.rounded_grey_button);
             }
 
             titlePassed = extras.getString("title");
@@ -201,6 +199,12 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             title.setText(titlePassed);
             description.setText(descPassed);
+
+            imageUpload = extras.getBoolean("image");
+
+            if(imageUpload) {
+                imageUris = extras.getStringArray("images");
+            }
 
             rating = extras.getFloat("rating");
 
@@ -222,28 +226,35 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         if(imageUpload) {
 
-            for(int i = 0; i < image.size(); i++) {
-                temp = inst.getTemp();
-                image.append(i, temp.get(i).getImage1());
-                //System.out.println(image);
-                compress = StringToBitMap(image.get(i));
+            for(int i=0; i<imageUris.length; i++){
 
-                if(i == 0){
-                    image1.setVisibility(View.VISIBLE);
-                    image1.setImageBitmap(compress);
-                    siteBuilder.setVisibility(View.GONE);
-                    or.setVisibility(View.GONE);
-                } else if(i == 1){
-                    image2.setVisibility(View.VISIBLE);
-                    image2.setImageBitmap(compress);
-                } else if(i == 2){
-                    image3.setVisibility(View.VISIBLE);
-                    image3.setImageBitmap(compress);
+                Uri myUri = Uri.parse(imageUris[i]);
+
+                try {
+                    compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(myUri));
+                    image.append(i, getStringImage(compress));
+
+
+                    System.out.println("image being passed:" + imageUris[i]);
+
+                    if (i == 0) {
+                        image1.setVisibility(View.VISIBLE);
+                        image1.setImageBitmap(compress);
+                        siteBuilder.setVisibility(View.GONE);
+                        or.setVisibility(View.GONE);
+                    } else if (i == 1) {
+                        image2.setVisibility(View.VISIBLE);
+                        image2.setImageBitmap(compress);
+                    } else if (i == 2) {
+                        image3.setVisibility(View.VISIBLE);
+                        image3.setImageBitmap(compress);
+                    }
+                }
+                catch (FileNotFoundException f){
+
                 }
             }
 
-            siteBuilder.setVisibility(View.GONE);
-            or.setVisibility(View.GONE);
         }
 
         //setting onclick listeners
@@ -280,7 +291,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.addFeaturesRel:
 
-                Intent intent = new Intent(getApplicationContext(), SelectFeatures.class);
+                Intent intent = new Intent(getApplicationContext(), FeaturesActivity.class);
                 intent.putExtra("image", imageUpload);
                 //intent.putExtra("temp", tempLocation);
                 intent.putExtra("latitude", latitude);
@@ -298,6 +309,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
                 intent.putExtra("rating", ratingBar.getRating());
+                intent.putExtra("images", imageUris);
                 startActivity(intent);
                 break;
 
@@ -386,6 +398,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             if (clip == null) {
                 Uri uri = data.getData();
                 imagesUri.append(0, uri);
+                imageUris[0] = uri.toString();
+                System.out.println("image uri end:" + imageUris[0]);
+
             } else {
 
                 System.out.println("clip data: " + clip.getItemCount());
@@ -396,6 +411,9 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                     Uri uri = item.getUri();
 
                     imagesUri.append(i, uri);
+                    imageUris[i] = uri.toString();
+
+                    System.out.println("image uri end:" + imageUris[i]);
 
                 }
             }

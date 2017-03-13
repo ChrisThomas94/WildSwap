@@ -140,7 +140,7 @@
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name=".SelectFeatures"
+        <activity android:name=".FeaturesActivity"
             android:label="Select Features"
             android:theme= "@style/AppTheme"/>
 

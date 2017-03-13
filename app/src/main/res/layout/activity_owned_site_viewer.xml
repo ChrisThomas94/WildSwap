@@ -98,19 +98,23 @@
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
                                 android:visibility="gone"
+                                android:layout_marginRight="15dp"
                                 android:clickable="true"/>
 
                             <ImageView
                                 android:id="@+id/image2"
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
-                                android:visibility="gone"/>
+                                android:visibility="gone"
+                                android:layout_marginRight="15dp"/>
 
                             <ImageView
                                 android:id="@+id/image3"
                                 android:layout_width="150dp"
                                 android:layout_height="150dp"
-                                android:visibility="gone"/>
+                                android:visibility="gone"
+                                android:layout_marginRight="15dp"/>
+
                             <ImageButton
                                 android:id="@+id/addImage"
                                 android:layout_width="150dp"

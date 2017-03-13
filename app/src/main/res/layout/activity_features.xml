@@ -20,7 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -30,6 +29,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature1"
                     android:src="@drawable/transport"/>
 
@@ -47,7 +47,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -57,6 +56,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature2"
                     android:src="@drawable/mountain"/>
 
@@ -74,7 +74,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -84,6 +83,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature3"
                     android:src="@drawable/nature"/>
 
@@ -101,7 +101,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -111,6 +110,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature4"
                     android:src="@drawable/grassy_terrain3"/>
 
@@ -128,7 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -138,6 +137,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature5"
                     android:src="@drawable/rocky_terrain"/>
 
@@ -155,7 +155,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -165,6 +164,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature6"
                     android:src="@drawable/sandy_terrain"/>
 
@@ -182,7 +182,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -193,6 +192,7 @@
                     android:layout_height="53dip"
                     android:id="@+id/feature7"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/animals"/>
 
                 <TextView
@@ -209,7 +209,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -219,6 +218,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature8"
                     android:src="@drawable/pint"/>
 
@@ -236,7 +236,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
@@ -246,6 +245,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature9"
                     android:src="@drawable/shop"/>
 
@@ -263,7 +263,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:padding="15dp"
                 android:layout_margin="15dp"
                 android:background="@drawable/rounded_grey_button">
 
@@ -271,6 +270,7 @@
                     android:layout_width="53dip"
                     android:layout_height="53dip"
                     android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
                     android:id="@+id/feature10"
                     android:src="@drawable/sheep"/>
 

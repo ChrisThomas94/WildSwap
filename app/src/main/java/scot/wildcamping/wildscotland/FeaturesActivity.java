@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 /**
  * Created by Chris on 03-Mar-16.
  */
-public class SelectFeatures extends AppCompatActivity implements View.OnClickListener {
+public class FeaturesActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView distantTerrain;
     ImageView nearbyTerrain;
@@ -62,12 +62,13 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
     double longitude;
     String title;
     String description;
+    String[] images;
     float rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_features);
+        setContentView(R.layout.activity_features);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -107,6 +108,9 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                 title = extras.getString("title");
                 description = extras.getString("description");
                 rating = extras.getFloat("rating");
+                if(image){
+                    images = extras.getStringArray("images");
+                }
             }
 
             feature1 = extras.getBoolean("feature1");
@@ -132,34 +136,34 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
         }
 
         if(feature1){
-            feature1box.setBackgroundColor(green);
+            feature1box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature2){
-            feature2box.setBackgroundColor(green);
+            feature2box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature3){
-            feature3box.setBackgroundColor(green);
+            feature3box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature4){
-            feature4box.setBackgroundColor(green);
+            feature4box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature5){
-            feature5box.setBackgroundColor(green);
+            feature5box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature6){
-            feature6box.setBackgroundColor(green);
+            feature6box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature7){
-            feature7box.setBackgroundColor(green);
+            feature7box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature8){
-            feature8box.setBackgroundColor(green);
+            feature8box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature9){
-            feature9box.setBackgroundColor(green);
+            feature9box.setBackgroundResource(R.drawable.rounded_green_button);
         }
         if(feature10){
-            feature10box.setBackgroundColor(green);
+            feature10box.setBackgroundResource(R.drawable.rounded_green_button);
         }
 
         confirmFeatures = (Button)findViewById(R.id.confirmFeatures);
@@ -171,12 +175,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature1){
                     //turn colour grey
-                    feature1box.setBackgroundColor(gray);
+                    feature1box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature1 = false;
                 } else {
                     //turn colour green
-                    feature1box.setBackgroundColor(green);
-                    nearbyTerrain.setImageResource(R.drawable.forest3nearby);
+                    feature1box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature1 = true;
                 }
             }
@@ -187,12 +190,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature2){
                     //turn colour grey
-                    feature2box.setBackgroundColor(gray);
+                    feature2box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature2 = false;
                 } else {
                     //turn colour green
-                    feature2box.setBackgroundColor(green);
-                    distantTerrain.setImageResource(R.drawable.hill3);
+                    feature2box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature2 = true;
                 }
             }
@@ -203,12 +205,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature3){
                     //turn colour grey
-                    feature3box.setBackgroundColor(gray);
+                    feature3box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature3 = false;
                 } else {
                     //turn colour green
-                    feature3box.setBackgroundColor(green);
-                    immediateTerrain.setImageResource(R.drawable.grass);
+                    feature3box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature3 = true;
                 }
             }
@@ -219,11 +220,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature4){
                     //turn colour grey
-                    feature4box.setBackgroundColor(gray);
+                    feature4box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature4 = false;
                 } else {
                     //turn colour green
-                    feature4box.setBackgroundColor(green);
+                    feature4box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature4 = true;
                 }
             }
@@ -234,11 +235,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature5){
                     //turn colour grey
-                    feature5box.setBackgroundColor(gray);
+                    feature5box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature5 = false;
                 } else {
                     //turn colour green
-                    feature5box.setBackgroundColor(green);
+                    feature5box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature5 = true;
                 }
             }
@@ -249,11 +250,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature6){
                     //turn colour grey
-                    feature6box.setBackgroundColor(gray);
+                    feature6box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature6 = false;
                 } else {
                     //turn colour green
-                    feature6box.setBackgroundColor(green);
+                    feature6box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature6 = true;
                 }
             }
@@ -264,11 +265,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature7){
                     //turn colour grey
-                    feature7box.setBackgroundColor(gray);
+                    feature7box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature7 = false;
                 } else {
                     //turn colour green
-                    feature7box.setBackgroundColor(green);
+                    feature7box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature7 = true;
                 }
             }
@@ -279,11 +280,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature8){
                     //turn colour grey
-                    feature8box.setBackgroundColor(gray);
+                    feature8box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature8 = false;
                 } else {
                     //turn colour green
-                    feature8box.setBackgroundColor(green);
+                    feature8box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature8 = true;
                     //display snackbar
                     Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
@@ -296,11 +297,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature9){
                     //turn colour grey
-                    feature9box.setBackgroundColor(gray);
+                    feature9box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature9 = false;
                 } else {
                     //turn colour green
-                    feature9box.setBackgroundColor(green);
+                    feature9box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature9 = true;
                     Snackbar.make(v, "Warning, users may be able to figure out the location of your site based on this feature!", Snackbar.LENGTH_LONG).show();
                 }
@@ -312,11 +313,11 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if(newFeature10){
                     //turn colour grey
-                    feature10box.setBackgroundColor(gray);
+                    feature10box.setBackgroundResource(R.drawable.rounded_grey_button);
                     newFeature10 = false;
                 } else {
                     //turn colour green
-                    feature10box.setBackgroundColor(green);
+                    feature10box.setBackgroundResource(R.drawable.rounded_green_button);
                     newFeature10 = true;
                 }
             }
@@ -333,7 +334,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
 
                 Intent i;
                 if(update){
-                    i = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                    i = new Intent(getApplicationContext(), UpdateSiteViewerActivity.class);
 
                     //bundle for update
                     i.putExtra("arrayPosition", arrayPos);
@@ -347,6 +348,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                     i.putExtra("title", title);
                     i.putExtra("description", description);
                     i.putExtra("rating", rating);
+                    i.putExtra("images", images);
                 }
 
                 i.putExtra("feature1", newFeature1);
@@ -374,7 +376,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
 
                 Intent intent;
                 if(update){
-                    intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                    intent = new Intent(getApplicationContext(), UpdateSiteViewerActivity.class);
 
                     //bundle for update
                     intent.putExtra("arrayPosition", arrayPos);
@@ -398,6 +400,7 @@ public class SelectFeatures extends AppCompatActivity implements View.OnClickLis
                     intent.putExtra("title", title);
                     intent.putExtra("description", description);
                     intent.putExtra("rating", rating);
+                    intent.putExtra("images", images);
                 }
 
                 startActivity(intent);

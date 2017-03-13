@@ -120,11 +120,12 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         knownSite im = new knownSite();
         images = im.getImages();
 
+        Site focused = owned.get(arrayPos);
+
+        cid = focused.getCid();
         String id = cid.substring(cid.length()-8);
         int cidEnd = Integer.parseInt(id);
-
         Gallery gallery = images.get(cidEnd);
-        Site focused = owned.get(arrayPos);
 
         latitude = focused.getLat();
         longitude = focused.getLon();

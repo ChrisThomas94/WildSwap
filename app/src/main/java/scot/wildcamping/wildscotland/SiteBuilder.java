@@ -966,7 +966,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
                 Intent intent;
                 if(update){
-                    intent = new Intent(getApplicationContext(), UpdateSiteActivity.class);
+                    intent = new Intent(getApplicationContext(), UpdateSiteViewerActivity.class);
 
                     //bundle for update
                     intent.putExtra("arrayPosition", arrayPos);
