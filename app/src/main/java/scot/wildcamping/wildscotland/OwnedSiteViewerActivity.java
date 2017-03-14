@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -17,13 +15,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.model.Gallery;
@@ -58,8 +58,16 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     int prevState;
     SparseArray<Site> owned = new SparseArray<>();
     int RESULT_LOAD_IMAGE = 0;
-    ImageView addImage;
     SparseArray<Gallery> images = new SparseArray<>();
+    Gallery gallery;
+    FrameLayout frame;
+    ImageButton image1;
+    ImageButton image2;
+    ImageButton image3;
+    ImageView close;
+    ScrollView scroll;
+
+    ImageView expandedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +95,21 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         ImageView feature8Image = (ImageView)findViewById(R.id.preview_feature8);
         ImageView feature9Image = (ImageView)findViewById(R.id.preview_feature9);
         ImageView feature10Image = (ImageView)findViewById(R.id.preview_feature10);
-        ImageView image1 = (ImageView)findViewById(R.id.image1);
-        ImageView image2 = (ImageView)findViewById(R.id.image2);
-        ImageView image3 = (ImageView)findViewById(R.id.image3);
+        image1 = (ImageButton)findViewById(R.id.image1);
+        image2 = (ImageButton)findViewById(R.id.image2);
+        image3 = (ImageButton)findViewById(R.id.image3);
         ImageView distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
         ImageView nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         ImageView immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
-        addImage = (ImageView)findViewById(R.id.addImage);
         TextView ratedBy = (TextView)findViewById(R.id.ratedBy);
         LinearLayout featuresBackground = (LinearLayout)findViewById(R.id.featuresBackground);
+        LinearLayout imageContainer = (LinearLayout)findViewById(R.id.imagesLinear);
+        expandedImage = (ImageView)findViewById(R.id.expanded_image);
+        frame = (FrameLayout) findViewById(R.id.frame);
+        close = (ImageView)findViewById(R.id.closeImage);
+        scroll = (ScrollView)findViewById(R.id.scroll);
+
+        frame.getForeground().setAlpha(0);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -125,7 +139,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         cid = focused.getCid();
         String id = cid.substring(cid.length()-8);
         int cidEnd = Integer.parseInt(id);
-        Gallery gallery = images.get(cidEnd);
+        gallery = images.get(cidEnd);
 
         latitude = focused.getLat();
         longitude = focused.getLon();
@@ -141,13 +155,17 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         if(gallery.getImage1() != null) {
             if (gallery.getImage1().equals("null")) {
                 image1.setVisibility(View.GONE);
+                imageContainer.setVisibility(View.GONE);
+
             } else {
                 imageBit = StringToBitMap(gallery.getImage1());
                 image1.setImageBitmap(imageBit);
                 image1.setVisibility(View.VISIBLE);
+                image1.setOnClickListener(this);
             }
         } else {
             image1.setVisibility(View.GONE);
+            imageContainer.setVisibility(View.GONE);
         }
 
         if(gallery.getImage2() != null) {
@@ -157,6 +175,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 imageBit = StringToBitMap(gallery.getImage2());
                 image2.setImageBitmap(imageBit);
                 image2.setVisibility(View.VISIBLE);
+                image2.setOnClickListener(this);
             }
         }else {
             image2.setVisibility(View.GONE);
@@ -169,6 +188,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 imageBit = StringToBitMap(gallery.getImage3());
                 image3.setImageBitmap(imageBit);
                 image3.setVisibility(View.VISIBLE);
+                image3.setOnClickListener(this);
             }
         }else {
             image3.setVisibility(View.GONE);
@@ -192,7 +212,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             nearbyTerrainFeatures.setVisibility(View.VISIBLE);
             immediateTerrainFeatures.setVisibility(View.VISIBLE);
 
-            addImage.setVisibility(View.GONE);
         } else {
             distantTerrainFeatures.setVisibility(View.GONE);
             nearbyTerrainFeatures.setVisibility(View.GONE);
@@ -257,8 +276,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         back.setOnClickListener(this);
         edit.setOnClickListener(this);
         image1.setOnClickListener(this);
-        addImage.setOnClickListener(this);
-
+        close.setOnClickListener(this);
     }
 
     @Override
@@ -325,6 +343,40 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
             case R.id.image1:
 
+                imageBit = StringToBitMap(gallery.getImage1());
+                expandedImage.setImageBitmap(imageBit);
+                expandedImage.setVisibility(View.VISIBLE);
+                close.setVisibility(View.VISIBLE);
+                frame.getForeground().setAlpha(150);
+
+                break;
+
+            case R.id.image2:
+
+                imageBit = StringToBitMap(gallery.getImage2());
+                expandedImage.setImageBitmap(imageBit);
+                expandedImage.setVisibility(View.VISIBLE);
+                close.setVisibility(View.VISIBLE);
+                frame.getForeground().setAlpha(150);
+
+                break;
+
+            case R.id.image3:
+
+                imageBit = StringToBitMap(gallery.getImage3());
+                expandedImage.setImageBitmap(imageBit);
+                expandedImage.setVisibility(View.VISIBLE);
+                close.setVisibility(View.VISIBLE);
+                frame.getForeground().setAlpha(150);
+
+                break;
+
+            case R.id.closeImage:
+
+                expandedImage.setVisibility(View.INVISIBLE);
+                close.setVisibility(View.GONE);
+                frame.getForeground().setAlpha(0);
+                scroll.setClickable(true);
                 break;
         }
 
@@ -367,24 +419,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
         }
         return (super.onOptionsItemSelected(menuItem));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK){
-            Uri targetUri = data.getData();
-            try{
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                String image = getStringImage(bitmap);
-
-                addImage.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e){
-                e.printStackTrace();
-            }
-
-        }
     }
 
     @Override

@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:text="No Known Sites"
         android:layout_gravity="center"
-        android:
         android:gravity="center"
         android:padding="5dp"
         android:background="@drawable/rounded_linear_layout"/>

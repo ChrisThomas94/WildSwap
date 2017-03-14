@@ -36,7 +36,7 @@ package scot.wildcamping.wildscotland;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
- * the user's scroll progress.
+ * the user's frame progress.
  * <p>
  * To use the component, simply add it to your view hierarchy. Then in your
  * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
@@ -128,7 +128,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     /**
      * Set the {@link ViewPager.OnPageChangeListener}. When using {@link SlidingTabLayout} you are
      * required to set any {@link ViewPager.OnPageChangeListener} through this method. This is so
-     * that the layout can update it's scroll position correctly.
+     * that the layout can update it's frame position correctly.
      *
      * @see ViewPager#setOnPageChangeListener(ViewPager.OnPageChangeListener)
      */
@@ -252,7 +252,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             int targetScrollX = selectedChild.getLeft() + positionOffset;
 
             if (tabIndex > 0 || positionOffset > 0) {
-                // If we're not at the first child and are mid-scroll, make sure we obey the offset
+                // If we're not at the first child and are mid-frame, make sure we obey the offset
                 targetScrollX -= mTitleOffset;
             }
 

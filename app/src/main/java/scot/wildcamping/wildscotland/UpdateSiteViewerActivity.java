@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -30,17 +31,17 @@ import scot.wildcamping.wildscotland.model.knownSite;
 
 public class UpdateSiteViewerActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText Lat;
-    EditText Lon;
+    TextView Lat;
+    TextView Lon;
     EditText title;
     EditText description;
     TextView or;
     RelativeLayout addPhoto;
     RelativeLayout addFeatures;
     RelativeLayout siteBuilder;
-    ImageView image1;
-    ImageView image2;
-    ImageView image3;
+    ImageButton image1;
+    ImageButton image2;
+    ImageButton image3;
     RatingBar ratingBar;
     Button confirmCreation;
     double latitude;
@@ -80,6 +81,11 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     SparseArray<Gallery> temp = new SparseArray<>();
     knownSite inst = new knownSite();
 
+    ImageView close1;
+    ImageView close2;
+    ImageView close3;
+
+
     int arrayPos;
 
     private Bitmap bitmap;
@@ -98,8 +104,8 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
 
         //initializing views
-        Lat =(EditText)findViewById(R.id.lat);
-        Lon = (EditText)findViewById(R.id.lon);
+        Lat =(TextView)findViewById(R.id.lat);
+        Lon = (TextView)findViewById(R.id.lon);
         title = (EditText)findViewById(R.id.title);
         description = (EditText)findViewById(R.id.description);
         addPhoto = (RelativeLayout)findViewById(R.id.addPhotoRel);
@@ -108,10 +114,13 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         or = (TextView)findViewById(R.id.or);
-        image1 = (ImageView)findViewById(R.id.image1);
-        image2 = (ImageView)findViewById(R.id.image2);
-        image3 = (ImageView)findViewById(R.id.image3);
+        image1 = (ImageButton)findViewById(R.id.image1);
+        image2 = (ImageButton)findViewById(R.id.image2);
+        image3 = (ImageButton)findViewById(R.id.image3);
 
+        close1 = (ImageView)findViewById(R.id.closeImage1);
+        close2 = (ImageView)findViewById(R.id.closeImage2);
+        close3 = (ImageView)findViewById(R.id.closeImage3);
 
         //title.setSelection(0);
 
@@ -181,6 +190,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                 imageBit = StringToBitMap(gallery.getImage1());
                 image1.setImageBitmap(imageBit);
                 image1.setVisibility(View.VISIBLE);
+                close1.setVisibility(View.VISIBLE);
                 siteBuilder.setVisibility(View.GONE);
                 or.setVisibility(View.GONE);
             }
@@ -195,6 +205,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                 imageBit = StringToBitMap(gallery.getImage2());
                 image2.setImageBitmap(imageBit);
                 image2.setVisibility(View.VISIBLE);
+                close2.setVisibility(View.VISIBLE);
             }
         }else {
             image2.setVisibility(View.GONE);
@@ -207,6 +218,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                 imageBit = StringToBitMap(gallery.getImage3());
                 image3.setImageBitmap(imageBit);
                 image3.setVisibility(View.VISIBLE);
+                close3.setVisibility(View.VISIBLE);
             }
         }else {
             image3.setVisibility(View.GONE);
@@ -228,6 +240,9 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         addPhoto.setOnClickListener(this);
         addFeatures.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
+        close1.setOnClickListener(this);
+        close2.setOnClickListener(this);
+        close3.setOnClickListener(this);
     }
 
     @Override
@@ -292,6 +307,24 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                     Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
                 }
 
+                break;
+
+            case R.id.closeImage1:
+
+                close1.setVisibility(View.GONE);
+                image1.setVisibility(View.GONE);
+                break;
+
+            case R.id.closeImage2:
+
+                close2.setVisibility(View.GONE);
+                image2.setVisibility(View.GONE);
+                break;
+
+            case R.id.closeImage3:
+
+                close3.setVisibility(View.GONE);
+                image3.setVisibility(View.GONE);
                 break;
         }
 
