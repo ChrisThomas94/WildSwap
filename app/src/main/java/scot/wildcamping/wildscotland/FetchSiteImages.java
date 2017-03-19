@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 import android.util.SparseArray;
 
 
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -29,12 +31,14 @@ import scot.wildcamping.wildscotland.model.knownSite;
  */
 public class FetchSiteImages extends AsyncTask<String, String, String> {
 
+    public AsyncResponse delegate = null;
+
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialogKnownSites;
+    private ProgressDialog pDialog;
     private Context context;
     String user;
     String cid;
@@ -47,12 +51,15 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
     SparseArray<Gallery> images = new SparseArray<>();
     SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
     SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
+    SparseArray<Gallery> knownGallery;
+    Gallery gallery;
 
 
 
-    public FetchSiteImages(Context context, String cid) {
+    public FetchSiteImages(Context context, String cid, AsyncResponse delegate) {
         this.context = context;
         this.cid = cid;
+        this.delegate = delegate;
     }
 
     /**
@@ -60,12 +67,14 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
-        pDialogKnownSites = new ProgressDialog(context);
-        pDialogKnownSites.setMessage("Fetching Images ...");
-        pDialogKnownSites.setIndeterminate(false);
-        pDialogKnownSites.setCancelable(true);
-        pDialogKnownSites.show();
+        //super.onPreExecute();
+        Log.d("Fetch Images", "Fetch Images Pre Execute");
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Fetching Images ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     /**
@@ -73,46 +82,62 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        //user = AppController.getString(context, "uid");
-        //email = AppController.getString(context, "email");
-
         // issue the post request
+        String json = null;
         try {
-            String json = getImages(cid);
+            json = getImages(cid);
             System.out.println("json: " + json);
 
-            String postResponse = doPostRequest(Appconfig.URL, json);      //json
-            System.out.println("post response: " + postResponse);
+            String postResponse = doPostRequest(Appconfig.URL, json);
+            //System.out.println("post response: " + postResponse);
 
             try {
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
+
+                //create an instance of Known sites
+                knownSite inst = new knownSite();
+                //Create instance of Gallery class
+                gallery = new Gallery();
+                //get current known images
+                SparseArray<Gallery> knownGallery = inst.getImages();
+
                 if (!error) {
 
                     JSONArray jsonArr = jObj.getJSONArray("images");
-                    JSONObject jsonImages = jsonArr.getJSONObject(0);
-                    String image1 = jsonImages.getString("image1");
-                    String image2 = jsonImages.getString("image2");
-                    String image3 = jsonImages.getString("image3");
+                    ArrayList<String> images = new ArrayList<>();
 
-                    Gallery images = new Gallery();
-                    images.setCid(cid);
-                    images.setImage1(image1);
-                    images.setImage2(image2);
-                    images.setImage3(image3);
 
+                    for(int i=0; i<jsonArr.length();i++){
+                        JSONObject jsonImages = jsonArr.getJSONObject(i);
+                        String image = jsonImages.getString("image1");
+                        images.add(i, image);
+                    }
+
+                    //set images
+                    gallery.setGallery(images);
+                    gallery.setCid(cid);
+                    gallery.setHasGallery(true);
+                    //create int id from cid
                     String id = cid.substring(cid.length()-8);
                     int cidEnd = Integer.parseInt(id);
-
-                    SparseArray<Gallery> gallery = new SparseArray<>();
-                    gallery.put(cidEnd, images);
-
-                    knownSite inst = new knownSite();
-                    inst.setImages(gallery);
+                    //add the new gallery into the storred collection
+                    knownGallery.put(cidEnd, gallery);
+                    //set the new collection
+                    inst.setImages(knownGallery);
+                    Log.d("Fetch Images", "Set Images");
 
                 } else {
                     //error message
+                    gallery.setCid(cid);
+                    gallery.setHasGallery(false);
+
+                    String id = cid.substring(cid.length()-8);
+                    int cidEnd = Integer.parseInt(id);
+                    //add the new gallery into the storred collection
+                    knownGallery.put(cidEnd, gallery);
+                    inst.setImages(knownGallery);
                 }
 
             } catch (JSONException e) {
@@ -123,35 +148,23 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
 
-        return null;
+        return json;
     }
 
     /**
      * After completing background task Dismiss the progress dialog and add markers
      **/
-    protected void onPostExecute(String file_url) {
-        // dismiss the dialog once donepDialog.dismiss();
-        try {
-            if ((this.pDialogKnownSites != null) && this.pDialogKnownSites.isShowing()) {
-                this.pDialogKnownSites.dismiss();
-            }
-        } catch (final IllegalArgumentException e) {
-            // Handle or log or ignore
-        } catch (final Exception e) {
-            // Handle or log or ignore
-        } finally {
-            this.pDialogKnownSites = null;
-        }
+    protected void onPostExecute(String result) {
+
+        System.out.println("on post execute result"+ result);
+
+        delegate.processFinish(result);
+
+        Log.d("Fetch Images", "Post Execute");
+        pDialog.dismiss();
+
     }
 
-    private String doGetRequest(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
 
     private String doPostRequest(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);

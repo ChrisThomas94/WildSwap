@@ -4,8 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/add_site_background2">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/frame"
@@ -15,14 +14,10 @@
         android:foreground="@drawable/dimmer">
 
         <ScrollView
-            android:id="@+id/scroll"
+            android:id="@+id/pageScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,14 +25,60 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/imagesLinear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/imageViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:visibility="visible">
+
+                    </android.support.v4.view.ViewPager>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/preview">
+
+
+                        <ImageView
+                            android:id="@+id/distantTerrainFeatures"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:layout_height="100dp"
+                            android:src="@drawable/placeholder"
+                            android:visibility="gone"/>
+
+
+                        <ImageView
+                            android:id="@+id/nearbyTerrainFeatures"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="30dp"
+                            android:visibility="gone"/>
+
+                        <ImageView
+                            android:id="@+id/immediateTerrainFeatures"
+                            android:layout_below="@+id/nearbyTerrainFeatures"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:layout_height="100dp"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@drawable/rounded_linear_layout"
                     android:padding="10dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/siteViewTitle"
@@ -76,109 +117,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/imagesLinear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/rounded_linear_layout"
-                    android:padding="10dp"
-                    android:layout_marginTop="20dp">
-
-                    <RelativeLayout
-                        android:id="@+id/addedImages"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <HorizontalScrollView
-                            android:id="@+id/siteViewGallery"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <ImageButton
-                                    android:id="@+id/image1"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"
-                                    android:clickable="true"/>
-
-                                <ImageButton
-                                    android:id="@+id/image2"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"/>
-
-                                <ImageButton
-                                    android:id="@+id/image3"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"/>
-
-                            </LinearLayout>
-
-                        </HorizontalScrollView>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/preview">
-
-
-                            <ImageView
-                                android:id="@+id/distantTerrainFeatures"
-                                android:layout_width="match_parent"
-                                android:scaleType="fitXY"
-                                android:layout_height="100dp"
-                                android:src="@drawable/placeholder"
-                                android:visibility="gone"/>
-
-
-                            <ImageView
-                                android:id="@+id/nearbyTerrainFeatures"
-                                android:layout_width="match_parent"
-                                android:scaleType="fitXY"
-                                android:layout_height="100dp"
-                                android:layout_marginTop="30dp"
-                                android:visibility="gone"/>
-
-                            <ImageView
-                                android:id="@+id/immediateTerrainFeatures"
-                                android:layout_below="@+id/nearbyTerrainFeatures"
-                                android:layout_width="match_parent"
-                                android:scaleType="fitXY"
-                                android:layout_height="100dp"
-                                android:visibility="gone"/>
-
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/featuresBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_linear_layout">
 
                     <HorizontalScrollView
@@ -301,9 +244,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_linear_layout"
                     android:padding="10dp">
 
@@ -324,25 +265,6 @@
                         android:padding="10dp"/>
 
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/editSite"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:text="Update"
-                    android:textSize="18sp"
-                    android:background="@color/colorLight"
-                    android:textColor="#ffffff"/>
-
-                <Button
-                    android:id="@+id/deactivateSite"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:text="Delete"
-                    android:textSize="18sp"
-                    android:background="@color/cancel_anything"
-                    android:textColor="#ffffff"/>
 
             </LinearLayout>
 

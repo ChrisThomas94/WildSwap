@@ -51,7 +51,7 @@ public class SiteListAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.known_sites_list, null);
+            convertView = mInflater.inflate(R.layout.adapter_known_sites_list, null);
         }
 
         RelativeLayout site = (RelativeLayout) convertView.findViewById(R.id.site);

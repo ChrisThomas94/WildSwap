@@ -2,22 +2,32 @@ package scot.wildcamping.wildscotland;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.Site;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -56,7 +66,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
     String distant;
     String nearby;
     String immediate;
-    String[] images;
     String tag = "addSite";
     String email;
     Double latUpperBound;
@@ -65,11 +74,16 @@ public class CreateSite extends AsyncTask<String, String, String> {
     Double lonLowerBound;
 
     String uid;
+    String cid;
     String postResponse;
     SparseArray<Site> ownedSites = new SparseArray<>();
     int ownedSitesSize;
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating,Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] images) {
+    ArrayList<String> images;
+    ArrayList<String> imagesSingleLine;
+
+
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating,Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, ArrayList<String> images) {
 
         this.context = context;
         this.relat = relationship;
@@ -95,9 +109,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.nearby = nearby;
         this.immediate = immediate;
 
-        this.images = images;
-
-
         Double latDouble = Double.parseDouble(lat);
         Double lonDouble = Double.parseDouble(lon);
 
@@ -105,6 +116,8 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.latUpperBound = latDouble+0.001;
         this.lonLowerBound = lonDouble-0.001;
         this.lonUpperBound = lonDouble+0.001;
+
+        this.images = images;
 
         //this.distance = distance()
     }
@@ -121,6 +134,29 @@ public class CreateSite extends AsyncTask<String, String, String> {
         //pDialogAddSite.setCancelable(true);
         //pDialogAddSite.show();
 
+        imagesSingleLine = new ArrayList<>();
+        if(images.size() != 0) {
+            for(int i = 0; i< images.size(); i++){
+
+                Uri imageUri = Uri.parse(images.get(i));
+                System.out.println("Create Site - URI:" + imageUri);
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                    System.out.println("Create Site - BITMAP: " + bitmap);
+
+                    String im = getStringImage(bitmap);
+                    //System.out.println("Create Site - String Imgae" + im);
+
+                    imagesSingleLine.add(i,im.replaceAll("[\r\n]+", ""));
+                    System.out.println("Create Site - Single Line" + imagesSingleLine.get(i));
+
+                } catch (IOException e){
+
+                }
+            }
+        }
+
         uid = AppController.getString(context, "uid");
         email = AppController.getString(context, "email");
     }
@@ -135,7 +171,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, email, relat, lat, lon, title, description, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, images, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound);
+            String json = addSite(uid, email, relat, lat, lon, title, description, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound, imagesSingleLine);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
@@ -148,6 +184,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     Site newSite = new Site();
 
                     newSite.setCid(jObj.getString("cid"));
+                    cid = jObj.get("cid").toString();
                     JSONObject jsonSite = jObj.getJSONObject("site");
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
@@ -180,12 +217,37 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
+                    //instance of known site class
                     knownSite inst = new knownSite();
+                    //get current owned sites
                     ownedSites = inst.getOwnedSitesMap();
                     ownedSitesSize = inst.getOwnedSiteSize();
-                    System.out.println("owned site added");
+                    //add the new site into the stored collection
                     ownedSites.put(ownedSitesSize, newSite);
+                    //set the new collection
                     inst.setOwnedSitesMap(ownedSites);
+
+                    //get current known images
+                    SparseArray<Gallery> knownGallery = inst.getImages();
+                    //Create instance of Gallery class and set images
+                    Gallery gallery = new Gallery();
+                    gallery.setGallery(imagesSingleLine);
+                    gallery.setCid(cid);
+
+                    if(!imagesSingleLine.isEmpty()){
+                        gallery.setHasGallery(true);
+                    } else {
+                        gallery.setHasGallery(false);
+                    }
+
+                    //create int id from cid
+                    String id = cid.substring(cid.length()-8);
+                    int cidEnd = Integer.parseInt(id);
+                    //add the new gallery into the storred collection
+                    knownGallery.put(cidEnd, gallery);
+                    //set the new collection
+                    inst.setImages(knownGallery);
+
 
                 } else {
 
@@ -198,7 +260,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
 
-        return null;
+        return cid;
     }
 
     /**
@@ -237,8 +299,25 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String[] image, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound) {
-        return "{\"tag\":\"" + tag + "\","
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound, ArrayList<String> images) {
+
+        JSONArray jsonGallery = new JSONArray();
+
+        for(int i = 0; i<images.size(); i++){
+
+            JSONObject jsonSingleImage = new JSONObject();
+
+            try {
+                jsonSingleImage.put("image" + i, images.get(i));
+            }catch(JSONException j){
+
+            }
+
+            jsonGallery.put(jsonSingleImage);
+
+        }
+
+        String withImage = "{\"tag\":\"" + tag + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"email\":\"" + email + "\","
                 + "\"relat\":\"" + relat + "\","
@@ -261,13 +340,45 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"feature8\":\"" + feature8 + "\","
                 + "\"feature9\":\"" + feature9 + "\","
                 + "\"feature10\":\"" + feature10 + "\","
-                + "\"image1\":\"" + image[0] + "\","
-                + "\"image2\":\"" + image[1] + "\","
-                + "\"image3\":\"" + image[2] + "\","
+                + "\"latLowerBound\":\"" + latLowerBound + "\","
+                + "\"latUpperBound\":\"" + latUpperBound + "\","
+                + "\"lonLowerBound\":\"" + lonLowerBound + "\","
+                + "\"lonUpperBound\":\"" + lonUpperBound + "\","
+                + "\"images\":" + jsonGallery + "}";
+
+        String withoutImage = "{\"tag\":\"" + tag + "\","
+                + "\"uid\":\"" + uid + "\","
+                + "\"email\":\"" + email + "\","
+                + "\"relat\":\"" + relat + "\","
+                + "\"lat\":\"" + lat + "\","
+                + "\"lon\":\"" + lon + "\","
+                + "\"title\":\"" + title + "\","
+                + "\"description\":\"" + description + "\","
+                + "\"rating\":\"" + rating + "\","
+                + "\"permission\":\"" + permission + "\","
+                + "\"distant\":\"" + distant + "\","
+                + "\"nearby\":\"" + nearby + "\","
+                + "\"immediate\":\"" + immediate + "\","
+                + "\"feature1\":\"" + feature1 + "\","
+                + "\"feature2\":\"" + feature2 + "\","
+                + "\"feature3\":\"" + feature3 + "\","
+                + "\"feature4\":\"" + feature4 + "\","
+                + "\"feature5\":\"" + feature5 + "\","
+                + "\"feature6\":\"" + feature6 + "\","
+                + "\"feature7\":\"" + feature7 + "\","
+                + "\"feature8\":\"" + feature8 + "\","
+                + "\"feature9\":\"" + feature9 + "\","
+                + "\"feature10\":\"" + feature10 + "\","
                 + "\"latLowerBound\":\"" + latLowerBound + "\","
                 + "\"latUpperBound\":\"" + latUpperBound + "\","
                 + "\"lonLowerBound\":\"" + lonLowerBound + "\","
                 + "\"lonUpperBound\":\"" + lonUpperBound + "\"}";
+
+        if(images.isEmpty()){
+            return withoutImage;
+        } else {
+            return withImage;
+        }
     }
 
     public static double distance(double lat1, double lat2, double lon1,
@@ -290,5 +401,27 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return Math.sqrt(distance);
     }
 
+    public String getStringImage(Bitmap bmp){
+        if(bmp != null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            return encodedImage;
+        } else {
+            return null;
+        }
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 
 }

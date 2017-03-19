@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/showOnMap"
+        android:icon="@drawable/mark_on_map"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="ifRoom"
+        android:title="showOnMap"/>
+
+    <item
+        android:id="@+id/gift"
+        android:icon="@drawable/gift"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="never"
+        android:title="Gift Site"/>
+
+    <item
+        android:id="@+id/update"
+        android:orderInCategory="100"
+        android:title="Update Site Info"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/delete"
+        android:orderInCategory="100"
+        android:title="Delete Site"
+        app:showAsAction="never"/>
+
+</menu>

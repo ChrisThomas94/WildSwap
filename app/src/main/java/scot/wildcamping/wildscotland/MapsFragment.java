@@ -127,6 +127,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean threshold = false;
     int clickedTwice = 0;
     FrameLayout layout_main;
+    Intent intent;
 
 
     private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
@@ -134,7 +135,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     private float prevZoom = 6;
     private final int MIN_ZOOM = 7;
     Boolean API = false;
-    private OverscrollHandler mOverscrollHandler = new OverscrollHandler();
     LocationManager manager = null;
 
     SparseArray<Site> knownSitesMap;
@@ -656,11 +656,20 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
                             //Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
-                            Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteViewerActivity.class);
+                            new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    startActivity(intent);
+                                }
+                            }).execute();
+
+
+                            intent = new Intent(getActivity().getApplicationContext(), OwnedSiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
-                            startActivity(intent);
+
+                            //startActivity(intent);
                             break;
                         }
                     }

@@ -8,6 +8,7 @@
     android:elevation="8dp"
     android:background="@color/colorPrimary"
     android:minHeight="?attr/actionBarSize"
+    android:fitsSystemWindows="true"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 

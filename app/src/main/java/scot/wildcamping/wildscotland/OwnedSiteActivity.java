@@ -67,8 +67,6 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        Button back = (Button)findViewById(R.id.deactivateSite);
-        Button edit = (Button)findViewById(R.id.editSite);
         TextView title = (TextView)findViewById(R.id.siteViewTitle);
         TextView description = (TextView)findViewById(R.id.siteViewDescription);
         RatingBar rating = (RatingBar)findViewById(R.id.siteViewRating);
@@ -96,7 +94,12 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             prevState = extras.getInt("prevState");
 
             try{
-                String images = new FetchSiteImages(this,cid).execute().get();
+                String images = new FetchSiteImages(this, cid, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                    }
+                }).execute().get();
 
             } catch (InterruptedException e) {
 
@@ -199,8 +202,6 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
             feature10 = false;
         }
 
-        back.setOnClickListener(this);
-        edit.setOnClickListener(this);
         image1.setOnClickListener(this);
         addImage.setOnClickListener(this);
 
@@ -212,62 +213,6 @@ public class OwnedSiteActivity extends AppCompatActivity implements View.OnClick
         Intent intent;
         switch (v.getId())
         {
-            case R.id.deactivateSite:
-
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-                builder1.setTitle("Attention!");
-                builder1.setMessage("Are you sure you want to delete this site?");
-
-                builder1.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                        boolean active = false;
-                        //String ratingReq = Double.toString(ratingBun);
-                        Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
-                        //trigger php to deactivate site
-                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0).execute();
-                        startActivity(intent);
-                        finish();
-
-
-                    }
-
-                });
-
-                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alert1 = builder1.create();
-                alert1.show();
-
-                break;
-
-            case R.id.editSite:
-                intent = new Intent(getApplicationContext(),UpdateSiteActivity.class);
-                //bundle all current details into "add site"
-                intent.putExtra("arrayPosition", arrayPos);
-
-                intent.putExtra("feature1", feature1);
-                intent.putExtra("feature2", feature2);
-                intent.putExtra("feature3", feature3);
-                intent.putExtra("feature4", feature4);
-                intent.putExtra("feature5", feature5);
-                intent.putExtra("feature6", feature6);
-                intent.putExtra("feature7", feature7);
-                intent.putExtra("feature8", feature8);
-                intent.putExtra("feature9", feature9);
-                intent.putExtra("feature10", feature10);
-
-                startActivity(intent);
-                finish();
-                break;
-
             case R.id.image1:
 
                 break;

@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -16,10 +15,13 @@ import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +29,11 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.adapter.ImageGridAdapter;
 import scot.wildcamping.wildscotland.model.Gallery;
 import scot.wildcamping.wildscotland.model.knownSite;
 
@@ -94,17 +99,14 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
     knownSite inst = new knownSite();
     int tempLocation;
 
-    Uri uri1;
-    Uri uri2;
-    Uri uri3;
-
-    SparseArray<Uri> imagesUri = new SparseArray<>();
     SparseArray<String> image = new SparseArray<>();
-    String[] imageUris = new String[3];
+    ArrayList imageUris2 = new ArrayList();
     SparseArray<Gallery> temp = new SparseArray<>();
+    ViewGroup.LayoutParams layoutParams;
 
     private Bitmap bitmap;
     Bitmap compress;
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +132,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
         imagePermission = (CheckBox)findViewById(R.id.imagePermission);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
-        image1 = (ImageView)findViewById(R.id.image1);
-        image2 = (ImageView)findViewById(R.id.image2);
-        image3 = (ImageView)findViewById(R.id.image3);
+        gridView = (GridView) findViewById(R.id.gridView);
 
         or = (TextView)findViewById(R.id.or);
 
@@ -203,7 +203,8 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
             imageUpload = extras.getBoolean("image");
 
             if(imageUpload) {
-                imageUris = extras.getStringArray("images");
+                //imageUris = extras.getStringArray("images");
+                imageUris2 = extras.getStringArrayList("images");
             }
 
             rating = extras.getFloat("rating");
@@ -226,7 +227,13 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
         if(imageUpload) {
 
-            for(int i=0; i<imageUris.length; i++){
+            ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imageUris2);
+            gridView.setAdapter(adapter);
+
+            siteBuilder.setVisibility(View.GONE);
+            or.setVisibility(View.GONE);
+
+            /*for(int i=0; i<imageUris.length; i++){
 
                 Uri myUri = Uri.parse(imageUris[i]);
 
@@ -253,7 +260,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 catch (FileNotFoundException f){
 
                 }
-            }
+            }*/
 
         }
 
@@ -309,7 +316,7 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("feature9", feature9);
                 intent.putExtra("feature10", feature10);
                 intent.putExtra("rating", ratingBar.getRating());
-                intent.putExtra("images", imageUris);
+                intent.putExtra("images", imageUris2);
                 startActivity(intent);
                 break;
 
@@ -332,26 +339,11 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
                         if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                            //String imageSingleLine1 = null;
-                            //String imageSingleLine2 = null;
-                            //String imageSingleLine3 = null;
-
-                            //init number of images to be sent
-                            String[] imagesSingleLine = new String[3];
-                            if(image.size() != 0) {
-                                for(int i = 0; i< image.size(); i++){
-                                    imagesSingleLine[i] = image.get(i).toString().replaceAll("[\r\n]+", "");
-                                }
-                                //imageSingleLine1 = image.replaceAll("[\r\n]+", "");
-                            }
-
                             titleReq = titleReq.replace("'", "\'");
                             descReq = descReq.replace("'", "\'");
-                            //titleReq = DatabaseUtils.sqlEscapeString(titleReq);
-                            //descReq = DatabaseUtils.sqlEscapeString(descReq);
 
                             try {
-                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imagesSingleLine).execute().get();
+                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2).execute().get();
                             } catch (ExecutionException e){
 
                             } catch (InterruptedException e){
@@ -397,89 +389,59 @@ public class AddSite extends AppCompatActivity implements View.OnClickListener {
 
             if (clip == null) {
                 Uri uri = data.getData();
-                imagesUri.append(0, uri);
-                imageUris[0] = uri.toString();
-                System.out.println("image uri end:" + imageUris[0]);
+                //imageUris[0] = uri.toString();
+                imageUris2.add(0, uri.toString());
 
             } else {
 
                 System.out.println("clip data: " + clip.getItemCount());
 
+                layoutParams = gridView.getLayoutParams();
+                int row = 3*(Math.round(clip.getItemCount()/3));
+
+                System.out.println("row: " + row);
+
+                int dif = (clip.getItemCount()%3);
+
+                if (dif ==1){
+                    row = row+3;
+                } else if (dif ==2){
+                    row = row+3;
+                }
+
+                layoutParams.height = (row*105);
+
+                System.out.println("height" + layoutParams.height);
+
+
+                gridView.setLayoutParams(layoutParams);
+
+                /*if(clip.getItemCount() <=3 ){
+                    gridView.setMinimumHeight(minHeight);
+                } else if (clip.getItemCount()<=6){
+                    gridView.setMinimumHeight(minHeight*2);
+                } else if (clip.getItemCount() <=9){
+                    gridView.setMinimumHeight(minHeight*3);
+                } else if (clip.getItemCount() <=12){
+                    gridView.setMinimumHeight(minHeight*4);
+                }*/
+
                 for (int i = 0; i < clip.getItemCount(); i++) {
                     ClipData.Item item = clip.getItemAt(i);
 
                     Uri uri = item.getUri();
-
-                    imagesUri.append(i, uri);
-                    imageUris[i] = uri.toString();
-
-                    System.out.println("image uri end:" + imageUris[i]);
-
+                    //imageUris[i] = uri.toString();
+                    imageUris2.add(i,uri.toString());
                 }
             }
         }
 
-        System.out.println("targetUri " + imagesUri.size());
+        ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imageUris2);
+        gridView.setAdapter(adapter);
 
-        for(int i = 0; i < imagesUri.size(); i++) {
-            System.out.println("image " + imagesUri.get(i));
+        siteBuilder.setVisibility(View.GONE);
+        or.setVisibility(View.GONE);
 
-            try {
-                compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(imagesUri.get(i)));
-                //compress = Bitmap.createScaledBitmap(bitmap, 750, 750, true);
-                image.append(i, getStringImage(compress));
-                imageUpload = true;
-
-
-                Gallery upload = new Gallery();
-                upload.setImage1(image.get(i));
-                upload.setCid("temp"+i);
-
-                temp = inst.getTemp();
-                temp.put(i, upload);
-                inst.setTemp(temp);
-
-                if(i == 0){
-                    image1.setVisibility(View.VISIBLE);
-                    image1.setImageBitmap(compress);
-                    siteBuilder.setVisibility(View.GONE);
-                    or.setVisibility(View.GONE);
-                } else if(i == 1){
-                    image2.setVisibility(View.VISIBLE);
-                    image2.setImageBitmap(compress);
-                } else if(i == 2){
-                    image3.setVisibility(View.VISIBLE);
-                    image3.setImageBitmap(compress);
-                }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    public String getStringImage(Bitmap bmp){
-        if(bmp != null){
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            return encodedImage;
-        } else {
-            return null;
-        }
-    }
-
-    public Bitmap StringToBitMap(String encodedString){
-        try{
-            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
     }
 
     @Override
