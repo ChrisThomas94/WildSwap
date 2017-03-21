@@ -1,8 +1,12 @@
 package scot.wildcamping.wildscotland.model;
 
+import android.location.Address;
 import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Chris on 05-Mar-16.
@@ -20,6 +24,8 @@ public class Site {
     private int ratedBy;
     private Double lat;
     private Double lon;
+
+    private List<android.location.Address> address;
 
     private SparseArray<String> features;
 
@@ -46,6 +52,14 @@ public class Site {
     private String image5;
 
     private SparseArray<Gallery> images;
+
+    public void setAddress(List<android.location.Address> address){
+        this.address = address;
+    }
+
+    public List<android.location.Address> getAddress(){
+        return address;
+    }
 
     public void setFeatures(SparseArray<String> features){
         this.features = features;

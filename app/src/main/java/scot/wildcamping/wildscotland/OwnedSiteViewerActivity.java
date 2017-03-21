@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import scot.wildcamping.wildscotland.adapter.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.model.Gallery;
@@ -62,6 +64,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     SparseArray<Site> owned = new SparseArray<>();
     int RESULT_LOAD_IMAGE = 0;
     SparseArray<Gallery> images;
+    Address thisAddress;
 
 
     Gallery gallery;
@@ -95,6 +98,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     ImageView immediateTerrainFeatures;
     TextView ratedBy;
     LinearLayout featuresBackground;
+    TextView country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +135,8 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         scroll = (ScrollView)findViewById(R.id.pageScrollView);
         frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
+        country = (TextView)findViewById(R.id.country);
+
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -171,6 +177,11 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         } else {
             imageViews.setVisibility(View.GONE);
         }
+
+        List<android.location.Address> address = focused.getAddress();
+        thisAddress = address.get(0);
+
+        country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
 
         if(focused.getDistant().equals("null") && focused.getNearby().equals("null") && focused.getImmediate().equals("null")) {
             distantTerrainFeatures.setVisibility(View.GONE);
@@ -390,29 +401,9 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         Intent intent;
         switch (v.getId())
         {
-            case R.id.image1:
+            case R.id.imageViewPager:
 
                 imageBit = StringToBitMap(gallery.getImage1());
-                expandedImage.setImageBitmap(imageBit);
-                expandedImage.setVisibility(View.VISIBLE);
-                close.setVisibility(View.VISIBLE);
-                frame.getForeground().setAlpha(150);
-
-                break;
-
-            case R.id.image2:
-
-                imageBit = StringToBitMap(gallery.getImage2());
-                expandedImage.setImageBitmap(imageBit);
-                expandedImage.setVisibility(View.VISIBLE);
-                close.setVisibility(View.VISIBLE);
-                frame.getForeground().setAlpha(150);
-
-                break;
-
-            case R.id.image3:
-
-                imageBit = StringToBitMap(gallery.getImage3());
                 expandedImage.setImageBitmap(imageBit);
                 expandedImage.setVisibility(View.VISIBLE);
                 close.setVisibility(View.VISIBLE);

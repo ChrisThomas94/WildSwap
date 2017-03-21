@@ -155,8 +155,8 @@ public class SiteListAdapter extends BaseAdapter {
         }
         */
 
-        rating.setRating(knownSites.get(position).getRating().floatValue());
-        ratedBy.setText("Rated By: " + knownSites.get(position).getRatedBy());
+        //rating.setRating(knownSites.get(position).getRating().floatValue());
+        //ratedBy.setText("Rated By: " + knownSites.get(position).getRatedBy());
 
         return convertView;
     }

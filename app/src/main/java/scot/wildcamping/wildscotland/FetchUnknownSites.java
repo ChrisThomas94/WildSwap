@@ -30,7 +30,6 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialogUnknownSites;
     private Context context;
     String user;
     final int relatOwn = 90;
@@ -51,11 +50,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialogUnknownSites = new ProgressDialog(context);
-        pDialogUnknownSites.setMessage("Fetching Unknown Sites ...");
-        pDialogUnknownSites.setIndeterminate(false);
-        pDialogUnknownSites.setCancelable(true);
-        pDialogUnknownSites.show();
+
     }
 
     /**
@@ -157,7 +152,6 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialogUnknownSites.dismiss();
     }
 
     private String doGetRequest(String url)throws IOException{

@@ -126,7 +126,7 @@
         </activity>
 
         <activity
-            android:name=".OwnedSiteActivity"
+            android:name="._OwnedSiteActivity"
             android:label="Owned Site"
             android:theme="@style/AppTheme"/>
 

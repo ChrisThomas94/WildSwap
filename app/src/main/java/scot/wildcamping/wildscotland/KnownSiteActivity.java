@@ -246,7 +246,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                     if(isNetworkAvailable()) {
                         try {
                             String update = new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum).execute().get();
-                            String known_result = new FetchKnownSites(this).execute().get();
+                            String known_result = new FetchKnownSites(this, null).execute().get();
                             String unknown_result = new FetchUnknownSites(this).execute().get();
 
                         } catch (InterruptedException e) {

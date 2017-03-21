@@ -35,6 +35,7 @@ import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.model.NavDrawerItem;
 import scot.wildcamping.wildscotland.model.StoredTrades;
 import scot.wildcamping.wildscotland.model.Trade;
+import scot.wildcamping.wildscotland.model.knownSite;
 
 public class MainActivity_Spinner extends AppCompatActivity {
 
@@ -124,11 +125,11 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
         //mTitle = mDrawerTitle = getTitle();
 
-        trades = new StoredTrades();
-        activeTrades = new SparseArray<>();
-        activeTrades = trades.getActiveTrades();
+        //trades = new StoredTrades();
+        //activeTrades = new SparseArray<>();
+        //activeTrades = trades.getActiveTrades();
 
-        noOfTradesStr = Integer.toString(activeTrades.size());
+        //noOfTradesStr = Integer.toString(activeTrades.size());
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -137,6 +138,16 @@ public class MainActivity_Spinner extends AppCompatActivity {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         }
+
+        try{
+            String fetchKnown = new FetchKnownSites(this, null).execute().get();
+            String fetchUnknown = new FetchUnknownSites(this).execute().get();
+        } catch (InterruptedException i){
+
+        } catch (ExecutionException e){
+
+        }
+
         addItemsToSpinner();
     }
 
@@ -147,7 +158,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
         list = new ArrayList<String>();
         list.add("Map");
         list.add("Sites");
-        //list.add("Known Sites");
         list.add("Trades");
         list.add("Profile");
 
@@ -157,18 +167,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 getApplicationContext(), list);
 
 
-
-        // Default ArrayAdapter with default spinner item layout, getting some
-        // view rendering problem in lollypop device, need to test in other
-        // devices
-
-		/*
-		 * ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this,
-		 * android.R.layout.simple_spinner_item, list);
-		 * spinAdapter.setDropDownViewResource
-		 * (android.R.layout.simple_spinner_dropdown_item);
-		 */
-
         spinner_nav.setAdapter(spinAdapter);
 
         spinner_nav.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -176,17 +174,16 @@ public class MainActivity_Spinner extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
-                displayView(position);
+                displayView(position, false);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
     }
 
-    private void displayView(int position) {
+    private void displayView(int position, Boolean refresh) {
         // update the main content by replacing fragments
         FragmentActivity fragmentActivity = null;
         Fragment fragment = null;
@@ -194,52 +191,61 @@ public class MainActivity_Spinner extends AppCompatActivity {
         switch (position) {
             case 0:
                 mapsFragment = new MapsFragment();
-                if(isNetworkAvailable()) {
+                if(isNetworkAvailable() && refresh) {
+
                     try {
-                        String known_result = new FetchKnownSites(this).execute().get();
-                        String unknown_result = new FetchUnknownSites(this).execute().get();
-                        String trades = new FetchTradeRequests(this).execute().get();
-
-                    } catch (InterruptedException e) {
-
+                        String fetchKnown = new FetchKnownSites(this, null).execute().get();
+                        String fetchUnknown = new FetchUnknownSites(this).execute().get();
+                        String fetchTrade = new FetchTradeRequests(this).execute().get();
                     } catch (ExecutionException e) {
 
+                    } catch (InterruptedException i){
+                        
                     }
                 }
                 break;
             case 1:
                 if(isNetworkAvailable()) {
-                    try {
-                        String known_result = new FetchKnownSites(this).execute().get();
-                        String unknown_result = new FetchUnknownSites(this).execute().get();
-                    } catch (InterruptedException e) {
+                    knownSite sites = new knownSite();
+                    if(sites.getUnknownSitesSize() == 0){
+                        try {
+                            String known_result = new FetchKnownSites(this, null).execute().get();
+                            //String unknown_result = new FetchUnknownSites(this).execute().get();
+                        } catch (InterruptedException e) {
 
-                    } catch (ExecutionException e) {
+                        } catch (ExecutionException e) {
 
+                        }
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), Sites.class);
+                        intent.putExtra("new", isNew);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                        finish();
                     }
                 }
-                Intent intent = new Intent(getApplicationContext(), Sites.class);
-                intent.putExtra("new", isNew);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
+
                 break;
 
             case 2:
-                if(isNetworkAvailable()) {
-                    try {
-                        String trades_result = new FetchTradeRequests(this).execute().get();
-                    } catch (InterruptedException e) {
+                StoredTrades trades = new StoredTrades();
+                if(trades.getAllTradesSize() == 0) {
+                    if (isNetworkAvailable()) {
+                        try {
+                            String trades_result = new FetchTradeRequests(this).execute().get();
+                        } catch (InterruptedException e) {
 
-                    } catch (ExecutionException e) {
+                        } catch (ExecutionException e) {
 
+                        }
                     }
+                } else {
+                    Intent i = new Intent(getApplicationContext(), Trades.class);
+                    i.putExtra("new", isNew);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    finish();
                 }
-                Intent i = new Intent(getApplicationContext(), Trades.class);
-                i.putExtra("new", isNew);
-                startActivity(i);
-                overridePendingTransition(0,0);
-                finish();
                 break;
 
             case 3:
@@ -311,7 +317,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_refresh) {
             setRefreshActionButtonState(true);
-            displayView(0);
+            displayView(0, true);
             return true;
         } else if(id == R.id.action_tradeHistory){
             Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);

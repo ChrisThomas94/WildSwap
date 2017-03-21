@@ -577,16 +577,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         mMapView.onLowMemory();
     }
 
-
-    //not used?
-    /*private void addMarker(LatLng newSite){
-
-        MarkerOptions marker = new MarkerOptions().position(newSite);
-
-        googleMap.addMarker(marker);
-
-    }*/
-
     private void setUpClustering(GoogleMap googleMap) {
 
         System.out.println("SET UP CLUSTERING");
@@ -655,7 +645,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            //Intent intent = new Intent(getActivity().getApplicationContext(), OwnedSiteActivity.class);
+                            //Intent intent = new Intent(getActivity().getApplicationContext(), _OwnedSiteActivity.class);
                             new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {

@@ -13,12 +13,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -366,7 +364,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             case R.id.yourSite:
 
-                Intent i = new Intent(this, OwnedSiteActivity.class);
+                Intent i = new Intent(this, _OwnedSiteActivity.class);
                 i.putExtra("cid", send_cid);
                 i.putExtra("prevState", 2);
                 startActivity(i);

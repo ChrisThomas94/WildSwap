@@ -31,7 +31,7 @@ import scot.wildcamping.wildscotland.model.knownSite;
 /**
  * Created by Chris on 26-Feb-16.
  */
-public class OwnedSiteActivity extends AppCompatActivity implements View.OnClickListener {
+public class _OwnedSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
     int arrayPos;
     Double latitude;

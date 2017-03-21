@@ -151,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
             case 1:
                 if(isNetworkAvailable()) {
                     try {
-                        String known_result = new FetchKnownSites(this).execute().get();
+                        String known_result = new FetchKnownSites(this, null).execute().get();
                         String unknown_result = new FetchUnknownSites(this).execute().get();
                     } catch (InterruptedException e) {
 

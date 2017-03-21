@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.SparseArray;
 
+import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.maps.model.LatLng;
 
 
@@ -15,6 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -34,8 +39,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
+    public AsyncResponse delegate = null;
 
-    private ProgressDialog pDialogKnownSites;
+    private ProgressDialog pDialog;
     private Context context;
     String user;
     String email;
@@ -47,11 +53,14 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     SparseArray<Gallery> images = new SparseArray<>();
     SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
     SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
+    Geocoder geocoder;
 
 
 
-    public FetchKnownSites(Context context) {
+    public FetchKnownSites(Context context, AsyncResponse delegate) {
         this.context = context;
+        this.delegate = delegate;
+
     }
 
     /**
@@ -60,11 +69,14 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialogKnownSites = new ProgressDialog(context);
-        pDialogKnownSites.setMessage("Fetching Your Sites ...");
-        pDialogKnownSites.setIndeterminate(false);
-        pDialogKnownSites.setCancelable(true);
-        pDialogKnownSites.show();
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Fetching Sites ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        geocoder = new Geocoder(context, Locale.getDefault());
     }
 
     /**
@@ -98,9 +110,13 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         jsonSite = jObj.getJSONObject("site" + i);
                         String longitude = jsonSite.getString("longitude");
                         String latitude = jsonSite.getString("latitude");
+
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
                         LatLng position = new LatLng(lat, lon);
+
+                        List<android.location.Address> address = new ArrayList<>();
+                        address = geocoder.getFromLocation(lat, lon, 1);
 
                         siteClass = new Site();
                         siteClass.setPosition(position);
@@ -108,6 +124,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
                         siteClass.setLat(lat);
                         siteClass.setLon(lon);
+                        siteClass.setAddress(address);
                         siteClass.setTitle(jsonSite.getString("title"));
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("avr_rating"));
@@ -173,17 +190,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once donepDialog.dismiss();
-        try {
-            if ((this.pDialogKnownSites != null) && this.pDialogKnownSites.isShowing()) {
-                this.pDialogKnownSites.dismiss();
-            }
-        } catch (final IllegalArgumentException e) {
-            // Handle or log or ignore
-        } catch (final Exception e) {
-            // Handle or log or ignore
-        } finally {
-            this.pDialogKnownSites = null;
-        }
+        pDialog.dismiss();
     }
 
     private String doGetRequest(String url) throws IOException {

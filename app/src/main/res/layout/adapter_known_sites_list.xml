@@ -5,159 +5,80 @@
     android:id="@+id/site"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
+    android:padding="5dp"
     android:layout_margin="15dp"
     android:focusable="false"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/clear_shadow">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="30sp"/>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/add_30"/>
 
-    <TextView
-        android:id="@+id/placeholderFeatures"
-        android:layout_width="wrap_content"
-        android:layout_height="53dip"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:text="You have not added any features to this site!"
-        android:layout_below="@+id/title"/>
-
-
-    <HorizontalScrollView
-        android:id="@+id/features"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title">
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/image">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/title"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/classificationA"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_green_button"
+            android:text="Amateur"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/classificationM"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:gravity="center"
+            android:layout_toRightOf="@id/classificationA"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_orange_button"
+            android:text="Casual"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/classificationE"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:gravity="center"
+            android:layout_toRightOf="@id/classificationM"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_red_button"
+            android:text="Expert"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="Scotland, Loch Lomond"
+            android:layout_below="@+id/classificationA"/>
 
-            <ImageView
-                android:id="@+id/preview_feature1"
-                android:contentDescription="feature1 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/transport"
-                android:visibility="visible"/>
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/preview_feature2"
-                android:contentDescription="feature2 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/mountain"
-                android:visibility="visible"/>
 
-            <ImageView
-                android:id="@+id/preview_feature3"
-                android:contentDescription="feature3 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/nature"
-                android:visibility="visible"/>
 
-            <ImageView
-                android:id="@+id/preview_feature4"
-                android:contentDescription="feature4 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/grassy_terrain3"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature5"
-                android:contentDescription="feature5 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/rocky_terrain"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature6"
-                android:contentDescription="feature6 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/sandy_terrain"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature7"
-                android:contentDescription="feature7 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/animals"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature8"
-                android:contentDescription="feature8 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/pint"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature9"
-                android:contentDescription="feature9 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/shop"
-                android:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/preview_feature10"
-                android:contentDescription="feature10 thumbnail view"
-                android:layout_width="58dip"
-                android:layout_height="53dip"
-                android:scaleType="fitXY"
-                android:paddingRight="5dp"
-                android:src="@drawable/sheep"
-                android:visibility="visible"/>
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
-
-    <RatingBar
-        android:id="@+id/ratingThumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/placeholderFeatures"
-        android:layout_centerHorizontal="true"
-        android:clickable="false"
-        android:isIndicator="true"/>
-
-    <TextView
-        android:id="@+id/ratedBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ratingThumbnail"
-        android:text="Rated By"/>
 
 </RelativeLayout>
 

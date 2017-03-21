@@ -312,7 +312,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
                 Toast.makeText(getApplicationContext(), "Site update canceled!", Toast.LENGTH_LONG).show();
 
-                intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
+                intent = new Intent(getApplicationContext(),_OwnedSiteActivity.class);
                 intent.putExtra("arrayPosition", arrayPos);
                 startActivity(intent);
 
@@ -384,7 +384,7 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
 
                 Toast.makeText(getApplicationContext(), "Site update canceled!", Toast.LENGTH_LONG).show();
 
-                intent = new Intent(getApplicationContext(),OwnedSiteActivity.class);
+                intent = new Intent(getApplicationContext(),_OwnedSiteActivity.class);
                 intent.putExtra("arrayPosition", arrayPos);
                 startActivity(intent);
 
