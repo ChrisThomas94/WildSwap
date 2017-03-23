@@ -1,76 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/rounded_grey_button"/>
+
+    <ImageView
+        android:id="@+id/coverPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
     <RelativeLayout
-        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="100dp"
+        android:padding="10dp"
+        android:background="@drawable/clear_shadow">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/enter_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter a short bio here. This may be viewed by other users and will help them to decide whether or not to trade locations with you."
+                android:layout_margin="20dp"/>
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name"
+                android:visibility="gone"
+                android:layout_margin="20dp"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:visibility="gone"
+                android:layout_margin="20dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/bio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
+
+                <EditText
+                    android:id="@+id/bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Bio"
+                    android:inputType="textMultiLine"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make no changes"
+                android:id="@+id/skip"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_margin="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <View
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/circle"/>
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:id="@+id/profilePicture"
             android:clickable="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_add_a_photo_black_48dp"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/enter_bio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enter a short bio here. This may be viewed by other users and will help them to decide whether or not to trade locations with you."
-        android:layout_margin="20dp"/>
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:visibility="gone"
-        android:layout_margin="20dp"/>
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:visibility="gone"
-        android:layout_margin="20dp"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/bio_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp">
-
-        <EditText
-            android:id="@+id/bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Bio"
-            android:inputType="textMultiLine"
-            android:singleLine="true"/>
-
-    </android.support.design.widget.TextInputLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Make no changes"
-        android:id="@+id/skip"
-        android:visibility="invisible"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
-
-</LinearLayout>
+</RelativeLayout>

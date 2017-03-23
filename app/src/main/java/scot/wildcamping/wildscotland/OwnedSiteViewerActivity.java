@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,10 +29,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import scot.wildcamping.wildscotland.adapter.ImageGalleryAdapter;
-import scot.wildcamping.wildscotland.model.Gallery;
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSiteViewerActivity;
+import scot.wildcamping.wildscotland.Objects.Gallery;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 26-Feb-16.
@@ -440,7 +442,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
                 //Intent intent = null;
                 if(prevState == 1) {
-                    //intent = new Intent(getApplicationContext(),Sites.class);
+                    //intent = new Intent(getApplicationContext(),SitesActivity.class);
                     //intent.putExtra("fragment", 1);
                     //startActivity(intent);
                     //finish();

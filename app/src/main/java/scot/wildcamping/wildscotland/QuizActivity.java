@@ -13,17 +13,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.concurrent.ExecutionException;
-
-import scot.wildcamping.wildscotland.adapter.QuestionListAdapter;
-import scot.wildcamping.wildscotland.model.Question;
-import scot.wildcamping.wildscotland.model.Quiz;
+import scot.wildcamping.wildscotland.Adapters.QuestionListAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.SubmitQuiz;
+import scot.wildcamping.wildscotland.Objects.Question;
+import scot.wildcamping.wildscotland.Objects.Quiz;
 
 /**
  * Created by Chris on 09-Apr-16.
@@ -115,29 +112,28 @@ public class QuizActivity extends AppCompatActivity {
                 int answer8 = question.get(7).getAnswer();
                 int answer9 = question.get(8).getAnswer();
 
-                //asynk task updating answers
-                if(isNetworkAvailable()) {
-                    try {
-                        String answers = new SubmitQuiz(this,answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
+                final Intent intent;
 
                 if(isNew) {
                     AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answer2));
-                    Intent intent = new Intent(this, MainActivity_Spinner.class);
+                    intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("new", true);
-                    startActivity(intent);
-                    finish();
                 } else {
-                    Intent intent = new Intent(this, ProfileActivity.class);
+                    intent = new Intent(this, ProfileActivity.class);
                     intent.putExtra("this_user", true);
-                    startActivity(intent);
-                    finish();
                 }
+
+                //asynk task updating answers
+                if(isNetworkAvailable()) {
+                    new SubmitQuiz(this, answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
+                }
+
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));

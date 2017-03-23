@@ -1,89 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/rounded_grey_button"
+        />
+
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp">
+        android:layout_marginTop="100dp"
+        android:padding="10dp"
+        android:background="@drawable/clear_shadow">
 
-        <RelativeLayout
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
-            <View
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/circle"/>
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Chris Thomas"
+                android:textColor="#333333"
+                android:textSize="25dp" />
 
-            <ImageView
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="chris@gmail"
+                android:textColor="#333333"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
+                android:textColor="#333333"
+                android:textSize="15dp" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/profilePicture"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/people"/>
-        </RelativeLayout>
+                android:text="Click here to update your profile."
+                android:id="@+id/updateProfile"
+                android:clickable="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="Chris Thomas"
-            android:textColor="#333333"
-            android:textSize="25dp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:text="chris@gmail"
-            android:textColor="#333333"
-            android:textSize="20dp" />
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
-            android:textColor="#333333"
-            android:textSize="15dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click here to update your profile."
-            android:id="@+id/updateProfile"
-            android:clickable="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btnLogout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:background="@color/colorPrimaryDark"
-        android:layout_margin="20dp"
-        android:text="LOGOUT"
-        android:textColor="#ffffff"
-        android:textSize="15dp" />
+        android:layout_marginTop="50dp">
 
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle"/>
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profilePicture"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/people"/>
+    </RelativeLayout>
+
+</RelativeLayout>

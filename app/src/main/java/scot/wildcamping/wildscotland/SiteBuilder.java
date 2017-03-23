@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSiteViewerActivity;
+
 import static android.view.View.GONE;
 
 /**
@@ -930,7 +932,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                 } else if(selectImmediateTerrain){
 
 
-                    Intent i = new Intent(getApplicationContext(), AddSite.class);
+                    Intent i = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     System.out.println("distant terrain: " + distantTerrain.getTag().toString());
                     System.out.println("nearby terrain: " + nearbyTerrain.getTag().toString());
@@ -971,7 +973,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     //bundle for update
                     intent.putExtra("arrayPosition", arrayPos);
                 } else {
-                    intent = new Intent(getApplicationContext(), AddSite.class);
+                    intent = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     //bundle for add
                     intent.putExtra("image", image);

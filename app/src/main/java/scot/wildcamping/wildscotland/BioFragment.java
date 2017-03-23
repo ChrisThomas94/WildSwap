@@ -1,6 +1,5 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,11 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,10 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import scot.wildcamping.wildscotland.model.User;
 
 public class BioFragment extends Fragment {
 

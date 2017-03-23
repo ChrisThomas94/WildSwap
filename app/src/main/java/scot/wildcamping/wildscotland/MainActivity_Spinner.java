@@ -29,13 +29,17 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
-import scot.wildcamping.wildscotland.adapter.NavDrawerListAdapter;
-import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
-import scot.wildcamping.wildscotland.model.NavDrawerItem;
-import scot.wildcamping.wildscotland.model.StoredTrades;
-import scot.wildcamping.wildscotland.model.Trade;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
+import scot.wildcamping.wildscotland.Adapters.NavDrawerListAdapter;
+import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
+import scot.wildcamping.wildscotland.Objects.NavDrawerItem;
+import scot.wildcamping.wildscotland.Objects.StoredTrades;
+import scot.wildcamping.wildscotland.Objects.Trade;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class MainActivity_Spinner extends AppCompatActivity {
 
@@ -157,8 +161,8 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
         list = new ArrayList<String>();
         list.add("Map");
-        list.add("Sites");
-        list.add("Trades");
+        list.add("SitesActivity");
+        list.add("TradesActivity");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
@@ -200,7 +204,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     } catch (ExecutionException e) {
 
                     } catch (InterruptedException i){
-                        
+
                     }
                 }
                 break;
@@ -217,7 +221,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
                         }
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), Sites.class);
+                        Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                         intent.putExtra("new", isNew);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
@@ -240,7 +244,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Intent i = new Intent(getApplicationContext(), Trades.class);
+                    Intent i = new Intent(getApplicationContext(), TradesActivity.class);
                     i.putExtra("new", isNew);
                     startActivity(i);
                     overridePendingTransition(0, 0);

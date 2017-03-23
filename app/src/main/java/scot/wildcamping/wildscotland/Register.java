@@ -1,11 +1,9 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -13,20 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.CreateUser;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,12 +36,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     String email;
     String password;
     Intent intent;
-    String errorMsg;
     Boolean error;
-
     SessionManager session;
-
-    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,143 +57,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         tvLogin.setOnClickListener(this);
         registerButton.setOnClickListener(this);
 
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
-        pDialog.setCancelable(false);
-
         // Session manager
         session = new SessionManager(getApplicationContext());
 
-
         // Check if user is already logged in
         if (session.isLoggedIn()) {
+
             // User is already logged in. Move to main activity
-            Intent intent = new Intent(Register.this,
+            Intent intent = new Intent(this,
                     LogOut.class);
             startActivity(intent);
             finish();
         }
 
-    }
-
-    class CreateNewProduct extends AsyncTask<String, String, String> {
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Register.this);
-            pDialog.setMessage("Registering ...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-
-            name = etFullName.getText().toString();
-            token = AppController.getString(getBaseContext(), "token");
-            email = etEmailRegister.getText().toString();
-            password = etPasswordRegister.getText().toString();
-
-        }
-
-        /**
-         * Creating product
-         * */
-        protected String doInBackground(String... args) {
-
-            //String getResponse = doGetRequest(Appconfig.URL_REGISTER);
-            //System.out.println(getResponse);
-
-            // issue the post request
-            try {
-                String json = register(name, token, email, password);
-                System.out.println("json: " + json);
-                String postResponse = doPostRequest(Appconfig.URL, json);      //json
-                System.out.println("post response: " + postResponse);
-
-                session.setLogin(true);
-                try {
-                    JSONObject jObj = new JSONObject(postResponse);
-                    error = jObj.getBoolean("error");
-
-                    if(!error){
-                        String userId = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        AppController.setString(Register.this, "uid", userId);
-                        AppController.setString(Register.this, "name", name);
-                        AppController.setString(Register.this, "email", email);
-
-                    } else {
-                        errorMsg = jObj.getString("error_msg");
-
-                    }
-
-                } catch (JSONException e){
-
-                }
-
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once done
-            pDialog.dismiss();
-            if (error) {
-                Toast.makeText(Register.this,
-                        errorMsg, Toast.LENGTH_LONG).show();
-            }
-        }
-
-        private String doGetRequest(String url)throws IOException{
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
-        private String doPostRequest(String url, String json) throws IOException {
-            RequestBody body = RequestBody.create(JSON, json);
-
-            System.out.println("body: " + body.toString());
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
-            System.out.println("request: "+request);
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        }
-
-        private String register(String name, String token, String email, String password) {
-            return "{\"tag\":\"" + "register" + "\","
-                    + "\"name\":\"" + name + "\","
-                    + "\"token\":\"" + token + "\","
-                    + "\"email\":\"" + email + "\","
-                    + "\"password\":\"" + password + "\"}";
-        }
-    }
-
-    private void showDialog() {
-        if (!pDialog.isShowing())
-            pDialog.show();
-    }
-
-    private void hideDialog() {
-        if (pDialog.isShowing())
-            pDialog.dismiss();
     }
 
     @Override
@@ -225,22 +85,21 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 name = etFullName.getText().toString();
                 email = etEmailRegister.getText().toString();
                 password = etPasswordRegister.getText().toString();
+                token = AppController.getString(getBaseContext(), "token");
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     if(isNetworkAvailable()) {
-                        try {
-                            String user = new CreateNewProduct().execute().get();
+                        new CreateUser(this, name, email, password, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).execute();
 
-                            intent = new Intent(Register.this, BioActivity.class);
-                            intent.putExtra("new", true);
-                            startActivity(intent);
-                            finish();
-
-                        } catch (InterruptedException e) {
-
-                        } catch (ExecutionException e) {
-
-                        }
+                        session.setLogin(true);
+                        intent = new Intent(Register.this, BioActivity.class);
+                        intent.putExtra("new", true);
                     }
                 } else {
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)

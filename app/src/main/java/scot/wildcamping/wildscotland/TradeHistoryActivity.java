@@ -17,9 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.adapter.TradeListAdapter;
-import scot.wildcamping.wildscotland.model.StoredTrades;
-import scot.wildcamping.wildscotland.model.Trade;
+import scot.wildcamping.wildscotland.Adapters.TradeListAdapter;
+import scot.wildcamping.wildscotland.Objects.StoredTrades;
+import scot.wildcamping.wildscotland.Objects.Trade;
 
 public class TradeHistoryActivity extends AppCompatActivity {
 

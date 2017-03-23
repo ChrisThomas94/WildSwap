@@ -26,8 +26,12 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
+import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateTrade;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 15-Mar-16.
@@ -363,7 +367,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Trades.class);
+                Intent i = new Intent(getApplicationContext(), TradesActivity.class);
                 startActivity(i);
                 overridePendingTransition(0, 0);
                 finish();
@@ -382,7 +386,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
                     }
                 }
-                Intent i = new Intent(getApplicationContext(), Trades.class);
+                Intent i = new Intent(getApplicationContext(), TradesActivity.class);
                 startActivity(i);
                 overridePendingTransition(0, 0);
                 finish();

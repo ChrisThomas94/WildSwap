@@ -14,9 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Adapters.SiteListAdapter;
+import scot.wildcamping.wildscotland.Dead._OwnedSiteActivity;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class YourSitesFragment extends Fragment {
 	

@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class LogOut extends AppCompatActivity {
 

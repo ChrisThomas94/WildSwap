@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSiteViewerActivity;
+
 /**
  * Created by Chris on 03-Mar-16.
  */
@@ -339,7 +341,7 @@ public class FeaturesActivity extends AppCompatActivity implements View.OnClickL
                     //bundle for update
                     i.putExtra("arrayPosition", arrayPos);
                 } else {
-                    i = new Intent(getApplicationContext(), AddSite.class);
+                    i = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     //bundle for add
                     i.putExtra("image", image);
@@ -391,7 +393,7 @@ public class FeaturesActivity extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("feature9", feature9);
                     intent.putExtra("feature10", feature10);
                 } else {
-                    intent = new Intent(getApplicationContext(), AddSite.class);
+                    intent = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     //bundle for add
                     intent.putExtra("image", image);

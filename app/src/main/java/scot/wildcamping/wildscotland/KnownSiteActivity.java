@@ -25,9 +25,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.model.Gallery;
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
+import scot.wildcamping.wildscotland.Objects.Gallery;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 17-Mar-16.
@@ -196,7 +199,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             newImage = temp.get(0).getImage();
             newBitmap = StringToBitMap(newImage);
             image1.setVisibility(View.VISIBLE);
-            image.setImageBitmap(compress);
+            profilePic.setImageBitmap(compress);
         }*/
 
 
@@ -232,7 +235,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
                 if (rating.getRating() == focused.getRating().floatValue() && newImage == null) {
                     //nothing has changed
-                    Snackbar.make(v, "You haven't uploaded a new image or updated the rating!", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "You haven't uploaded a new profilePic or updated the rating!", Snackbar.LENGTH_LONG).show();
                 } else {
 
                     String imageSingleLine = null;

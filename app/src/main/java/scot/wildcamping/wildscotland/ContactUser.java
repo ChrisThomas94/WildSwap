@@ -1,19 +1,15 @@
 package scot.wildcamping.wildscotland;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 17-Mar-16.

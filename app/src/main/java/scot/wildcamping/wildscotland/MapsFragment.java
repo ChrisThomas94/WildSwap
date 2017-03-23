@@ -6,28 +6,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
-import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -39,51 +26,36 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
-import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.maps.MapsFragment;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.algo.GridBasedAlgorithm;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
@@ -416,7 +388,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         longitude = googleMap.getMyLocation().getLongitude();
 
                         // start new activity
-                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
                         intent.putExtra("latitude", latitude);
                         intent.putExtra("longitude", longitude);
                         getActivity().startActivity(intent);
@@ -447,7 +419,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                             newLat = point.latitude;
                             newLon = point.longitude;
 
-                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSite.class);
+                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
                             intent.putExtra("latitude", point.latitude);
                             intent.putExtra("longitude", point.longitude);
                             getActivity().startActivity(intent);
@@ -461,7 +433,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity().getApplicationContext(),
-                            AddSite.class);
+                            AddSiteActivity.class);
                     getActivity().startActivity(intent);
                 }
             });

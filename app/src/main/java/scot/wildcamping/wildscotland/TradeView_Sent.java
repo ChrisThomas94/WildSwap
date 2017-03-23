@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,8 +25,10 @@ import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateTrade;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 
 public class TradeView_Sent extends AppCompatActivity implements View.OnClickListener {

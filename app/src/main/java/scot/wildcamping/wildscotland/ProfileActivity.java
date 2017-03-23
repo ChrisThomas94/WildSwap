@@ -20,8 +20,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.adapter.CustomSpinnerAdapter;
-import scot.wildcamping.wildscotland.adapter.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
+import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
 
 /**
  * Created by Chris on 08-Apr-16.
@@ -95,8 +99,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         list = new ArrayList<String>();
         list.add("Map");
-        list.add("Sites");
-        list.add("Trades");
+        list.add("SitesActivity");
+        list.add("TradesActivity");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
@@ -159,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 }
-                Intent intent = new Intent(getApplicationContext(), Sites.class);
+                Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -175,7 +179,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     }
                 }
-                Intent trade = new Intent(getApplicationContext(), Trades.class);
+                Intent trade = new Intent(getApplicationContext(), TradesActivity.class);
                 startActivity(trade);
                 overridePendingTransition(0,0);
                 finish();

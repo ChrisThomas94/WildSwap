@@ -14,9 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.adapter.SiteListAdapter;
-import scot.wildcamping.wildscotland.model.Site;
-import scot.wildcamping.wildscotland.model.knownSite;
+import scot.wildcamping.wildscotland.Adapters.SiteListAdapter;
+import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class KnownSitesFragment extends Fragment {
 	
@@ -59,7 +59,7 @@ public class KnownSitesFragment extends Fragment {
                 //intent.putExtra("title", knownSites.get(position).getTitle());
                 //intent.putExtra("description", knownSites.get(position).getDescription());
                 //intent.putExtra("rating", knownSites.get(position).getRating());
-                //intent.putExtra("image", knownSites.get(position).getImage());
+                //intent.putExtra("profilePic", knownSites.get(position).getImage());
                 intent.putExtra("prevState", 2);
                 startActivity(intent);
             }

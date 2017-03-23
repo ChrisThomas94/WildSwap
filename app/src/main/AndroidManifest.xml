@@ -96,13 +96,13 @@
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".AddSite"
+            android:name=".AddSiteActivity"
             android:label="New Site"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
-            android:name=".TradeActivity"
+            android:name=".Dead.TradeActivity"
             android:label="Trade"
             android:theme="@style/AppTheme">
         </activity>
@@ -126,7 +126,7 @@
         </activity>
 
         <activity
-            android:name="._OwnedSiteActivity"
+            android:name=".Dead._OwnedSiteActivity"
             android:label="Owned Site"
             android:theme="@style/AppTheme"/>
 
@@ -156,11 +156,11 @@
             android:label="Settings"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".Sites"
+        <activity android:name=".SitesActivity"
             android:label="Sites"
             android:theme= "@style/MainActivity"/>
 
-        <activity android:name=".Trades"
+        <activity android:name=".TradesActivity"
             android:label="Trades"
             android:theme= "@style/MainActivity"/>
 
@@ -176,12 +176,12 @@
             android:label="Quiz"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".UpdateSiteActivity"
+        <activity android:name=".AsyncTask.UpdateSiteActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".UpdateSiteViewerActivity"
+        <activity android:name=".AsyncTask.UpdateSiteViewerActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
