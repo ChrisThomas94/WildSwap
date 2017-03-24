@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
@@ -27,16 +30,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
     EditText etPasswordLogin;
     String email;
     String password;
-    Boolean error;
     Intent intent;
 
-    private ProgressDialog progressDialog;
     private SessionManager session;
-
-    public final MediaType JSON
-            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
-
-    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +51,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         registerHere.setOnClickListener(this);
         signIn.setOnClickListener(this);
 
-        //setting progressDialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-
-
         session = new SessionManager(getApplicationContext());
 
 
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
-
-            /*if(isNetworkAvailable()){
-                try {
-                    String known_results = new FetchKnownSites(this).execute().get();
-                    String unknown_result = new FetchUnknownSites(this).execute().get();
-                    String trade_result = new FetchTradeRequests(this).execute().get();
-                } catch (ExecutionException e){
-
-                } catch (InterruptedException e){
-
-                }
-            }*/
 
             Intent intent = new Intent(Login.this, MainActivity_Spinner.class);
             startActivity(intent);

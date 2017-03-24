@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,10 +28,10 @@ public class BioFragment extends Fragment {
     TextView txtName;
     TextView txtEmail;
     TextView txtBio;
-    Button btnLogout;
-    TextView update;
     Boolean this_user = false;
     ImageView profile_pic;
+    ImageView cover_pic;
+    ImageButton edit;
 
     private SessionManager session;
 
@@ -49,27 +50,15 @@ public class BioFragment extends Fragment {
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
         txtBio = (TextView) rootView.findViewById(R.id.bio);
-        btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
-        update = (TextView) rootView.findViewById(R.id.updateProfile);
         profile_pic = (ImageView) rootView.findViewById(R.id.profilePicture);
+        cover_pic = (ImageView) rootView.findViewById(R.id.backgroundImage);
+        edit = (ImageButton) rootView.findViewById(R.id.edit);
 
         session = new SessionManager(getContext());
 
         if (!session.isLoggedIn()) {
             logoutUser();
         }
-
-
-
-        //User user = new User();
-
-        //String name = user.getName();
-        //String email = user.getEmail();
-        //String bio = user.getBio();
-
-        //txtName.setText(name);
-        //txtEmail.setText(email);
-        //txtBio.setText(bio);
 
         if(this_user){
             txtName.setText(AppController.getString(getContext(), "name"));
@@ -118,21 +107,12 @@ public class BioFragment extends Fragment {
                 profile_pic.setImageBitmap(circle);
             }
 
-            update.setVisibility(View.GONE);
-            btnLogout.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
         }
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logoutUser();
-            }
-        });
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
                 Intent intent = new Intent(getActivity(),
                         BioActivity.class);
                 intent.putExtra("update", true);
@@ -142,38 +122,12 @@ public class BioFragment extends Fragment {
 
         return rootView;
     }
-/*
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnLogout:
-                goToAttract(v);
-        }
-    }*/
-/*
-    public void goToAttract(View v){
-        Intent intent = new Intent(getActivity(), Login.class);
-        startActivity(intent);
-    }*/
 
     private void logoutUser() {
         session.setLogin(false);
         Intent intent = new Intent(getContext(), Login.class);
         startActivity(intent);
         getActivity().finish();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case android.R.id.home:
-
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
-                getActivity().finish();
-                return true;
-        }
-        return (super.onOptionsItemSelected(menuItem));
     }
 
     public Bitmap StringToBitMap(String encodedString){

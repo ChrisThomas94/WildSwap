@@ -26,7 +26,10 @@
         <ImageButton
             android:id="@+id/edit"
             android:layout_width="40dp"
-            android:layout_height="40dp"/>
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:background="@color/list_item_title"
+            android:src="@drawable/ic_site_builder_48dp"/>
 
         <LinearLayout
             android:orientation="vertical"
@@ -87,7 +90,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/circle"/>
+            android:background="@drawable/circle_with_shadow"/>
 
         <ImageView
             android:layout_width="wrap_content"

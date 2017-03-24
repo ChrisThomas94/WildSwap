@@ -17,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -35,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.QuestionListAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
@@ -55,7 +58,7 @@ public class BioActivity extends AppCompatActivity {
     int RESULT_LOAD_IMAGE = 0;
 
     EditText bio;
-    ImageView prof;
+    CircleImageView prof;
     ImageView addCoverPicture;
     String profilePic;
     ImageView backgroundImage;
@@ -81,7 +84,7 @@ public class BioActivity extends AppCompatActivity {
         }
 
         bio = (EditText) findViewById(R.id.bio);
-        prof = (ImageView) findViewById(R.id.profilePicture);
+        prof = (CircleImageView) findViewById(R.id.profilePicture);
         TextView skip = (TextView)findViewById(R.id.skip);
         addCoverPicture = (ImageView) findViewById(R.id.coverPicture);
         backgroundImage = (ImageView)findViewById(R.id.backgroundImage);
@@ -118,6 +121,7 @@ public class BioActivity extends AppCompatActivity {
             public void onClick(View v) {
                 i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 i.putExtra("imageType", "cover");
+                addCoverPicture.setVisibility(View.GONE);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
@@ -250,11 +254,9 @@ public class BioActivity extends AppCompatActivity {
                     backgroundImage.setImageBitmap(compress);
 
                 } else if(imageType.equals("profile")){
-                    compress = Bitmap.createScaledBitmap(compress, 300, 300, true);
-                    profilePic = getStringImage(compress);
 
-                    Bitmap circle = getCroppedBitmap(compress);
-                    prof.setImageBitmap(circle);
+                    prof.setImageBitmap(compress);
+
                 } else {
 
                 }

@@ -45,7 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
     String user;
     TextView txtName;
     TextView txtEmail;
-    Button btnLogout;
     Button questions;
     Boolean this_user;
 

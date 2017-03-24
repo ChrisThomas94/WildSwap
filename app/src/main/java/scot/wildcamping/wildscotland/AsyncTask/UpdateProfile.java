@@ -54,6 +54,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         super.onPreExecute();
 
         pDialog = new ProgressDialog(context);
+        pDialog.setMessage("Updating profile...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();

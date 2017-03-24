@@ -7,6 +7,7 @@
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:scaleType="fitXY"
         android:src="@drawable/rounded_grey_button"/>
 
     <ImageView
@@ -16,6 +17,12 @@
         android:layout_margin="20dp"
         android:clickable="true"
         android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/fade_box"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -96,16 +103,27 @@
             android:layout_width="105dp"
             android:layout_height="105dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/circle"/>
+            android:background="@drawable/circle_with_shadow"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/profilePicture"
-            android:clickable="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_add_a_photo_black_48dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profilePicture"
+            android:visibility="visible"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle"/>
+
+
     </RelativeLayout>
 
 </RelativeLayout>
