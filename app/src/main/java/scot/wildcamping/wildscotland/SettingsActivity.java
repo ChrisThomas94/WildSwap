@@ -6,10 +6,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import scot.wildcamping.wildscotland.Objects.StoredUsers;
+import scot.wildcamping.wildscotland.Objects.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -42,10 +46,8 @@ public class SettingsActivity extends AppCompatActivity {
             logoutUser();
         }
 
-        String name = AppController.getString(this, "name");
-        String email = AppController.getString(this, "email"); //email is currently blank so print uid instead
-        txtName.setText(name);
-        txtEmail.setText(email);
+        txtName.setText(AppController.getString(this, "name"));
+        txtEmail.setText(AppController.getString(this, "email"));
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 

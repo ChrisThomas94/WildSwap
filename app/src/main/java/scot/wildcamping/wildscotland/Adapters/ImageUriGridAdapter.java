@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import scot.wildcamping.wildscotland.R;
 /**
  * Created by Chris on 18-Mar-16.
  */
-public class ImageGridAdapter extends ArrayAdapter {
+public class ImageUriGridAdapter extends ArrayAdapter {
 
     private Context context;
     //private String[] gallery;
@@ -28,7 +27,7 @@ public class ImageGridAdapter extends ArrayAdapter {
     ArrayList data = new ArrayList();
     ImageView imageView;
 
-    public ImageGridAdapter(Context context, int layoutResourceId, ArrayList data) {
+    public ImageUriGridAdapter(Context context, int layoutResourceId, ArrayList data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -62,13 +61,17 @@ public class ImageGridAdapter extends ArrayAdapter {
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
 
-            String image = data.get(position).toString();
-            //Uri myUri = Uri.parse(image);
-            //Bitmap compress = BitmapFactory.decodeStream(row.getContext().getContentResolver().openInputStream(image));
-            Bitmap compress = StringToBitMap(image);
+            try {
+                String image = data.get(position).toString();
+                Uri myUri = Uri.parse(image);
+                Bitmap compress = BitmapFactory.decodeStream(row.getContext().getContentResolver().openInputStream(myUri));
 
-            imageView.setImageBitmap(compress);
+                imageView.setImageBitmap(compress);
 
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
         } else {
             row.getTag();
@@ -82,17 +85,6 @@ public class ImageGridAdapter extends ArrayAdapter {
         }*/
 
         return row;
-    }
-
-    public Bitmap StringToBitMap(String encodedString){
-        try{
-            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
     }
 
 }

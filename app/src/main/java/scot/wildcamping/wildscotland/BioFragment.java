@@ -11,14 +11,14 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BioFragment extends Fragment {
 
@@ -28,8 +28,9 @@ public class BioFragment extends Fragment {
     TextView txtName;
     TextView txtEmail;
     TextView txtBio;
+    TextView txtWhy;
     Boolean this_user = false;
-    ImageView profile_pic;
+    CircleImageView profile_pic;
     ImageView cover_pic;
     ImageButton edit;
 
@@ -49,8 +50,9 @@ public class BioFragment extends Fragment {
 
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
+        txtWhy = (TextView) rootView.findViewById(R.id.why);
         txtBio = (TextView) rootView.findViewById(R.id.bio);
-        profile_pic = (ImageView) rootView.findViewById(R.id.profilePicture);
+        profile_pic = (CircleImageView) rootView.findViewById(R.id.profilePicture);
         cover_pic = (ImageView) rootView.findViewById(R.id.backgroundImage);
         edit = (ImageButton) rootView.findViewById(R.id.edit);
 
@@ -61,10 +63,14 @@ public class BioFragment extends Fragment {
         }
 
         if(this_user){
+
+
             txtName.setText(AppController.getString(getContext(), "name"));
             txtEmail.setText(AppController.getString(getContext(), "email"));
-
             String bio = AppController.getString(getContext(), "bio");
+            String why = AppController.getString(getContext(), "why");
+            String profile_pic = AppController.getString(getContext(), "profile_pic");
+            String cover_pic = AppController.getString(getContext(), "cover_pic");
 
             if(bio.equals("null")){
                 txtBio.setText("");
@@ -72,15 +78,20 @@ public class BioFragment extends Fragment {
                 txtBio.setText(bio);
             }
 
-            String image = AppController.getString(getContext(), "profile_pic");
-
-            if(image.equals("null") || image.equals("")){
-
+            if(why.equals("null")){
+                txtWhy.setText("");
             } else {
-                Bitmap bit = StringToBitMap(image);
-                bit = Bitmap.createScaledBitmap(bit, 300, 300, true);
-                Bitmap circle = getCroppedBitmap(bit);
-                profile_pic.setImageBitmap(circle);
+                txtWhy.setText(why);
+            }
+
+            if(!profile_pic.equals("null") || !profile_pic.equals("")){
+                Bitmap bit = StringToBitMap(profile_pic);
+                this.profile_pic.setImageBitmap(bit);
+            }
+
+            if(!cover_pic.equals("null") || !cover_pic.equals("")){
+                Bitmap bit = StringToBitMap(cover_pic);
+                this.cover_pic.setImageBitmap(bit);
             }
 
         } else {

@@ -32,7 +32,6 @@ import java.util.List;
 import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
-import scot.wildcamping.wildscotland.AsyncTask.UpdateSiteViewerActivity;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
@@ -73,7 +72,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     ArrayList<String> imagesList;
 
     FrameLayout frame;
-
+    Boolean hasImages = false;
     ImageView close;
     ScrollView scroll;
     ViewPager imageViews;
@@ -135,7 +134,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         frame = (FrameLayout) findViewById(R.id.frame);
         close = (ImageView)findViewById(R.id.closeImage);
         scroll = (ScrollView)findViewById(R.id.pageScrollView);
-        frame.getForeground().setAlpha(0);
+        //frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
         country = (TextView)findViewById(R.id.country);
 
@@ -175,6 +174,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             ImageGalleryAdapter adapter = new ImageGalleryAdapter(this, imagesList);
             imageViews.setPageMargin(-150);
             imageViews.setAdapter(adapter);
+            hasImages = true;
 
         } else {
             imageViews.setVisibility(View.GONE);
@@ -409,7 +409,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 expandedImage.setImageBitmap(imageBit);
                 expandedImage.setVisibility(View.VISIBLE);
                 close.setVisibility(View.VISIBLE);
-                frame.getForeground().setAlpha(150);
+                //frame.getForeground().setAlpha(150);
 
                 break;
 
@@ -417,7 +417,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
                 expandedImage.setVisibility(View.INVISIBLE);
                 close.setVisibility(View.GONE);
-                frame.getForeground().setAlpha(0);
+                //frame.getForeground().setAlpha(0);
                 scroll.setClickable(true);
                 break;
         }
@@ -506,6 +506,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 intent = new Intent(getApplicationContext(),UpdateSiteViewerActivity.class);
                 //bundle all current details into "add site"
                 intent.putExtra("arrayPosition", arrayPos);
+                intent.putExtra("image", hasImages);
 
                 intent.putExtra("feature1", feature1);
                 intent.putExtra("feature2", feature2);

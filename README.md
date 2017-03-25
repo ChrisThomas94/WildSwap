@@ -25,7 +25,7 @@ Crowdsourcing has become a popular method of collecting various types of data as
 6 Purpose
 
 The problem my project is addressing is the lack of affordance for wild campers seeking wild locations. Public broadcasting of locations is frowned upon by the wild camping community, when locations are shared online they receive interest from an increased amount of people due to the lack of publicly accessible locations. This in turn puts these wild locations under immense pressure as they are now known by a large number of people.  
-To address this problem, I will create a crowdsourcing tool in which wild campers submit wild camping locations and in doing so become a moderator for those locations. Moderators are then able to regulate the distribution of their submitted locations to other users at their own discretion. 
+To address this problem, I will create a crowdsourcing tool in which wild campers submit wild camping locations and in doing so become a moderator for those locations. Moderators are then able to regulate the distribution of their submitted locations to other otherUsers at their own discretion.
 In addition, I wish to use this crowdsourced information in the interests of wild campers and wild locations alike, there are a number of benefits to collecting this data. 
 
 •	Coordination of use;

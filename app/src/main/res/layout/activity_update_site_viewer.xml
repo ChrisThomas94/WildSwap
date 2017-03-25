@@ -123,94 +123,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
 
-                    <HorizontalScrollView
-                        android:id="@+id/siteViewGallery"
+                    <GridView
+                        android:id="@+id/gridView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <ImageButton
-                                    android:id="@+id/image1"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"
-                                    android:clickable="true"/>
-
-                                <ImageView
-                                    android:id="@+id/closeImage1"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:padding="5dp"
-                                    android:src="@drawable/red_cross"
-                                    android:layout_marginLeft="90dp"
-                                    android:visibility="gone"/>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <ImageButton
-                                    android:id="@+id/image2"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"
-                                    android:clickable="true"/>
-
-                                <ImageView
-                                    android:id="@+id/closeImage2"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:padding="5dp"
-                                    android:src="@drawable/red_cross"
-                                    android:layout_marginLeft="90dp"
-                                    android:visibility="gone"/>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <ImageButton
-                                    android:id="@+id/image3"
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:scaleType="centerCrop"
-                                    android:background="@android:color/transparent"
-                                    android:visibility="gone"
-                                    android:layout_marginRight="15dp"
-                                    android:clickable="true"/>
-
-                                <ImageView
-                                    android:id="@+id/closeImage3"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:padding="5dp"
-                                    android:src="@drawable/red_cross"
-                                    android:layout_marginLeft="90dp"
-                                    android:visibility="gone"/>
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:drawSelectorOnTop="true"
+                        android:gravity="center"
+                        android:numColumns="3"
+                        android:verticalSpacing="5dp"
+                        android:horizontalSpacing="5dp"
+                        android:isScrollContainer="false"
+                        android:stretchMode="columnWidth"
+                        android:focusable="true"
+                        android:clickable="true"/>
 
                 </RelativeLayout>
 
@@ -285,7 +211,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Allow other users to see this image"/>
+                        android:text="Allow other otherUsers to see this image"/>
 
 
             </LinearLayout>

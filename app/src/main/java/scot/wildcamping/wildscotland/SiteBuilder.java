@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import scot.wildcamping.wildscotland.AsyncTask.UpdateSiteViewerActivity;
-
 import static android.view.View.GONE;
 
 /**

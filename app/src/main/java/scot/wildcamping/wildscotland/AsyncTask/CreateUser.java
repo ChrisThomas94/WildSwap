@@ -18,6 +18,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredUsers;
+import scot.wildcamping.wildscotland.Objects.User;
 
 public class CreateUser extends AsyncTask<String, String, String> {
 
@@ -89,9 +91,11 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     JSONObject user = jObj.getJSONObject("user");
                     String name = user.getString("name");
                     String email = user.getString("email");
+
                     AppController.setString(context, "uid", userId);
                     AppController.setString(context, "name", name);
                     AppController.setString(context, "email", email);
+                    AppController.setString(context, "password", password);
 
                 } else {
                     errorMsg = jObj.getString("error_msg");

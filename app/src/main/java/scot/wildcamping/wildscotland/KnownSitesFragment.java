@@ -59,7 +59,7 @@ public class KnownSitesFragment extends Fragment {
                 //intent.putExtra("title", knownSites.get(position).getTitle());
                 //intent.putExtra("description", knownSites.get(position).getDescription());
                 //intent.putExtra("rating", knownSites.get(position).getRating());
-                //intent.putExtra("profilePic", knownSites.get(position).getImage());
+                //intent.putExtra("profilePicString", knownSites.get(position).getImage());
                 intent.putExtra("prevState", 2);
                 startActivity(intent);
             }

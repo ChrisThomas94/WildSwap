@@ -199,7 +199,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             newImage = temp.get(0).getImage();
             newBitmap = StringToBitMap(newImage);
             image1.setVisibility(View.VISIBLE);
-            profilePic.setImageBitmap(compress);
+            profilePicString.setImageBitmap(compress);
         }*/
 
 
@@ -235,7 +235,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
                 if (rating.getRating() == focused.getRating().floatValue() && newImage == null) {
                     //nothing has changed
-                    Snackbar.make(v, "You haven't uploaded a new profilePic or updated the rating!", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "You haven't uploaded a new profilePicString or updated the rating!", Snackbar.LENGTH_LONG).show();
                 } else {
 
                     String imageSingleLine = null;

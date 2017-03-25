@@ -17,8 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -44,6 +42,7 @@ import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateProfile;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
@@ -57,11 +56,14 @@ public class BioActivity extends AppCompatActivity {
     boolean update = false;
     int RESULT_LOAD_IMAGE = 0;
 
+    TextView name;
     EditText bio;
-    CircleImageView prof;
+    EditText why;
+    CircleImageView profilePic;
     ImageView addCoverPicture;
-    String profilePic;
-    ImageView backgroundImage;
+    String profilePicString;
+    ImageView coverPic;
+    String coverPicString;
     Intent i;
     boolean isNew;
 
@@ -83,15 +85,14 @@ public class BioActivity extends AppCompatActivity {
             isNew = extras.getBoolean("new");
         }
 
+        name = (TextView) findViewById(R.id.name);
         bio = (EditText) findViewById(R.id.bio);
-        prof = (CircleImageView) findViewById(R.id.profilePicture);
-        TextView skip = (TextView)findViewById(R.id.skip);
+        why = (EditText) findViewById(R.id.why);
+        profilePic = (CircleImageView) findViewById(R.id.profilePicture);
         addCoverPicture = (ImageView) findViewById(R.id.coverPicture);
-        backgroundImage = (ImageView)findViewById(R.id.backgroundImage);
+        coverPic = (ImageView)findViewById(R.id.backgroundImage);
 
         if(!isNew){
-
-            skip.setVisibility(View.VISIBLE);
 
             if(AppController.getString(this, "bio").equals("null")){
                 bio.setText("");
@@ -99,19 +100,34 @@ public class BioActivity extends AppCompatActivity {
                 bio.setText(AppController.getString(this, "bio"));
             }
 
-            profilePic = AppController.getString(this, "profile_pic");
+            if(AppController.getString(this, "why").equals("null")){
+                why.setText("");
+            } else {
+                why.setText(AppController.getString(this, "why"));
+            }
 
-            if(profilePic != null){
+            profilePicString = AppController.getString(this, "profile_pic");
+            coverPicString = AppController.getString(this, "cover_pic");
 
-                if(profilePic.equals("null")){
+            if(profilePicString != null){
+
+                if(profilePicString.equals("null")){
                     Snackbar.make(parentLayout, "Why not add a profile picture?", Snackbar.LENGTH_LONG).show();
 
                 } else {
-                    Bitmap profile_pic = StringToBitMap(profilePic);
+                    Bitmap profile_pic = StringToBitMap(profilePicString);
                     Bitmap circle = getCroppedBitmap(profile_pic);
-                    prof.setImageBitmap(circle);
+                    profilePic.setImageBitmap(circle);
                 }
+            }
 
+            if(coverPicString != null){
+                if(coverPicString.equals("null")){
+
+                } else {
+                    Bitmap cover_pic = StringToBitMap(coverPicString);
+                    coverPic.setImageBitmap(cover_pic);
+                }
             }
 
         }
@@ -126,7 +142,7 @@ public class BioActivity extends AppCompatActivity {
             }
         });
 
-        prof.setOnClickListener(new View.OnClickListener() {
+        profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -136,7 +152,7 @@ public class BioActivity extends AppCompatActivity {
             }
         });
 
-        skip.setOnClickListener(new View.OnClickListener() {
+        /*skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
@@ -148,7 +164,7 @@ public class BioActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
     }
 
@@ -171,17 +187,27 @@ public class BioActivity extends AppCompatActivity {
 
             case R.id.action_submit:
 
-                AppController.setString(this, "bio", bio.getText().toString());
+
+                //AppController.setString(this, "bio", bio.getText().toString());
 
                 String newBio = bio.getText().toString();
+                String newWhy = why.getText().toString();
 
-                String imageSingleLine = null;
+                String profileSingleLine = null;
+                String coverSingleLine = null;
 
-                if(profilePic != null) {
-                    imageSingleLine = profilePic.replaceAll("[\r\n]+", "");
-                    AppController.setString(this, "profile_pic", profilePic);
+                if(profilePicString != null) {
+                    profileSingleLine = profilePicString.replaceAll("[\r\n]+", "");
+                    AppController.setString(this, "profile_pic", profilePicString);
                 } else {
                     AppController.setString(this, "profile_pic", "null");
+                }
+
+                if(coverPicString != null){
+                    coverSingleLine = coverPicString.replaceAll("[\r\n]+", "");
+                    AppController.setString(this, "cover_pic", coverPicString);
+                } else {
+                    AppController.setString(this, "cover_pic", "null");
                 }
 
                 final Intent intent = new Intent(this, QuizActivity.class);
@@ -198,7 +224,7 @@ public class BioActivity extends AppCompatActivity {
                     new FetchQuestions(this, AppController.getString(this, "email")).execute();
 
                     //asynk task updating bio
-                    new UpdateProfile(this, newBio, imageSingleLine, new AsyncResponse() {
+                    new UpdateProfile(this, newBio, newWhy, profileSingleLine, coverSingleLine, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);
@@ -247,15 +273,14 @@ public class BioActivity extends AppCompatActivity {
                 imageType = i.getStringExtra("imageType");
 
                 if(imageType.equals("cover")){
-                    //compress = Bitmap.createScaledBitmap(compress, 300, 300, true);
-                    //profilePic = getStringImage(compress);
 
-                    //Bitmap square = getCroppedBitmap(compress);
-                    backgroundImage.setImageBitmap(compress);
+                    coverPicString = getStringImage(compress);
+                    coverPic.setImageBitmap(compress);
 
                 } else if(imageType.equals("profile")){
 
-                    prof.setImageBitmap(compress);
+                    profilePicString = getStringImage(compress);
+                    profilePic.setImageBitmap(compress);
 
                 } else {
 

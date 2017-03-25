@@ -224,7 +224,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 + "\"feature8\":\"" + feature8 + "\","
                 + "\"feature9\":\"" + feature9 + "\","
                 + "\"feature10\":\"" + feature10 + "\","
-                + "\"image\":\"" + image + "\"}";
+                + "\"profile_pic\":\"" + image + "\"}";
     }
 
     private String deleteSite(String cid, Boolean active) {
@@ -239,7 +239,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 + "\"uid\":\"" + uid + "\","
                 + "\"cid\":\"" + cid + "\","
                 + "\"rating\":\"" + rating + "\","
-                + "\"image\":\"" + image + "\","
+                + "\"profile_pic\":\"" + image + "\","
                 + "\"imageNum\":\"" + imageNum + "\"}";
 
     }

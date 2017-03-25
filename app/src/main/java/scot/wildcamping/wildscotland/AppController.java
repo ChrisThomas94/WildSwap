@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import scot.wildcamping.wildscotland.Objects.User;
+
 public class AppController extends Application {
 
     public static final String TAG = AppController.class.getSimpleName();

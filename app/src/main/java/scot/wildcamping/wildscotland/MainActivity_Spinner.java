@@ -32,13 +32,17 @@ import android.widget.Toast;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.NavDrawerListAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.FetchProfile;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
 import scot.wildcamping.wildscotland.Objects.NavDrawerItem;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
+import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.Trade;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class MainActivity_Spinner extends AppCompatActivity {
@@ -185,6 +189,10 @@ public class MainActivity_Spinner extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
+        StoredUsers users = new StoredUsers();
+        User keyUser = users.getKeyUser();
+        System.out.println("email " + keyUser.getEmail());
     }
 
     private void displayView(int position, Boolean refresh) {
@@ -209,34 +217,48 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 }
                 break;
             case 1:
+                Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
+                intent.putExtra("new", isNew);
+
                 if(isNetworkAvailable()) {
                     knownSite sites = new knownSite();
                     if(sites.getUnknownSitesSize() == 0){
                         try {
                             String known_result = new FetchKnownSites(this, null).execute().get();
                             //String unknown_result = new FetchUnknownSites(this).execute().get();
+                            startActivity(intent);
+                            overridePendingTransition(0, 0);
+                            finish();
                         } catch (InterruptedException e) {
 
                         } catch (ExecutionException e) {
 
                         }
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
-                        intent.putExtra("new", isNew);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                         finish();
                     }
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    finish();
                 }
 
                 break;
 
             case 2:
+                Intent i = new Intent(getApplicationContext(), TradesActivity.class);
+                i.putExtra("new", isNew);
+
                 StoredTrades trades = new StoredTrades();
                 if(trades.getAllTradesSize() == 0) {
                     if (isNetworkAvailable()) {
                         try {
                             String trades_result = new FetchTradeRequests(this).execute().get();
+                            startActivity(i);
+                            overridePendingTransition(0, 0);
+                            finish();
                         } catch (InterruptedException e) {
 
                         } catch (ExecutionException e) {
@@ -244,8 +266,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Intent i = new Intent(getApplicationContext(), TradesActivity.class);
-                    i.putExtra("new", isNew);
                     startActivity(i);
                     overridePendingTransition(0, 0);
                     finish();
@@ -253,21 +273,32 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 break;
 
             case 3:
+                final Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
+                profile.putExtra("this_user", true);
+                profile.putExtra("new", isNew);
+                overridePendingTransition(0,0);
                 if(isNetworkAvailable()) {
                     try {
+
+
+                        new FetchProfile(this, AppController.getString(this, "email"), AppController.getString(this, "password"), new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(profile);
+                                finish();
+                            }
+                        }).execute();
                         String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+
                     } catch (InterruptedException e) {
 
                     } catch (ExecutionException e) {
 
                     }
+                } else {
+                    startActivity(profile);
+                    finish();
                 }
-                Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
-                profile.putExtra("this_user", true);
-                profile.putExtra("new", isNew);
-                startActivity(profile);
-                overridePendingTransition(0,0);
-                finish();
                 break;
 
             default:

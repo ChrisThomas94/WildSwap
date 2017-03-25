@@ -19,6 +19,7 @@ import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
@@ -78,10 +79,10 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                 if (!error) {
                     int size = jObj.getInt("size");
 
-                    AppController.setString(context, "user_name", jObj.getString("name"));
-                    AppController.setString(context, "user_email", jObj.getString("email"));
-                    AppController.setString(context, "user_bio", jObj.getString("bio"));
-                    AppController.setString(context, "user_profile_pic", jObj.getString("profile_pic"));
+                    //AppController.setString(context, "user_name", jObj.getString("name"));
+                    //AppController.setString(context, "user_email", jObj.getString("email"));
+                    //AppController.setString(context, "user_bio", jObj.getString("bio"));
+                    //AppController.setString(context, "user_profile_pic", jObj.getString("profile_pic"));
 
                     JSONObject jsonQuestion;
                     Question question;
@@ -97,7 +98,6 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                         question.setAnswer(jsonQuestion.getInt("answer"));
 
                         arrayQuestions.put(i, question);
-
                     }
 
                     Quiz inst = new Quiz();

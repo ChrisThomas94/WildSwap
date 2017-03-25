@@ -27,7 +27,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import scot.wildcamping.wildscotland.Adapters.ImageGridAdapter;
+import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.knownSite;
@@ -222,41 +222,11 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         if(imageUpload) {
 
-            ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imageUris2);
+            ImageUriGridAdapter adapter = new ImageUriGridAdapter(this, R.layout.grid_item_layout, imageUris2);
             gridView.setAdapter(adapter);
 
             siteBuilder.setVisibility(View.GONE);
             or.setVisibility(View.GONE);
-
-            /*for(int i=0; i<imageUris.length; i++){
-
-                Uri myUri = Uri.parse(imageUris[i]);
-
-                try {
-                    compress = BitmapFactory.decodeStream(getContentResolver().openInputStream(myUri));
-                    profilePic.append(i, getStringImage(compress));
-
-
-                    System.out.println("profilePic being passed:" + imageUris[i]);
-
-                    if (i == 0) {
-                        image1.setVisibility(View.VISIBLE);
-                        image1.setImageBitmap(compress);
-                        siteBuilder.setVisibility(View.GONE);
-                        or.setVisibility(View.GONE);
-                    } else if (i == 1) {
-                        image2.setVisibility(View.VISIBLE);
-                        image2.setImageBitmap(compress);
-                    } else if (i == 2) {
-                        image3.setVisibility(View.VISIBLE);
-                        image3.setImageBitmap(compress);
-                    }
-                }
-                catch (FileNotFoundException f){
-
-                }
-            }*/
-
         }
 
         //setting onclick listeners
@@ -411,16 +381,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
                 gridView.setLayoutParams(layoutParams);
 
-                /*if(clip.getItemCount() <=3 ){
-                    gridView.setMinimumHeight(minHeight);
-                } else if (clip.getItemCount()<=6){
-                    gridView.setMinimumHeight(minHeight*2);
-                } else if (clip.getItemCount() <=9){
-                    gridView.setMinimumHeight(minHeight*3);
-                } else if (clip.getItemCount() <=12){
-                    gridView.setMinimumHeight(minHeight*4);
-                }*/
-
                 for (int i = 0; i < clip.getItemCount(); i++) {
                     ClipData.Item item = clip.getItemAt(i);
 
@@ -431,7 +391,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imageUris2);
+        ImageUriGridAdapter adapter = new ImageUriGridAdapter(this, R.layout.grid_item_layout, imageUris2);
         gridView.setAdapter(adapter);
 
         siteBuilder.setVisibility(View.GONE);

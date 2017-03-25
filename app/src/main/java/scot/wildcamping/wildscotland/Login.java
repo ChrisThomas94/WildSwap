@@ -1,5 +1,4 @@
 package scot.wildcamping.wildscotland;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -12,13 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
-import scot.wildcamping.wildscotland.AsyncTask.FetchLogin;
+import scot.wildcamping.wildscotland.AsyncTask.FetchProfile;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{    //***
 
@@ -96,11 +90,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                                 MainActivity_Spinner.class);
 
                         // login user
-                        new FetchLogin(this, email, password, new AsyncResponse() {
+                        new FetchProfile(this, email, password, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
 
-                                if(output !=null){
+                                if(output != null){
                                     session.setLogin(true);
                                     startActivity(intent);
                                     finish();

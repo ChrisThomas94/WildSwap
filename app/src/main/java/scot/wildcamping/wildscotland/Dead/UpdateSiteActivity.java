@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland.AsyncTask;
+package scot.wildcamping.wildscotland.Dead;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.FeaturesActivity;
 import scot.wildcamping.wildscotland.MainActivity_Spinner;
 import scot.wildcamping.wildscotland.Objects.Gallery;
@@ -225,9 +226,9 @@ public class UpdateSiteActivity extends AppCompatActivity implements View.OnClic
         }*/
 
         /*if(focused.getImage() != null) {
-            image = focused.getImage();
+            profile_pic = focused.getImage();
             image1.setVisibility(View.VISIBLE);
-            image1.setImageBitmap(StringToBitMap(image));
+            image1.setImageBitmap(StringToBitMap(profile_pic));
         }*/
 
         feature1.equals(focused.getFeature1());

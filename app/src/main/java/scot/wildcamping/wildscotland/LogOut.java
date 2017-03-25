@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.StoredUsers;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class LogOut extends AppCompatActivity {
@@ -53,11 +55,14 @@ public class LogOut extends AppCompatActivity {
     private void logoutUser() {
         session.setLogin(false);
         knownSite inst = new knownSite();
-        SparseArray<Site> empty = inst.getOwnedSitesMap();
-        empty.clear();
+        SparseArray<Site> ownedSites = inst.getOwnedSitesMap();
+        ownedSites.clear();
+        AppController.setString(this, "name", "");
+        AppController.setString(this, "email", "");
         AppController.setString(this, "bio", "");
         AppController.setString(this, "profile_pic", "null");
-        inst.setOwnedSitesMap(empty);
+        AppController.setString(this, "cover_pic", "null");
+        inst.setOwnedSitesMap(ownedSites);
         Intent intent = new Intent(LogOut.this, Login.class);
         startActivity(intent);
         finish();

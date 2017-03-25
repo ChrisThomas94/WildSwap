@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import scot.wildcamping.wildscotland.BadgesFragment;
 import scot.wildcamping.wildscotland.BioFragment;
 import scot.wildcamping.wildscotland.SentTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
@@ -48,7 +49,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             }
             return tab1;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        else if (position == 1)             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
             Fragment tab2;
             if(Titles[1] == "Sent"){
@@ -59,7 +60,20 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 tab2 = new KnownSitesFragment();
             }
             return tab2;
+        } else if (position == 2){
+
+            Fragment tab3;
+            if(Titles[2] == "Badges"){
+                tab3 = new BadgesFragment();
+            } else {
+                tab3 = null;
+            }
+            return tab3;
+
+        } else {
+
         }
+        return null;
     }
 
     // This method return the titles for the Tabs in the Tab Strip

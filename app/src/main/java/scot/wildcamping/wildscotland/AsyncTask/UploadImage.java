@@ -47,7 +47,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Uploading image ...");
+        pDialog.setMessage("Uploading profile_pic ...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -107,7 +107,7 @@ public class UploadImage extends AsyncTask<String, String, String> {
 
     private String addSite(String image, String cid) {
         return "{\"tag\":\"" + "uploadImage" + "\","
-                + "\"image\":\"" + image + "\","
+                + "\"profile_pic\":\"" + image + "\","
                 + "\"cid\":\"" + cid + "\"}";
     }
 

@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.widget.Toast;
@@ -18,14 +19,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.Objects.Gallery;
-import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.StoredUsers;
+import scot.wildcamping.wildscotland.Objects.User;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Chris on 23-Mar-17.
  */
 
-public class FetchLogin extends AsyncTask<String, String, String> {
+public class FetchProfile extends AsyncTask<String, String, String> {
 
     public AsyncResponse delegate = null;
 
@@ -34,22 +37,17 @@ public class FetchLogin extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private ProgressDialog pDialog;
+    ProgressDialog pDialog;
     private Context context;
     String user;
-    String cid;
     String email;
     String password;
-    String image;
-    SparseArray<Site> map = new SparseArray<>();
-    SparseArray<Gallery> images = new SparseArray<>();
-    Gallery gallery;
     Boolean error;
     String errorMsg;
     String userId;
 
 
-    public FetchLogin(Context context, String email, String password, AsyncResponse delegate) {
+    public FetchProfile(Context context, String email, String password, AsyncResponse delegate) {
         this.context = context;
         this.email = email;
         this.password = password;
@@ -62,9 +60,12 @@ public class FetchLogin extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pDialog.setMessage("Logging in ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
         pDialog.show();
-
     }
 
     /**
@@ -88,14 +89,17 @@ public class FetchLogin extends AsyncTask<String, String, String> {
                     String name = user.getString("name");
                     String email = user.getString("email");
                     String bio = user.getString("bio");
+                    String why = user.getString("why");
                     String profile_pic = user.getString("profile_pic");
+                    String cover_pic = user.getString("cover_pic");
 
                     AppController.setString(context, "uid", userId);
                     AppController.setString(context, "name", name);
                     AppController.setString(context, "email", email);
                     AppController.setString(context, "bio", bio);
+                    AppController.setString(context, "why", why);
                     AppController.setString(context, "profile_pic", profile_pic);
-
+                    AppController.setString(context, "cover_pic", cover_pic);
 
                 } else {
                     // login error

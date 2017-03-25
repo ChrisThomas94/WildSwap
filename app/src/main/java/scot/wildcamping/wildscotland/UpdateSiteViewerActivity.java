@@ -1,4 +1,4 @@
-package scot.wildcamping.wildscotland.AsyncTask;
+package scot.wildcamping.wildscotland;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +13,10 @@ import android.util.Base64;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -24,15 +26,14 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
-import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.FeaturesActivity;
-import scot.wildcamping.wildscotland.MainActivity_Spinner;
+import scot.wildcamping.wildscotland.Adapters.ImageGridAdapter;
+import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
-import scot.wildcamping.wildscotland.OwnedSiteViewerActivity;
-import scot.wildcamping.wildscotland.R;
 
 public class UpdateSiteViewerActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -65,6 +66,9 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     Bitmap imageBit;
     String imageMultiLine;
     String cid;
+    GridView gridView;
+    Gallery gallery;
+    ViewGroup.LayoutParams layoutParams;
 
     String titlePassed;
     String descPassed;
@@ -83,7 +87,10 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     Boolean update = true;
     Boolean lonLat;
     Boolean imageUpload = false;
+    ArrayList imageUris2 = new ArrayList();
+    ArrayList<String> imagesList;
     SparseArray<Gallery> temp = new SparseArray<>();
+    SparseArray<Gallery> images;
     knownSite inst = new knownSite();
 
     ImageView close1;
@@ -119,13 +126,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         or = (TextView)findViewById(R.id.or);
-        image1 = (ImageButton)findViewById(R.id.image1);
-        image2 = (ImageButton)findViewById(R.id.image2);
-        image3 = (ImageButton)findViewById(R.id.image3);
-
-        close1 = (ImageView)findViewById(R.id.closeImage1);
-        close2 = (ImageView)findViewById(R.id.closeImage2);
-        close3 = (ImageView)findViewById(R.id.closeImage3);
+        gridView = (GridView) findViewById(R.id.gridView);
 
         //title.setSelection(0);
 
@@ -163,6 +164,11 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
             float ratingFloat = (float)rating;
             ratingBar.setRating(ratingFloat);
 
+            /*if(imageUpload) {
+                //imageUris = extras.getStringArray("images");
+                imageUris2 = extras.getStringArrayList("images");
+            }*/
+
         }
 
 
@@ -177,57 +183,47 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         title.setText(focused.getTitle());
         description.setText(focused.getDescription());
 
-        knownSite im = new knownSite();
-        SparseArray<Gallery> images = im.getImages();
-
-        System.out.println("sparse array: "+images);
-
+        images = inst.getImages();
         String id = cid.substring(cid.length()-8);
         int cidEnd = Integer.parseInt(id);
-        Gallery gallery = images.get(cidEnd);
+        gallery = images.get(cidEnd);
+        imagesList = gallery.getGallery();
 
-        System.out.println("gallery update: "+gallery);
 
-        if(gallery.getImage1() != null) {
-            if (gallery.getImage1().equals("null")) {
-                image1.setVisibility(View.GONE);
-            } else {
-                imageBit = StringToBitMap(gallery.getImage1());
-                image1.setImageBitmap(imageBit);
-                image1.setVisibility(View.VISIBLE);
-                close1.setVisibility(View.VISIBLE);
-                siteBuilder.setVisibility(View.GONE);
-                or.setVisibility(View.GONE);
+        if(imageUpload){
+
+            System.out.println("images list 0 "+imagesList.get(0));
+
+            ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imagesList);
+            gridView.setAdapter(adapter);
+
+            int imagesNum = imagesList.size();
+
+            System.out.println("clip data: " + imagesList.size());
+            layoutParams = gridView.getLayoutParams();
+            int row = 3*(Math.round(imagesNum/3));
+            System.out.println("row: " + row);
+            int dif = (imagesNum%3);
+
+            if (dif ==1){
+                row = row+3;
+            } else if (dif ==2){
+                row = row+3;
             }
+
+            layoutParams.height = (row*105);
+            System.out.println("height" + layoutParams.height);
+            gridView.setLayoutParams(layoutParams);
+
+
+            siteBuilder.setVisibility(View.GONE);
+            or.setVisibility(View.GONE);
+
+
         } else {
-            image1.setVisibility(View.GONE);
+
         }
 
-        if(gallery.getImage2() != null) {
-            if (gallery.getImage2().equals("null")) {
-                image2.setVisibility(View.GONE);
-            } else {
-                imageBit = StringToBitMap(gallery.getImage2());
-                image2.setImageBitmap(imageBit);
-                image2.setVisibility(View.VISIBLE);
-                close2.setVisibility(View.VISIBLE);
-            }
-        }else {
-            image2.setVisibility(View.GONE);
-        }
-
-        if(gallery.getImage3() != null) {
-            if (gallery.getImage3().equals("null")) {
-                image3.setVisibility(View.GONE);
-            } else {
-                imageBit = StringToBitMap(gallery.getImage3());
-                image3.setImageBitmap(imageBit);
-                image3.setVisibility(View.VISIBLE);
-                close3.setVisibility(View.VISIBLE);
-            }
-        }else {
-            image3.setVisibility(View.GONE);
-        }
 
         feature1.equals(focused.getFeature1());
         feature2.equals(focused.getFeature2());
@@ -245,9 +241,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         addPhoto.setOnClickListener(this);
         addFeatures.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
-        close1.setOnClickListener(this);
-        close2.setOnClickListener(this);
-        close3.setOnClickListener(this);
     }
 
     @Override
@@ -312,24 +305,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                     Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
                 }
 
-                break;
-
-            case R.id.closeImage1:
-
-                close1.setVisibility(View.GONE);
-                image1.setVisibility(View.GONE);
-                break;
-
-            case R.id.closeImage2:
-
-                close2.setVisibility(View.GONE);
-                image2.setVisibility(View.GONE);
-                break;
-
-            case R.id.closeImage3:
-
-                close3.setVisibility(View.GONE);
-                image3.setVisibility(View.GONE);
                 break;
         }
 

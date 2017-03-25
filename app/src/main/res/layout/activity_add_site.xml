@@ -195,7 +195,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Allow other users to see this image"/>
+                        android:text="Allow other otherUsers to see this image"/>
 
 
             </LinearLayout>
