@@ -42,17 +42,15 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout siteBuilder;
     RelativeLayout addFeature;
     TextView or;
-
-    ImageView image1;
-    ImageView image2;
-    ImageView image3;
-
     ImageView distantTerrainFeatures;
     ImageView nearbyTerrainFeatures;
     ImageView immediateTerrainFeatures;
-
     RatingBar ratingBar;
     Button confirmCreation;
+    CheckBox imagePermission;
+    ViewGroup.LayoutParams layoutParams;
+    GridView gridView;
+
     double latitude;
     double longitude;
     String latReq;
@@ -64,17 +62,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     String distant;
     String nearby;
     String immediate;
-    CheckBox imagePermission;
     Boolean permission;
-    String url = Appconfig.URL;
-    Intent intent;
     int RESULT_LOAD_IMAGE = 0;
-    Uri targetUri;
-    String imageMultiLine;
-
-    String titlePassed;
-    String descPassed;
-
     Boolean feature1;
     Boolean feature2;
     Boolean feature3;
@@ -85,23 +74,15 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
-
-
+    String titlePassed;
+    String descPassed;
     int relat = 90;
     Boolean update;
-    Boolean lonLat;
     Boolean imageUpload = false;
     knownSite inst = new knownSite();
-    int tempLocation;
-
-    SparseArray<String> image = new SparseArray<>();
     ArrayList imageUris2 = new ArrayList();
-    SparseArray<Gallery> temp = new SparseArray<>();
-    ViewGroup.LayoutParams layoutParams;
 
-    private Bitmap bitmap;
-    Bitmap compress;
-    GridView gridView;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +92,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
-
-
-        final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-        final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
 
         //initializing views
         Lat =(EditText)findViewById(R.id.Lat);
@@ -128,9 +105,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         confirmCreation = (Button)findViewById(R.id.confirmCreation);
         gridView = (GridView) findViewById(R.id.gridView);
-
         or = (TextView)findViewById(R.id.or);
-
         distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
         nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);

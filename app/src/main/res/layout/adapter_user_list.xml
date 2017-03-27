@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/site"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_margin="15dp"
+    android:focusable="false"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/clear_shadow">
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/add_30"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/profile_pic">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="name@email.com"
+            android:layout_below="@+id/name"/>
+
+        <TextView
+            android:id="@+id/classificationA"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_green_button"
+            android:text="Amateur"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/classificationM"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email"
+            android:gravity="center"
+            android:layout_toRightOf="@id/classificationA"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_orange_button"
+            android:text="Casual"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/classificationE"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/email"
+            android:gravity="center"
+            android:layout_toRightOf="@id/classificationM"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_red_button"
+            android:text="Expert"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
+

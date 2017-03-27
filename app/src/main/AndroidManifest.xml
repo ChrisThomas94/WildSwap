@@ -102,6 +102,16 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
+            android:name=".GiftSiteActivity"
+            android:label="Gift Site"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <activity
             android:name=".Dead.TradeActivity"
             android:label="Trade"
             android:theme="@style/AppTheme">

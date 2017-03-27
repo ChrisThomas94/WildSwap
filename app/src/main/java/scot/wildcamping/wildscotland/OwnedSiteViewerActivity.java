@@ -31,6 +31,7 @@ import java.util.List;
 
 import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.FetchAllUsers;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
@@ -463,6 +464,13 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
             case R.id.gift:
 
+                final Intent i = new Intent(this, GiftSiteActivity.class);
+                new FetchAllUsers(this, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        startActivity(i);
+                    }
+                }).execute();
 
                 break;
 

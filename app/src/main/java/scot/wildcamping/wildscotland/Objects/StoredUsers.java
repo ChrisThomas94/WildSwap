@@ -8,8 +8,8 @@ import android.util.SparseArray;
 
 public class StoredUsers {
 
-    private User keyUser = new User();
-    private SparseArray<User> otherUsers = new SparseArray<>();
+    private static User keyUser = new User();
+    private static SparseArray<User> otherUsers = new SparseArray<>();
 
     public User getKeyUser() {
         return keyUser;
