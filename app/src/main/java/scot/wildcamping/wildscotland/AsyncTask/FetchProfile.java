@@ -42,7 +42,7 @@ public class FetchProfile extends AsyncTask<String, String, String> {
     String user;
     String email;
     String password;
-    Boolean error;
+    Boolean error = true;
     String errorMsg;
     String userId;
 

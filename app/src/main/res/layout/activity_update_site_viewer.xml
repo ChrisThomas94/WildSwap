@@ -216,40 +216,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/featuresBackground"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/rounded_linear_layout">
-
-                <RelativeLayout
-                    android:id="@+id/addFeaturesRel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:background="@drawable/rounded_grey_button">
-
-                    <ImageView
-                        android:layout_width="53dip"
-                        android:layout_height="53dip"
-                        android:scaleType="fitXY"
-                        android:id="@+id/addFeatures"
-                        android:src="@drawable/ic_add_to_photos_black_48dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Features"
-                        android:padding="15dp"
-                        android:textSize="@dimen/feature_text"
-                        android:layout_toRightOf="@+id/addFeatures"/>
-                </RelativeLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

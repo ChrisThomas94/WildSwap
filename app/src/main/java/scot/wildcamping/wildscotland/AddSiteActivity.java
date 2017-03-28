@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.knownSite;
@@ -45,11 +47,18 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     ImageView distantTerrainFeatures;
     ImageView nearbyTerrainFeatures;
     ImageView immediateTerrainFeatures;
+    TextView classificationA;
+    TextView classificationC;
+    TextView classificationE;
     RatingBar ratingBar;
     Button confirmCreation;
     CheckBox imagePermission;
     ViewGroup.LayoutParams layoutParams;
     GridView gridView;
+    FrameLayout classA;
+    FrameLayout classC;
+    FrameLayout classE;
+    TextView classDescription;
 
     double latitude;
     double longitude;
@@ -74,6 +83,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean feature8;
     Boolean feature9;
     Boolean feature10;
+    String classification;
     String titlePassed;
     String descPassed;
     int relat = 90;
@@ -113,6 +123,14 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         distantTerrainFeatures.setVisibility(View.GONE);
         nearbyTerrainFeatures.setVisibility(View.GONE);
         immediateTerrainFeatures.setVisibility(View.GONE);
+
+        classificationA = (TextView) findViewById(R.id.classificationA);
+        classificationC = (TextView) findViewById(R.id.classificationC);
+        classificationE = (TextView) findViewById(R.id.classificationE);
+        classA = (FrameLayout) findViewById(R.id.classificationAFrame);
+        classC = (FrameLayout) findViewById(R.id.classificationCFrame);
+        classE = (FrameLayout) findViewById(R.id.classificationEFrame);
+        classDescription = (TextView)findViewById(R.id.classificationDescription);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -204,11 +222,20 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             or.setVisibility(View.GONE);
         }
 
+        classA.getForeground().setAlpha(0);
+        classC.getForeground().setAlpha(150);
+        classE.getForeground().setAlpha(150);
+        classification = classificationA.getText().toString();
+        classDescription.setText("An Amateur location is generally accessible by car or very easily on foot, supplies such as food and fuel can be purchased nearby.");
+
         //setting onclick listeners
         addImage.setOnClickListener(this);
         siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
         confirmCreation.setOnClickListener(this);
+        classificationA.setOnClickListener(this);
+        classificationC.setOnClickListener(this);
+        classificationE.setOnClickListener(this);
     }
 
     @Override
@@ -216,6 +243,33 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         switch (v.getId())
         {
+            case R.id.classificationA:
+
+                classification = classificationA.getText().toString();
+                classA.getForeground().setAlpha(0);
+                classC.getForeground().setAlpha(150);
+                classE.getForeground().setAlpha(150);
+                classDescription.setText("An Amateur location is generally accessible by car or very easily on foot, supplies such as food and fuel can be purchased nearby.");
+                break;
+
+            case R.id.classificationC:
+
+                classification = classificationC.getText().toString();
+                classA.getForeground().setAlpha(150);
+                classC.getForeground().setAlpha(0);
+                classE.getForeground().setAlpha(150);
+                classDescription.setText("A Casual location is off the beaten track and will require a short hike or drive into the wilderness, no nearby amenities.");
+                break;
+
+            case R.id.classificationE:
+
+                classification = classificationE.getText().toString();
+                classA.getForeground().setAlpha(150);
+                classC.getForeground().setAlpha(150);
+                classE.getForeground().setAlpha(0);
+                classDescription.setText("An Expert location requires some serious navigational skills, do not expect to see another soul at this location and make sure to bring enough food and toilet roll.");
+                break;
+
             case R.id.addPhotoRel:
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -282,20 +336,19 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                             titleReq = titleReq.replace("'", "\'");
                             descReq = descReq.replace("'", "\'");
 
-                            try {
-                                String newSite = new CreateSite(getApplicationContext(), relat, latReq, lonReq, titleReq, descReq, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2).execute().get();
-                            } catch (ExecutionException e){
-
-                            } catch (InterruptedException e){
-
-                            }
-                            Intent intent = new Intent(getApplicationContext(),
-                                    MainActivity_Spinner.class);
+                            final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
                             intent.putExtra("latitude", latitude);
                             intent.putExtra("longitude", longitude);
                             intent.putExtra("add", true);
-                            startActivity(intent);
-                            finish();
+                            intent.putExtra("data", false);
+
+                            new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).execute();
 
                         } else {
                             //Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
@@ -360,7 +413,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     ClipData.Item item = clip.getItemAt(i);
 
                     Uri uri = item.getUri();
-                    //imageUris[i] = uri.toString();
                     imageUris2.add(i,uri.toString());
                 }
             }
@@ -386,6 +438,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
                 intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
                 intent.putExtra("add", false);
+                intent.putExtra("data", false);
                 startActivity(intent);
                 finish();
                 return true;

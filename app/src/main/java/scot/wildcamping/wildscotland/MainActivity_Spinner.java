@@ -62,6 +62,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     boolean add = false;
     boolean trade = false;
     boolean update = false;
+    boolean fetchData = true;
     int fragment = 0;
     int currPosition;
     boolean isNew;
@@ -129,30 +130,27 @@ public class MainActivity_Spinner extends AppCompatActivity {
             trade = extras.getBoolean("trade");
             update = extras.getBoolean("update");
             isNew = extras.getBoolean("new");
+            fetchData = extras.getBoolean("data");
         }
-
-        //mTitle = mDrawerTitle = getTitle();
-
-        //trades = new StoredTrades();
-        //activeTrades = new SparseArray<>();
-        //activeTrades = trades.getActiveTrades();
-
-        //noOfTradesStr = Integer.toString(activeTrades.size());
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            //getSupportActionBar().setLogo(getDrawable(logo));
             getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         }
 
-        try{
-            String fetchKnown = new FetchKnownSites(this, null).execute().get();
-            String fetchUnknown = new FetchUnknownSites(this).execute().get();
-        } catch (InterruptedException i){
+        // use this boolean value to decide whether to fetch data or not
+        if(fetchData){
+            try {
+                String fetchKnown = new FetchKnownSites(this, null).execute().get();
+                String fetchUnknown = new FetchUnknownSites(this).execute().get();
+            } catch (InterruptedException i) {
 
-        } catch (ExecutionException e){
+            } catch (ExecutionException e) {
+
+            }
+        } else {
 
         }
 

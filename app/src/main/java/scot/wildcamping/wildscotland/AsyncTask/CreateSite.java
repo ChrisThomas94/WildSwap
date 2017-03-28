@@ -1,5 +1,6 @@
 package scot.wildcamping.wildscotland.AsyncTask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,18 +37,21 @@ import scot.wildcamping.wildscotland.Objects.knownSite;
  */
 public class CreateSite extends AsyncTask<String, String, String> {
 
+    public AsyncResponse delegate = null;
+
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
 
-    //private ProgressDialog pDialogAddSite;
+    private ProgressDialog pDialog;
     private Context context;
     int relat;
     String lat;
     String lon;
     String title;
     String description;
+    String classification;
     String rating;
     String json;
 
@@ -83,7 +87,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
     ArrayList<String> imagesSingleLine;
 
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String rating,Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, ArrayList<String> images) {
+    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String classification,
+                      String rating,Boolean permission, String distant, String nearby, String immediate,
+                      Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10,
+                      ArrayList<String> images, AsyncResponse delegate) {
 
         this.context = context;
         this.relat = relationship;
@@ -91,6 +98,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.lon = lon;
         this.title = title;
         this.description = description;
+        this.classification = classification;
         this.rating = rating;
 
         this.feature1 = feature1;
@@ -119,7 +127,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         this.images = images;
 
-        //this.distance = distance()
+        this.delegate = delegate;
     }
 
     /**
@@ -128,28 +136,23 @@ public class CreateSite extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        //pDialogAddSite = new ProgressDialog(context);
-        //pDialogAddSite.setMessage("Adding site ...");
-        //pDialogAddSite.setIndeterminate(false);
-        //pDialogAddSite.setCancelable(true);
-        //pDialogAddSite.show();
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Adding site ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.show();
 
         imagesSingleLine = new ArrayList<>();
         if(images.size() != 0) {
             for(int i = 0; i< images.size(); i++){
 
                 Uri imageUri = Uri.parse(images.get(i));
-                System.out.println("Create Site - URI:" + imageUri);
 
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                    System.out.println("Create Site - BITMAP: " + bitmap);
-
                     String im = getStringImage(bitmap);
-                    //System.out.println("Create Site - String Imgae" + im);
-
                     imagesSingleLine.add(i,im.replaceAll("[\r\n]+", ""));
-                    System.out.println("Create Site - Single Line" + imagesSingleLine.get(i));
 
                 } catch (IOException e){
 
@@ -166,12 +169,9 @@ public class CreateSite extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        //String getResponse = doGetRequest(Appconfig.URL_REGISTER);
-        //System.out.println(getResponse);
-
         // issue the post request
         try {
-            String json = addSite(uid, email, relat, lat, lon, title, description, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound, imagesSingleLine);
+            String json = addSite(uid, email, relat, lat, lon, title, description, classification, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound, imagesSingleLine);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
@@ -198,6 +198,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setTitle(jsonSite.getString("title"));
                     newSite.setDescription(jsonSite.getString("description"));
                     newSite.setRating(jsonSite.getDouble("rating"));
+                    newSite.setClassification(jsonSite.getString("classification"));
 
                     newSite.setPermission(jsonSite.getString("permission"));
                     newSite.setDistant(jsonSite.getString("distantTerrain"));
@@ -268,7 +269,9 @@ public class CreateSite extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        //pDialogAddSite.dismiss();
+        pDialog.dismiss();
+
+        delegate.processFinish(file_url);
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -299,7 +302,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound, ArrayList<String> images) {
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String classification, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound, ArrayList<String> images) {
 
         JSONArray jsonGallery = new JSONArray();
 
@@ -325,6 +328,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"lon\":\"" + lon + "\","
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
+                + "\"classification\":\"" + classification + "\","
                 + "\"rating\":\"" + rating + "\","
                 + "\"permission\":\"" + permission + "\","
                 + "\"distant\":\"" + distant + "\","
@@ -354,6 +358,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"lon\":\"" + lon + "\","
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
+                + "\"classification\":\"" + classification + "\","
                 + "\"rating\":\"" + rating + "\","
                 + "\"permission\":\"" + permission + "\","
                 + "\"distant\":\"" + distant + "\","

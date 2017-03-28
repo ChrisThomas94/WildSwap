@@ -23,6 +23,8 @@ public class Site {
     private Double lat;
     private Double lon;
 
+    private String classification;
+
     private List<android.location.Address> address;
 
     private SparseArray<String> features;
@@ -46,8 +48,14 @@ public class Site {
     private String image;
     private String image2;
     private String image3;
-    private String image4;
-    private String image5;
+
+    public String getClassification() {
+        return classification;
+    }
+
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
 
     private SparseArray<Gallery> images;
 

@@ -110,34 +110,62 @@
                         android:layout_gravity="center"
                         android:layout_margin="10dp">
 
-                        <TextView
-                            android:id="@+id/classificationA"
-                            android:layout_width="75dp"
+                        <FrameLayout
+                            android:id="@+id/classificationAFrame"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:background="@drawable/rounded_green_button"
-                            android:text="Amateur"
-                            android:textSize="15sp"/>
+                            android:foreground="@drawable/rounded_dimmer">
 
-                        <TextView
-                            android:id="@+id/classificationM"
-                            android:layout_width="75dp"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/classificationA"
-                            android:gravity="center"
-                            android:background="@drawable/rounded_orange_button"
-                            android:text="Casual"
-                            android:textSize="15sp"/>
+                            <TextView
+                                android:id="@+id/classificationA"
+                                android:layout_width="90dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:clickable="true"
+                                android:background="@drawable/rounded_green_button"
+                                android:text="Amateur"
+                                android:textSize="15sp"/>
 
-                        <TextView
-                            android:id="@+id/classificationE"
-                            android:layout_width="75dp"
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/classificationCFrame"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:layout_toRightOf="@id/classificationM"
-                            android:background="@drawable/rounded_red_button"
-                            android:text="Expert"
-                            android:textSize="15sp"/>
+                            android:foreground="@drawable/rounded_dimmer">
+
+                            <TextView
+                                android:id="@+id/classificationC"
+                                android:layout_width="90dp"
+                                android:layout_height="50dp"
+                                android:layout_toRightOf="@id/classificationA"
+                                android:gravity="center"
+                                android:clickable="true"
+                                android:background="@drawable/rounded_orange_button"
+                                android:text="Casual"
+                                android:textSize="15sp"/>
+
+                        </FrameLayout>
+
+
+                        <FrameLayout
+                            android:id="@+id/classificationEFrame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:foreground="@drawable/rounded_dimmer">
+
+                            <TextView
+                                android:id="@+id/classificationE"
+                                android:layout_width="90dp"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:clickable="true"
+                                android:layout_toRightOf="@id/classificationC"
+                                android:background="@drawable/rounded_red_button"
+                                android:text="Expert"
+                                android:textSize="15sp"/>
+
+                        </FrameLayout>
 
                     </LinearLayout>
 
