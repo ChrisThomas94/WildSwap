@@ -120,9 +120,9 @@ public class FetchProfile extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
-
         delegate.processFinish(userId);
+
+        pDialog.dismiss();
 
         if (error) {
             Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();

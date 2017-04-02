@@ -136,11 +136,6 @@
         </activity>
 
         <activity
-            android:name=".Dead._OwnedSiteActivity"
-            android:label="Owned Site"
-            android:theme="@style/AppTheme"/>
-
-        <activity
             android:name=".OwnedSiteViewerActivity"
             android:label="Owned Site"
             android:theme="@style/AppTheme"/>
@@ -168,11 +163,11 @@
 
         <activity android:name=".SitesActivity"
             android:label="Sites"
-            android:theme= "@style/MainActivity"/>
+            android:theme= "@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".TradesActivity"
             android:label="Trades"
-            android:theme= "@style/MainActivity"/>
+            android:theme= "@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".TradeHistoryActivity"
             android:label="Trade History"
@@ -185,11 +180,6 @@
         <activity android:name=".QuizActivity"
             android:label="Quiz"
             android:theme= "@style/AppTheme"/>
-
-        <activity android:name=".Dead.UpdateSiteActivity"
-            android:label="Update Site"
-            android:theme= "@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".UpdateSiteViewerActivity"
             android:label="Update Site"

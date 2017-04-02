@@ -223,21 +223,13 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
         switch (position) {
             case 0:
                 Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                i.putExtra("data", false);
                 startActivity(i);
                 overridePendingTransition(0, 0);
                 finish();
                 break;
+
             case 1:
-                if(isNetworkAvailable()) {
-                    try {
-                        String known_result = new FetchKnownSites(this, null).execute().get();
-                        String unknown_result = new FetchUnknownSites(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 intent.putExtra("new", register);
                 intent.putExtra("sitesTutorial", sitesTutorial);
@@ -248,15 +240,6 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
                 break;
 
             case 2:
-                if(isNetworkAvailable()) {
-                    try {
-                        String trades_result = new FetchTradeRequests(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent in = new Intent(getApplicationContext(), TradesActivity.class);
                 startActivity(in);
                 overridePendingTransition(0,0);
@@ -264,15 +247,6 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
                 break;
 
             case 3:
-                if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 profile.putExtra("this_user", true);
                 startActivity(profile);

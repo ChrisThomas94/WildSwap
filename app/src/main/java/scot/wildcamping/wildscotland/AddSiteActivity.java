@@ -132,6 +132,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         classE = (FrameLayout) findViewById(R.id.classificationEFrame);
         classDescription = (TextView)findViewById(R.id.classificationDescription);
 
+        classification = classificationA.getText().toString();
+
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {

@@ -147,21 +147,12 @@ public class ProfileActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                i.putExtra("data", false);
                 startActivity(i);
                 overridePendingTransition(0, 0);
                 finish();
                 break;
             case 1:
-                if(isNetworkAvailable()) {
-                    try {
-                        String known_result = new FetchKnownSites(this, null).execute().get();
-                        String unknown_result = new FetchUnknownSites(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
@@ -169,15 +160,6 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
 
             case 2:
-                if(isNetworkAvailable()) {
-                    try {
-                        String trades_result = new FetchTradeRequests(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent trade = new Intent(getApplicationContext(), TradesActivity.class);
                 startActivity(trade);
                 overridePendingTransition(0,0);
@@ -185,15 +167,6 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
 
             case 3:
-                if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 profile.putExtra("this_user", true);
                 startActivity(profile);

@@ -13,7 +13,7 @@ import scot.wildcamping.wildscotland.SentTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
 import scot.wildcamping.wildscotland.ReceivedTradesFragment;
 import scot.wildcamping.wildscotland.QuestionFragment;
-import scot.wildcamping.wildscotland.YourSitesFragment;
+import scot.wildcamping.wildscotland.OwnedSitesFragment;
 
 /**
  * Created by hp1 on 21-01-2015.
@@ -45,7 +45,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             } else if (Titles[0] == "Bio"){
                 tab1 = new BioFragment();
             } else {
-                tab1 = new YourSitesFragment();
+                tab1 = new OwnedSitesFragment();
             }
             return tab1;
         }

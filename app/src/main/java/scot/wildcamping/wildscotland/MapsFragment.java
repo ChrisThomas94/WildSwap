@@ -54,6 +54,7 @@ import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
@@ -608,8 +609,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                             break;
                         }
                     }
-                } else {
-
                 }
 
                 if (ownedSiteSize > 0) {
@@ -617,26 +616,35 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         Site currentSite = ownedSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            //Intent intent = new Intent(getActivity().getApplicationContext(), _OwnedSiteActivity.class);
-                            new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    startActivity(intent);
-                                }
-                            }).execute();
-
 
                             intent = new Intent(getActivity().getApplicationContext(), OwnedSiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
 
-                            //startActivity(intent);
+                            SparseArray<Gallery> images = inst.getImages();
+                            String cid = currentSite.getCid();
+                            String id = cid.substring(cid.length()-8);
+                            int cidEnd = Integer.parseInt(id);
+
+                            images.get(cidEnd, null);
+
+                            if(images.get(cidEnd) == null){
+                                new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        startActivity(intent);
+                                    }
+                                }).execute();
+
+                            } else {
+                                //no images previously fetched for this site
+                                startActivity(intent);
+                            }
+
                             break;
                         }
                     }
-                } else {
-
                 }
             }
         });

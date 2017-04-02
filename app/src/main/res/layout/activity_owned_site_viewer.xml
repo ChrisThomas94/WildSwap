@@ -113,8 +113,7 @@
                         <FrameLayout
                             android:id="@+id/classificationAFrame"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:foreground="@drawable/rounded_dimmer">
+                            android:layout_height="wrap_content">
 
                             <TextView
                                 android:id="@+id/classificationA"
@@ -131,8 +130,7 @@
                         <FrameLayout
                             android:id="@+id/classificationCFrame"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:foreground="@drawable/rounded_dimmer">
+                            android:layout_height="wrap_content">
 
                             <TextView
                                 android:id="@+id/classificationC"
@@ -151,8 +149,7 @@
                         <FrameLayout
                             android:id="@+id/classificationEFrame"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:foreground="@drawable/rounded_dimmer">
+                            android:layout_height="wrap_content">
 
                             <TextView
                                 android:id="@+id/classificationE"

@@ -24,15 +24,17 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.CreateTrade;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
-import scot.wildcamping.wildscotland.Dead._OwnedSiteActivity;
+import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 11-Mar-16.
+ *
  */
 public class TradeActivitySimple extends AppCompatActivity implements View.OnClickListener {
 
@@ -368,10 +370,17 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             case R.id.yourSite:
 
-                Intent i = new Intent(this, _OwnedSiteActivity.class);
+                final Intent i = new Intent(this, OwnedSiteViewerActivity.class);
                 i.putExtra("cid", send_cid);
                 i.putExtra("prevState", 2);
-                startActivity(i);
+
+                new FetchSiteImages(this, send_cid, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        startActivity(i);
+                    }
+                }).execute();
+
                 break;
         }
     }

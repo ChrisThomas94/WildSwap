@@ -1,7 +1,9 @@
 package scot.wildcamping.wildscotland.AsyncTask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -30,7 +32,9 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
+    AsyncResponse delegate = null;
 
+    ProgressDialog pDialog;
     private Context context;
     String user;
     final int relatOwn = 90;
@@ -41,8 +45,9 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     SparseArray<Site> knownSites = new SparseArray<>();
     int knownSize;
 
-    public FetchUnknownSites(Context context) {
+    public FetchUnknownSites(Context context, AsyncResponse delegate) {
         this.context = context;
+        this.delegate = delegate;
     }
 
     /**
@@ -50,7 +55,13 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        Log.d("Fetch Unknown Sites", "Fetch Unknown Sites Pre Execute");
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Fetching Unknown Sites ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.show();
 
     }
 
@@ -91,7 +102,6 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                             if (knownSites.get(j).getCid().equals(jsonDetails.getString("unique_cid"))){
                                 System.out.print("This is actually a known site: " + jsonDetails.getString("unique_cid"));
                                 knownError = true;
-                                //size--;
 
                             }
                         }
@@ -152,16 +162,8 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog
      * **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
-    }
-
-    private String doGetRequest(String url)throws IOException{
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+        pDialog.dismiss();
+        delegate.processFinish(file_url);
     }
 
     private String doPostRequest(String url, String json) throws IOException {

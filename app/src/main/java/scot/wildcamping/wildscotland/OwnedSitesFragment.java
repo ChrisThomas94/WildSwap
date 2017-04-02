@@ -15,19 +15,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Adapters.SiteListAdapter;
-import scot.wildcamping.wildscotland.Dead._OwnedSiteActivity;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
-public class YourSitesFragment extends Fragment {
+public class OwnedSitesFragment extends Fragment {
 	
-	public YourSitesFragment(){}
+	public OwnedSitesFragment(){}
 
     knownSite inst;
     SparseArray<Site> ownedSites;
-    private SiteListAdapter adapter;
-    private ListView mDrawerList;
-    boolean register = false;
+    SiteListAdapter adapter;
+    ListView mDrawerList;
+    //boolean register = false;
 
 
     @Override
@@ -54,11 +56,31 @@ public class YourSitesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), _OwnedSiteActivity.class);
+                final Intent intent = new Intent(getActivity(), OwnedSiteViewerActivity.class);
                 intent.putExtra("arrayPosition", position);
                 intent.putExtra("cid", ownedSites.get(position).getCid());
                 intent.putExtra("prevState", 1);
-                startActivity(intent);
+
+                SparseArray<Gallery> images = inst.getImages();
+                String cid = ownedSites.get(position).getCid();
+                String subCid = cid.substring(cid.length()-8);
+                int cidEnd = Integer.parseInt(subCid);
+
+                images.get(cidEnd, null);
+
+                if(images.get(cidEnd) == null && isNetworkAvailable()){
+                    new FetchSiteImages(getContext(), ownedSites.get(position).getCid(), new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                        }
+                    }).execute();
+
+                } else {
+                    //no images previously fetched for this site
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -68,12 +90,10 @@ public class YourSitesFragment extends Fragment {
         return rootView;
     }
 
-
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
 }

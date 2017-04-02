@@ -323,7 +323,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                 imageUpload = true;
 
                 Gallery upload = new Gallery();
-                upload.setImage1(image);
+                //upload.setImage1(image);
                 upload.setCid("temp");
 
                 temp = inst.getTemp();

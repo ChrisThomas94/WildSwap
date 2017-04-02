@@ -101,6 +101,12 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     TextView ratedBy;
     LinearLayout featuresBackground;
     TextView country;
+    TextView classificationA;
+    TextView classificationC;
+    TextView classificationE;
+    FrameLayout classA;
+    FrameLayout classC;
+    FrameLayout classE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +144,13 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         //frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
         country = (TextView)findViewById(R.id.country);
+
+        classificationA = (TextView) findViewById(R.id.classificationA);
+        classificationC = (TextView) findViewById(R.id.classificationC);
+        classificationE = (TextView) findViewById(R.id.classificationE);
+        classA = (FrameLayout) findViewById(R.id.classificationAFrame);
+        classC = (FrameLayout) findViewById(R.id.classificationCFrame);
+        classE = (FrameLayout) findViewById(R.id.classificationEFrame);
 
 
         Bundle extras = getIntent().getExtras();
@@ -208,6 +221,29 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             distantTerrainFeatures.setVisibility(View.GONE);
             nearbyTerrainFeatures.setVisibility(View.GONE);
             immediateTerrainFeatures.setVisibility(View.GONE);
+        }
+
+        classA.setVisibility(View.GONE);
+        classC.setVisibility(View.GONE);
+        classE.setVisibility(View.GONE);
+
+        String amateurText = classificationA.getText().toString();
+        String casualText = classificationC.getText().toString();
+        String expertText = classificationE.getText().toString();
+
+        if(focused.getClassification().isEmpty()){
+
+        } else if(focused.getClassification().equals(amateurText)){
+            classA.setVisibility(View.VISIBLE);
+
+        } else if(focused.getClassification().equals(casualText)){
+            classC.setVisibility(View.VISIBLE);
+
+        } else if(focused.getClassification().equals(expertText)){
+            classE.setVisibility(View.VISIBLE);
+
+        } else {
+
         }
 
         /*features = focused.getFeatures();
@@ -406,7 +442,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         {
             case R.id.imageViewPager:
 
-                imageBit = StringToBitMap(gallery.getImage1());
+                imageBit = StringToBitMap(gallery.getGallery().get(0));
                 expandedImage.setImageBitmap(imageBit);
                 expandedImage.setVisibility(View.VISIBLE);
                 close.setVisibility(View.VISIBLE);
@@ -443,10 +479,10 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
                 //Intent intent = null;
                 if(prevState == 1) {
-                    //intent = new Intent(getApplicationContext(),SitesActivity.class);
-                    //intent.putExtra("fragment", 1);
-                    //startActivity(intent);
-                    //finish();
+                    Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
+                    intent.putExtra("fragment", 1);
+                    startActivity(intent);
+                    finish();
                 } else {
                     finish();
                 }

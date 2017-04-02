@@ -26,10 +26,12 @@ import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
+import scot.wildcamping.wildscotland.Objects.knownSite;
 
 
 public class SitesActivity extends AppCompatActivity implements OnShowcaseEventListener{
@@ -215,37 +217,18 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
         switch (position) {
             case 0:
                 Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                i.putExtra("data", false);
                 startActivity(i);
                 overridePendingTransition(0, 0);
                 finish();
+
                 break;
+
             case 1:
-                if(isNetworkAvailable()) {
-                    try {
-                        String known_result = new FetchKnownSites(this, null).execute().get();
-                        String unknown_result = new FetchUnknownSites(this).execute().get();
-                    } catch (InterruptedException e) {
 
-                    } catch (ExecutionException e) {
-
-                    }
-                }
-                Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
                 break;
 
             case 2:
-                if(isNetworkAvailable()) {
-                    try {
-                        String trades_result = new FetchTradeRequests(this).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent in = new Intent(getApplicationContext(), TradesActivity.class);
                 in.putExtra("new", register);
                 in.putExtra("sitesTutorial", sitesTutorial);
@@ -256,15 +239,6 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                 break;
 
             case 3:
-                if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
-                }
                 Intent profile = new Intent(getApplicationContext(), ProfileActivity.class);
                 profile.putExtra("this_user", true);
                 startActivity(profile);
@@ -300,7 +274,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
             if(isNetworkAvailable()) {
                 try {
                     String known_result = new FetchKnownSites(this, null).execute().get();
-                    String unknown_result = new FetchUnknownSites(this).execute().get();
+                    String unknown_result = new FetchUnknownSites(this, null).execute().get();
                 } catch (InterruptedException e) {
 
                 } catch (ExecutionException e) {

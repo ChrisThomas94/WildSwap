@@ -49,6 +49,8 @@ public class Site {
     private String image2;
     private String image3;
 
+    private SparseArray<Gallery> images;
+
     public String getClassification() {
         return classification;
     }
@@ -56,8 +58,6 @@ public class Site {
     public void setClassification(String classification) {
         this.classification = classification;
     }
-
-    private SparseArray<Gallery> images;
 
     public void setAddress(List<android.location.Address> address){
         this.address = address;

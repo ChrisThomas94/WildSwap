@@ -64,21 +64,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     boolean update = false;
     boolean fetchData = true;
     int fragment = 0;
-    int currPosition;
     boolean isNew;
-
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-
-    // used to store app title
-    private CharSequence mTitle;
-
-    // slide menu items
-    private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
-
-    private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
 
     private Spinner spinner_nav;
     ArrayList<String> list;
@@ -140,20 +126,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
         }
 
-        // use this boolean value to decide whether to fetch data or not
-        if(fetchData){
-            try {
-                String fetchKnown = new FetchKnownSites(this, null).execute().get();
-                String fetchUnknown = new FetchUnknownSites(this).execute().get();
-            } catch (InterruptedException i) {
-
-            } catch (ExecutionException e) {
-
-            }
-        } else {
-
-        }
-
         addItemsToSpinner();
     }
 
@@ -163,8 +135,8 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
         list = new ArrayList<String>();
         list.add("Map");
-        list.add("SitesActivity");
-        list.add("TradesActivity");
+        list.add("Sites");
+        list.add("Trades");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
@@ -193,27 +165,32 @@ public class MainActivity_Spinner extends AppCompatActivity {
         System.out.println("email " + keyUser.getEmail());
     }
 
-    private void displayView(int position, Boolean refresh) {
+    private void displayView(final int position, Boolean refresh) {
         // update the main content by replacing fragments
-        FragmentActivity fragmentActivity = null;
-        Fragment fragment = null;
-        MapsFragment mapsFragment = null;
+        //FragmentManager fragmentManager;
         switch (position) {
             case 0:
-                mapsFragment = new MapsFragment();
-                if(isNetworkAvailable() && refresh) {
+                if(isNetworkAvailable() && (refresh || fetchData)) {
 
-                    try {
-                        String fetchKnown = new FetchKnownSites(this, null).execute().get();
-                        String fetchUnknown = new FetchUnknownSites(this).execute().get();
-                        String fetchTrade = new FetchTradeRequests(this).execute().get();
-                    } catch (ExecutionException e) {
+                    new FetchUnknownSites(this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            new FetchKnownSites(MainActivity_Spinner.this, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    MapsFragment mapsFragment = new MapsFragment();
+                                    FragmentManager fragmentManager = getFragmentManager();
+                                    fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
-                    } catch (InterruptedException i){
-
-                    }
+                                    setTitle(list.get(position));
+                                    setRefreshActionButtonState(false);
+                                }
+                            }).execute();
+                        }
+                    }).execute();
                 }
                 break;
+
             case 1:
                 Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 intent.putExtra("new", isNew);
@@ -223,7 +200,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     if(sites.getUnknownSitesSize() == 0){
                         try {
                             String known_result = new FetchKnownSites(this, null).execute().get();
-                            //String unknown_result = new FetchUnknownSites(this).execute().get();
                             startActivity(intent);
                             overridePendingTransition(0, 0);
                             finish();
@@ -302,17 +278,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
             default:
                 break;
         }
-
-        if(mapsFragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
-
-            setTitle(list.get(position));
-            setRefreshActionButtonState(false);
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
-        }
     }
 
     @Override
@@ -322,8 +287,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
-        //getMenuInflater().inflate(R.menu.main, menu);
-        //return true;
     }
 
     @Override

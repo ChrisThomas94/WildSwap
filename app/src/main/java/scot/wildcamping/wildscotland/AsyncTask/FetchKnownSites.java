@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +34,7 @@ import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
  * Created by Chris on 04-Mar-16.
+ *
  */
 public class FetchKnownSites extends AsyncTask<String, String, String> {
 
@@ -40,28 +42,22 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
-    public AsyncResponse delegate = null;
+    AsyncResponse delegate = null;
 
-    private ProgressDialog pDialog;
-    private Context context;
+    ProgressDialog pDialog;
+    Context context;
     String user;
     String email;
     final int relatOwn = 90;
     final int relatTrade = 45;
-    String image;
     SparseArray<Site> map = new SparseArray<>();
     SparseArray<Site> owned = new SparseArray<>();
-    SparseArray<Gallery> images = new SparseArray<>();
-    SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
-    SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
     Geocoder geocoder;
-
 
 
     public FetchKnownSites(Context context, AsyncResponse delegate) {
         this.context = context;
         this.delegate = delegate;
-
     }
 
     /**
@@ -69,15 +65,16 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        //super.onPreExecute();
+        geocoder = new Geocoder(context, Locale.getDefault());
+
+        Log.d("Fetch Known Sites", "Fetch Known Sites Pre Execute");
         pDialog = new ProgressDialog(context);
         pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching SitesActivity ...");
+        pDialog.setMessage("Fetching Sites ...");
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
         pDialog.show();
-
-        geocoder = new Geocoder(context, Locale.getDefault());
     }
 
     /**
@@ -116,8 +113,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         double lat = Double.parseDouble(latitude);
                         LatLng position = new LatLng(lat, lon);
 
-                        List<android.location.Address> address = new ArrayList<>();
-                        address = geocoder.getFromLocation(lat, lon, 1);
+                        List<android.location.Address> address = geocoder.getFromLocation(lat, lon, 1);
 
                         siteClass = new Site();
                         siteClass.setPosition(position);
@@ -130,6 +126,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setDescription(jsonSite.getString("description"));
                         siteClass.setRating(jsonSite.getDouble("avr_rating"));
                         siteClass.setRatedBy(jsonSite.getInt("no_of_raters"));
+                        siteClass.setClassification(jsonSite.getString("classification"));
 
                         siteClass.setPermission(jsonSite.getString("permission"));
                         siteClass.setDistant(jsonSite.getString("distantTerrain"));
@@ -190,17 +187,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once donepDialog.dismiss();
+        delegate.processFinish(file_url);
         pDialog.dismiss();
-    }
-
-    private String doGetRequest(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -224,7 +212,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
         }catch(Exception e){
             e.getMessage();
