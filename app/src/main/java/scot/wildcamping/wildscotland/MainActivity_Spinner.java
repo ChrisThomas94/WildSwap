@@ -170,7 +170,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         //FragmentManager fragmentManager;
         switch (position) {
             case 0:
-                if(isNetworkAvailable() && (refresh || fetchData)) {
+                if(isNetworkAvailable()) {
 
                     new FetchUnknownSites(this, new AsyncResponse() {
                         @Override
@@ -192,22 +192,22 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 break;
 
             case 1:
-                Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
+                final Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 intent.putExtra("new", isNew);
 
                 if(isNetworkAvailable()) {
                     knownSite sites = new knownSite();
-                    if(sites.getUnknownSitesSize() == 0){
-                        try {
-                            String known_result = new FetchKnownSites(this, null).execute().get();
-                            startActivity(intent);
-                            overridePendingTransition(0, 0);
-                            finish();
-                        } catch (InterruptedException e) {
+                    if(sites.getKnownSiteSize() == 0){
 
-                        } catch (ExecutionException e) {
+                        new FetchKnownSites(this, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                                finish();
+                            }
+                        }).execute();
 
-                        }
                     } else {
                         startActivity(intent);
                         overridePendingTransition(0, 0);
@@ -218,7 +218,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     finish();
                 }
-
                 break;
 
             case 2:

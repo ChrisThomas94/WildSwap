@@ -22,17 +22,11 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
-import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
-import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
-import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
-import scot.wildcamping.wildscotland.Objects.knownSite;
-
 
 public class SitesActivity extends AppCompatActivity implements OnShowcaseEventListener{
 
@@ -46,7 +40,6 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
     CharSequence Titles[]={"Owned","Known"};
     int Numboftabs =2;
     ArrayList<String> list;
-    int currPosition;
     boolean initialSelection = false;
     String user;
     boolean register = false;
@@ -166,7 +159,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
     // add items into spinner dynamically
     public void addItemsToSpinner() {
 
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         list.add("Map");
         list.add("SitesActivity");
         list.add("TradesActivity");
@@ -263,7 +256,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings1) {
@@ -272,16 +265,17 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
             return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
-                try {
-                    String known_result = new FetchKnownSites(this, null).execute().get();
-                    String unknown_result = new FetchUnknownSites(this, null).execute().get();
-                } catch (InterruptedException e) {
 
-                } catch (ExecutionException e) {
+                new FetchKnownSites(SitesActivity.this, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        displayView(1);
+                    }
+                }).execute();
 
-                }
+            } else {
+                displayView(1);
             }
-            displayView(1);
         } else if(id == R.id.action_tradeHistory){
             Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
             startActivity(intent);

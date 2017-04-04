@@ -87,6 +87,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 int size = jObj.getInt("size");
+                System.out.println("unknown sites size: " + size);
 
                 if(!error) {
                     int counter = 0;
@@ -108,14 +109,13 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
                         if(!knownError){
                             //int populairty = jsonSite.getInt("pop");
+                            siteClass.setPopularity(jsonSite.getInt("pop"));
+
                             String longitude = jsonDetails.getString("longitude");
                             String latitude = jsonDetails.getString("latitude");
                             double lon = Double.parseDouble(longitude);
                             double lat = Double.parseDouble(latitude);
                             LatLng unknown = new LatLng(lat, lon);
-
-
-                            siteClass.setPopularity(jsonSite.getInt("pop"));
                             siteClass.setCid(jsonDetails.getString("unique_cid"));
                             siteClass.setPosition(unknown);
                             siteClass.setTitle(jsonDetails.getString("title"));
@@ -137,6 +137,8 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                             unknownSites.put(counter, siteClass);
                             System.out.println("Unknown SitesActivity put: " + siteClass.getTitle());
                             counter++;
+                        } else {
+                            System.out.println("known sites error");
                         }
                     }
 

@@ -61,7 +61,7 @@ public class SiteListAdapter extends BaseAdapter {
         }
 
         RelativeLayout site = (RelativeLayout) convertView.findViewById(R.id.site);
-        ImageView siteThumbnail1 = (ImageView) convertView.findViewById(R.id.image);
+        ImageView siteThumbnail = (ImageView) convertView.findViewById(R.id.image);
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView amateur = (TextView) convertView.findViewById(R.id.classificationA);
         TextView casual = (TextView) convertView.findViewById(R.id.classificationC);
@@ -96,6 +96,16 @@ public class SiteListAdapter extends BaseAdapter {
         } else {
 
         }
+
+        if(knownSites.get(position).getDisplay_pic() == null){
+
+        } else {
+            String image = knownSites.get(position).getDisplay_pic();
+            Bitmap imageBit = StringToBitMap(image);
+            siteThumbnail.setImageBitmap(imageBit);
+        }
+
+
 
         return convertView;
     }

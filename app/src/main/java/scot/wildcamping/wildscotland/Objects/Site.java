@@ -29,6 +29,8 @@ public class Site {
 
     private SparseArray<String> features;
 
+    private String display_pic;
+
     private String feature1;
     private String feature2;
     private String feature3;
@@ -48,8 +50,15 @@ public class Site {
     private String image;
     private String image2;
     private String image3;
-
     private SparseArray<Gallery> images;
+
+    public String getDisplay_pic() {
+        return display_pic;
+    }
+
+    public void setDisplay_pic(String display_pic) {
+        this.display_pic = display_pic;
+    }
 
     public String getClassification() {
         return classification;

@@ -102,6 +102,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                     int ownedCnt = 0;
                     int knownCnt = 0;
 
+                    System.out.println("known sites size: "+size);
+
                     JSONObject jsonSite;
                     Site siteClass;
                     for (int i = 0; i < size; i++) {
@@ -151,6 +153,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));
                         siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
+                        siteClass.setDisplay_pic(jsonSite.getString("display_pic"));
 
                         if (jsonSite.getString("site_admin").equals(email)) {
                             System.out.println("owned site FOUND!");
