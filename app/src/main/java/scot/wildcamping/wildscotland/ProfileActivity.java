@@ -37,8 +37,8 @@ public class ProfileActivity extends AppCompatActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Bio","Questions", "Badges"};
-    int Numboftabs =3;
+    CharSequence Titles[]={"Questions", "Badges"};
+    int Numboftabs =2;
     ArrayList<String> list;
     int currPosition;
     boolean initialSelection = false;

@@ -184,11 +184,13 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
                                     setTitle(list.get(position));
                                     setRefreshActionButtonState(false);
+
                                 }
                             }).execute();
                         }
                     }).execute();
                 }
+
                 break;
 
             case 1:

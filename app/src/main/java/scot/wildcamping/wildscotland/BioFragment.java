@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class BioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_bio, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)

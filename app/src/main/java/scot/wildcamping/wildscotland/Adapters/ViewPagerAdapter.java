@@ -42,8 +42,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             Fragment tab1;
             if(Titles[0] == "Received"){
                 tab1 = new ReceivedTradesFragment();
-            } else if (Titles[0] == "Bio"){
-                tab1 = new BioFragment();
+            } else if (Titles[0] == "Questions"){
+                //tab1 = new BioFragment();
+                tab1 = new QuestionFragment();
+
             } else {
                 tab1 = new OwnedSitesFragment();
             }
@@ -54,22 +56,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             Fragment tab2;
             if(Titles[1] == "Sent"){
                 tab2 = new SentTradesFragment();
-            } else if(Titles[1] == "Questions"){
-                tab2 = new QuestionFragment();
+            } else if(Titles[1] == "Badges"){
+                //tab2 = new QuestionFragment();
+                tab2 = new BadgesFragment();
+
             } else {
                 tab2 = new KnownSitesFragment();
             }
             return tab2;
-        } else if (position == 2){
-
-            Fragment tab3;
-            if(Titles[2] == "Badges"){
-                tab3 = new BadgesFragment();
-            } else {
-                tab3 = null;
-            }
-            return tab3;
-
         } else {
 
         }

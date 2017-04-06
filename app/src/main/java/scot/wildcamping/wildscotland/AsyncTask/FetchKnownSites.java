@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -42,7 +43,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
-    AsyncResponse delegate = null;
+    private AsyncResponse delegate = null;
 
     ProgressDialog pDialog;
     Context context;
@@ -92,11 +93,11 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
-
-            try {
+            System.out.println("hello world");
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
+                System.out.println("error" + error);
                 if (!error) {
                     int size = jObj.getInt("size");
                     int ownedCnt = 0;
@@ -108,8 +109,27 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                     Site siteClass;
                     for (int i = 0; i < size; i++) {
                         jsonSite = jObj.getJSONObject("site" + i);
-                        String longitude = jsonSite.getString("longitude");
+                        System.out.println("json site: "+jsonSite);
+
+                        String cid = jsonSite.getString("unique_cid");
+                        String admin = jsonSite.getString("site_admin");
                         String latitude = jsonSite.getString("latitude");
+                        String longitude = jsonSite.getString("longitude");
+                        String title = jsonSite.getString("title");
+                        String description = jsonSite.getString("description");
+                        String classification = jsonSite.getString("classification");
+                        String rating = jsonSite.getString("rating");
+                        String permission = jsonSite.getString("permission");
+                        String distant = jsonSite.getString("distantTerrain");
+                        String nearby = jsonSite.getString("nearbyTerrain");
+                        String immediate = jsonSite.getString("immediateTerrain");
+
+                        //features
+
+                        String display = jsonSite.getString("display_pic");
+
+                        Double avrRating = jsonSite.getDouble("avr_rating");
+                        int ratedBy = jsonSite.getInt("no_of_raters");
 
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
@@ -119,29 +139,20 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
                         siteClass = new Site();
                         siteClass.setPosition(position);
-                        siteClass.setCid(jsonSite.getString("unique_cid"));
-                        siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
+                        siteClass.setCid(cid);
+                        siteClass.setSiteAdmin(admin);
                         siteClass.setLat(lat);
                         siteClass.setLon(lon);
                         siteClass.setAddress(address);
-                        siteClass.setTitle(jsonSite.getString("title"));
-                        siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("avr_rating"));
-                        siteClass.setRatedBy(jsonSite.getInt("no_of_raters"));
-                        siteClass.setClassification(jsonSite.getString("classification"));
-
-                        siteClass.setPermission(jsonSite.getString("permission"));
-                        siteClass.setDistant(jsonSite.getString("distantTerrain"));
-                        siteClass.setNearby(jsonSite.getString("nearbyTerrain"));
-                        siteClass.setImmediate(jsonSite.getString("immediateTerrain"));
-
-                        /*SparseArray<String> features = new SparseArray<>();
-
-                        for(int j = 1; j<11; j++){
-                            features.append(j, jsonSite.getString("feature"+j));
-                        }
-                        siteClass.setFeatures(features);*/
-
+                        siteClass.setTitle(title);
+                        siteClass.setDescription(description);
+                        siteClass.setRating(avrRating);
+                        siteClass.setRatedBy(ratedBy);
+                        siteClass.setClassification(classification);
+                        siteClass.setPermission(permission);
+                        siteClass.setDistant(distant);
+                        siteClass.setNearby(nearby);
+                        siteClass.setImmediate(immediate);
                         siteClass.setFeature1(jsonSite.getString("feature1"));
                         siteClass.setFeature2(jsonSite.getString("feature2"));
                         siteClass.setFeature3(jsonSite.getString("feature3"));
@@ -152,10 +163,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setFeature8(jsonSite.getString("feature8"));
                         siteClass.setFeature9(jsonSite.getString("feature9"));
                         siteClass.setFeature10(jsonSite.getString("feature10"));
-                        siteClass.setSiteAdmin(jsonSite.getString("site_admin"));
-                        siteClass.setDisplay_pic(jsonSite.getString("display_pic"));
+                        siteClass.setDisplay_pic(display);
 
-                        if (jsonSite.getString("site_admin").equals(email)) {
+                        if (admin.equals(email)) {
                             System.out.println("owned site FOUND!");
                             owned.put(ownedCnt, siteClass);
                             ownedCnt++;
@@ -173,14 +183,14 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
                 } else {
                     //error message
+                    String errMsg = jObj.getString("error_msg");
+                    Toast.makeText(context, "Site added!", Toast.LENGTH_LONG).show();
                 }
-
-            } catch (JSONException e) {
-
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException j){
+            j.printStackTrace();
         }
 
         return null;
@@ -190,8 +200,9 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        delegate.processFinish(file_url);
         pDialog.dismiss();
+        delegate.processFinish(file_url);
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {
