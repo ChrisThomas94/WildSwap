@@ -158,7 +158,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
         int sizeOwned = inst.getOwnedSiteSize();
-        System.out.println("size unknown: " + sizeUnknown);
+        System.out.println("unknownSiteSize unknown: " + sizeUnknown);
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(recieve_cid)){

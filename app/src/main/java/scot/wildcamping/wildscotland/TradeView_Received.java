@@ -175,10 +175,10 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
         int sizeUnknown = inst.getUnknownSitesSize();
-        System.out.println("size unknown: " + sizeUnknown);
+        System.out.println("unknownSiteSize unknown: " + sizeUnknown);
 
         int sizeOwn = inst.getOwnedSiteSize();
-        System.out.println("size own: " + sizeOwn);
+        System.out.println("unknownSiteSize own: " + sizeOwn);
 
         for(int i=0; i<sizeUnknown; i++){
             if(unknownMap.get(i).getCid().equals(send_cid)){

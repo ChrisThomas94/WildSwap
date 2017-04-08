@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/add_site_background2">
+    android:background="@drawable/add_site_background2"
+    android:baselineAligned="false">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -75,6 +76,7 @@
                     android:id="@+id/ratingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:numStars="5"
                     android:stepSize="0.5"
                     android:rating="0.0"
@@ -88,10 +90,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:orientation="vertical"
                 android:background="@drawable/rounded_linear_layout"
                 android:padding="10dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/addPhotoRel"
@@ -154,7 +156,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
-                    android:layout_marginBottom="15dp"
                     android:background="@drawable/rounded_grey_button">
 
                     <ImageView
@@ -211,6 +212,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
+                        android:visibility="gone"
                         android:text="Allow other otherUsers to see this image"/>
 
 
@@ -231,6 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:background="@drawable/rounded_grey_button">
 
                     <ImageView
@@ -344,6 +347,7 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/addLat"
+                    android:clickable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -351,15 +355,16 @@
                         android:id="@+id/Lat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:hint="Latitude"
-                        android:inputType="numberDecimal"
+                        android:inputType="none"
                         android:maxLines="1"/>
-
 
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/addLong"
+                    android:clickable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -367,10 +372,10 @@
                         android:id="@+id/Long"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="false"
                         android:hint="Longitude"
-                        android:inputType="numberDecimal"
+                        android:inputType="none"
                         android:maxLines="1"/>
-
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -378,18 +383,38 @@
             </LinearLayout>
 
 
-            <Button
-                android:layout_marginTop="20dp"
+            <RelativeLayout
+                android:id="@+id/confirmLayout"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Complete"
-                android:textSize="18sp"
-                android:id="@+id/confirmCreation"
-                android:background="@color/colorLight"
-                android:textColor="#ffffff"/>
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:background="@color/list_item_title">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:progress="0"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:progressDrawable="@drawable/progress_drawable_green"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:id="@+id/progressText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerInParent="true"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:text="0% Complete"/>
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

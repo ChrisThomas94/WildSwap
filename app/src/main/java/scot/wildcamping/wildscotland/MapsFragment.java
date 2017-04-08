@@ -1,16 +1,18 @@
 package scot.wildcamping.wildscotland;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -50,24 +54,24 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.Objects.AppClusterItem;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
-    //implements View.OnClickListener
-    //implements OnMapReadyCallback
-
 	public MapsFragment(){}
 
     MapView mMapView;
-    private static final int MINIMUM_ZOOM_LEVEL_SERVER_REQUEST = 7;
-    private static final int DEFAULT_ZOOM_LEVEL = 4;
 
     LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
     LatLng bunSite;
@@ -77,18 +81,21 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean register = false;
     double newLat;
     double newLon;
+
     ImageButton addSite;
     Button gpsAdd;
     Button manualAdd;
     Button longLatAdd;
     Button btnDismiss;
+    CheckBox owned;
+    CheckBox known;
+    CheckBox unknown;
+
+    Marker ownedMarker;
+    Marker knownMarker;
+
     Cluster<AppClusterItem> clickedCluster;
     Cluster<AppClusterItem> previouslyClickedCluster = null;
-    AppClusterItem clickedClusterItem;
-    private ProgressDialog pDialog;
-    private ProgressDialog pDialog2;
-    final int relatOwn = 90;
-    final int relatTrade = 45;
     String user;
     ClusterManager<AppClusterItem> mClusterManager;
     MarkerManager mMarkerManager;
@@ -96,17 +103,12 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     MarkerManager.Collection collKnown;
     knownSite inst = new knownSite();
     boolean clicked;
-    boolean zoomed = false;
-    boolean threshold = false;
-    int clickedTwice = 0;
     FrameLayout layout_main;
     Intent intent;
+    Geocoder geocoder;
 
-
-    private final LatLngBounds BOUNDS = new LatLngBounds(new LatLng(54.187, -9.61), new LatLng(62.814, 0.541));
     private final int MAX_ZOOM = 8;
-    private float prevZoom = 6;
-    private final int MIN_ZOOM = 7;
+    private float prevZoom = 5;
     Boolean API = false;
     LocationManager manager = null;
 
@@ -116,7 +118,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     SparseArray<Site> ownedSitesMap;
     int ownedSiteSize;
 
-    Site newlyAdded;
+    SparseArray<Site> unknownSitesMap;
+    int unknownSiteSize;
+
+    List<Marker> ownedMarkersList;
+
     View v;
 
     @Override
@@ -130,7 +136,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
 
-        System.out.println("owned size: "+ownedSitesMap.size());
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+
+        System.out.println("owned unknownSiteSize: "+ownedSitesMap.size());
 
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
@@ -161,7 +170,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-        mMapView.onResume();// needed to get the map to display immediately
+        mMapView.onResume();// needed to get the unknownSitesMap to display immediately
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -171,6 +180,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
+        owned = (CheckBox) v.findViewById(R.id.ownedFilter);
+        known = (CheckBox) v.findViewById(R.id.knownFilter);
+        unknown = (CheckBox) v.findViewById(R.id.unkownFilter);
 
         mMapView.getMapAsync(this);
 
@@ -203,7 +215,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             //Create better text for when a new camper installs the app, point them to additional info
             addWildLocationString = "I see that you have never been wild camping before...";
         } else {
-            addWildLocationString = "This button allows you to add a wild location to the map.";
+            addWildLocationString = "This button allows you to add a wild location to the unknownSitesMap.";
         }
 
         ShowcaseView sv = new ShowcaseView.Builder(getActivity())
@@ -253,19 +265,18 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
 
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
         }
 
-        // center map on Scotland
+
         if(add){
+            //center unknownSitesMap on newly created site
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
@@ -284,7 +295,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-        } else {//center map on newly created site
+        } else {
+            // center Map on Scotland
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(SCOTLAND.getCenter()).zoom(prevZoom).build();
             googleMap.animateCamera(CameraUpdateFactory
@@ -300,11 +312,97 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         addSite.setClickable(true);
         addSite.setOnClickListener(new MyOnClickListener(googleMap));
 
+        owned.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    showOwnedSites();
+                } else {
+                    hideOwnedSites();
+                }
+            }
+        });
+
+        known.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    showKnownSites();
+                } else {
+                    hideKnownSites();
+                }
+            }
+        });
+
+        unknown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(unknownSiteSize>0) {
+                    if(unknown.isChecked()){
+                        //make clusters appear
+                        showUnknownSites(googleMap);
+                    } else {
+                        //make clusters dissapear
+                        hideUnknownSites(googleMap);
+                    }
+                }
+            }
+        });
+
         //add the unknown sites as cluster items
         setUpClustering(googleMap);
+        updateMap(mClusterManager, googleMap);
+    }
 
-        //show initial popup if user is newCamper
+    public void showUnknownSites(GoogleMap googleMap){
+        addClusterMarkers(mClusterManager, googleMap);
+        updateMap(mClusterManager, googleMap);
+    }
 
+    public void hideUnknownSites(GoogleMap googleMap){
+        mClusterManager.clearItems();
+        updateMap(mClusterManager, googleMap);
+    }
+
+    public void showOwnedSites(){
+        coll.clear();
+        ownedMarkersList = new ArrayList<>();
+
+        if(ownedSiteSize > 0){
+            System.out.println("I have an owned site");
+            for(int i = 0; i< ownedSiteSize; i++){
+
+                Site currentSite = ownedSitesMap.get(i);
+                System.out.println(i + "  " + currentSite.getTitle());
+                ownedMarker = coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription()));
+                ownedMarkersList.add(i, ownedMarker);
+            }
+
+        } else {
+            //no owned sites
+        }
+    }
+
+    public void hideOwnedSites(){
+        coll.clear();
+    }
+
+    public void showKnownSites(){
+        List<Marker> knownMarkersList = new ArrayList<>();
+
+        if(knownSiteSize > 0) {
+            for (int i = 0; i < knownSiteSize; i++) {
+                Site currentSite = knownSitesMap.get(i);
+                knownMarker = collKnown.addMarker((new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription())));
+                knownMarkersList.add(i, knownMarker);
+            }
+        } else {
+            //no known sites
+        }
+    }
+
+    public void hideKnownSites(){
+        collKnown.clear();
     }
 
     class MyOnClickListener implements View.OnClickListener{
@@ -408,7 +506,14 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     popupWindow.dismiss();
                     layout_main.getForeground().setAlpha(0);
 
-                    Snackbar.make(view, "Touch point on map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+                    hideUnknownSites(googleMap);
+                    hideKnownSites();
+                    hideOwnedSites();
+                    owned.setChecked(false);
+                    known.setChecked(false);
+                    unknown.setChecked(false);
+
+                    Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
 
                     addSite.setVisibility(View.GONE);
 
@@ -420,10 +525,24 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                             newLat = point.latitude;
                             newLon = point.longitude;
 
-                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
-                            intent.putExtra("latitude", point.latitude);
-                            intent.putExtra("longitude", point.longitude);
-                            getActivity().startActivity(intent);
+                            try {
+                                List<Address> address = geocoder.getFromLocation(point.latitude, point.longitude, 1);
+                                System.out.println("address: "+ address);
+
+                                if(address.isEmpty()){
+
+                                    Toast.makeText(getActivity(), "Unsuitable Location!", Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+                                    intent.putExtra("latitude", point.latitude);
+                                    intent.putExtra("longitude", point.longitude);
+                                    getActivity().startActivity(intent);
+                                }
+
+                            } catch (IOException e){
+                                Log.getStackTraceString(e);
+                            }
                         }
                     });
                 }
@@ -441,7 +560,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             popupWindow.showAtLocation(addSite, Gravity.CENTER, 0, 0);
         }
-
 
     }
 
@@ -519,10 +637,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     updateMap(mClusterManager, googleMap);
 
                 }
-            }else{
-                //do nothing
             }
-
         }
     }
 
@@ -557,37 +672,16 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         // Declare a variable for the cluster manager.
         mMarkerManager = new MarkerManager(googleMap);
 
-        // Initialize the manager with the context and the map.
+        // Initialize the manager with the context and the unknownSitesMap.
         mClusterManager = new ClusterManager<>(this.getActivity(), googleMap, mMarkerManager);
 
-        //collKnown = mMarkerManager.newCollection();
+        collKnown = mMarkerManager.newCollection();
         coll = mMarkerManager.newCollection();
 
-        if(knownSiteSize > 0) {
-            for (int i = 0; i < knownSiteSize; i++) {
-                Site currentSite = knownSitesMap.get(i);
-                coll.addMarker((new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription())));
-            }
-        } else {
-            //no known sites
-        }
+        showKnownSites();
+        showOwnedSites();
 
-        System.out.println("owned sites map frag: " + ownedSiteSize);
-
-        if(ownedSiteSize > 0){
-            System.out.println("I have an owned site");
-            for(int i = 0; i< ownedSiteSize; i++){
-
-                Site currentSite = ownedSitesMap.get(i);
-                System.out.println(i + "  " + currentSite.getTitle());
-                coll.addMarker(new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.redpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription()));
-            }
-
-        } else {
-            //no owned sites
-        }
-
-        // Point the map's listeners at the listeners implemented by the cluster manager.
+        // Point the unknownSitesMap's listeners at the listeners implemented by the cluster manager.
         //googleMap.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mMarkerManager);
         googleMap.setInfoWindowAdapter(mMarkerManager);
@@ -712,8 +806,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             int size = clickedCluster.getSize();
 
-
-
             TextView popup = (TextView)view.findViewById(R.id.popup_text);
             LinearLayout cluster_popup = (LinearLayout)view.findViewById(R.id.cluster_popup);
 
@@ -738,33 +830,32 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
     private void addClusterMarkers(ClusterManager<AppClusterItem> mClusterManager, GoogleMap googleMap) {
 
-        //knownSite inst = new knownSite();
-        SparseArray<Site> map = inst.getUnknownSitesMap();
-        int size = inst.getUnknownSitesSize();
+        unknownSitesMap = inst.getUnknownSitesMap();
+        unknownSiteSize = inst.getUnknownSitesSize();
 
         System.out.println("add cluster markers");
 
         // Add cluster items
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < unknownSiteSize; i++) {
             //System.out.println(i);
-            Site currentSite = map.get(i);
+            Site currentSite = unknownSitesMap.get(i);
 
             LatLng point = currentSite.getPosition();
             double lon = point.longitude;
             double lat = point.latitude;
 
-            AppClusterItem unknownSitesList = new AppClusterItem(lat, lon);
+            AppClusterItem unknownSites = new AppClusterItem(lat, lon);
 
             mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
-            mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
-            mClusterManager.addItem(unknownSitesList);
+            //mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
+            mClusterManager.setAlgorithm(new Alg<AppClusterItem>());
+            mClusterManager.addItem(unknownSites);
         }
     }
 
     private void updateMap(ClusterManager<AppClusterItem> mClusterManager, GoogleMap googleMap){
-        mClusterManager.setRenderer(new CustomRenderer<AppClusterItem>(this.getActivity(), googleMap, mClusterManager));
+        mClusterManager.setRenderer(new CustomRenderer<>(this.getActivity(), googleMap, mClusterManager));
         mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
-
     }
 
     class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>

@@ -159,8 +159,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             leftArrow.setVisibility(View.INVISIBLE);
         }
 
-        //where lat lng of cluster = lat lng of map
-        //add to new map
+        //where lat lng of cluster = lat lng of unknownSitesMap
+        //add to new unknownSitesMap
 
         for(int i=0; i<recieveSize; i++){
 
@@ -364,7 +364,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 } else {
                     nextSite++;
                 }
-                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.size()-1, nextSite);
+                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.unknownSiteSize()-1, nextSite);
                 genUnknownSite(nextSite);
                 break;
 

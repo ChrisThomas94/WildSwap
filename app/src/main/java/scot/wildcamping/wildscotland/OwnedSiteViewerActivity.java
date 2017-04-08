@@ -247,7 +247,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         }
 
         /*features = focused.getFeatures();
-        for (int i = 0; i<features.size(); i++){
+        for (int i = 0; i<features.unknownSiteSize(); i++){
             if(features.get(i+1).equals("0")){
                 String featureID = "feature"+(i+1)+"Image";
 
@@ -377,7 +377,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         }
 
         /*features = focused.getFeatures();
-        for (int i = 0; i<features.size(); i++){
+        for (int i = 0; i<features.unknownSiteSize(); i++){
             if(features.get(i+1).equals("0")){
                 String featureID = "feature"+(i+1)+"Image";
 

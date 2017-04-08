@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,7 +52,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     TextView classificationC;
     TextView classificationE;
     RatingBar ratingBar;
-    Button confirmCreation;
     CheckBox imagePermission;
     ViewGroup.LayoutParams layoutParams;
     GridView gridView;
@@ -59,6 +59,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     FrameLayout classC;
     FrameLayout classE;
     TextView classDescription;
+    ProgressBar progress;
+    TextView progressText;
 
     double latitude;
     double longitude;
@@ -91,6 +93,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean imageUpload = false;
     knownSite inst = new knownSite();
     ArrayList imageUris2 = new ArrayList();
+    int progressValue;
+
+    Boolean updateClassification = false;
 
     Intent intent;
 
@@ -113,12 +118,16 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         imagePermission = (CheckBox)findViewById(R.id.imagePermission);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
-        confirmCreation = (Button)findViewById(R.id.confirmCreation);
+        progress = (ProgressBar)findViewById(R.id.progressBar);
+        progressText = (TextView) findViewById(R.id.progressText);
         gridView = (GridView) findViewById(R.id.gridView);
         or = (TextView)findViewById(R.id.or);
         distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
         nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
+
+        Lat.setEnabled(false);
+        Lon.setEnabled(false);
 
         distantTerrainFeatures.setVisibility(View.GONE);
         nearbyTerrainFeatures.setVisibility(View.GONE);
@@ -234,7 +243,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         addImage.setOnClickListener(this);
         siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
-        confirmCreation.setOnClickListener(this);
+        progress.setOnClickListener(this);
         classificationA.setOnClickListener(this);
         classificationC.setOnClickListener(this);
         classificationE.setOnClickListener(this);
@@ -247,6 +256,10 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         {
             case R.id.classificationA:
 
+                if(!updateClassification){
+                    updateProgress();
+                }
+                updateClassification = true;
                 classification = classificationA.getText().toString();
                 classA.getForeground().setAlpha(0);
                 classC.getForeground().setAlpha(150);
@@ -256,6 +269,10 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.classificationC:
 
+                if(!updateClassification){
+                    updateProgress();
+                }
+                updateClassification = true;
                 classification = classificationC.getText().toString();
                 classA.getForeground().setAlpha(150);
                 classC.getForeground().setAlpha(0);
@@ -265,6 +282,10 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.classificationE:
 
+                if(!updateClassification){
+                    updateProgress();
+                }
+                updateClassification = true;
                 classification = classificationE.getText().toString();
                 classA.getForeground().setAlpha(150);
                 classC.getForeground().setAlpha(150);
@@ -281,6 +302,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.siteBuilder:
 
+                updateProgress();
                 Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilder.class);
                 siteBuilder.putExtra("image", imageUpload);
                 //intent.putExtra("temp", tempLocation);
@@ -289,6 +311,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 siteBuilder.putExtra("title", title.getText().toString());
                 siteBuilder.putExtra("description", description.getText().toString());
                 siteBuilder.putExtra("rating", ratingBar.getRating());
+                siteBuilder.putExtra("progress", progressValue);
                 startActivity(siteBuilder);
                 break;
 
@@ -316,7 +339,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
                 break;
 
-            case R.id.confirmCreation:
+            case R.id.progressBar:
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
                 builder1.setTitle("Attention!");
@@ -381,6 +404,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         if(resultCode == RESULT_OK) {
 
             ClipData clip = data.getClipData();
+            updateProgress();
 
             if (clip == null) {
                 Uri uri = data.getData();
@@ -430,6 +454,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
+
+        Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+        intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+        intent.putExtra("add", false);
+        intent.putExtra("data", false);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -448,4 +479,11 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         return (super.onOptionsItemSelected(menuItem));
     }
 
+    public void updateProgress(){
+
+        progressValue = progress.getProgress()+25;
+        progress.setProgress(progressValue);
+        progressText.setText(progressValue+"% Complete");
+
+    }
 }

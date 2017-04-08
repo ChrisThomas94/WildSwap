@@ -170,7 +170,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         //FragmentManager fragmentManager;
         switch (position) {
             case 0:
-                if(isNetworkAvailable()) {
+                if(isNetworkAvailable() && fetchData) {
 
                     new FetchUnknownSites(this, new AsyncResponse() {
                         @Override
@@ -189,6 +189,13 @@ public class MainActivity_Spinner extends AppCompatActivity {
                             }).execute();
                         }
                     }).execute();
+                } else {
+                    MapsFragment mapsFragment = new MapsFragment();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
+
+                    setTitle(list.get(position));
+                    setRefreshActionButtonState(false);
                 }
 
                 break;

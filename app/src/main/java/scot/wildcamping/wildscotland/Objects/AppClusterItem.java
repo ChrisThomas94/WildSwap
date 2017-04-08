@@ -1,19 +1,12 @@
-package scot.wildcamping.wildscotland;
+package scot.wildcamping.wildscotland.Objects;
 
-
-import android.content.Context;
-
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
-import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
 
 /**
  * Created by Chris on 04-Feb-16.
+ *
  */
 public class AppClusterItem implements ClusterItem {
 

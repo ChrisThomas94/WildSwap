@@ -2,26 +2,15 @@ package scot.wildcamping.wildscotland;
 
 /**
  * Created by Chris on 23-Dec-15.
+ *
  */
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import scot.wildcamping.wildscotland.Objects.User;
 
 public class AppController extends Application {
 
-    public static final String TAG = AppController.class.getSimpleName();
     private static AppController mInstance;
 
     public static synchronized AppController getInstance() {
