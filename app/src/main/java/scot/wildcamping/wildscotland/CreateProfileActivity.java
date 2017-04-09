@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
@@ -42,12 +43,11 @@ import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateProfile;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
-import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
  */
-public class BioActivity extends AppCompatActivity {
+public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener  {
 
     private QuestionListAdapter adapter;
     private ListView mDrawerList;
@@ -61,16 +61,25 @@ public class BioActivity extends AppCompatActivity {
     EditText why;
     CircleImageView profilePic;
     ImageView addCoverPicture;
-    String profilePicString;
     ImageView coverPic;
+    RelativeLayout userType1;
+    RelativeLayout userType2;
+    RelativeLayout userType3;
+    TextView userTypeText1;
+    TextView userTypeText2;
+    TextView userTypeText3;
+
+
+    String profilePicString;
     String coverPicString;
+    String userType;
     Intent i;
     boolean isNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bio);
+        setContentView(R.layout.activity_create_profile);
 
         View parentLayout = findViewById(android.R.id.content);
 
@@ -91,6 +100,16 @@ public class BioActivity extends AppCompatActivity {
         profilePic = (CircleImageView) findViewById(R.id.profilePicture);
         addCoverPicture = (ImageView) findViewById(R.id.coverPicture);
         coverPic = (ImageView)findViewById(R.id.backgroundImage);
+        userType1 = (RelativeLayout)findViewById(R.id.userType1);
+        userType2 = (RelativeLayout)findViewById(R.id.userType2);
+        userType3 = (RelativeLayout)findViewById(R.id.userType3);
+        userTypeText1 = (TextView) findViewById(R.id.userTypeText1);
+        userTypeText2 = (TextView) findViewById(R.id.userTypeText2);
+        userTypeText3 = (TextView) findViewById(R.id.userTypeText3);
+
+
+
+        name.setText(AppController.getString(this, "name"));
 
         if(!isNew){
 
@@ -152,23 +171,47 @@ public class BioActivity extends AppCompatActivity {
             }
         });
 
-        /*skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QuizActivity.class);
-                if(isNew){
-                    intent.putExtra("new", true);
-                } else if (update) {
-                    intent.putExtra("update", true);
-                }
-                startActivity(intent);
-                finish();
-            }
-        });*/
+        userType1.setOnClickListener(this);
+        userType2.setOnClickListener(this);
+        userType3.setOnClickListener(this);
 
     }
 
     @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.userType1:
+
+                userType = userTypeText1.getText().toString();
+                userType1.setBackgroundResource(R.drawable.rounded_green_button);
+                userType2.setBackgroundResource(R.drawable.rounded_white_button);
+                userType3.setBackgroundResource(R.drawable.rounded_white_button);
+
+                break;
+
+            case R.id.userType2:
+
+                userType = userTypeText2.getText().toString();
+                userType1.setBackgroundResource(R.drawable.rounded_white_button);
+                userType2.setBackgroundResource(R.drawable.rounded_green_button);
+                userType3.setBackgroundResource(R.drawable.rounded_white_button);
+
+                break;
+
+            case R.id.userType3:
+
+                userType = userTypeText3.getText().toString();
+                userType1.setBackgroundResource(R.drawable.rounded_white_button);
+                userType2.setBackgroundResource(R.drawable.rounded_white_button);
+                userType3.setBackgroundResource(R.drawable.rounded_green_button);
+
+                break;
+
+        }
+    }
+
+                @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.form, menu);
@@ -224,7 +267,7 @@ public class BioActivity extends AppCompatActivity {
                     new FetchQuestions(this, AppController.getString(this, "email")).execute();
 
                     //asynk task updating bio
-                    new UpdateProfile(this, newBio, newWhy, profileSingleLine, coverSingleLine, new AsyncResponse() {
+                    new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);

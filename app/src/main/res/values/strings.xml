@@ -61,6 +61,11 @@
     <string name="nearbyTerrain">Now select an option that best describes the terrain nearby.</string>
     <string name="immediateTerrain">Finally select the most accurate immediate terrain.</string>
 
+    <string name="amateurClassification">An Amateur location is generally accessible by car or very easily on foot, supplies such as food and fuel can be purchased nearby.</string>
+    <string name="casualClassification">A Casual location is off the beaten track and will require a short hike or drive into the wilderness, no nearby amenities.</string>
+    <string name="expertClassification">An Expert location requires some serious navigational skills, do not expect to see another soul at this location and make sure to bring enough food and toilet roll.</string>
+
+
     <string name="distantFeature1">Hills</string>
     <string name="distantFeature2">Forest</string>
     <string name="distantFeature3">Plains</string>

@@ -16,6 +16,7 @@ import scot.wildcamping.wildscotland.Objects.Question;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class QuestionListAdapter extends BaseAdapter {
 

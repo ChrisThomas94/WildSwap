@@ -36,13 +36,15 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
 
     private Context context;
     String user;
-    String bio;
-    String why;
-    String profile_pic;
-    String cover_pic;
+    private String userType;
+    private String bio;
+    private String why;
+    private String profile_pic;
+    private String cover_pic;
 
-    public UpdateProfile(Context context, String bio, String why, String profile_pic, String cover_pic, AsyncResponse delegate) {
+    public UpdateProfile(Context context, String userType, String bio, String why, String profile_pic, String cover_pic, AsyncResponse delegate) {
         this.context = context;
+        this.userType = userType;
         this.bio = bio;
         this.why = why;
         this.profile_pic = profile_pic;
@@ -72,7 +74,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         user = AppController.getString(context, "uid");
 
         try {
-            String json = updateProfile(user, bio, why, profile_pic, cover_pic);
+            String json = updateProfile(user, userType, bio, why, profile_pic, cover_pic);
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -124,9 +126,10 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     }
 
 
-    private String updateProfile(String uid, String bio, String why, String profile_pic, String cover_pic){
+    private String updateProfile(String uid, String userType, String bio, String why, String profile_pic, String cover_pic){
         return "{\"tag\":\"" + "updateProfile" + "\","
                 + "\"uid\":\"" + uid + "\","
+                + "\"type\":\"" + userType + "\","
                 + "\"bio\":\"" + bio + "\","
                 + "\"why\":\"" + why + "\","
                 + "\"profile_pic\":\"" + profile_pic + "\","

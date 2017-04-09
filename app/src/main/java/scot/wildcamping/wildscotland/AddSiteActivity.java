@@ -7,9 +7,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,6 +99,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     int progressValue;
 
     Boolean updateClassification = false;
+    Boolean updateTitle = false;
+    Boolean updateDesc = false;
+    Boolean updateImage = false;
 
     Intent intent;
 
@@ -195,10 +201,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             titlePassed = extras.getString("title");
             descPassed = extras.getString("description");
-
-            title.setText(titlePassed);
-            description.setText(descPassed);
-
             imageUpload = extras.getBoolean("image");
 
             if(imageUpload) {
@@ -215,10 +217,16 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         if(titlePassed == null){
             title.setText("Cool wild location");
+        } else {
+            title.setText(titlePassed);
+            //updateProgress();
         }
 
         if(descPassed == null){
             description.setText("It is really cool here...");
+        } else {
+            description.setText(descPassed);
+            //updateProgress();
         }
 
         System.out.println(imageUpload);
@@ -237,9 +245,49 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         classC.getForeground().setAlpha(150);
         classE.getForeground().setAlpha(150);
         classification = classificationA.getText().toString();
-        classDescription.setText("An Amateur location is generally accessible by car or very easily on foot, supplies such as food and fuel can be purchased nearby.");
+        classDescription.setText(R.string.amateurClassification);
 
         //setting onclick listeners
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!updateTitle) {
+                    updateProgress();
+                }
+                updateTitle = true;
+            }
+        });
+
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!updateDesc) {
+                    updateProgress();
+                }
+                updateDesc = true;
+            }
+        });
+
         addImage.setOnClickListener(this);
         siteBuilder.setOnClickListener(this);
         addFeature.setOnClickListener(this);
@@ -264,7 +312,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 classA.getForeground().setAlpha(0);
                 classC.getForeground().setAlpha(150);
                 classE.getForeground().setAlpha(150);
-                classDescription.setText("An Amateur location is generally accessible by car or very easily on foot, supplies such as food and fuel can be purchased nearby.");
+                classDescription.setText(R.string.amateurClassification);
                 break;
 
             case R.id.classificationC:
@@ -277,7 +325,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 classA.getForeground().setAlpha(150);
                 classC.getForeground().setAlpha(0);
                 classE.getForeground().setAlpha(150);
-                classDescription.setText("A Casual location is off the beaten track and will require a short hike or drive into the wilderness, no nearby amenities.");
+                classDescription.setText(R.string.casualClassification);
                 break;
 
             case R.id.classificationE:
@@ -290,7 +338,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 classA.getForeground().setAlpha(150);
                 classC.getForeground().setAlpha(150);
                 classE.getForeground().setAlpha(0);
-                classDescription.setText("An Expert location requires some serious navigational skills, do not expect to see another soul at this location and make sure to bring enough food and toilet roll.");
+                classDescription.setText(R.string.expertClassification);
                 break;
 
             case R.id.addPhotoRel:
@@ -341,55 +389,60 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.progressBar:
 
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
-                builder1.setTitle("Attention!");
-                builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
+                if(progressValue > 0) {
 
-                builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        latReq = Lat.getText().toString();
-                        lonReq = Lon.getText().toString();
-                        titleReq = title.getText().toString();
-                        descReq = description.getText().toString();
-                        ratingReq = Float.toString(ratingBar.getRating());
-                        permission = imagePermission.isChecked();
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
+                    builder1.setTitle("Attention!");
+                    builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
 
-                        if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
+                    builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            latReq = Lat.getText().toString();
+                            lonReq = Lon.getText().toString();
+                            titleReq = title.getText().toString();
+                            descReq = description.getText().toString();
+                            ratingReq = Float.toString(ratingBar.getRating());
+                            permission = imagePermission.isChecked();
 
-                            titleReq = titleReq.replace("'", "\'");
-                            descReq = descReq.replace("'", "\'");
+                            if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
 
-                            final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
-                            intent.putExtra("latitude", latitude);
-                            intent.putExtra("longitude", longitude);
-                            intent.putExtra("add", true);
-                            intent.putExtra("data", false);
+                                titleReq = titleReq.replace("'", "\'");
+                                descReq = descReq.replace("'", "\'");
 
-                            new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).execute();
+                                final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                                intent.putExtra("latitude", latitude);
+                                intent.putExtra("longitude", longitude);
+                                intent.putExtra("add", true);
+                                intent.putExtra("data", false);
 
-                        } else {
-                            //Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
+                                new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).execute();
+
+                            } else {
+                                //Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
+                            }
                         }
-                    }
-                });
+                    });
 
-                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                    builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
 
-                AlertDialog alert1 = builder1.create();
-                alert1.show();
+                    AlertDialog alert1 = builder1.create();
+                    alert1.show();
+                } else {
+                    Snackbar.make(v, "Please make some changes!", Snackbar.LENGTH_LONG).show();
+                }
 
                 break;
 
@@ -404,7 +457,10 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         if(resultCode == RESULT_OK) {
 
             ClipData clip = data.getClipData();
-            updateProgress();
+            if(!updateImage) {
+                updateProgress();
+            }
+            updateImage = true;
 
             if (clip == null) {
                 Uri uri = data.getData();

@@ -281,7 +281,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-            getActivity().getIntent().removeExtra("add");
+            //getActivity().getIntent().removeExtra("add");
         } else if (trade){
             LatLng tradeSite = new LatLng(newLat, newLon);
 
@@ -367,6 +367,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     public void showOwnedSites(){
         coll.clear();
         ownedMarkersList = new ArrayList<>();
+
+        if(add){
+            ownedSiteSize++;
+            add=false;
+        }
 
         if(ownedSiteSize > 0){
             System.out.println("I have an owned site");

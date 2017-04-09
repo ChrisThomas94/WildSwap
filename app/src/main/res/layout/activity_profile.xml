@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,303 +10,294 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/scroll"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:fillViewport="true"
+        android:layout_below="@+id/tool_bar">
 
-        <ScrollView
+        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/completionLayout">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/backgroundImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/rounded_grey_button"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/fade_box"/>
+
 
                 <RelativeLayout
+                    android:id="@+id/mainBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="100dp"
+                    android:padding="10dp"
+                    android:background="@drawable/clear_shadow">
 
-                    <ImageView
-                        android:id="@+id/backgroundImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                    <ImageButton
+                        android:id="@+id/edit"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/rounded_grey_button"/>
+                        android:background="@color/list_item_title"
+                        android:src="@drawable/ic_site_builder_48dp"/>
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_marginTop="50dp"
-                        android:background="@drawable/fade_box"/>
-
-
-                    <RelativeLayout
-                        android:id="@+id/mainBody"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <LinearLayout
                         android:orientation="vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="100dp"
-                        android:padding="10dp"
-                        android:background="@drawable/clear_shadow">
-
-                        <ImageButton
-                            android:id="@+id/edit"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:scaleType="fitXY"
-                            android:background="@color/list_item_title"
-                            android:src="@drawable/ic_site_builder_48dp"/>
-
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="50dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:layout_centerHorizontal="true"
-                                    android:padding="15dp"
-                                    android:text="Chris Thomas"
-                                    android:textColor="#333333"
-                                    android:textSize="25dp" />
-
-
-                            </RelativeLayout>
-
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/profileStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/mainBody"
-                        android:background="@drawable/clear_shadow"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
-                        android:padding="10dp">
-
-                        <ImageView
-                            android:id="@+id/verification"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:src="@drawable/verified"/>
-
-                        <TextView
-                            android:id="@+id/profileStatusText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:text="Verified Profile"
-                            android:layout_toRightOf="@+id/verification"
-                            android:layout_centerVertical="true"
-                            android:textSize="20sp"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/otherInfo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/profileStatus"
-                        android:background="@drawable/clear_shadow"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:padding="10dp">
-
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:padding="15dp"
-                                android:text="chris@gmail"
-                                android:visibility="gone"
-                                android:textColor="#333333"
-                                android:textSize="20dp" />
-
-                            <TextView
-                                android:id="@+id/bioTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="About Me"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:paddingLeft ="15dp"
-                                android:visibility="visible"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/bio"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="15dp"
-                                android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
-                                android:textColor="#333333"
-                                android:textSize="15dp" />
-
-                            <TextView
-                                android:id="@+id/whyTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Why I'm on WildScotland"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:paddingLeft ="15dp"
-                                android:visibility="visible"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/why"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="15dp"
-                                android:text="coo and smoo."
-                                android:textColor="#333333"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/praiseTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Praise"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:paddingLeft ="15dp"
-                                android:visibility="visible"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/praise"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="15dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="15dp"
-                                android:text="coo and smoo."
-                                android:textColor="#333333"
-                                android:textSize="15sp" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp">
 
-                        <View
-                            android:layout_width="105dp"
-                            android:layout_height="105dp"
-                            android:layout_centerHorizontal="true"
-                            android:background="@drawable/circle_with_shadow"/>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/profilePicture"
-                            android:visibility="visible"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:scaleType="centerCrop"
-                            android:clickable="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"/>
+                            <TextView
+                                android:id="@+id/name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_centerHorizontal="true"
+                                android:padding="15dp"
+                                android:text="Chris Thomas"
+                                android:textColor="#333333"
+                                android:textSize="25dp" />
 
-                    </RelativeLayout>
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
-            </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/profileStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainBody"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp">
 
-        </ScrollView>
+                    <ImageView
+                        android:id="@+id/verification"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/verified"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/completionLayout"
-            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/profileStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="Verified Profile"
+                        android:layout_toRightOf="@+id/verification"
+                        android:layout_centerVertical="true"
+                        android:textSize="20sp"/>
 
-            <scot.wildcamping.wildscotland.SlidingTabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/otherInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profileStatus"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="15dp"
+                            android:text="chris@gmail"
+                            android:visibility="gone"
+                            android:textColor="#333333"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/bioTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="About Me"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:paddingLeft ="15dp"
+                            android:visibility="visible"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/bio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
+                            android:textColor="#333333"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/whyTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Why I'm on WildScotland"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:paddingLeft ="15dp"
+                            android:visibility="visible"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/why"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="coo and smoo."
+                            android:textColor="#333333"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/praiseTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Praise"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:paddingLeft ="15dp"
+                            android:visibility="visible"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/praise"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="coo and smoo."
+                            android:textColor="#333333"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp">
+
+                    <View
+                        android:layout_width="105dp"
+                        android:layout_height="105dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/circle_with_shadow"/>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profilePicture"
+                        android:visibility="visible"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:clickable="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:elevation="2dp"
-                android:background="@color/colorPrimary"/>
+                android:layout_above="@+id/completionLayout"
+                android:orientation="vertical">
 
-            <View android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@drawable/toolbar_dropshadow"/>
+                <scot.wildcamping.wildscotland.SlidingTabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:elevation="2dp"
+                    android:background="@color/list_item_title"/>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                ></android.support.v4.view.ViewPager>
+                <View android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/toolbar_dropshadow"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_height="2000dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/completionLayout"
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/confirmLayout"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@color/list_item_title">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:padding="10dp"
-            android:background="@color/list_item_title">
+            android:layout_height="80dp"
+            android:progress="0"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:progressDrawable="@drawable/progress_drawable_green"
+            android:clickable="true"/>
 
-            <ImageView
-                android:id="@+id/completionBar"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/rounded_green_button"/>
-
-            <TextView
-                android:id="@+id/profileComplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_centerVertical="true"
-                android:textColor="@color/list_item_title"
-                android:text="Your profile is 100% complete!"/>
-
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:text="0% Complete"/>
 
     </RelativeLayout>
 
-
-
-
-</LinearLayout>
+</RelativeLayout>

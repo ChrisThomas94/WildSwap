@@ -3,78 +3,85 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/site"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:focusable="false"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
-    android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/clear_shadow">
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/add_30"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/image">
+        android:padding="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:focusable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:background="@drawable/clear_shadow">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/add_30"/>
 
-        <TextView
-            android:id="@+id/classificationA"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:background="@drawable/rounded_green_button"
-            android:text="Amateur"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/classificationC"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:gravity="center"
-            android:layout_toRightOf="@id/classificationA"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_orange_button"
-            android:text="Casual"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/classificationE"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:gravity="center"
-            android:layout_toRightOf="@id/classificationC"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_red_button"
-            android:text="Expert"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/country"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            android:text="Scotland, Loch Lomond"
-            android:layout_below="@+id/classificationA"/>
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/classificationA"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:background="@drawable/rounded_green_button"
+                android:text="Amateur"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/classificationC"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:gravity="center"
+                android:layout_toRightOf="@id/classificationA"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_orange_button"
+                android:text="Casual"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/classificationE"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:gravity="center"
+                android:layout_toRightOf="@id/classificationC"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_red_button"
+                android:text="Expert"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:text="Scotland, Loch Lomond"
+                android:layout_below="@+id/classificationA"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

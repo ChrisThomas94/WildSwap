@@ -98,7 +98,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         }).execute();
 
                         session.setLogin(true);
-                        intent = new Intent(Register.this, BioActivity.class);
+                        intent = new Intent(Register.this, CreateProfileActivity.class);
                         intent.putExtra("new", true);
                     }
                 } else {

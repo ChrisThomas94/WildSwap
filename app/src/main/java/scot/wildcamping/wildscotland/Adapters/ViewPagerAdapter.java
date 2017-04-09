@@ -2,27 +2,27 @@ package scot.wildcamping.wildscotland.Adapters;
 
 /**
  * Created by Chris on 01-Apr-16.
+ *
  */
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import scot.wildcamping.wildscotland.BadgesFragment;
-import scot.wildcamping.wildscotland.BioFragment;
 import scot.wildcamping.wildscotland.SentTradesFragment;
 import scot.wildcamping.wildscotland.KnownSitesFragment;
 import scot.wildcamping.wildscotland.ReceivedTradesFragment;
 import scot.wildcamping.wildscotland.QuestionFragment;
 import scot.wildcamping.wildscotland.OwnedSitesFragment;
+import scot.wildcamping.wildscotland.WrapContentViewPager;
 
-/**
- * Created by hp1 on 21-01-2015.
- */
+
+
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-    int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
-
+    private CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
+    private int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
@@ -43,30 +43,27 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             if(Titles[0] == "Received"){
                 tab1 = new ReceivedTradesFragment();
             } else if (Titles[0] == "Questions"){
-                //tab1 = new BioFragment();
                 tab1 = new QuestionFragment();
 
             } else {
                 tab1 = new OwnedSitesFragment();
             }
             return tab1;
-        }
-        else if (position == 1)             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
-        {
+
+            // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        } else if (position == 1) {
             Fragment tab2;
             if(Titles[1] == "Sent"){
                 tab2 = new SentTradesFragment();
             } else if(Titles[1] == "Badges"){
-                //tab2 = new QuestionFragment();
                 tab2 = new BadgesFragment();
 
             } else {
                 tab2 = new KnownSitesFragment();
             }
             return tab2;
-        } else {
-
         }
+
         return null;
     }
 

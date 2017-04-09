@@ -3,7 +3,7 @@
     <item android:id="@android:id/background">
         <shape>
             <solid
-                android:color="@color/list_background" />
+                android:color="@color/counter_text_color" />
         </shape>
     </item>
 

@@ -2,17 +2,26 @@ package scot.wildcamping.wildscotland;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,14 +29,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
-import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
-import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
-import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
 
 /**
+ *
  * Created by Chris on 08-Apr-16.
  */
 public class ProfileActivity extends AppCompatActivity {
@@ -43,10 +51,17 @@ public class ProfileActivity extends AppCompatActivity {
     int currPosition;
     boolean initialSelection = false;
     String user;
+    int progressValue;
+
     TextView txtName;
     TextView txtEmail;
-    Button questions;
-    Boolean this_user;
+    TextView txtBio;
+    TextView txtWhy;
+    Boolean this_user = false;
+    CircleImageView profile_pic;
+    ImageView cover_pic;
+    ProgressBar progress;
+    TextView progressText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
+
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
@@ -89,6 +105,88 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+
+        txtName = (TextView) findViewById(R.id.name);
+        txtEmail = (TextView) findViewById(R.id.email);
+        txtWhy = (TextView) findViewById(R.id.why);
+        txtBio = (TextView) findViewById(R.id.bio);
+        profile_pic = (CircleImageView) findViewById(R.id.profilePicture);
+        cover_pic = (ImageView) findViewById(R.id.backgroundImage);
+        progress = (ProgressBar) findViewById(R.id.progressBar);
+        progressText = (TextView) findViewById(R.id.progressText);
+
+        if(this_user){
+
+            txtName.setText(AppController.getString(this, "name"));
+            txtEmail.setText(AppController.getString(this, "email"));
+            String bio = AppController.getString(this, "bio");
+            String why = AppController.getString(this, "why");
+            String profile_pic = AppController.getString(this, "profile_pic");
+            String cover_pic = AppController.getString(this, "cover_pic");
+
+            if(bio.equals("null")){
+                txtBio.setText("");
+            } else {
+                txtBio.setText(bio);
+                updateProgress();
+            }
+
+            if(why.equals("null")){
+                txtWhy.setText("");
+            } else {
+                txtWhy.setText(why);
+                updateProgress();
+            }
+
+            if(!profile_pic.equals("null") || !profile_pic.equals("")){
+                Bitmap bit = StringToBitMap(profile_pic);
+                this.profile_pic.setImageBitmap(bit);
+                updateProgress();
+            }
+
+            if(!cover_pic.equals("null") || !cover_pic.equals("")){
+                Bitmap bit = StringToBitMap(cover_pic);
+                this.cover_pic.setImageBitmap(bit);
+                updateProgress();
+            }
+
+
+
+        } else {
+            txtName.setText(AppController.getString(this, "user_name"));
+            txtEmail.setText(AppController.getString(this, "user_email"));
+
+            String bio = AppController.getString(this, "user_bio");
+
+            if(bio.equals("null")){
+                txtBio.setText("");
+            } else {
+                txtBio.setText(bio);
+            }
+
+            String image = AppController.getString(this, "user_profile_pic");
+
+            if(image.equals("null") || image.equals("")){
+
+            } else {
+                Bitmap bit = StringToBitMap(image);
+                bit = Bitmap.createScaledBitmap(bit, 300, 300, true);
+
+                Bitmap circle = getCroppedBitmap(bit);
+                profile_pic.setImageBitmap(circle);
+            }
+
+            progress.setVisibility(View.GONE);
+        }
+
+        progress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), CreateProfileActivity.class);
+                intent.putExtra("update", true);
+                startActivity(intent);
+            }
+        });
 
         addItemsToSpinner();
     }
@@ -234,4 +332,45 @@ public class ProfileActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
+
+    public void updateProgress(){
+
+        progressValue = progress.getProgress()+20;
+        progress.setProgress(progressValue);
+        progressText.setText(progressValue+"% Complete");
+
+    }
 }

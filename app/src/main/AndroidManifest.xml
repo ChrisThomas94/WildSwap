@@ -112,12 +112,6 @@
         </activity>
 
         <activity
-            android:name=".Dead.TradeActivity"
-            android:label="Trade"
-            android:theme="@style/AppTheme">
-        </activity>
-
-        <activity
             android:name=".TradeActivitySimple"
             android:label="Trade"
             android:theme="@style/AppTheme">
@@ -186,7 +180,7 @@
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".BioActivity"
+        <activity android:name=".CreateProfileActivity"
             android:label="Bio"
             android:theme= "@style/AppTheme"/>
 

@@ -28,6 +28,7 @@
                 android:id="@+id/textOwned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/ownedFilter"
                 android:text="Owned Filter"/>
 
@@ -48,6 +49,7 @@
                 android:id="@+id/textKnown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/knownFilter"
                 android:text="Known Filter"/>
 
@@ -68,6 +70,7 @@
                 android:id="@+id/textUnknown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/unkownFilter"
                 android:text="Unknown Filter"/>
 

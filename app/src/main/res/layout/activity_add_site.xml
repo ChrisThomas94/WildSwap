@@ -12,11 +12,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +40,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Title"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
                         android:textStyle="bold"
                         android:padding="10dp"
                         android:maxLength="21"
@@ -332,8 +328,6 @@
                     android:text="Sample Text"/>
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
