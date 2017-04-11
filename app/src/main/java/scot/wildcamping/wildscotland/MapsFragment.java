@@ -788,12 +788,23 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 if (inst.getOwnedSiteSize() > 0) {
                     previouslyClickedCluster = null;
                     ArrayList<LatLng> cluster = new ArrayList<>();
+                    ArrayList<String> emails = new ArrayList<>();
+                    SparseArray<Site> selectedUnknownSites = new SparseArray<>();
+
                     Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
 
                     for (AppClusterItem item : clickedCluster.getItems()) {
                         // Extract data from each item in the cluster as needed
                         //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
                         cluster.add(item.getPosition());
+                        /*for(int j=0; j<unknownSiteSize; j++){
+                            Site currentSite = unknownSitesMap.get(j);
+
+                            if (item.equals(currentSite.getPosition())) {
+                                System.out.println(currentSite.getTitle());
+                                emails.add(currentSite.getSiteAdmin());
+                            }
+                        }*/
                         System.out.println("maps fragment" + item.getPosition());
                     }
 

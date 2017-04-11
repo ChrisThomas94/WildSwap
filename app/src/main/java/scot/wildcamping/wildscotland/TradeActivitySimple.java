@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -24,12 +25,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.Adapters.TradeOwnedSitesAdapter;
+import scot.wildcamping.wildscotland.Adapters.TradeUnknownSitesAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.CreateTrade;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.AsyncTask.FetchSomeUsers;
 import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.Objects.knownSite;
 
 /**
@@ -38,15 +43,18 @@ import scot.wildcamping.wildscotland.Objects.knownSite;
  */
 public class TradeActivitySimple extends AppCompatActivity implements View.OnClickListener {
 
+    PagerAdapter ownedSites;
+    PagerAdapter unknownSites;
+
     ArrayList<LatLng> cluster = null;
     knownSite inst = new knownSite();
     int recieveSize;
     int ownedSitesSize;
     int unknownSitesSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
-    SparseArray<Site> unknownSitesSorted = new SparseArray<>();     //sorted based on popularity
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
+    SparseArray<User> dealers;
     Site recieveSite;
     Site sendSite;
     String send_cid;
@@ -59,30 +67,10 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
     TextView recieveTitle;
     TextView placeholderFeatures;
-    ImageView features1;
-    ImageView features2;
-    ImageView features3;
-    ImageView features4;
-    ImageView features5;
-    ImageView features6;
-    ImageView features7;
-    ImageView features8;
-    ImageView features9;
-    ImageView features10;
     RatingBar recieveRating;
 
     TextView sendTitle;
     TextView placeholderFeaturesYours;
-    ImageView sendFeatures1;
-    ImageView sendFeatures2;
-    ImageView sendFeatures3;
-    ImageView sendFeatures4;
-    ImageView sendFeatures5;
-    ImageView sendFeatures6;
-    ImageView sendFeatures7;
-    ImageView sendFeatures8;
-    ImageView sendFeatures9;
-    ImageView sendFeatures10;
     RatingBar sendRating;
     RelativeLayout yourSite;
 
@@ -100,43 +88,12 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         unknownSitesSize = inst.getUnknownSitesSize();
         ownedSitesSize = inst.getOwnedSiteSize();
 
-        //Button cancel = (Button)findViewById(R.id.btnCancel_Trade);
-        //Button refresh = (Button)findViewById(R.id.btnRefresh_Trade);
-        //Button send = (Button)findViewById(R.id.btnSend_Trade);
-
-        //Button right = (Button)findViewById(R.id.btn_right);
-        //Button left = (Button)findViewById(R.id.btn_left);
-
-        ImageView rightArrow = (ImageView)findViewById(R.id.right_arrow);
-        ImageView leftArrow = (ImageView)findViewById(R.id.left_arrow);
-        ImageView refreshTrade = (ImageView)findViewById(R.id.refresh_trade);
-
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
-        features1 = (ImageView)findViewById(R.id.features1);
-        features2 = (ImageView)findViewById(R.id.features2);
-        features3 = (ImageView)findViewById(R.id.features3);
-        features4 = (ImageView)findViewById(R.id.features4);
-        features5 = (ImageView)findViewById(R.id.features5);
-        features6 = (ImageView)findViewById(R.id.features6);
-        features7 = (ImageView)findViewById(R.id.features7);
-        features8 = (ImageView)findViewById(R.id.features8);
-        features9 = (ImageView)findViewById(R.id.features9);
-        features10 = (ImageView)findViewById(R.id.features10);
         recieveRating = (RatingBar)findViewById(R.id.recieveRating);
 
         sendTitle = (TextView)findViewById(R.id.sendTitle);
         placeholderFeaturesYours = (TextView)findViewById(R.id.placeholderFeaturesYours);
-        sendFeatures1 = (ImageView)findViewById(R.id.sendFeatures1);
-        sendFeatures2 = (ImageView)findViewById(R.id.sendFeatures2);
-        sendFeatures3 = (ImageView)findViewById(R.id.sendFeatures3);
-        sendFeatures4 = (ImageView)findViewById(R.id.sendFeatures4);
-        sendFeatures5 = (ImageView)findViewById(R.id.sendFeatures5);
-        sendFeatures6 = (ImageView)findViewById(R.id.sendFeatures6);
-        sendFeatures7 = (ImageView)findViewById(R.id.sendFeatures7);
-        sendFeatures8 = (ImageView)findViewById(R.id.sendFeatures8);
-        sendFeatures9 = (ImageView)findViewById(R.id.sendFeatures9);
-        sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
 
         yourSite = (RelativeLayout)findViewById(R.id.yourSite);
@@ -149,47 +106,41 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             System.out.println("Trade" + cluster + recieveSize);
         }
 
-        if(recieveSize == 1){
-            //refresh.setVisibility(View.INVISIBLE);
-            refreshTrade.setVisibility(View.INVISIBLE);
-        }
-
-        if(ownedSitesSize == 1){
-            rightArrow.setVisibility(View.INVISIBLE);
-            leftArrow.setVisibility(View.INVISIBLE);
-        }
+        ArrayList<String> emails = new ArrayList<>();
 
         //where lat lng of cluster = lat lng of unknownSitesMap
         //add to new unknownSitesMap
-
         for(int i=0; i<recieveSize; i++){
 
             for(int j=0; j<unknownSitesSize; j++){
                 Site currentSite = unknownMap.get(j);
 
                 if (cluster.get(i).equals(currentSite.getPosition())) {
+                    emails.add(currentSite.getSiteAdmin());
                     System.out.println(currentSite.getTitle());
                     selectedUnknownSites.put(i, currentSite);
-                    unknownSitesSorted.put(i, currentSite);
                 }
             }
         }
 
+        new FetchSomeUsers(this, emails, new AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+                //set the adapters off populating
+                dealers = inst.getDealers();
+
+            }
+        }).execute();
+
+        ownedSites = new TradeOwnedSitesAdapter(this, ownedMap);
+        unknownSites = new TradeUnknownSitesAdapter(this, unknownMap, dealers);
+
         //initialise unknown site
-        genUnknownSite(nextSite);
+        //genUnknownSite(nextSite);
 
         //initialise known site
-        genOwnedSite(ownedSiteInit);
+        //genOwnedSite(ownedSiteInit);
 
-        //cancel.setOnClickListener(this);
-        //refresh.setOnClickListener(this);
-        //send.setOnClickListener(this);
-        //right.setOnClickListener(this);
-        //left.setOnClickListener(this);
-        rightArrow.setOnClickListener(this);
-        leftArrow.setOnClickListener(this);
-        refreshTrade.setOnClickListener(this);
-        //yourSite.setOnClickListener(this);
     }
 
     public void genOwnedSite(int random){
@@ -198,57 +149,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         send_cid = sendSite.getCid();
 
         sendTitle.setText(sendSite.getTitle());
-
-        if(sendSite.getFeature1().equals("0")){
-            sendFeatures1.setVisibility(View.GONE);
-        }else{
-            sendFeatures1.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature2().equals("0")){
-            sendFeatures2.setVisibility(View.GONE);
-        }else{
-            sendFeatures2.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature3().equals("0")){
-            sendFeatures3.setVisibility(View.GONE);
-        }else{
-            sendFeatures3.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature4().equals("0")){
-            sendFeatures4.setVisibility(View.GONE);
-        }else{
-            sendFeatures4.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature5().equals("0")){
-            sendFeatures5.setVisibility(View.GONE);
-        }else{
-            sendFeatures5.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature6().equals("0")){
-            sendFeatures6.setVisibility(View.GONE);
-        }else{
-            sendFeatures6.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature7().equals("0")){
-            sendFeatures7.setVisibility(View.GONE);
-        }else{
-            sendFeatures7.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature8().equals("0")){
-            sendFeatures8.setVisibility(View.GONE);
-        }else{
-            sendFeatures8.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature9().equals("0")){
-            sendFeatures9.setVisibility(View.GONE);
-        }else{
-            sendFeatures9.setVisibility(View.VISIBLE);
-        }
-        if(sendSite.getFeature10().equals("0")){
-            sendFeatures10.setVisibility(View.GONE);
-        }else{
-            sendFeatures10.setVisibility(View.VISIBLE);
-        }
 
         if (sendSite.getFeature1().equals("0") && sendSite.getFeature2().equals("0") && sendSite.getFeature3().equals("0") && sendSite.getFeature4().equals("0") && sendSite.getFeature5().equals("0") && sendSite.getFeature6().equals("0") && sendSite.getFeature7().equals("0") && sendSite.getFeature8().equals("0") && sendSite.getFeature9().equals("0") && sendSite.getFeature10().equals("0")){
             placeholderFeaturesYours.setVisibility(View.VISIBLE);
@@ -268,57 +168,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         recieve_token = recieveSite.getToken();
 
         recieveTitle.setText(recieveSite.getTitle());
-
-        if(recieveSite.getFeature1().equals("0")){
-            features1.setVisibility(View.GONE);
-        }else{
-            features1.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature2().equals("0")){
-            features2.setVisibility(View.GONE);
-        }else{
-            features2.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature3().equals("0")){
-            features3.setVisibility(View.GONE);
-        }else{
-            features3.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature4().equals("0")){
-            features4.setVisibility(View.GONE);
-        }else{
-            features4.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature5().equals("0")){
-            features5.setVisibility(View.GONE);
-        }else{
-            features5.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature6().equals("0")){
-            features6.setVisibility(View.GONE);
-        }else{
-            features6.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature7().equals("0")){
-            features7.setVisibility(View.GONE);
-        }else{
-            features7.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature8().equals("0")){
-            features8.setVisibility(View.GONE);
-        }else{
-            features8.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature9().equals("0")){
-            features9.setVisibility(View.GONE);
-        }else{
-            features9.setVisibility(View.VISIBLE);
-        }
-        if(recieveSite.getFeature10().equals("0")){
-            features10.setVisibility(View.GONE);
-        }else{
-            features10.setVisibility(View.VISIBLE);
-        }
 
         if (recieveSite.getFeature1().equals("0") && recieveSite.getFeature2().equals("0") && recieveSite.getFeature3().equals("0") && recieveSite.getFeature4().equals("0") && recieveSite.getFeature5().equals("0") && recieveSite.getFeature6().equals("0") && recieveSite.getFeature7().equals("0") && recieveSite.getFeature8().equals("0") && recieveSite.getFeature9().equals("0") && recieveSite.getFeature10().equals("0")){
             placeholderFeatures.setVisibility(View.VISIBLE);

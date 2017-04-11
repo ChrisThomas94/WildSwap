@@ -17,7 +17,16 @@ public class knownSite {
     private static SparseArray<Site> unknownSitesMap = new SparseArray<>();
     private static SparseArray<Site> ownedSitesMap = new SparseArray<>();
     private static SparseArray<Gallery> temp = new SparseArray<>();
+    private static SparseArray<User> dealers = new SparseArray<>();
 
+
+    public void setDealers(SparseArray<User> dealers) {
+        knownSite.dealers = dealers;
+    }
+
+    public SparseArray<User> getDealers() {
+        return dealers;
+    }
 
     public void setImages(SparseArray<Gallery> images){
         this.images = images;

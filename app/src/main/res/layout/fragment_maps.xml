@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/ownedFilter"
-                android:text="Owned Filter"/>
+                android:text="Owned Sites"/>
 
             <CheckBox
                 android:id="@+id/ownedFilter"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/knownFilter"
-                android:text="Known Filter"/>
+                android:text="Known Sites"/>
 
             <CheckBox
                 android:id="@+id/knownFilter"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/unkownFilter"
-                android:text="Unknown Filter"/>
+                android:text="Unknown Sites"/>
 
             <CheckBox
                 android:id="@+id/unkownFilter"

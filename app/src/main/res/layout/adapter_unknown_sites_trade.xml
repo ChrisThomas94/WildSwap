@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/rounded_grey_button"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/fade_box"/>
+
+    <RelativeLayout
+        android:id="@+id/theirSite"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:padding="15dp"
+        android:background="@drawable/clear_shadow">
+
+        <TextView
+            android:id="@+id/signpostUnknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unknown Site"/>
+
+        <TextView
+            android:id="@+id/recieveTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="30sp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/signpostUnknown"
+            android:text="Site title"/>
+
+        <RelativeLayout
+            android:id="@+id/classifications"
+            android:layout_below="@+id/recieveTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/classificationA"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@drawable/rounded_green_button"
+                android:text="Amateur"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/classificationC"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_toRightOf="@id/classificationA"
+                android:background="@drawable/rounded_orange_button"
+                android:text="Casual"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/classificationE"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_toRightOf="@id/classificationC"
+                android:background="@drawable/rounded_red_button"
+                android:text="Expert"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
+
+        <RatingBar
+            android:id="@+id/recieveRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/classifications"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:isIndicator="true"/>
+
+        <TextView
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="Scotland, Loch Lomond"
+            android:layout_below="@+id/recieveRating"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <View
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle_with_shadow"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profilePicture"
+            android:visibility="visible"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
