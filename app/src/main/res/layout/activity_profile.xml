@@ -82,11 +82,72 @@
                                 android:textColor="#333333"
                                 android:textSize="25dp" />
 
-
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
 
+
+                        </RelativeLayout>
                     </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/stats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainBody"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:paddingTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:id="@+id/numSites"/>
+
+                    <TextView
+                        android:id="@+id/numSitesText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/numSites"
+                        android:text="Number of Owned Sites"
+                        android:layout_alignParentLeft="true"/>
+
+                    <view
+                        android:id="@+id/divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                        android:paddingTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:layout_marginLeft="50dp"
+                        android:layout_toRightOf="@+id/divider"
+                        android:id="@+id/numTrades"/>
+
+                    <TextView
+                        android:id="@+id/numTradesText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_toRightOf="@+id/divider"
+                        android:layout_below="@+id/numTrades"
+                        android:text="Number of Completed Trades"/>
+
 
                 </RelativeLayout>
 
@@ -94,7 +155,7 @@
                     android:id="@+id/profileStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/mainBody"
+                    android:layout_below="@+id/stats"
                     android:background="@drawable/clear_shadow"
                     android:orientation="vertical"
                     android:layout_marginLeft="20dp"
@@ -271,7 +332,7 @@
     </ScrollView>
 
     <RelativeLayout
-        android:id="@+id/confirmLayout"
+        android:id="@+id/progressLayout"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="80dp"

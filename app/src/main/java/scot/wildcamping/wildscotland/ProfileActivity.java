@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -114,6 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
         cover_pic = (ImageView) findViewById(R.id.backgroundImage);
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progressText = (TextView) findViewById(R.id.progressText);
+        RelativeLayout progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
 
         if(this_user){
 
@@ -166,17 +168,14 @@ public class ProfileActivity extends AppCompatActivity {
 
             String image = AppController.getString(this, "user_profile_pic");
 
-            if(image.equals("null") || image.equals("")){
-
-            } else {
+            if(!image.equals("null") || !image.equals("")){
                 Bitmap bit = StringToBitMap(image);
-                bit = Bitmap.createScaledBitmap(bit, 300, 300, true);
-
-                Bitmap circle = getCroppedBitmap(bit);
-                profile_pic.setImageBitmap(circle);
+                profile_pic.setImageBitmap(bit);
+                updateProgress();
             }
 
             progress.setVisibility(View.GONE);
+            progressLayout.setVisibility(View.GONE);
         }
 
         progress.setOnClickListener(new View.OnClickListener() {
