@@ -28,7 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateTrade;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 
 public class TradeView_Sent extends AppCompatActivity implements View.OnClickListener {
@@ -36,7 +36,7 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
     ArrayList<LatLng> cluster = null;
     int recieveSize;
     int negativeTradeStatus = 1;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
@@ -143,10 +143,6 @@ public class TradeView_Sent extends AppCompatActivity implements View.OnClickLis
         sendFeatures9 = (ImageView)findViewById(R.id.sendFeatures9);
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
-
-        sendPicture1 = (ImageView)findViewById(R.id.sendPicture1);
-        sendPicture2 = (ImageView)findViewById(R.id.sendPicture2);
-        sendPicture3 = (ImageView)findViewById(R.id.sendPicture3);
 
         configSites();
     }

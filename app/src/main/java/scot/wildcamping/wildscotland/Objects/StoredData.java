@@ -4,8 +4,9 @@ import android.util.SparseArray;
 
 /**
  * Created by Chris on 04-Mar-16.
+ *
  */
-public class knownSite {
+public class StoredData {
 
     private static int knownSiteSize;
     private static int unknownSitesSize;
@@ -21,7 +22,7 @@ public class knownSite {
 
 
     public void setDealers(SparseArray<User> dealers) {
-        knownSite.dealers = dealers;
+        this.dealers = dealers;
     }
 
     public SparseArray<User> getDealers() {

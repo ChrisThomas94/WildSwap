@@ -29,11 +29,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.Adapters.ImageGridAdapter;
-import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class UpdateSiteViewerActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -91,7 +90,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     ArrayList<String> imagesList;
     SparseArray<Gallery> temp = new SparseArray<>();
     SparseArray<Gallery> images;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
 
     ImageView close1;
     ImageView close2;

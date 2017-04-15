@@ -8,44 +8,51 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.SparseArray;
 
-import com.google.android.gms.maps.model.LatLng;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 04-Mar-16.
+ *
  */
-public class FetchAllUsers extends AsyncTask<String, String, String> {
+public class FetchUsers extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate = null;
 
+    private ArrayList<String> emails = new ArrayList<>();
     private ProgressDialog pDialog;
     private Context context;
+    private Boolean boolAllUsers = true;
 
-    public FetchAllUsers(Context context, AsyncResponse delegate) {
+    StoredData inst = new StoredData();
+    private SparseArray<User> fetchedUsers = new SparseArray<>();
+
+
+    public FetchUsers(Context context, ArrayList<String> emails, AsyncResponse delegate) {
         this.context = context;
+        this.emails = emails;
         this.delegate = delegate;
+
+        if(!emails.equals(null)){
+            boolAllUsers = false;
+        }
 
     }
 
@@ -57,7 +64,7 @@ public class FetchAllUsers extends AsyncTask<String, String, String> {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
         pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching Users ...");
+        pDialog.setMessage("Fetching User Data...");
         pDialog.setIndeterminate(true);
         pDialog.setCancelable(false);
         pDialog.show();
@@ -85,27 +92,24 @@ public class FetchAllUsers extends AsyncTask<String, String, String> {
                     int size = jObj.getInt("size");
 
                     JSONObject jsonUser;
-                    StoredUsers storedUsers = new StoredUsers();
-                    SparseArray<User> fetchedUsers = storedUsers.getOtherUsers();
                     for (int i = 0; i < size; i++) {
-                        jsonUser = jObj.getJSONObject("user" + i);
                         User user = new User();
+                        jsonUser = jObj.getJSONObject("user" + i);
 
                         user.setProfile_pic(jsonUser.getString("profile_pic"));
+                        user.setCover_pic(jsonUser.getString("cover_pic"));
                         user.setName(jsonUser.getString("name"));
                         user.setEmail(jsonUser.getString("email"));
+                        user.setBio(jsonUser.getString("bio"));
                         fetchedUsers.put(i, user);
                     }
 
-                    System.out.println("fetch users size: " + storedUsers.getOtherUsers().size());
-                    storedUsers.setOtherUsers(fetchedUsers);
+                    inst.setDealers(fetchedUsers);
 
-                } else {
-                    //error message
                 }
 
             } catch (JSONException e) {
-
+                e.printStackTrace();
             }
 
         } catch (IOException e) {
@@ -137,14 +141,17 @@ public class FetchAllUsers extends AsyncTask<String, String, String> {
     }
 
     private String getAllUsers() {
-        return "{\"tag\":\"" + "allUsers" + "\"}";
+        JSONArray users = new JSONArray(emails);
+
+        return "{\"tag\":\"" + "allUsers" + "\","
+                + "\"boolAllUsers\":\"" + boolAllUsers+ "\","
+                + "\"someUsers\":" + users + "}";
     }
 
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;

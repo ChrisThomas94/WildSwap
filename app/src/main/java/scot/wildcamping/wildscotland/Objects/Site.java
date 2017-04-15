@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by Chris on 05-Mar-16.
+ *
  */
 public class Site {
 

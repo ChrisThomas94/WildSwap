@@ -26,6 +26,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Chris on 23-Mar-17.
+ *
  */
 
 public class FetchProfile extends AsyncTask<String, String, String> {

@@ -3,21 +3,17 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,13 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
-import scot.wildcamping.wildscotland.Objects.Gallery;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class AddSiteActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -94,7 +88,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     int relat = 90;
     Boolean update;
     Boolean imageUpload = false;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     ArrayList imageUris2 = new ArrayList();
     int progressValue;
 

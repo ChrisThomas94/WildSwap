@@ -3,21 +3,17 @@ package scot.wildcamping.wildscotland;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,20 +26,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
-import scot.wildcamping.wildscotland.Adapters.NavDrawerListAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
-import scot.wildcamping.wildscotland.AsyncTask.FetchProfile;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
-import scot.wildcamping.wildscotland.Objects.NavDrawerItem;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
 import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.Trade;
 import scot.wildcamping.wildscotland.Objects.User;
-import scot.wildcamping.wildscotland.Objects.knownSite;
 
 public class MainActivity_Spinner extends AppCompatActivity {
 
@@ -205,7 +199,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 intent.putExtra("new", isNew);
 
                 if(isNetworkAvailable()) {
-                    knownSite sites = new knownSite();
+                    StoredData sites = new StoredData();
                     if(sites.getKnownSiteSize() == 0){
 
                         new FetchKnownSites(this, new AsyncResponse() {
@@ -260,23 +254,20 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 profile.putExtra("new", isNew);
                 overridePendingTransition(0,0);
                 if(isNetworkAvailable()) {
-                    try {
 
+                    ArrayList<String> users = new ArrayList<>();
+                    users.add(0, AppController.getString(this, "email"));
 
-                        new FetchProfile(this, AppController.getString(this, "email"), AppController.getString(this, "password"), new AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                startActivity(profile);
-                                finish();
-                            }
-                        }).execute();
-                        String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
+                    new FetchQuestions(this, AppController.getString(this, "email")).execute();
 
-                    } catch (InterruptedException e) {
+                    new FetchUsers(this, users, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(profile);
+                            finish();
+                        }
+                    }).execute();
 
-                    } catch (ExecutionException e) {
-
-                    }
                 } else {
                     startActivity(profile);
                     finish();

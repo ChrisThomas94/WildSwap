@@ -31,7 +31,7 @@ import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateTrade;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 15-Mar-16.
@@ -39,7 +39,7 @@ import scot.wildcamping.wildscotland.Objects.knownSite;
 public class TradeView_Received extends AppCompatActivity implements View.OnClickListener {
 
     ArrayList<LatLng> cluster = null;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     int recieveSize;
     SparseArray<Site> selectedUnknownSites = new SparseArray<>();
     SparseArray<Site> ownedMap;
@@ -152,10 +152,6 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
         sendFeatures9 = (ImageView)findViewById(R.id.sendFeatures9);
         sendFeatures10 = (ImageView)findViewById(R.id.sendFeatures10);
         sendRating = (RatingBar)findViewById(R.id.sendRating);
-        sendPicture1 = (ImageView)findViewById(R.id.sendPicture1);
-        sendPicture2 = (ImageView)findViewById(R.id.sendPicture2);
-        sendPicture3 = (ImageView)findViewById(R.id.sendPicture3);
-        sendPicture4 = (ImageView)findViewById(R.id.sendPicture4);
 
         configSites();
 

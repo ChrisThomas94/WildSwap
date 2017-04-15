@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        System.out.println("owned position " + position);
+
         View itemView = mLayoutInflater.inflate(R.layout.adapter_owned_sites_trade, container, false);
 
         Site thisSite = ownedSites.get(position);
@@ -109,7 +112,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout) object);
+        container.removeView((RelativeLayout) object);
     }
 
     public Bitmap StringToBitMap(String encodedString){

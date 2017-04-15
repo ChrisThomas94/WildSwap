@@ -30,7 +30,7 @@ import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 17-Mar-16.
@@ -68,7 +68,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     Boolean imageUpload;
     RatingBar rating;
     Site focused;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     SparseArray<Gallery> temp = new SparseArray<>();
 
     @Override
@@ -109,7 +109,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
             prevState = extras.getInt("prevState");
         }
 
-        knownSite inst = new knownSite();
+        StoredData inst = new StoredData();
         known = inst.getKnownSitesMap();
 
         focused = known.get(arrayPos);

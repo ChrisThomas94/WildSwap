@@ -16,13 +16,13 @@ import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Adapters.SiteListAdapter;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class KnownSitesFragment extends Fragment {
 	
 	public KnownSitesFragment(){}
 
-    knownSite inst;
+    StoredData inst;
     SparseArray<Site> knownSites;
     private SiteListAdapter adapter;
     private ListView mDrawerList;
@@ -37,7 +37,7 @@ public class KnownSitesFragment extends Fragment {
 
         TextView empty = (TextView) rootView.findViewById(R.id.empty);
 
-        inst = new knownSite();
+        inst = new StoredData();
         knownSites = new SparseArray<>();
         knownSites = inst.getKnownSitesMap();
 

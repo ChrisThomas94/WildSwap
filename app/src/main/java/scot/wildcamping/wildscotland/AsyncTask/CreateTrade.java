@@ -93,7 +93,7 @@ public class CreateTrade extends AsyncTask<String, String, String> {
                         newTrade.setDate(jsonTrade.getString("created_at"));
                         newTrade.setUserRelation("Sent");
                     }
-                    knownSite inst = new knownSite();
+                    StoredData inst = new StoredData();
                     inst.setUnknownSitesSize(size);
 
                 } else {

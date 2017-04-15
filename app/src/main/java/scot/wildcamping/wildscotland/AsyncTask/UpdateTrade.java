@@ -142,7 +142,7 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
                         //map.put(i, siteClass);
                    // }
 
-                    //knownSite inst = new knownSite();
+                    //StoredData inst = new StoredData();
                     //inst.setKnownSitesMap(map);
                     //inst.setKnownSiteSize(size);
 

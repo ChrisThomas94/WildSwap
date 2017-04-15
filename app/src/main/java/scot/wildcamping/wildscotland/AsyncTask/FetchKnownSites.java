@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,9 +28,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -175,7 +173,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         }
                     }
 
-                    knownSite inst = new knownSite();
+                    StoredData inst = new StoredData();
                     inst.setKnownSitesMap(map);
                     inst.setOwnedSitesMap(owned);
                     inst.setKnownSiteSize(knownCnt);

@@ -25,7 +25,7 @@ import okhttp3.Response;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -98,7 +98,7 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
 
                 //create an instance of Known sites
-                knownSite inst = new knownSite();
+                StoredData inst = new StoredData();
                 //Create instance of Gallery class
                 gallery = new Gallery();
                 //get current known images

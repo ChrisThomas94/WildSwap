@@ -58,14 +58,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
 import scot.wildcamping.wildscotland.Objects.AppClusterItem;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
@@ -101,7 +100,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     MarkerManager mMarkerManager;
     MarkerManager.Collection coll;
     MarkerManager.Collection collKnown;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     boolean clicked;
     FrameLayout layout_main;
     Intent intent;

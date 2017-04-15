@@ -31,11 +31,11 @@ import java.util.List;
 
 import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
-import scot.wildcamping.wildscotland.AsyncTask.FetchAllUsers;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 26-Feb-16.
@@ -162,7 +162,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
         }
 
-        knownSite inst = new knownSite();
+        StoredData inst = new StoredData();
         owned = inst.getOwnedSitesMap();
         Site focused = owned.get(arrayPos);
         cid = focused.getCid();
@@ -175,7 +175,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         rating.setRating((focused.getRating()).floatValue());
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
-        knownSite ks = new knownSite();
+        StoredData ks = new StoredData();
         images = ks.getImages();
         String id = cid.substring(cid.length()-8);
         int cidEnd = Integer.parseInt(id);
@@ -307,7 +307,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     @Override
     public void processFinish(String output){
 
-        knownSite inst = new knownSite();
+        StoredData inst = new StoredData();
         owned = inst.getOwnedSitesMap();
         Site focused = owned.get(arrayPos);
         cid = focused.getCid();
@@ -320,7 +320,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         rating.setRating((focused.getRating()).floatValue());
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
-        knownSite ks = new knownSite();
+        StoredData ks = new StoredData();
         images = ks.getImages();
         System.out.println("get images:" + images);
         String id = cid.substring(cid.length()-8);
@@ -501,7 +501,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             case R.id.gift:
 
                 final Intent i = new Intent(this, GiftSiteActivity.class);
-                new FetchAllUsers(this, new AsyncResponse() {
+                new FetchUsers(this, null, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
                         startActivity(i);

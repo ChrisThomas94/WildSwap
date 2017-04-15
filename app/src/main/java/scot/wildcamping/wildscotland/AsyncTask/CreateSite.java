@@ -30,7 +30,7 @@ import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 16-Mar-16.
@@ -219,7 +219,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
                     //instance of known site class
-                    knownSite inst = new knownSite();
+                    StoredData inst = new StoredData();
                     //get current owned sites
                     ownedSites = inst.getOwnedSitesMap();
                     ownedSitesSize = inst.getOwnedSiteSize();

@@ -12,15 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import scot.wildcamping.wildscotland.Objects.Gallery;
-import scot.wildcamping.wildscotland.Objects.knownSite;
 import scot.wildcamping.wildscotland.R;
 import scot.wildcamping.wildscotland.Objects.Site;
 

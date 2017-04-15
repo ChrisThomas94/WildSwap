@@ -33,39 +33,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/rounded_grey_button"/>
+                    android:src="@drawable/rounded_grey_button" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginTop="50dp"
-                    android:background="@drawable/fade_box"/>
+                    android:background="@drawable/fade_box" />
 
 
                 <RelativeLayout
                     android:id="@+id/mainBody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="100dp"
-                    android:padding="10dp"
-                    android:background="@drawable/clear_shadow">
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <ImageButton
                         android:id="@+id/edit"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:scaleType="fitXY"
                         android:background="@color/list_item_title"
-                        android:src="@drawable/ic_site_builder_48dp"/>
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_site_builder_48dp" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp">
+                        android:layout_marginTop="50dp"
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -75,8 +75,8 @@
                                 android:id="@+id/name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
                                 android:layout_centerHorizontal="true"
+                                android:gravity="center"
                                 android:padding="15dp"
                                 android:text="Chris Thomas"
                                 android:textColor="#333333"
@@ -95,89 +95,98 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/stats"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/mainBody"
-                    android:background="@drawable/clear_shadow"
-                    android:orientation="vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
-                    <TextView
-                        android:paddingTop="10dp"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7"
-                        android:id="@+id/numSites"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/numSitesText"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/numSites"
-                        android:text="Number of Owned Sites"
-                        android:layout_alignParentLeft="true"/>
+                        <TextView
+                            android:id="@+id/numSites"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="7" />
 
-                    <view
+                        <TextView
+                            android:id="@+id/numSitesText"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="Number of Owned Sites" />
+
+                    </LinearLayout>
+
+                    <View
                         android:id="@+id/divider"
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:layout_centerHorizontal="true"/>
+                        android:background="@android:color/darker_gray"
+                        android:padding="5dp" />
 
-                    <TextView
-                        android:paddingTop="10dp"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7"
                         android:layout_marginLeft="50dp"
-                        android:layout_toRightOf="@+id/divider"
-                        android:id="@+id/numTrades"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/numTradesText"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
-                        android:layout_toRightOf="@+id/divider"
-                        android:layout_below="@+id/numTrades"
-                        android:text="Number of Completed Trades"/>
+                        <TextView
+                            android:id="@+id/numTrades"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:text="7" />
+
+                        <TextView
+                            android:id="@+id/numTradesText"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Number of Completed Trades" />
+
+                    </LinearLayout>
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/profileStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/stats"
-                    android:background="@drawable/clear_shadow"
-                    android:orientation="vertical"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
                     <ImageView
                         android:id="@+id/verification"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/verified"/>
+                        android:src="@drawable/verified" />
 
                     <TextView
                         android:id="@+id/profileStatusText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:text="Verified Profile"
-                        android:layout_toRightOf="@+id/verification"
                         android:layout_centerVertical="true"
-                        android:textSize="20sp"/>
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/verification"
+                        android:text="Verified Profile"
+                        android:textSize="20sp" />
 
                 </RelativeLayout>
 
@@ -186,18 +195,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profileStatus"
-                    android:background="@drawable/clear_shadow"
-                    android:orientation="vertical"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/clear_shadow"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/email"
@@ -206,27 +215,27 @@
                             android:gravity="center"
                             android:padding="15dp"
                             android:text="chris@gmail"
-                            android:visibility="gone"
                             android:textColor="#333333"
-                            android:textSize="20dp" />
+                            android:textSize="20dp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/bioTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
                             android:text="About Me"
                             android:textColor="@color/colorPrimaryDark"
-                            android:paddingLeft ="15dp"
-                            android:visibility="visible"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/bio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingBottom="15dp"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
-                            android:paddingBottom="15dp"
                             android:text="This is my bio. I'm a really nice guy and love wild camping, I try to pick up as much of other people's litter while off adventuring to keep locations nice and coo and smoo."
                             android:textColor="#333333"
                             android:textSize="15dp" />
@@ -235,19 +244,19 @@
                             android:id="@+id/whyTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
                             android:text="Why I'm on WildScotland"
                             android:textColor="@color/colorPrimaryDark"
-                            android:paddingLeft ="15dp"
-                            android:visibility="visible"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/why"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingBottom="15dp"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
-                            android:paddingBottom="15dp"
                             android:text="coo and smoo."
                             android:textColor="#333333"
                             android:textSize="15sp" />
@@ -256,19 +265,19 @@
                             android:id="@+id/praiseTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
                             android:text="Praise"
                             android:textColor="@color/colorPrimaryDark"
-                            android:paddingLeft ="15dp"
-                            android:visibility="visible"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/praise"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingBottom="15dp"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
-                            android:paddingBottom="15dp"
                             android:text="coo and smoo."
                             android:textColor="#333333"
                             android:textSize="15sp" />
@@ -286,17 +295,17 @@
                         android:layout_width="105dp"
                         android:layout_height="105dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/circle_with_shadow"/>
+                        android:background="@drawable/circle_with_shadow" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profilePicture"
-                        android:visibility="visible"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:scaleType="centerCrop"
-                        android:clickable="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:clickable="true"
+                        android:scaleType="centerCrop"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 

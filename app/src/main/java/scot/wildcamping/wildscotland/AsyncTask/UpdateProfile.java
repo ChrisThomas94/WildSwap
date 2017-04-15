@@ -134,7 +134,5 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
                 + "\"why\":\"" + why + "\","
                 + "\"profile_pic\":\"" + profile_pic + "\","
                 + "\"cover_pic\":\"" + cover_pic + "\"}";
-
-
     }
 }

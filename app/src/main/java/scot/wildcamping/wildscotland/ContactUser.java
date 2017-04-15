@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 17-Mar-16.
@@ -20,7 +20,7 @@ public class ContactUser extends AppCompatActivity implements View.OnClickListen
     String contact;
     String date;
 
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

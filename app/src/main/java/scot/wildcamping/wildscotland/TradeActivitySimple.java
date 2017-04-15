@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,10 +32,10 @@ import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.CreateTrade;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
-import scot.wildcamping.wildscotland.AsyncTask.FetchSomeUsers;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.User;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 11-Mar-16.
@@ -47,7 +47,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     PagerAdapter unknownSites;
 
     ArrayList<LatLng> cluster = null;
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     int recieveSize;
     int ownedSitesSize;
     int unknownSitesSize;
@@ -56,14 +56,13 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     SparseArray<Site> unknownMap;
     SparseArray<User> dealers;
     Site recieveSite;
-    Site sendSite;
     String send_cid;
     String recieve_cid;
     String recieve_token;
-    int ownedSiteInit =0;
-    int prevSite = 0;
-    int nextSite = 0;
     String trade = "trade";
+
+    ViewPager unknownPage;
+    ViewPager ownedPage;
 
     TextView recieveTitle;
     TextView placeholderFeatures;
@@ -88,6 +87,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         unknownSitesSize = inst.getUnknownSitesSize();
         ownedSitesSize = inst.getOwnedSiteSize();
 
+        unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
+        ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
         recieveTitle = (TextView)findViewById(R.id.recieveTitle);
         placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
         recieveRating = (RatingBar)findViewById(R.id.recieveRating);
@@ -123,100 +124,42 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             }
         }
 
-        new FetchSomeUsers(this, emails, new AsyncResponse() {
+        new FetchUsers(this, emails, new AsyncResponse() {
             @Override
             public void processFinish(String output) {
                 //set the adapters off populating
                 dealers = inst.getDealers();
+                System.out.println(dealers);
+
+                ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedMap);
+                ownedPage.setAdapter(ownedSites);
+                ownedPage.setClipToPadding(false);
+                ownedPage.setPadding(100, 0, 100, 0);
+                ownedPage.setPageMargin(30);
+
+                if(ownedMap.size()%2 == 1){
+                    ownedPage.setCurrentItem((ownedMap.size()/2));
+                } else {
+                    ownedPage.setCurrentItem(ownedMap.size()/2);
+                }
+
+                System.out.println("selected unknown sites "+selectedUnknownSites.size());
+
+                System.out.println("dealers "+dealers.size());
+
+                unknownSites = new TradeUnknownSitesAdapter(getApplicationContext(), selectedUnknownSites, dealers);
+                unknownPage.setAdapter(unknownSites);
 
             }
         }).execute();
-
-        ownedSites = new TradeOwnedSitesAdapter(this, ownedMap);
-        unknownSites = new TradeUnknownSitesAdapter(this, unknownMap, dealers);
-
-        //initialise unknown site
-        //genUnknownSite(nextSite);
-
-        //initialise known site
-        //genOwnedSite(ownedSiteInit);
-
     }
 
-    public void genOwnedSite(int random){
-        sendSite = ownedMap.get(random);
-
-        send_cid = sendSite.getCid();
-
-        sendTitle.setText(sendSite.getTitle());
-
-        if (sendSite.getFeature1().equals("0") && sendSite.getFeature2().equals("0") && sendSite.getFeature3().equals("0") && sendSite.getFeature4().equals("0") && sendSite.getFeature5().equals("0") && sendSite.getFeature6().equals("0") && sendSite.getFeature7().equals("0") && sendSite.getFeature8().equals("0") && sendSite.getFeature9().equals("0") && sendSite.getFeature10().equals("0")){
-            placeholderFeaturesYours.setVisibility(View.VISIBLE);
-        } else {
-            placeholderFeaturesYours.setVisibility(View.GONE);
-        }
-
-        sendRating.setRating((sendSite.getRating()).floatValue());
-    }
-
-    public void genUnknownSite(int random){
-
-        recieveSite = selectedUnknownSites.get(random);
-
-        recieve_cid = recieveSite.getCid();
-
-        recieve_token = recieveSite.getToken();
-
-        recieveTitle.setText(recieveSite.getTitle());
-
-        if (recieveSite.getFeature1().equals("0") && recieveSite.getFeature2().equals("0") && recieveSite.getFeature3().equals("0") && recieveSite.getFeature4().equals("0") && recieveSite.getFeature5().equals("0") && recieveSite.getFeature6().equals("0") && recieveSite.getFeature7().equals("0") && recieveSite.getFeature8().equals("0") && recieveSite.getFeature9().equals("0") && recieveSite.getFeature10().equals("0")){
-            placeholderFeatures.setVisibility(View.VISIBLE);
-        } else {
-            placeholderFeatures.setVisibility(View.GONE);
-        }
-
-        recieveRating.setRating((recieveSite.getRating()).floatValue());
-    }
 
     @Override
     public void onClick(View v){
 
-        Intent intent;
         switch (v.getId())
         {
-            case R.id.right_arrow:
-
-                if(ownedSiteInit == ownedSitesSize-1){
-                    ownedSiteInit = -1;
-                }
-                ownedSiteInit++;
-                genOwnedSite(ownedSiteInit);
-
-                break;
-
-            case R.id.left_arrow:
-
-                if(ownedSiteInit == 0){
-                    ownedSiteInit = ownedSitesSize;
-                }
-                ownedSiteInit--;
-                genOwnedSite(ownedSiteInit);
-
-
-                break;
-
-            case R.id.refresh_trade:
-
-                Random ran = new Random();
-                if(nextSite == selectedUnknownSites.size()-1){
-                    nextSite = 0;
-                } else {
-                    nextSite++;
-                }
-                //nextSite = getRandomWithExclusion(ran, 0, selectedUnknownSites.unknownSiteSize()-1, nextSite);
-                genUnknownSite(nextSite);
-                break;
-
             case R.id.yourSite:
 
                 final Intent i = new Intent(this, OwnedSiteViewerActivity.class);
@@ -243,6 +186,17 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+
+        int currentSite = unknownPage.getCurrentItem();
+        int currentOwnedSite = ownedPage.getCurrentItem();
+
+        String siteAdmin = selectedUnknownSites.get(currentSite).getSiteAdmin();
+        String token = selectedUnknownSites.get(currentSite).getToken();
+        String recieve_cid = selectedUnknownSites.get(currentSite).getCid();
+        LatLng position = selectedUnknownSites.get(currentSite).getPosition();
+
+        String send_cid = ownedMap.get(currentOwnedSite).getCid();
+
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
@@ -258,7 +212,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setData(Uri.parse("mailto:"));
                 i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{siteAdmin});
                 i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
                 i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
 
@@ -266,32 +220,29 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.profile:
+
+
                 //open that user's profile
                 if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
-                    } catch (InterruptedException e) {
+                    //new FetchQuestions(this, recieveSite.getSiteAdmin()).execute();
+                    new FetchQuestions(this, siteAdmin).execute();
 
-                    } catch (ExecutionException e) {
-
-                    }
                 }
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
-                in.putExtra("email", recieveSite.getSiteAdmin());
+                in.putExtra("email", siteAdmin);
                 in.putExtra("this_user", false);
-                //intent.putExtra("date", date); instance of date
                 startActivity(in);
                 break;
 
             case R.id.action_submit:
                 new CreateTrade(this, send_cid, recieve_cid).execute();
-                new CreateNotification(this, recieve_token).execute();
+                new CreateNotification(this, token).execute();
 
                 Intent intent = new Intent(getApplicationContext(),
                         MainActivity_Spinner.class);
                 intent.putExtra("trade", true);
-                intent.putExtra("latitude", recieveSite.getPosition().latitude);
-                intent.putExtra("longitude", recieveSite.getPosition().longitude);
+                intent.putExtra("latitude", position.latitude);
+                intent.putExtra("longitude", position.longitude);
                 startActivity(intent);
                 finish();
                 break;

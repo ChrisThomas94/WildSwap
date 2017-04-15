@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  *
@@ -52,7 +55,12 @@ public class ProfileActivity extends AppCompatActivity {
     int currPosition;
     boolean initialSelection = false;
     String user;
+    String otherEmail;
     int progressValue;
+    StoredData inst = new StoredData();
+    SparseArray<User> dealers;
+    User otherUser;
+
 
     TextView txtName;
     TextView txtEmail;
@@ -73,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         if(extras != null)
         {
             this_user = extras.getBoolean("this_user");
+            otherEmail = extras.getString("email");
         }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
@@ -86,6 +95,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
+
+        dealers = inst.getDealers();
 
         // Assigning ViewPager View and setting the adapter
 
@@ -155,10 +166,21 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         } else {
-            txtName.setText(AppController.getString(this, "user_name"));
-            txtEmail.setText(AppController.getString(this, "user_email"));
 
-            String bio = AppController.getString(this, "user_bio");
+            for(int i = 0; i<dealers.size(); i++){
+                if(dealers.get(i).getEmail().equals(otherEmail)){
+                    otherUser = dealers.get(i);
+                    System.out.println(dealers.get(i).getEmail());
+                    break;
+                }
+            }
+
+
+
+            txtName.setText(otherUser.getName());
+            txtEmail.setText(otherUser.getEmail());
+
+            String bio = otherUser.getBio();
 
             if(bio.equals("null")){
                 txtBio.setText("");
@@ -166,11 +188,18 @@ public class ProfileActivity extends AppCompatActivity {
                 txtBio.setText(bio);
             }
 
-            String image = AppController.getString(this, "user_profile_pic");
+            String image = otherUser.getProfile_pic();
+            String cover = otherUser.getCover_pic();
 
             if(!image.equals("null") || !image.equals("")){
                 Bitmap bit = StringToBitMap(image);
                 profile_pic.setImageBitmap(bit);
+                updateProgress();
+            }
+
+            if(!cover.equals("null") || !cover.equals("")){
+                Bitmap bit = StringToBitMap(cover);
+                cover_pic.setImageBitmap(bit);
                 updateProgress();
             }
 

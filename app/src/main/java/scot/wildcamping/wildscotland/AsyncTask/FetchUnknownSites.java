@@ -2,6 +2,8 @@ package scot.wildcamping.wildscotland.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseArray;
@@ -12,6 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,7 +25,7 @@ import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -41,8 +45,9 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     final int relatOwn = 90;
     final int relatTrade = 45;
     SparseArray<Site> unknownSites = new SparseArray<>();
+    Geocoder geocoder;
 
-    knownSite inst = new knownSite();
+    StoredData inst = new StoredData();
     SparseArray<Site> knownSites = new SparseArray<>();
     int knownSize;
 
@@ -56,6 +61,8 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
+        geocoder = new Geocoder(context, Locale.getDefault());
+
         Log.d("Fetch Unknown Sites", "Fetch Unknown Sites Pre Execute");
         pDialog = new ProgressDialog(context);
         pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -116,10 +123,12 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                         double lon = Double.parseDouble(longitude);
                         double lat = Double.parseDouble(latitude);
                         LatLng unknown = new LatLng(lat, lon);
+
                         siteClass.setCid(jsonDetails.getString("unique_cid"));
                         siteClass.setPosition(unknown);
                         siteClass.setTitle(jsonDetails.getString("title"));
                         siteClass.setDescription(jsonDetails.getString("description"));
+                        siteClass.setClassification(jsonDetails.getString("classification"));
 
                         Double d = Double.parseDouble(jsonDetails.getString("rating"));
 

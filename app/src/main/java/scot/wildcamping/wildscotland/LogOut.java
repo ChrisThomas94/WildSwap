@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.StoredUsers;
-import scot.wildcamping.wildscotland.Objects.User;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class LogOut extends AppCompatActivity {
 
@@ -54,7 +52,7 @@ public class LogOut extends AppCompatActivity {
 
     private void logoutUser() {
         session.setLogin(false);
-        knownSite inst = new knownSite();
+        StoredData inst = new StoredData();
         SparseArray<Site> ownedSites = inst.getOwnedSitesMap();
         ownedSites.clear();
         AppController.setString(this, "name", "");

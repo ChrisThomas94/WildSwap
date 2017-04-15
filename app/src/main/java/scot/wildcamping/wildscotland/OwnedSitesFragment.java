@@ -19,13 +19,13 @@ import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
-import scot.wildcamping.wildscotland.Objects.knownSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class OwnedSitesFragment extends Fragment {
 	
 	public OwnedSitesFragment(){}
 
-    knownSite inst;
+    StoredData inst;
     SparseArray<Site> ownedSites;
     SiteListAdapter adapter;
     ListView mDrawerList;
@@ -42,7 +42,7 @@ public class OwnedSitesFragment extends Fragment {
 
         TextView empty = (TextView) rootView.findViewById(R.id.empty);
 
-        inst = new knownSite();
+        inst = new StoredData();
         ownedSites = new SparseArray<>();
         ownedSites = inst.getOwnedSitesMap();
 
