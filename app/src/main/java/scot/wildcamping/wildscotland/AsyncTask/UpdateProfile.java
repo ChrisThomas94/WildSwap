@@ -17,6 +17,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 14-Apr-16.
@@ -34,6 +36,8 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
 
     String postResponse;
 
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
     private Context context;
     String user;
     private String userType;
@@ -101,6 +105,12 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
             boolean error = resp.getBoolean("error");
             if (!error) {
 
+                thisUser.setUserType(userType);
+                thisUser.setBio(bio);
+                thisUser.setWhy(why);
+                thisUser.setProfile_pic(profile_pic);
+                thisUser.setCover_pic(cover_pic);
+
                 Toast.makeText(context, "Profile Updated!", Toast.LENGTH_LONG).show();
 
             } else {
@@ -129,7 +139,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     private String updateProfile(String uid, String userType, String bio, String why, String profile_pic, String cover_pic){
         return "{\"tag\":\"" + "updateProfile" + "\","
                 + "\"uid\":\"" + uid + "\","
-                + "\"type\":\"" + userType + "\","
+                + "\"userType\":\"" + userType + "\","
                 + "\"bio\":\"" + bio + "\","
                 + "\"why\":\"" + why + "\","
                 + "\"profile_pic\":\"" + profile_pic + "\","

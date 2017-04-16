@@ -17,8 +17,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Objects.Site;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.R;
 
 /**
@@ -31,11 +32,15 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
     private Context context;
     private SparseArray<Site> ownedSites = new SparseArray<>();
     private LayoutInflater mLayoutInflater;
+    StoredData inst;
+    User thisUser;
 
     public TradeOwnedSitesAdapter(Context context, SparseArray<Site> ownedSites) {
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.ownedSites = ownedSites;
+        inst = new StoredData();
+        thisUser = inst.getLoggedInUser();
     }
 
     @Override
@@ -64,7 +69,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
         TextView country = (TextView) itemView.findViewById(R.id.country);
         CircleImageView profile_pic = (CircleImageView) itemView.findViewById(R.id.profilePicture);
 
-        String profile_picString = AppController.getString(context, "profile_pic");
+        String profile_picString = thisUser.getProfile_pic();
 
         List<Address> address = thisSite.getAddress();
         Address thisAddress = address.get(0);

@@ -96,10 +96,15 @@
     <string name="immediateFeature8"></string>
     <string name="immediateFeature9"></string>
 
+    <!--User Types-->
+    <string name="userType1">Casual</string>
+    <string name="userType2">Wild Camper</string>
+    <string name="userType3">Explorer</string>
 
-
-
-
+    <!--User Descriptions-->
+    <string name="userTypeDescription1">You may have never been Wild Camping before but you like the sound of it and wish to give it a try.</string>
+    <string name="userTypeDescription2">You have been Wild Camping a number of times and enjoy it very much, but only if the weather is fair.</string>
+    <string name="userTypeDescription3">You live for Wild Camping, through rain, sleet and snow.</string>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>

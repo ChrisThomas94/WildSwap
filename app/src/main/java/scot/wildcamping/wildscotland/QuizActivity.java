@@ -6,14 +6,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Adapters.QuestionListAdapter;
@@ -24,25 +25,30 @@ import scot.wildcamping.wildscotland.Objects.Quiz;
 
 /**
  * Created by Chris on 09-Apr-16.
+ *
  */
 public class QuizActivity extends AppCompatActivity {
 
-    private QuestionListAdapter adapter;
-    private ListView mDrawerList;
+    QuestionListAdapter adapter;
+    ListView mDrawerList;
     TextView info;
     Quiz inst;
     SparseArray<Question> question;
     boolean update;
     boolean isNew;
+    int progressValue;
+    ProgressBar progress;
+    TextView progressText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        ActionBar ab = getSupportActionBar();
+        /*ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeButtonEnabled(true);
+        ab.setHomeButtonEnabled(true);*/
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -53,6 +59,8 @@ public class QuizActivity extends AppCompatActivity {
 
         mDrawerList = (ListView)findViewById(R.id.question_listview);
         info = (TextView)findViewById(R.id.info);
+        progress = (ProgressBar)findViewById(R.id.progressBar);
+        progressText = (TextView)findViewById(R.id.progressText);
 
         if(!update){
             info.setVisibility(View.GONE);
@@ -72,6 +80,55 @@ public class QuizActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+            }
+        });
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                question = inst.getQuestions();
+                int answer1 = question.get(0).getAnswer();
+                System.out.println("new asnwer " + answer1);
+                int answer2 = question.get(1).getAnswer();
+                System.out.println("new asnwer " + answer2);
+                int answer3 = question.get(2).getAnswer();
+                int answer4 = question.get(3).getAnswer();
+                int answer5 = question.get(4).getAnswer();
+                int answer6 = question.get(5).getAnswer();
+                int answer7 = question.get(6).getAnswer();
+                int answer8 = question.get(7).getAnswer();
+                int answer9 = question.get(8).getAnswer();
+
+                if(answer1 != 0){
+                    updateProgress();
+                }
+            }
+        });
+
+        mDrawerList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                question = inst.getQuestions();
+                int answer1 = question.get(0).getAnswer();
+                System.out.println("new asnwer " + answer1);
+                int answer2 = question.get(1).getAnswer();
+                System.out.println("new asnwer " + answer2);
+                int answer3 = question.get(2).getAnswer();
+                int answer4 = question.get(3).getAnswer();
+                int answer5 = question.get(4).getAnswer();
+                int answer6 = question.get(5).getAnswer();
+                int answer7 = question.get(6).getAnswer();
+                int answer8 = question.get(7).getAnswer();
+                int answer9 = question.get(8).getAnswer();
+
+                if(answer1 != 0){
+                    updateProgress();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -144,6 +201,14 @@ public class QuizActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void updateProgress(){
+
+        progressValue = progress.getProgress()+10;
+        progress.setProgress(progressValue);
+        progressText.setText(progressValue+"% Complete");
+
     }
 
 }

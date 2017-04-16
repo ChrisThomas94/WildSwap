@@ -19,6 +19,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
@@ -46,7 +47,8 @@ public class FetchProfile extends AsyncTask<String, String, String> {
     Boolean error = true;
     String errorMsg;
     String userId;
-
+    StoredData inst = new StoredData();
+    User thisUser = new User();
 
     public FetchProfile(Context context, String email, String password, AsyncResponse delegate) {
         this.context = context;
@@ -91,16 +93,23 @@ public class FetchProfile extends AsyncTask<String, String, String> {
                     String email = user.getString("email");
                     String bio = user.getString("bio");
                     String why = user.getString("why");
+                    String userType = user.getString("userType");
                     String profile_pic = user.getString("profile_pic");
                     String cover_pic = user.getString("cover_pic");
+                    String token = user.getString("token");
 
-                    AppController.setString(context, "uid", userId);
-                    AppController.setString(context, "name", name);
-                    AppController.setString(context, "email", email);
-                    AppController.setString(context, "bio", bio);
-                    AppController.setString(context, "why", why);
-                    AppController.setString(context, "profile_pic", profile_pic);
-                    AppController.setString(context, "cover_pic", cover_pic);
+
+                    thisUser.setUid(userId);
+                    thisUser.setName(name);
+                    thisUser.setEmail(email);
+                    thisUser.setBio(bio);
+                    thisUser.setWhy(why);
+                    thisUser.setUserType(userType);
+                    thisUser.setCover_pic(cover_pic);
+                    thisUser.setProfile_pic(profile_pic);
+                    thisUser.setToken(token);
+
+                    inst.setLoggedInUser(thisUser);
 
                 } else {
                     // login error

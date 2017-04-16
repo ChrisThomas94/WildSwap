@@ -73,7 +73,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.tv_signin:
 
@@ -92,14 +92,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         new CreateUser(this, name, email, password, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
-                                startActivity(intent);
-                                finish();
+                                if(!output.equals("null")){
+                                    //do nothing
+                                    Snackbar.make(v, output, Snackbar.LENGTH_LONG).show();
+
+                                } else {
+                                    session.setLogin(true);
+                                    intent = new Intent(Register.this, CreateProfileActivity.class);
+                                    intent.putExtra("new", true);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
                         }).execute();
-
-                        session.setLogin(true);
-                        intent = new Intent(Register.this, CreateProfileActivity.class);
-                        intent.putExtra("new", true);
                     }
                 } else {
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)

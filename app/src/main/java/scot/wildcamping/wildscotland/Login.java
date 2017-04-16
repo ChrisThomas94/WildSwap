@@ -7,14 +7,24 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchProfile;
+import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{    //***
+
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
 
     Button registerHere;
     Button signIn;
@@ -51,11 +61,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
 
-            Intent intent = new Intent(Login.this, MainActivity_Spinner.class);
-            startActivity(intent);
-            finish();
-        }
+            System.out.println("session editor "+session.editor.toString());
 
+            thisUser.setEmail(AppController.getString(this, "email"));
+
+            ArrayList<String> users = new ArrayList<>();
+            users.add(0, thisUser.getEmail());
+
+            final Intent intent = new Intent(this, MainActivity_Spinner.class);
+
+            new FetchQuestions(this, thisUser.getEmail()).execute();
+
+            new FetchUsers(this, users, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    startActivity(intent);
+                    finish();
+                }
+            }).execute();
+        }
     }
 
 
@@ -96,6 +120,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
 
                                 if(output != null){
                                     session.setLogin(true);
+                                    AppController.setString(getApplicationContext(), "email", email);
                                     startActivity(intent);
                                     finish();
                                 }

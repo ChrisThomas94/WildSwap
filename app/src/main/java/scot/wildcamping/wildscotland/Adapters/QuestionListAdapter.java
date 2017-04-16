@@ -32,7 +32,7 @@ public class QuestionListAdapter extends BaseAdapter {
         this.isNew = isNew;
     }
 
-    public static final class ViewHolder {
+    private static final class ViewHolder {
         TextView question;
         RadioGroup answers;
         RadioButton answer1;
@@ -59,8 +59,7 @@ public class QuestionListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        ViewHolder holder = null;
-
+        ViewHolder holder;
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
@@ -110,51 +109,8 @@ public class QuestionListAdapter extends BaseAdapter {
                         questions.removeAt(questions.get(position).getAnswer());
                     }
                 }
-
-                /*switch (checkedId) {
-
-                    case R.id.answer1:
-                        questions.get(position).setAnswer(1);
-                        break;
-
-                    case R.id.answer2:
-                        questions.get(position).setAnswer(2);
-                        break;
-
-                    case R.id.answer3:
-                        questions.get(position).setAnswer(3);
-                        break;
-
-                    case R.id.answer4:
-                        questions.get(position).setAnswer(4);
-                        break;
-
-                }*/
             }
         });
-
-
-
-        /*if(!isNew) {
-
-            if(checked.indexOfKey(position)>-1) {
-
-
-
-                if (questions.get(position).getAnswer() == 0) {
-
-                } else if (questions.get(position).getAnswer() == 1) {
-                    answers.check(R.id.answer1);
-                } else if (questions.get(position).getAnswer() == 2) {
-                    answers.check(R.id.answer2);
-                } else if (questions.get(position).getAnswer() == 3) {
-                    answers.check(R.id.answer3);
-                } else if (questions.get(position).getAnswer() == 4) {
-                    answers.check(R.id.answer4);
-                }
-            }
-        }*/
-
 
         if(update || isNew){
             holder.answer1.setClickable(true);

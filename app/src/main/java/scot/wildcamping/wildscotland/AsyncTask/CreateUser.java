@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland.AsyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
@@ -40,6 +42,8 @@ public class CreateUser extends AsyncTask<String, String, String> {
     private String password;
     Boolean error;
     private String errorMsg;
+    StoredData inst = new StoredData();
+    User thisUser = new User();
 
     public CreateUser(Context context, String name, String email, String password, AsyncResponse delegate) {
         this.context = context;
@@ -92,6 +96,11 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     String name = user.getString("name");
                     String email = user.getString("email");
 
+                    thisUser.setEmail(email);
+                    thisUser.setName(name);
+                    thisUser.setUid(userId);
+                    inst.setLoggedInUser(thisUser);
+
                     AppController.setString(context, "uid", userId);
                     AppController.setString(context, "name", name);
                     AppController.setString(context, "email", email);
@@ -121,10 +130,11 @@ public class CreateUser extends AsyncTask<String, String, String> {
         // dismiss the dialog once done
         pDialog.dismiss();
         if (error) {
-            Toast.makeText(context,
-                    errorMsg, Toast.LENGTH_LONG).show();
+            delegate.processFinish(errorMsg);
+        } else {
+            delegate.processFinish("null");
+
         }
-        delegate.processFinish(file_url);
     }
 
     private String doPostRequest(String url, String json) throws IOException {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
@@ -20,6 +21,8 @@ public class SettingsActivity extends AppCompatActivity {
     public SettingsActivity() {
     }
 
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
     TextView txtName;
     TextView txtEmail;
     Button btnLogout;
@@ -46,8 +49,8 @@ public class SettingsActivity extends AppCompatActivity {
             logoutUser();
         }
 
-        txtName.setText(AppController.getString(this, "name"));
-        txtEmail.setText(AppController.getString(this, "email"));
+        txtName.setText(thisUser.getName());
+        txtEmail.setText(thisUser.getEmail());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 

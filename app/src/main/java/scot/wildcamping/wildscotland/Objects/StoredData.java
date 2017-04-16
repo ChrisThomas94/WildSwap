@@ -19,7 +19,16 @@ public class StoredData {
     private static SparseArray<Site> ownedSitesMap = new SparseArray<>();
     private static SparseArray<Gallery> temp = new SparseArray<>();
     private static SparseArray<User> dealers = new SparseArray<>();
+    private static User loggedInUser = new User();
 
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 
     public void setDealers(SparseArray<User> dealers) {
         this.dealers = dealers;

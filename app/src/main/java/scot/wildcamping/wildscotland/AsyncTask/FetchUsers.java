@@ -20,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.Objects.StoredData;
@@ -43,6 +44,7 @@ public class FetchUsers extends AsyncTask<String, String, String> {
 
     StoredData inst = new StoredData();
     private SparseArray<User> fetchedUsers = new SparseArray<>();
+    User thisUser = inst.getLoggedInUser();
 
 
     public FetchUsers(Context context, ArrayList<String> emails, AsyncResponse delegate) {
@@ -96,15 +98,37 @@ public class FetchUsers extends AsyncTask<String, String, String> {
                         User user = new User();
                         jsonUser = jObj.getJSONObject("user" + i);
 
-                        user.setProfile_pic(jsonUser.getString("profile_pic"));
-                        user.setCover_pic(jsonUser.getString("cover_pic"));
-                        user.setName(jsonUser.getString("name"));
-                        user.setEmail(jsonUser.getString("email"));
-                        user.setBio(jsonUser.getString("bio"));
+                        if(boolAllUsers){
+
+                            user.setProfile_pic(jsonUser.getString("profile_pic"));
+                            user.setName(jsonUser.getString("name"));
+                            user.setEmail(jsonUser.getString("email"));
+
+                        } else {
+
+                            user.setProfile_pic(jsonUser.getString("profile_pic"));
+                            user.setCover_pic(jsonUser.getString("cover_pic"));
+                            user.setName(jsonUser.getString("name"));
+                            user.setEmail(jsonUser.getString("email"));
+                            user.setBio(jsonUser.getString("bio"));
+                            user.setWhy(jsonUser.getString("why"));
+                            user.setUserType(jsonUser.getString("userType"));
+                            user.setToken(jsonUser.getString("token"));
+                            user.setUid(jsonUser.getString("unique_uid"));
+
+                        }
+
                         fetchedUsers.put(i, user);
                     }
 
-                    inst.setDealers(fetchedUsers);
+                    if(fetchedUsers.get(0).getEmail().equals(thisUser.getEmail())){
+                        inst.setLoggedInUser(fetchedUsers.get(0));
+                        System.out.println("added to logged in user");
+                    } else {
+                        inst.setDealers(fetchedUsers);
+                        System.out.println("added to dealers");
+
+                    }
 
                 }
 

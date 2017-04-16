@@ -30,6 +30,7 @@ import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -49,8 +50,11 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     String email;
     final int relatOwn = 90;
     final int relatTrade = 45;
+    StoredData inst = new StoredData();
+
     SparseArray<Site> map = new SparseArray<>();
     SparseArray<Site> owned = new SparseArray<>();
+    User thisUser = inst.getLoggedInUser();
     Geocoder geocoder;
 
 
@@ -81,8 +85,10 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
-        email = AppController.getString(context, "email");
+        //user = AppController.getString(context, "uid");
+        user = thisUser.getUid();
+        email = thisUser.getEmail();
+        //email = AppController.getString(context, "email");
 
         // issue the post request
         try {
@@ -173,7 +179,6 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         }
                     }
 
-                    StoredData inst = new StoredData();
                     inst.setKnownSitesMap(map);
                     inst.setOwnedSitesMap(owned);
                     inst.setKnownSiteSize(knownCnt);

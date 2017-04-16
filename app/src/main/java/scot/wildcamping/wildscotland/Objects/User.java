@@ -17,7 +17,16 @@ public class User {
     private String profile_pic;
     private String cover_pic;
     private String token;
+    private String userType;
     private ArrayList<String> answers;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     public void setCover_pic(String cover_pic) {
         this.cover_pic = cover_pic;

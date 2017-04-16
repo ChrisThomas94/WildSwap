@@ -19,6 +19,8 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,19 +45,29 @@ import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateProfile;
 import scot.wildcamping.wildscotland.Objects.Question;
-import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
+ *
  */
 public class CreateProfileActivity extends AppCompatActivity implements View.OnClickListener  {
 
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
+
     private QuestionListAdapter adapter;
     private ListView mDrawerList;
-    Quiz inst;
     SparseArray<Question> question;
     boolean update = false;
     int RESULT_LOAD_IMAGE = 0;
+    int progressValue = 0;
+    Boolean updateUserType = true;
+    Boolean uploadImage = true;
+    Boolean uploadCover = true;
+    Boolean updateBio = true;
+    Boolean updateWhy = true;
 
     TextView name;
     EditText bio;
@@ -68,6 +81,9 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     TextView userTypeText1;
     TextView userTypeText2;
     TextView userTypeText3;
+    TextView userTypeDescription;
+    ProgressBar progress;
+    TextView progressText;
 
 
     String profilePicString;
@@ -106,27 +122,17 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         userTypeText1 = (TextView) findViewById(R.id.userTypeText1);
         userTypeText2 = (TextView) findViewById(R.id.userTypeText2);
         userTypeText3 = (TextView) findViewById(R.id.userTypeText3);
+        userTypeDescription = (TextView) findViewById(R.id.userTypeDescription);
+        progress = (ProgressBar) findViewById(R.id.progressBar);
+        progressText = (TextView) findViewById(R.id.progressText);
 
-
-
-        name.setText(AppController.getString(this, "name"));
+        //name.setText(AppController.getString(this, "name"));
+        name.setText(thisUser.getName());
 
         if(!isNew){
 
-            if(AppController.getString(this, "bio").equals("null")){
-                bio.setText("");
-            } else {
-                bio.setText(AppController.getString(this, "bio"));
-            }
-
-            if(AppController.getString(this, "why").equals("null")){
-                why.setText("");
-            } else {
-                why.setText(AppController.getString(this, "why"));
-            }
-
-            profilePicString = AppController.getString(this, "profile_pic");
-            coverPicString = AppController.getString(this, "cover_pic");
+            profilePicString = thisUser.getProfile_pic();
+            coverPicString = thisUser.getCover_pic();
 
             if(profilePicString != null){
 
@@ -137,6 +143,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                     Bitmap profile_pic = StringToBitMap(profilePicString);
                     Bitmap circle = getCroppedBitmap(profile_pic);
                     profilePic.setImageBitmap(circle);
+                    updateProgress();
                 }
             }
 
@@ -146,12 +153,62 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 } else {
                     Bitmap cover_pic = StringToBitMap(coverPicString);
                     coverPic.setImageBitmap(cover_pic);
+                    updateProgress();
+                    addCoverPicture.setVisibility(View.INVISIBLE);
                 }
+            }
+
+
+            if(thisUser.getUserType().equals(getResources().getString(R.string.userType1))){
+                userType = userTypeText1.getText().toString();
+                userType1.setBackgroundResource(R.drawable.rounded_green_button);
+                updateProgress();
+                updateUserType = false;
+
+            } else if (thisUser.getUserType().equals(getResources().getString(R.string.userType2))){
+                userType = userTypeText2.getText().toString();
+                userType2.setBackgroundResource(R.drawable.rounded_green_button);
+                updateProgress();
+                updateUserType = false;
+
+            } else if (thisUser.getUserType().equals(getResources().getString(R.string.userType3))){
+                userType = userTypeText3.getText().toString();
+                userType3.setBackgroundResource(R.drawable.rounded_green_button);
+                updateProgress();
+                updateUserType = false;
+
+            } else {
+
+            }
+
+
+            if(thisUser.getBio().equals("null")){
+                bio.setText("");
+            } else {
+                bio.setText(thisUser.getBio());
+                updateProgress();
+            }
+
+            if(thisUser.getWhy().equals("null")){
+                why.setText("");
+            } else {
+                why.setText(thisUser.getWhy());
+                updateProgress();
             }
 
         }
 
         addCoverPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                i.putExtra("imageType", "cover");
+                addCoverPicture.setVisibility(View.GONE);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+
+        coverPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -171,6 +228,47 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        //setting onclick listeners
+        bio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(updateBio) {
+                    updateProgress();
+                }
+                updateBio = false;
+            }
+        });
+
+        why.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(updateWhy) {
+                    updateProgress();
+                }
+                updateWhy = false;
+            }
+        });
+
         userType1.setOnClickListener(this);
         userType2.setOnClickListener(this);
         userType3.setOnClickListener(this);
@@ -183,29 +281,44 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         switch (v.getId()) {
             case R.id.userType1:
 
+                if(updateUserType){
+                    updateProgress();
+                }
+
+                updateUserType = false;
                 userType = userTypeText1.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_green_button);
                 userType2.setBackgroundResource(R.drawable.rounded_white_button);
                 userType3.setBackgroundResource(R.drawable.rounded_white_button);
-
+                userTypeDescription.setText(R.string.userTypeDescription1);
                 break;
 
             case R.id.userType2:
 
+                if(updateUserType){
+                    updateProgress();
+                }
+
+                updateUserType = false;
                 userType = userTypeText2.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_white_button);
                 userType2.setBackgroundResource(R.drawable.rounded_green_button);
                 userType3.setBackgroundResource(R.drawable.rounded_white_button);
-
+                userTypeDescription.setText(R.string.userTypeDescription2);
                 break;
 
             case R.id.userType3:
 
+                if(updateUserType){
+                    updateProgress();
+                }
+
+                updateUserType = false;
                 userType = userTypeText3.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_white_button);
                 userType2.setBackgroundResource(R.drawable.rounded_white_button);
                 userType3.setBackgroundResource(R.drawable.rounded_green_button);
-
+                userTypeDescription.setText(R.string.userTypeDescription3);
                 break;
 
         }
@@ -234,23 +347,28 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 //AppController.setString(this, "bio", bio.getText().toString());
 
                 String newBio = bio.getText().toString();
+
+                if(newBio.isEmpty()){
+                    newBio = "null";
+                }
+
                 String newWhy = why.getText().toString();
+
+                if(newWhy.isEmpty()){
+                    newWhy = "null";
+                }
 
                 String profileSingleLine = null;
                 String coverSingleLine = null;
 
                 if(profilePicString != null) {
                     profileSingleLine = profilePicString.replaceAll("[\r\n]+", "");
-                    AppController.setString(this, "profile_pic", profilePicString);
-                } else {
-                    AppController.setString(this, "profile_pic", "null");
+                    thisUser.setProfile_pic(profilePicString);
                 }
 
                 if(coverPicString != null){
                     coverSingleLine = coverPicString.replaceAll("[\r\n]+", "");
-                    AppController.setString(this, "cover_pic", coverPicString);
-                } else {
-                    AppController.setString(this, "cover_pic", "null");
+                    thisUser.setCover_pic(coverPicString);
                 }
 
                 final Intent intent = new Intent(this, QuizActivity.class);
@@ -317,10 +435,22 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
                 if(imageType.equals("cover")){
 
+                    if(uploadCover){
+                        updateProgress();
+                    }
+
+                    uploadCover = false;
+
                     coverPicString = getStringImage(compress);
                     coverPic.setImageBitmap(compress);
 
                 } else if(imageType.equals("profile")){
+
+                    if(uploadImage){
+                        updateProgress();
+                    }
+
+                    uploadImage = false;
 
                     profilePicString = getStringImage(compress);
                     profilePic.setImageBitmap(compress);
@@ -400,6 +530,14 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
 
         return retVal;
+    }
+
+    public void updateProgress(){
+
+        progressValue = progress.getProgress()+20;
+        progress.setProgress(progressValue);
+        progressText.setText(progressValue + "% Complete");
+
     }
 
 }

@@ -26,6 +26,7 @@ import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 04-Mar-16.
@@ -49,6 +50,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
     StoredData inst = new StoredData();
     SparseArray<Site> knownSites = new SparseArray<>();
+    User thisUser = inst.getLoggedInUser();
     int knownSize;
 
     public FetchUnknownSites(Context context, AsyncResponse delegate) {
@@ -82,7 +84,8 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
         knownSites = inst.getKnownSitesMap();
 
-        user = AppController.getString(context, "uid");
+        //user = AppController.getString(context, "uid");
+        user = thisUser.getUid();
         // issue the post request
         try {
             String json = getUnknownSites(user, relatOwn, relatTrade);

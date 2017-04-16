@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 public class LogOut extends AppCompatActivity {
 
@@ -54,13 +55,24 @@ public class LogOut extends AppCompatActivity {
         session.setLogin(false);
         StoredData inst = new StoredData();
         SparseArray<Site> ownedSites = inst.getOwnedSitesMap();
+        SparseArray<User> dealers = inst.getDealers();
+        User thisUser = new User();
+
+        inst.setLoggedInUser(thisUser);
+        dealers.clear();
         ownedSites.clear();
+
+        inst.setOwnedSitesMap(ownedSites);
+        inst.setDealers(dealers);
+
         AppController.setString(this, "name", "");
         AppController.setString(this, "email", "");
         AppController.setString(this, "bio", "");
         AppController.setString(this, "profile_pic", "null");
         AppController.setString(this, "cover_pic", "null");
-        inst.setOwnedSitesMap(ownedSites);
+
+
+
         Intent intent = new Intent(LogOut.this, Login.class);
         startActivity(intent);
         finish();

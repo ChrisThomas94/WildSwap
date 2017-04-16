@@ -253,25 +253,9 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 profile.putExtra("this_user", true);
                 profile.putExtra("new", isNew);
                 overridePendingTransition(0,0);
-                if(isNetworkAvailable()) {
+                startActivity(profile);
+                finish();
 
-                    ArrayList<String> users = new ArrayList<>();
-                    users.add(0, AppController.getString(this, "email"));
-
-                    new FetchQuestions(this, AppController.getString(this, "email")).execute();
-
-                    new FetchUsers(this, users, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            startActivity(profile);
-                            finish();
-                        }
-                    }).execute();
-
-                } else {
-                    startActivity(profile);
-                    finish();
-                }
                 break;
 
             default:

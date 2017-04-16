@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -35,8 +38,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
+
+import static android.view.View.GONE;
 
 /**
  *
@@ -52,13 +58,13 @@ public class ProfileActivity extends AppCompatActivity {
     CharSequence Titles[]={"Questions", "Badges"};
     int Numboftabs =2;
     ArrayList<String> list;
-    int currPosition;
     boolean initialSelection = false;
     String user;
     String otherEmail;
-    int progressValue;
+    int progressValue = 0;
     StoredData inst = new StoredData();
-    SparseArray<User> dealers;
+    User thisUser = inst.getLoggedInUser();
+    SparseArray<User> dealers = inst.getDealers();
     User otherUser;
 
 
@@ -71,6 +77,10 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView cover_pic;
     ProgressBar progress;
     TextView progressText;
+    TextView userType;
+    RelativeLayout progressLayout;
+    TextView numSitesText;
+    TextView numTradesText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +99,12 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        user = AppController.getString(this, "user");
-
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
-        dealers = inst.getDealers();
-
         // Assigning ViewPager View and setting the adapter
-
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
@@ -126,22 +131,40 @@ public class ProfileActivity extends AppCompatActivity {
         cover_pic = (ImageView) findViewById(R.id.backgroundImage);
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progressText = (TextView) findViewById(R.id.progressText);
-        RelativeLayout progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
+        progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
+        userType = (TextView) findViewById(R.id.profileStatusText);
+        numSitesText = (TextView) findViewById(R.id.numSites);
+        numTradesText = (TextView) findViewById(R.id.numTrades);
+
+        int ownedSites = inst.getOwnedSiteSize();
 
         if(this_user){
 
-            txtName.setText(AppController.getString(this, "name"));
-            txtEmail.setText(AppController.getString(this, "email"));
-            String bio = AppController.getString(this, "bio");
-            String why = AppController.getString(this, "why");
-            String profile_pic = AppController.getString(this, "profile_pic");
-            String cover_pic = AppController.getString(this, "cover_pic");
+            txtName.setText(thisUser.getName());
+            txtEmail.setText(thisUser.getEmail());
+            String bio = thisUser.getBio();
+            String why = thisUser.getWhy();
+            String profile_pic = thisUser.getProfile_pic();
+            String cover_pic = thisUser.getCover_pic();
+            String type = thisUser.getUserType();
+            userType.setText(type);
+
+            //numSitesText.setText(ownedSites.size());
+            numSitesText.setText(String.valueOf(ownedSites));
+
+            System.out.println("type is empty "+type.isEmpty());
+
+            if(!type.equals("") && !type.isEmpty()) {
+                updateProgress();
+                System.out.println("update type" + type);
+            }
 
             if(bio.equals("null")){
                 txtBio.setText("");
             } else {
                 txtBio.setText(bio);
                 updateProgress();
+                System.out.println("update bio");
             }
 
             if(why.equals("null")){
@@ -149,21 +172,28 @@ public class ProfileActivity extends AppCompatActivity {
             } else {
                 txtWhy.setText(why);
                 updateProgress();
+                System.out.println("update why");
             }
 
-            if(!profile_pic.equals("null") || !profile_pic.equals("")){
+            if(!profile_pic.equals("null") && !profile_pic.equals("")){
                 Bitmap bit = StringToBitMap(profile_pic);
                 this.profile_pic.setImageBitmap(bit);
                 updateProgress();
+
+                System.out.println("update profile pic" + profile_pic);
+
             }
 
-            if(!cover_pic.equals("null") || !cover_pic.equals("")){
+            if(!cover_pic.equals("null") && !cover_pic.equals("")){
                 Bitmap bit = StringToBitMap(cover_pic);
                 this.cover_pic.setImageBitmap(bit);
                 updateProgress();
+                System.out.println("update cover pic"+cover_pic);
             }
 
-
+            if(progressValue == 100){
+                progressLayout.setVisibility(GONE);
+            }
 
         } else {
 
@@ -203,8 +233,8 @@ public class ProfileActivity extends AppCompatActivity {
                 updateProgress();
             }
 
-            progress.setVisibility(View.GONE);
-            progressLayout.setVisibility(View.GONE);
+            progress.setVisibility(GONE);
+            progressLayout.setVisibility(GONE);
         }
 
         progress.setOnClickListener(new View.OnClickListener() {
@@ -222,10 +252,10 @@ public class ProfileActivity extends AppCompatActivity {
     // add items into spinner dynamically
     public void addItemsToSpinner() {
 
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         list.add("Map");
-        list.add("SitesActivity");
-        list.add("TradesActivity");
+        list.add("Sites");
+        list.add("Trades");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
@@ -261,7 +291,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
 
             }
         });
@@ -308,7 +337,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.profile, menu);
         return true;
     }
 
@@ -322,31 +351,18 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_search1) {
-            Toast.makeText(getApplicationContext(), "Search Clicked",
-                    Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_add1) {
-            Toast.makeText(getApplicationContext(), "Add Clicked",
-                    Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_delete1) {
-            Toast.makeText(getApplicationContext(), "Delete Clicked",
-                    Toast.LENGTH_SHORT).show();
-            return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
-                try {
-                    String questions = new FetchQuestions(this, AppController.getString(this, "email")).execute().get();
-                } catch (InterruptedException e) {
-
-                } catch (ExecutionException e) {
-
-                }
+                new FetchQuestions(this, thisUser.getEmail()).execute();
+            } else {
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No network connection!", Snackbar.LENGTH_LONG)
+                        .show();
             }
+
             displayView(3);
-        } else if(id == R.id.action_tradeHistory){
-            Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
+        } else if(id == R.id.updateProfile){
+            Intent intent = new Intent(getBaseContext(), CreateProfileActivity.class);
+            intent.putExtra("update", true);
             startActivity(intent);
             return true;
         }
@@ -399,6 +415,5 @@ public class ProfileActivity extends AppCompatActivity {
         progressValue = progress.getProgress()+20;
         progress.setProgress(progressValue);
         progressText.setText(progressValue+"% Complete");
-
     }
 }
