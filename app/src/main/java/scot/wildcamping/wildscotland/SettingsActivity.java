@@ -6,14 +6,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Objects.StoredData;
-import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -73,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void logoutUser() {
         session.setLogin(false);
-        Intent intent = new Intent(this, Login.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

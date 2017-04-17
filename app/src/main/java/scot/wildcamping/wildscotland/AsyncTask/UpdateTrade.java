@@ -213,6 +213,7 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
     }
 
     private String getTrade(String unique_tid, int newTradeStatus, String sender_uid, String receiver_uid, String send_cid, String receive_cid) {
+
         return "{\"tag\":\"" + "updateTrade" + "\","
                 + "\"tid\":\"" + unique_tid + "\","
                 + "\"tradeStatus\":\"" + newTradeStatus + "\","

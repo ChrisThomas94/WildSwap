@@ -27,6 +27,7 @@ import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 
 public class SitesActivity extends AppCompatActivity implements OnShowcaseEventListener{
 
@@ -161,8 +162,8 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
 
         list = new ArrayList<>();
         list.add("Map");
-        list.add("SitesActivity");
-        list.add("TradesActivity");
+        list.add("Sites");
+        list.add("Trades");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background
@@ -226,9 +227,19 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                 in.putExtra("new", register);
                 in.putExtra("sitesTutorial", sitesTutorial);
                 in.putExtra("tradesTutorial", tradesTutorial);
-                startActivity(in);
-                overridePendingTransition(0, 0);
-                finish();
+
+                if (isNetworkAvailable()) {
+
+                    new FetchTradeRequests(this).execute();
+                    startActivity(in);
+                    overridePendingTransition(0, 0);
+                    finish();
+                } else {
+                    startActivity(in);
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
+
                 break;
 
             case 3:

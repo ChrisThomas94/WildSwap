@@ -19,6 +19,24 @@ public class User {
     private String token;
     private String userType;
     private ArrayList<String> answers;
+    private int numSites;
+    private int numTrades;
+
+    public void setNumSites(int numSites) {
+        this.numSites = numSites;
+    }
+
+    public void setNumTrades(int numTrades) {
+        this.numTrades = numTrades;
+    }
+
+    public int getNumSites() {
+        return numSites;
+    }
+
+    public int getNumTrades() {
+        return numTrades;
+    }
 
     public String getUserType() {
         return userType;

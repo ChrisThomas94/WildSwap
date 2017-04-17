@@ -94,7 +94,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_view_received);
+        setContentView(R.layout.dead_activity_trade_view_received);
         View parentLayout = findViewById(R.id.recieveTitle);
 
         siteAlreadyOwned = false;
@@ -421,7 +421,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.post_trade, menu);
+        inflater.inflate(R.menu.sent_trade, menu);
         return true;
     }
 

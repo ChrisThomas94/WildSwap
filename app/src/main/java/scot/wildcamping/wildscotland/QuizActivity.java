@@ -6,16 +6,22 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.Adapters.QuestionListAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
@@ -39,6 +45,16 @@ public class QuizActivity extends AppCompatActivity {
     int progressValue;
     ProgressBar progress;
     TextView progressText;
+    RelativeLayout frame;
+
+    Boolean updateAns0 = true;
+    Boolean updateAns1 = true;
+    Boolean updateAns2 = true;
+    Boolean updateAns3 = true;
+    Boolean updateAns4 = true;
+    Boolean updateAns5 = true;
+    Boolean updateAns6 = true;
+
 
 
     @Override
@@ -61,6 +77,7 @@ public class QuizActivity extends AppCompatActivity {
         info = (TextView)findViewById(R.id.info);
         progress = (ProgressBar)findViewById(R.id.progressBar);
         progressText = (TextView)findViewById(R.id.progressText);
+        frame = (RelativeLayout) findViewById(R.id.frame);
 
         if(!update){
             info.setVisibility(View.GONE);
@@ -72,6 +89,14 @@ public class QuizActivity extends AppCompatActivity {
 
         adapter = new QuestionListAdapter(this, question, update, isNew);
         mDrawerList.setAdapter(adapter);
+        mDrawerList.setClickable(true);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("CLICK");
+            }
+        });
 
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,54 +108,55 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                question = inst.getQuestions();
-                int answer1 = question.get(0).getAnswer();
-                System.out.println("new asnwer " + answer1);
-                int answer2 = question.get(1).getAnswer();
-                System.out.println("new asnwer " + answer2);
-                int answer3 = question.get(2).getAnswer();
-                int answer4 = question.get(3).getAnswer();
-                int answer5 = question.get(4).getAnswer();
-                int answer6 = question.get(5).getAnswer();
-                int answer7 = question.get(6).getAnswer();
-                int answer8 = question.get(7).getAnswer();
-                int answer9 = question.get(8).getAnswer();
+        final Handler h = new Handler();
+        final int delay = 500;
 
-                if(answer1 != 0){
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressValue = 0;
+                question = inst.getQuestions();
+
+                if(question.get(0).getAnswer() != 0 && updateAns0){
+                    updateAns0 = false;
                     updateProgress();
                 }
-            }
-        });
 
-        mDrawerList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                question = inst.getQuestions();
-                int answer1 = question.get(0).getAnswer();
-                System.out.println("new asnwer " + answer1);
-                int answer2 = question.get(1).getAnswer();
-                System.out.println("new asnwer " + answer2);
-                int answer3 = question.get(2).getAnswer();
-                int answer4 = question.get(3).getAnswer();
-                int answer5 = question.get(4).getAnswer();
-                int answer6 = question.get(5).getAnswer();
-                int answer7 = question.get(6).getAnswer();
-                int answer8 = question.get(7).getAnswer();
-                int answer9 = question.get(8).getAnswer();
-
-                if(answer1 != 0){
+                if(question.get(1).getAnswer() != 0 && updateAns1){
+                    updateAns1 = false;
                     updateProgress();
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                if(question.get(2).getAnswer() != 0 && updateAns2){
+                    updateAns2 = false;
+                    updateProgress();
+                }
 
+                if(question.get(3).getAnswer() != 0 && updateAns3){
+                    updateAns3 = false;
+                    updateProgress();
+                }
+
+                if(question.get(4).getAnswer() != 0 && updateAns4){
+                    updateAns4 = false;
+                    updateProgress();
+                }
+
+                if(question.get(5).getAnswer() != 0 && updateAns5){
+                    updateAns5 = false;
+                    updateProgress();
+                }
+
+                if(question.get(6).getAnswer() != 0 && updateAns6){
+                    updateAns6 = false;
+                    updateProgress();
+                }
+
+                h.postDelayed(this, delay);
             }
-        });
+        }, delay);
+
+
 
     }
 
@@ -149,30 +175,23 @@ public class QuizActivity extends AppCompatActivity {
                 question = inst.getQuestions();
                 question.clear();
 
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
                 finish();
                 return true;
 
             case R.id.action_submit:
 
                 question = inst.getQuestions();
-                int answer1 = question.get(0).getAnswer();
-                System.out.println("new asnwer " + answer1);
-                int answer2 = question.get(1).getAnswer();
-                System.out.println("new asnwer " + answer2);
-                int answer3 = question.get(2).getAnswer();
-                int answer4 = question.get(3).getAnswer();
-                int answer5 = question.get(4).getAnswer();
-                int answer6 = question.get(5).getAnswer();
-                int answer7 = question.get(6).getAnswer();
-                int answer8 = question.get(7).getAnswer();
-                int answer9 = question.get(8).getAnswer();
+                ArrayList<Integer> answers = new ArrayList<>();
+
+                for(int i=0; i<question.size(); i++){
+                    answers.add(i, question.get(i).getAnswer());
+                }
+
 
                 final Intent intent;
 
                 if(isNew) {
-                    AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answer2));
+                    AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
                     intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("new", true);
                 } else {
@@ -182,7 +201,7 @@ public class QuizActivity extends AppCompatActivity {
 
                 //asynk task updating answers
                 if(isNetworkAvailable()) {
-                    new SubmitQuiz(this, answer1, answer2, answer3, answer4, answer5, answer6, answer7, answer8, answer9, new AsyncResponse() {
+                    new SubmitQuiz(this, answers, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);
@@ -205,7 +224,11 @@ public class QuizActivity extends AppCompatActivity {
 
     public void updateProgress(){
 
-        progressValue = progress.getProgress()+10;
+        if(!updateAns6){
+            progressValue = progress.getProgress()+16;
+        } else {
+            progressValue = progress.getProgress() + 14;
+        }
         progress.setProgress(progressValue);
         progressText.setText(progressValue+"% Complete");
 

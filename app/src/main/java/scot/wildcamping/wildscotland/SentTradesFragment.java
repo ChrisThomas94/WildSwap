@@ -1,9 +1,6 @@
 package scot.wildcamping.wildscotland;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
@@ -44,8 +41,7 @@ public class SentTradesFragment extends Fragment {
         TextView empty = (TextView) rootView.findViewById(R.id.empty);
 
         trades = new StoredTrades();
-        //activeTrades = new SparseArray<>();
-        sentTrades = trades.getActiveTrades();
+        sentTrades = trades.getSentTrades();
 
         if(sentTrades.size() == 0){
             empty.setVisibility(View.VISIBLE);
@@ -57,12 +53,8 @@ public class SentTradesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent;
-                if(sentTrades.get(position).getUserRelation().equals(sent)){
-                    intent = new Intent(getActivity(), TradeView_Sent.class);
-                } else {
-                    intent = new Intent(getActivity(), TradeView_Received.class);
-                }
+                Intent intent = new Intent(getActivity(), TradeView.class);
+                intent.putExtra("sent", true);
                 intent.putExtra("unique_tid", sentTrades.get(position).getUnique_tid());
                 intent.putExtra("send_cid", sentTrades.get(position).getSend_cid());
                 intent.putExtra("recieve_cid", sentTrades.get(position).getRecieve_cid());
@@ -76,12 +68,4 @@ public class SentTradesFragment extends Fragment {
 
         return rootView;
     }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
 }

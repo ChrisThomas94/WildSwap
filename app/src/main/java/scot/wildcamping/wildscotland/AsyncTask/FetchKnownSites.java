@@ -97,17 +97,13 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
 
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
-            System.out.println("hello world");
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
-                System.out.println("error" + error);
                 if (!error) {
                     int size = jObj.getInt("size");
                     int ownedCnt = 0;
                     int knownCnt = 0;
-
-                    System.out.println("known sites size: "+size);
 
                     JSONObject jsonSite;
                     Site siteClass;

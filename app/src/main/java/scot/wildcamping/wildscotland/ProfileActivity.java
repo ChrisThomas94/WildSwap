@@ -38,8 +38,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
+import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.StoredTrades;
 import scot.wildcamping.wildscotland.Objects.User;
 
 import static android.view.View.GONE;
@@ -65,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
     SparseArray<User> dealers = inst.getDealers();
+    StoredTrades trades = new StoredTrades();
+
     User otherUser;
 
 
@@ -137,6 +141,7 @@ public class ProfileActivity extends AppCompatActivity {
         numTradesText = (TextView) findViewById(R.id.numTrades);
 
         int ownedSites = inst.getOwnedSiteSize();
+        int completedTrades = trades.getAcceptedTradesSize();
 
         if(this_user){
 
@@ -149,10 +154,8 @@ public class ProfileActivity extends AppCompatActivity {
             String type = thisUser.getUserType();
             userType.setText(type);
 
-            //numSitesText.setText(ownedSites.size());
             numSitesText.setText(String.valueOf(ownedSites));
-
-            System.out.println("type is empty "+type.isEmpty());
+            numTradesText.setText(String.valueOf(completedTrades));
 
             if(!type.equals("") && !type.isEmpty()) {
                 updateProgress();
@@ -206,9 +209,10 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
 
-
             txtName.setText(otherUser.getName());
             txtEmail.setText(otherUser.getEmail());
+            numTradesText.setText(String.valueOf(otherUser.getNumTrades()));
+            numSitesText.setText(String.valueOf(otherUser.getNumSites()));
 
             String bio = otherUser.getBio();
 
@@ -316,9 +320,19 @@ public class ProfileActivity extends AppCompatActivity {
 
             case 2:
                 Intent trade = new Intent(getApplicationContext(), TradesActivity.class);
-                startActivity(trade);
-                overridePendingTransition(0,0);
-                finish();
+
+                if (isNetworkAvailable()) {
+
+                    new FetchTradeRequests(this).execute();
+                    startActivity(trade);
+                    overridePendingTransition(0, 0);
+                    finish();
+                } else {
+                    startActivity(trade);
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
+
                 break;
 
             case 3:
@@ -379,35 +393,11 @@ public class ProfileActivity extends AppCompatActivity {
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;
         }
-    }
-
-    public Bitmap getCroppedBitmap(Bitmap bitmap) {
-
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
-        //return _bmp;
-        return output;
     }
 
     public void updateProgress(){

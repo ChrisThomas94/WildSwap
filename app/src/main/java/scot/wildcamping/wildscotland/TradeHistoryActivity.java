@@ -65,12 +65,14 @@ public class TradeHistoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent;
+                Intent intent = new Intent(getBaseContext(), TradeView.class);
+
                 if(inactiveTrades.get(position).getUserRelation().equals(sent)){
-                    intent = new Intent(getBaseContext(), TradeView_Sent.class);
+                    intent.putExtra("sent", true);
                 } else {
-                    intent = new Intent(getBaseContext(), TradeView_Received.class);
+                    intent.putExtra("received", true);
                 }
+
                 intent.putExtra("status", inactiveTrades.get(position).getStatus());
                 intent.putExtra("unique_tid", inactiveTrades.get(position).getUnique_tid());
                 intent.putExtra("send_cid", inactiveTrades.get(position).getSend_cid());

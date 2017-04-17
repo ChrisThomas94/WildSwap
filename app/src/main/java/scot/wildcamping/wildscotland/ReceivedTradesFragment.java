@@ -1,9 +1,6 @@
 package scot.wildcamping.wildscotland;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.SparseArray;
@@ -54,12 +51,8 @@ public class ReceivedTradesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent;
-                if(receivedTrades.get(position).getUserRelation().equals(sent)){
-                    intent = new Intent(getActivity(), TradeView_Sent.class);
-                } else {
-                    intent = new Intent(getActivity(), TradeView_Received.class);
-                }
+                Intent intent = new Intent(getActivity(), TradeView.class);
+                intent.putExtra("received", true);
                 intent.putExtra("unique_tid", receivedTrades.get(position).getUnique_tid());
                 intent.putExtra("send_cid", receivedTrades.get(position).getSend_cid());
                 intent.putExtra("recieve_cid", receivedTrades.get(position).getRecieve_cid());
@@ -73,12 +66,4 @@ public class ReceivedTradesFragment extends Fragment {
 
         return rootView;
     }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
 }

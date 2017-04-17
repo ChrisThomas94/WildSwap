@@ -22,6 +22,44 @@ public class StoredTrades {
     private static int receivedTradesSize;
     private static SparseArray<Trade> receivedTrades = new SparseArray<>();
 
+    private static int acceptedTradesSize;
+    private static SparseArray<Trade> acceptedTrades = new SparseArray<>();
+
+    private static int rejectedTradesSize;
+    private static SparseArray<Trade> rejectedTrades = new SparseArray<>();
+
+    public int getAcceptedTradesSize() {
+        return acceptedTradesSize;
+    }
+
+    public SparseArray<Trade> getAcceptedTrades() {
+        return acceptedTrades;
+    }
+
+    public int getRejectedTradesSize() {
+        return rejectedTradesSize;
+    }
+
+    public SparseArray<Trade> getRejectedTrades() {
+        return rejectedTrades;
+    }
+
+    public void setAcceptedTradesSize(int acceptedTradesSize) {
+        StoredTrades.acceptedTradesSize = acceptedTradesSize;
+    }
+
+    public void setAcceptedTrades(SparseArray<Trade> acceptedTrades) {
+        StoredTrades.acceptedTrades = acceptedTrades;
+    }
+
+    public void setRejectedTradesSize(int rejectedTradesSize) {
+        StoredTrades.rejectedTradesSize = rejectedTradesSize;
+    }
+
+    public void setRejectedTrades(SparseArray<Trade> rejectedTrades) {
+        StoredTrades.rejectedTrades = rejectedTrades;
+    }
+
     public void setAllTradesSize(int allTradesSize) {
         this.allTradesSize = allTradesSize;
     }

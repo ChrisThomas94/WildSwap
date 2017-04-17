@@ -73,7 +73,7 @@ public class LogOut extends AppCompatActivity {
 
 
 
-        Intent intent = new Intent(LogOut.this, Login.class);
+        Intent intent = new Intent(LogOut.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

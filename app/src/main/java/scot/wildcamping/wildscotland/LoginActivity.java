@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +14,13 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
-import scot.wildcamping.wildscotland.AsyncTask.FetchProfile;
+import scot.wildcamping.wildscotland.AsyncTask.Login;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{    //***
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{    //***
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
@@ -110,11 +109,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{   
                     if (email.trim().length() > 0 && password.trim().length() > 0) {
 
                         // Launching  main activity
-                        intent = new Intent(Login.this,
+                        intent = new Intent(LoginActivity.this,
                                 MainActivity_Spinner.class);
 
                         // login user
-                        new FetchProfile(this, email, password, new AsyncResponse() {
+                        new Login(this, email, password, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
 

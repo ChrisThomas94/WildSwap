@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import scot.wildcamping.wildscotland.Objects.Quiz;
 import scot.wildcamping.wildscotland.R;
 import scot.wildcamping.wildscotland.Objects.Question;
 
@@ -21,6 +22,7 @@ import scot.wildcamping.wildscotland.Objects.Question;
 public class QuestionListAdapter extends BaseAdapter {
 
     private Context context;
+    Quiz quiz = new Quiz();
     private SparseArray<Question> questions;
     private boolean update;
     private boolean isNew;
@@ -64,7 +66,7 @@ public class QuestionListAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.question_list, null);
+            convertView = mInflater.inflate(R.layout.adapter_question, null);
             holder = new ViewHolder();
             holder.question = (TextView)convertView.findViewById(R.id.question);
             holder.answers = (RadioGroup)convertView.findViewById(R.id.answer_group);
@@ -102,8 +104,13 @@ public class QuestionListAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
+                questions = quiz.getQuestions();
+
                 if (checkedId > -1) {
                     questions.get(position).setAnswer(checkedId);
+                    quiz.setQuestions(questions);
+                    System.out.println("adapter click");
+
                 } else {
                     if (questions.get(position).getAnswer() > -1) {
                         questions.removeAt(questions.get(position).getAnswer());

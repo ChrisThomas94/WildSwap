@@ -30,7 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
  *
  */
 
-public class FetchProfile extends AsyncTask<String, String, String> {
+public class Login extends AsyncTask<String, String, String> {
 
     public AsyncResponse delegate = null;
 
@@ -50,7 +50,7 @@ public class FetchProfile extends AsyncTask<String, String, String> {
     StoredData inst = new StoredData();
     User thisUser = new User();
 
-    public FetchProfile(Context context, String email, String password, AsyncResponse delegate) {
+    public Login(Context context, String email, String password, AsyncResponse delegate) {
         this.context = context;
         this.email = email;
         this.password = password;
@@ -96,6 +96,8 @@ public class FetchProfile extends AsyncTask<String, String, String> {
                     String userType = user.getString("userType");
                     String profile_pic = user.getString("profile_pic");
                     String cover_pic = user.getString("cover_pic");
+                    int numSites = user.getInt("numSites");
+                    int numTrades = user.getInt("numTrades");
                     String token = user.getString("token");
 
 
@@ -107,6 +109,8 @@ public class FetchProfile extends AsyncTask<String, String, String> {
                     thisUser.setUserType(userType);
                     thisUser.setCover_pic(cover_pic);
                     thisUser.setProfile_pic(profile_pic);
+                    thisUser.setNumSites(numSites);
+                    thisUser.setNumTrades(numTrades);
                     thisUser.setToken(token);
 
                     inst.setLoggedInUser(thisUser);

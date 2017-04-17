@@ -80,7 +80,9 @@ public class TradeListAdapter extends BaseAdapter{
         Date date = null;
         String dtStart = "2010-10-15T09:27:37Z";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        format.setTimeZone(TimeZone.getTimeZone("London")); //"Europe/London"
+        //format.setTimeZone(TimeZone.getTimeZone("London"));
+        format.setTimeZone(TimeZone.getDefault());
+
         try {
             date = format.parse(activeTrades.get(position).getDate());
             System.out.println(date);
@@ -89,7 +91,6 @@ public class TradeListAdapter extends BaseAdapter{
         }
 
         titleTrade.setText(android.text.format.DateUtils.getRelativeTimeSpanString(date.getTime()));
-
 
         return convertView;
     }

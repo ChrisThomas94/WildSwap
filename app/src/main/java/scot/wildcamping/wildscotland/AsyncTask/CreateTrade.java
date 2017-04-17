@@ -21,6 +21,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 11-Mar-16.
@@ -40,6 +42,8 @@ public class CreateTrade extends AsyncTask<String, String, String> {
 
     String send_cid;
     String recieve_cid;
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
 
     public CreateTrade(Context context, String send_cid, String recieve_cid) {
         this.context = context;
@@ -65,7 +69,8 @@ public class CreateTrade extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
+        user = thisUser.getUid();
+        //user = AppController.getString(context, "uid");
 
         // issue the post request
         try {

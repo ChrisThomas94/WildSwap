@@ -6,10 +6,12 @@ import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -36,6 +38,7 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
     private Context context;
     String user;
     String email;
+    ArrayList<Integer> answers;
     int answer1;
     int answer2;
     int answer3;
@@ -48,17 +51,9 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
     SparseArray<Question> arrayQuestions = new SparseArray<>();
     String postResponse;
 
-    public SubmitQuiz(Context context, int answer1, int answer2, int answer3, int answer4, int answer5, int answer6, int answer7, int answer8, int answer9, AsyncResponse delegate) {
+    public SubmitQuiz(Context context, ArrayList<Integer> answers, AsyncResponse delegate) {
         this.context = context;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.answer5 = answer5;
-        this.answer6 = answer6;
-        this.answer7 = answer7;
-        this.answer8 = answer8;
-        this.answer9 = answer9;
+        this.answers = answers;
         this.delegate = delegate;
 
     }
@@ -194,17 +189,12 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
     }
 
     private String submitAnswers(String uid) {
+
+        JSONArray answersJSON = new JSONArray(answers);
+
         return "{\"tag\":\"" + "answers" + "\","
                 + "\"uid\":\"" + uid+ "\","
-                + "\"question1\":\"" + answer1 + "\","
-                + "\"question2\":\"" + answer2 + "\","
-                + "\"question3\":\"" + answer3 + "\","
-                + "\"question4\":\"" + answer4 + "\","
-                + "\"question5\":\"" + answer5 + "\","
-                + "\"question6\":\"" + answer6 + "\","
-                + "\"question7\":\"" + answer7 + "\","
-                + "\"question8\":\"" + answer8 + "\","
-                + "\"question9\":\"" + answer9 + "\"}";
+                + "\"answers\":" + answersJSON + "}";
     }
 
 }

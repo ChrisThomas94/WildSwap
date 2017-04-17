@@ -227,25 +227,18 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), TradesActivity.class);
                 i.putExtra("new", isNew);
 
-                StoredTrades trades = new StoredTrades();
-                if(trades.getAllTradesSize() == 0) {
-                    if (isNetworkAvailable()) {
-                        try {
-                            String trades_result = new FetchTradeRequests(this).execute().get();
-                            startActivity(i);
-                            overridePendingTransition(0, 0);
-                            finish();
-                        } catch (InterruptedException e) {
+                if (isNetworkAvailable()) {
 
-                        } catch (ExecutionException e) {
-
-                        }
-                    }
+                    new FetchTradeRequests(this).execute();
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    finish();
                 } else {
                     startActivity(i);
                     overridePendingTransition(0, 0);
                     finish();
                 }
+
                 break;
 
             case 3:

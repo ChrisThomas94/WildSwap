@@ -120,8 +120,8 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
 
         ShowcaseView sv = new ShowcaseView.Builder(this)
                 .setTarget(t)
-                .setContentTitle("Active TradesActivity")
-                .setContentText("TradesActivity that are awaiting a response are listed here.")
+                .setContentTitle("Active Trades")
+                .setContentText("Trades that are awaiting a response are listed here.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .setShowcaseEventListener(this)
@@ -170,9 +170,8 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
 
         list = new ArrayList<String>();
         list.add("Map");
-        list.add("SitesActivity");
-        //list.add("Known SitesActivity");
-        list.add("TradesActivity");
+        list.add("Sites");
+        list.add("Trades");
         list.add("Profile");
 
         // Custom ArrayAdapter with spinner item layout to set popup background

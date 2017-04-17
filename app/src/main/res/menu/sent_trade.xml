@@ -3,14 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/close_white"
+        android:orderInCategory="100"
+        android:layout_width="28dip"
+        android:layout_height="28dip"
+        android:scaleType="fitXY"
+        app:showAsAction="ifRoom"
+        android:title="Cancel"/>
+
+    <item
         android:id="@+id/action_contact"
         android:icon="@drawable/letter"
         android:orderInCategory="100"
         android:layout_width="28dip"
         android:layout_height="28dip"
         android:scaleType="fitXY"
-        app:showAsAction="ifRoom"
-        android:title="email"/>
+        app:showAsAction="never"
+        android:title="Email"/>
 
     <item
         android:id="@+id/profile"
@@ -20,6 +30,8 @@
         android:layout_height="28dip"
         android:scaleType="fitXY"
         app:showAsAction="ifRoom"
-        android:title="profile"/>
+        android:title="Profile"/>
+
+
 
 </menu>

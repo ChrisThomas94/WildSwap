@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -12,14 +13,23 @@
         android:text="Complete this short quiz to help other otherUsers gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code and can be found here."
         android:clickable="true"/>
 
-    <ListView
+    <RelativeLayout
+        android:id="@+id/frame"
         android:layout_below="@+id/info"
-        android:id="@+id/question_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:divider="#00000000"
         android:clickable="true"
-        android:focusable="true"/>
+        android:layout_marginBottom="80dp">
+
+        <ListView
+            android:id="@+id/question_listview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="#00000000"
+            android:clickable="false"
+            android:focusable="true"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/progressLayout"

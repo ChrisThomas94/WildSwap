@@ -77,7 +77,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.tv_signin:
 
-                intent = new Intent(getApplicationContext(), Login.class);
+                intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
 

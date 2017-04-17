@@ -101,10 +101,10 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     thisUser.setUid(userId);
                     inst.setLoggedInUser(thisUser);
 
-                    AppController.setString(context, "uid", userId);
-                    AppController.setString(context, "name", name);
-                    AppController.setString(context, "email", email);
-                    AppController.setString(context, "password", password);
+                    //AppController.setString(context, "uid", userId);
+                    //AppController.setString(context, "name", name);
+                    //AppController.setString(context, "email", email);
+                    //AppController.setString(context, "password", password);
 
                 } else {
                     errorMsg = jObj.getString("error_msg");

@@ -22,8 +22,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.TradeOwnedSitesAdapter;
 import scot.wildcamping.wildscotland.Adapters.TradeUnknownSitesAdapter;
@@ -55,23 +53,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     SparseArray<Site> ownedMap;
     SparseArray<Site> unknownMap;
     SparseArray<User> dealers;
-    Site recieveSite;
     String send_cid;
-    String recieve_cid;
-    String recieve_token;
     String trade = "trade";
 
     ViewPager unknownPage;
     ViewPager ownedPage;
-
-    TextView recieveTitle;
-    TextView placeholderFeatures;
-    RatingBar recieveRating;
-
-    TextView sendTitle;
-    TextView placeholderFeaturesYours;
-    RatingBar sendRating;
-    RelativeLayout yourSite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,16 +75,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
         unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
         ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
-        recieveTitle = (TextView)findViewById(R.id.recieveTitle);
-        placeholderFeatures = (TextView)findViewById(R.id.placeholderFeatures);
-        recieveRating = (RatingBar)findViewById(R.id.recieveRating);
-
-        sendTitle = (TextView)findViewById(R.id.sendTitle);
-        placeholderFeaturesYours = (TextView)findViewById(R.id.placeholderFeaturesYours);
-        sendRating = (RatingBar)findViewById(R.id.sendRating);
-
-        yourSite = (RelativeLayout)findViewById(R.id.yourSite);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -200,15 +176,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
                 finish();
                 return true;
 
             case R.id.action_contact:
-                //Intent i = new Intent(getApplicationContext(), ContactUser.class);
-                //i.putExtra("contact", recieveSite.getSiteAdmin());
-                //intent.putExtra("date", date); instance of date
+
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setData(Uri.parse("mailto:"));
                 i.setType("text/plain");
@@ -221,13 +193,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             case R.id.profile:
 
-
                 //open that user's profile
                 if(isNetworkAvailable()) {
-                    //new FetchQuestions(this, recieveSite.getSiteAdmin()).execute();
                     new FetchQuestions(this, siteAdmin).execute();
-
                 }
+
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
                 in.putExtra("email", siteAdmin);
                 in.putExtra("this_user", false);
@@ -235,8 +205,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.action_submit:
-                new CreateTrade(this, send_cid, recieve_cid).execute();
-                new CreateNotification(this, token).execute();
+
+                if(isNetworkAvailable()) {
+                    new CreateTrade(this, send_cid, recieve_cid).execute();
+                    new CreateNotification(this, token).execute();
+                }
 
                 Intent intent = new Intent(getApplicationContext(),
                         MainActivity_Spinner.class);
@@ -248,17 +221,6 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));
-    }
-
-    public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
-        int random = start + rnd.nextInt(end - start + 1 - exclude.length);
-        for (int ex : exclude) {
-            if (random < ex) {
-                break;
-            }
-            random++;
-        }
-        return random;
     }
 
     private boolean isNetworkAvailable() {

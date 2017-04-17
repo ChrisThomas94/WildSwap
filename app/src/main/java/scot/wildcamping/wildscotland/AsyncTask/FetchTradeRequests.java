@@ -16,8 +16,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
 import scot.wildcamping.wildscotland.Objects.Trade;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 12-Mar-16.
@@ -32,8 +34,13 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     final int tradeStatus = 0;
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
     SparseArray<Trade> activeTrades = new SparseArray<>();
     SparseArray<Trade> inactiveTrades = new SparseArray<>();
+    SparseArray<Trade> acceptedTrades = new SparseArray<>();
+    SparseArray<Trade> rejectedTrades = new SparseArray<>();
+
 
     SparseArray<Trade> sentTrades = new SparseArray<>();
     SparseArray<Trade> receivedTrades = new SparseArray<>();
@@ -56,7 +63,8 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
+        user = thisUser.getUid();
+        //user = AppController.getString(context, "uid");
         // issue the post request
         try {
             String json = getTradeRequests(user, tradeStatus);
@@ -75,6 +83,8 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                 int receivedCnt = 0;
                 int openCnt = 0;
                 int closedCnt = 0;
+                int acceptedCnt = 0;
+                int rejectedCnt = 0;
 
                 if(!error) {
                     for (int i = 0; i < size; i++) {
@@ -104,10 +114,21 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                             activeTrades.put(openCnt, trade);
                             openCnt++;
                         } else if (jsonTrade.getInt("status") == 1 || jsonTrade.getInt("status") == 2) {
+
+                            if(jsonTrade.getInt("status") == 1){
+                                acceptedTrades.put(acceptedCnt, trade);
+                                acceptedCnt++;
+
+                            } else if(jsonTrade.getInt("status") == 2){
+                                rejectedTrades.put(rejectedCnt, trade);
+                                rejectedCnt++;
+                            }
+
                             inactiveTrades.put(closedCnt, trade);
                             closedCnt++;
                         }
                     }
+
                     StoredTrades inst = new StoredTrades();
                     inst.setActiveTrades(activeTrades);
                     inst.setActiveTradesSize(activeTrades.size());
@@ -117,6 +138,12 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
                     inst.setSentTrades(sentTrades);
                     inst.setReceivedTrades(receivedTrades);
+
+                    inst.setAcceptedTradesSize(acceptedTrades.size());
+                    inst.setAcceptedTrades(acceptedTrades);
+
+                    inst.setRejectedTradesSize(rejectedTrades.size());
+                    inst.setRejectedTrades(rejectedTrades);
 
                 } else {
                     //error message

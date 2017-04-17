@@ -14,6 +14,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.TradeActivitySimple;
 import scot.wildcamping.wildscotland.TradeView_Received;
 
@@ -25,6 +27,8 @@ public class CreateNotification extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
     public Context context;
     String user;
     String postResponse;
@@ -50,7 +54,7 @@ public class CreateNotification extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
+        user = thisUser.getUid();
 
         // issue the post request
         try {
@@ -58,11 +62,10 @@ public class CreateNotification extends AsyncTask<String, String, String> {
             String json;
             if(context instanceof TradeActivitySimple){
                 json = tradeNotification(token);
-            } else if (context instanceof TradeView_Received) {
-                json = tradeResponseNotification(token);
             } else {
-                json = "";
+                json = tradeResponseNotification(token);
             }
+
             System.out.println("json: " + json);
 
             postResponse = doPostRequest(Appconfig.firebase, json);      //json
