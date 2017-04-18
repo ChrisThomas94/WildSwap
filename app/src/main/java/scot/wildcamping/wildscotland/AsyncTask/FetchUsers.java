@@ -20,7 +20,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.Objects.StoredData;
@@ -52,7 +51,7 @@ public class FetchUsers extends AsyncTask<String, String, String> {
         this.emails = emails;
         this.delegate = delegate;
 
-        if(!emails.equals(null)){
+        if(!emails.isEmpty()){
             boolAllUsers = false;
         }
 

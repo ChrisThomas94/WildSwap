@@ -11,17 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateUser;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
-
-    public final MediaType JSON
-            = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
-
-    OkHttpClient client = new OkHttpClient();
 
     Button tvLogin;
     TextInputLayout fullName;
@@ -36,7 +29,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     String email;
     String password;
     Intent intent;
-    Boolean error;
     SessionManager session;
 
     @Override
@@ -65,7 +57,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
             // User is already logged in. Move to main activity
             Intent intent = new Intent(this,
-                    LogOut.class);
+                    LogoutActivity.class);
             startActivity(intent);
             finish();
         }

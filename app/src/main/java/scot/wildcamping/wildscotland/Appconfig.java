@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland;
 
 /**
  * Created by Chris on 23-Dec-15.
+ *
  */
 public class Appconfig {
 

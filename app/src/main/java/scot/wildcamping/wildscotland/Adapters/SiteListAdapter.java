@@ -22,6 +22,7 @@ import scot.wildcamping.wildscotland.Objects.Site;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class SiteListAdapter extends BaseAdapter {
 

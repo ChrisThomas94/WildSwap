@@ -12,12 +12,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.TradeActivitySimple;
-import scot.wildcamping.wildscotland.TradeView_Received;
 
 
 public class CreateNotification extends AsyncTask<String, String, String> {

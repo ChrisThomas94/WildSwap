@@ -2,12 +2,8 @@ package scot.wildcamping.wildscotland.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.SparseArray;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,13 +15,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 11-Mar-16.
+ *
  */
 public class CreateTrade extends AsyncTask<String, String, String> {
 
@@ -40,8 +36,8 @@ public class CreateTrade extends AsyncTask<String, String, String> {
     final int tradeStatus = 0;
     String postResponse;
 
-    String send_cid;
-    String recieve_cid;
+    private String send_cid;
+    private String recieve_cid;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
 
@@ -70,7 +66,6 @@ public class CreateTrade extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = thisUser.getUid();
-        //user = AppController.getString(context, "uid");
 
         // issue the post request
         try {
@@ -78,36 +73,6 @@ public class CreateTrade extends AsyncTask<String, String, String> {
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
-
-            /*try {
-
-                JSONObject jObj = new JSONObject(postResponse);
-                Boolean error = jObj.getBoolean("error");
-                int size = jObj.getInt("size");
-
-                if(!error) {
-                    for (int i = 0; i < size; i++) {
-                        JSONObject jsonTrade = jObj.getJSONObject("trade" + i);
-
-                        Trade newTrade = new Trade();
-                        newTrade.setUnique_tid(jsonTrade.getString("unique_tid"));
-                        newTrade.setSender_uid(jsonTrade.getString("sender_uid_fk"));
-                        newTrade.setReciever_uid(jsonTrade.getString("reciever_uid_fk"));
-                        newTrade.setSend_cid(jsonTrade.getString("send_cid_fk"));
-                        newTrade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
-                        newTrade.setDate(jsonTrade.getString("created_at"));
-                        newTrade.setUserRelation("Sent");
-                    }
-                    StoredData inst = new StoredData();
-                    inst.setUnknownSitesSize(size);
-
-                } else {
-                    //error message
-                }
-
-            } catch (JSONException e){
-
-            }*/
 
         }catch (IOException e){
             e.printStackTrace();
@@ -137,17 +102,8 @@ public class CreateTrade extends AsyncTask<String, String, String> {
             }
 
         } catch (JSONException e){
-
+            e.printStackTrace();
         }
-    }
-
-    private String doGetRequest(String url)throws IOException{
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
     }
 
     private String doPostRequest(String url, String json) throws IOException {

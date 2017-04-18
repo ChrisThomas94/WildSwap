@@ -5,24 +5,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.Rating;
 import android.support.v4.view.PagerAdapter;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.maps.model.LatLng;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;

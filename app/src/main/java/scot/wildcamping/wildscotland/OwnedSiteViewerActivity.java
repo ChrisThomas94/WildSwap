@@ -39,6 +39,7 @@ import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
  * Created by Chris on 26-Feb-16.
+ *
  */
 public class OwnedSiteViewerActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
 
@@ -500,8 +501,9 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
             case R.id.gift:
 
+                ArrayList<String> emails = new ArrayList<>();
                 final Intent i = new Intent(this, GiftSiteActivity.class);
-                new FetchUsers(this, null, new AsyncResponse() {
+                new FetchUsers(this, emails, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
                         startActivity(i);

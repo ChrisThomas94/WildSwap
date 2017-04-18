@@ -2,7 +2,6 @@ package scot.wildcamping.wildscotland.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
 
 import okhttp3.MediaType;
@@ -22,7 +20,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
@@ -45,7 +42,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     String user;
     final int relatOwn = 90;
     final int relatTrade = 45;
-    SparseArray<Site> unknownSites = new SparseArray<>();
+    private SparseArray<Site> unknownSites = new SparseArray<>();
     Geocoder geocoder;
 
     StoredData inst = new StoredData();
@@ -81,11 +78,9 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         knownSize = inst.getKnownSiteSize();
-
         knownSites = inst.getKnownSitesMap();
-
-        //user = AppController.getString(context, "uid");
         user = thisUser.getUid();
+
         // issue the post request
         try {
             String json = getUnknownSites(user, relatOwn, relatTrade);
@@ -158,15 +153,12 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
 
                 inst.setUnknownSitesMap(unknownSites);
                 inst.setUnknownSitesSize(unknownSites.size());
-
-            } else {
-                //error message
             }
 
-            } catch (JSONException e){
-
-            } catch (IOException e){
+        } catch (JSONException e){
             e.printStackTrace();
+        } catch (IOException e){
+        e.printStackTrace();
         }
 
         return null;

@@ -2,9 +2,7 @@ package scot.wildcamping.wildscotland.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.SparseArray;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -17,13 +15,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.StoredData;
-import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Chris on 23-Mar-17.

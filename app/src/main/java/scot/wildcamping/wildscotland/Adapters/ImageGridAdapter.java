@@ -19,14 +19,14 @@ import scot.wildcamping.wildscotland.R;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class ImageGridAdapter extends ArrayAdapter {
 
     private Context context;
-    //private String[] gallery;
-    int layoutResourceId;
-    ArrayList data = new ArrayList();
-    ImageView imageView;
+    private int layoutResourceId;
+    private ArrayList data = new ArrayList();
+    private ImageView imageView;
 
     public ImageGridAdapter(Context context, int layoutResourceId, ArrayList data) {
         super(context, layoutResourceId, data);
@@ -61,10 +61,7 @@ public class ImageGridAdapter extends ArrayAdapter {
             imageView = (ImageView) row.findViewById(R.id.image);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-
             String image = data.get(position).toString();
-            //Uri myUri = Uri.parse(image);
-            //Bitmap compress = BitmapFactory.decodeStream(row.getContext().getContentResolver().openInputStream(image));
             Bitmap compress = StringToBitMap(image);
 
             imageView.setImageBitmap(compress);
@@ -74,21 +71,13 @@ public class ImageGridAdapter extends ArrayAdapter {
             row.getTag();
         }
 
-
-        /*if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.grid_item_layout, null);
-        }*/
-
         return row;
     }
 
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;

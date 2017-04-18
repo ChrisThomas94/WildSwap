@@ -44,6 +44,10 @@
     <string name="action_search">Search</string>
 
     <!-- Features List -->
+    <string name="titleDefault">Cool wild location</string>
+    <string name="descriptionDefault">It is really cool here&#8230;</string>
+
+    <!-- Features List -->
     <string name="feature1">Car Access</string>
     <string name="feature2">Walk Required</string>
     <string name="feature3">Water Source</string>
@@ -112,4 +116,9 @@
     <!-- Profile Default Text -->
     <string name="profile_numSites">Number of Owned Sites</string>
     <string name="profile_numTrades">Number of Completed Trades</string>
+
+    <!--Trade Status-->
+    <string name="rejected">- Rejected</string>
+    <string name="accepted">- Accepted</string>
+    <string name="pending">- Pending</string>
 </resources>

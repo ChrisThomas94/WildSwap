@@ -23,12 +23,13 @@ import scot.wildcamping.wildscotland.R;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class UserListAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
     private SparseArray<User> fetchedUsers;
-    List<User> filterUsers;
+    private List<User> filterUsers;
     private UserFilter userFilter;
 
     public UserListAdapter(Context context, SparseArray<User> fetchedUsers){
@@ -76,8 +77,7 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;
@@ -99,7 +99,7 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults filterResults = new FilterResults();
             if (constraint!=null && constraint.length()>0) {
-                ArrayList<User> tempList = new ArrayList<User>();
+                ArrayList<User> tempList = new ArrayList<>();
 
                 filterUsers = asList(fetchedUsers);
 
@@ -133,9 +133,9 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    public static <C> List<C> asList(SparseArray<C> sparseArray) {
+    private static <C> List<C> asList(SparseArray<C> sparseArray) {
         if (sparseArray == null) return null;
-        List<C> arrayList = new ArrayList<C>(sparseArray.size());
+        List<C> arrayList = new ArrayList<>(sparseArray.size());
         for (int i = 0; i < sparseArray.size(); i++)
             arrayList.add(sparseArray.valueAt(i));
         return arrayList;

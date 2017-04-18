@@ -18,14 +18,14 @@ import scot.wildcamping.wildscotland.R;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class ImageUriGridAdapter extends ArrayAdapter {
 
     private Context context;
-    //private String[] gallery;
-    int layoutResourceId;
-    ArrayList data = new ArrayList();
-    ImageView imageView;
+    private int layoutResourceId;
+    private ArrayList data = new ArrayList();
+    private ImageView imageView;
 
     public ImageUriGridAdapter(Context context, int layoutResourceId, ArrayList data) {
         super(context, layoutResourceId, data);
@@ -76,13 +76,6 @@ public class ImageUriGridAdapter extends ArrayAdapter {
         } else {
             row.getTag();
         }
-
-
-        /*if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.grid_item_layout, null);
-        }*/
 
         return row;
     }

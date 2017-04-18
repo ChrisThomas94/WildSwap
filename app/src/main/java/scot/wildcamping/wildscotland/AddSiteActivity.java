@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class AddSiteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -210,17 +211,15 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         if(titlePassed == null){
-            title.setText("Cool wild location");
+            title.setText(R.string.titleDefault);
         } else {
             title.setText(titlePassed);
-            //updateProgress();
         }
 
         if(descPassed == null){
-            description.setText("It is really cool here...");
+            description.setText(R.string.descriptionDefault);
         } else {
             description.setText(descPassed);
-            //updateProgress();
         }
 
         System.out.println(imageUpload);
@@ -347,7 +346,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 updateProgress();
                 Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilder.class);
                 siteBuilder.putExtra("image", imageUpload);
-                //intent.putExtra("temp", tempLocation);
                 siteBuilder.putExtra("latitude", latitude);
                 siteBuilder.putExtra("longitude", longitude);
                 siteBuilder.putExtra("title", title.getText().toString());
@@ -414,13 +412,17 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                                 new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
-                                        startActivity(intent);
-                                        finish();
+
+                                        new FetchKnownSites(AddSiteActivity.this, new AsyncResponse() {
+                                            @Override
+                                            public void processFinish(String output) {
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }).execute();
                                     }
                                 }).execute();
 
-                            } else {
-                                //Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -458,7 +460,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             if (clip == null) {
                 Uri uri = data.getData();
-                //imageUris[0] = uri.toString();
                 imageUris2.add(0, uri.toString());
 
             } else {

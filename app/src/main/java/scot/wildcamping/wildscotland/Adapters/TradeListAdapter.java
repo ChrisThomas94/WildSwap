@@ -20,6 +20,7 @@ import scot.wildcamping.wildscotland.Objects.Trade;
 
 /**
  * Created by Chris on 18-Mar-16.
+ *
  */
 public class TradeListAdapter extends BaseAdapter{
 
@@ -63,24 +64,21 @@ public class TradeListAdapter extends BaseAdapter{
         int status = activeTrades.get(position).getStatus();
 
         title.setText(direction);
-        //titleTrade.setText(activeTrades.get(position).getDate());
 
         if(status == 1){
-            outcomeTrade.setText("- Rejected");
+            outcomeTrade.setText(R.string.rejected);
             trade.setBackgroundResource(R.drawable.rounded_linear_layout_red);
         } else if (status == 2){
-            outcomeTrade.setText("- Accepted");
+            outcomeTrade.setText(R.string.accepted);
             trade.setBackgroundResource(R.drawable.rounded_linear_layout_green);
         } else if (status == 0){
-            outcomeTrade.setText("- Pending");
+            outcomeTrade.setText(R.string.pending);
         }
 
 
         //http://stackoverflow.com/questions/8573250/android-how-can-i-convert-string-to-date
         Date date = null;
-        String dtStart = "2010-10-15T09:27:37Z";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //format.setTimeZone(TimeZone.getTimeZone("London"));
         format.setTimeZone(TimeZone.getDefault());
 
         try {

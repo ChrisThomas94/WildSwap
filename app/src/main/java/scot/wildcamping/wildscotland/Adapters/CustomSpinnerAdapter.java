@@ -2,6 +2,7 @@ package scot.wildcamping.wildscotland.Adapters;
 
 /**
  * Created by Chris on 31-Mar-16.
+ *
  */
 import java.util.ArrayList;
 import android.content.Context;

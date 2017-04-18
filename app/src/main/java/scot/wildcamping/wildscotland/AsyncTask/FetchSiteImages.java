@@ -24,15 +24,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Gallery;
-import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 
 /**
+ *
  * Created by Chris on 04-Mar-16.
+ *
  */
 public class FetchSiteImages extends AsyncTask<String, String, String> {
 
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate = null;
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -42,18 +43,8 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
     private ProgressDialog pDialog;
     private Context context;
     String user;
-    String cid;
-    String email;
-    final int relatOwn = 90;
-    final int relatTrade = 45;
-    String image;
-    SparseArray<Site> map = new SparseArray<>();
-    SparseArray<Site> owned = new SparseArray<>();
-    SparseArray<Gallery> images = new SparseArray<>();
-    SparseArray<Gallery> imagesOwnedSite = new SparseArray<>();
-    SparseArray<Gallery> imagesKnownSite = new SparseArray<>();
-    SparseArray<Gallery> knownGallery;
-    Gallery gallery;
+    private String cid;
+    public Gallery gallery;
 
 
 
@@ -90,7 +81,6 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
             System.out.println("json: " + json);
 
             String postResponse = doPostRequest(Appconfig.URL, json);
-            //System.out.println("post response: " + postResponse);
 
             try {
 
@@ -142,7 +132,7 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
                 }
 
             } catch (JSONException e) {
-
+                e.printStackTrace();
             }
 
         } catch (IOException e) {
@@ -187,8 +177,7 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;

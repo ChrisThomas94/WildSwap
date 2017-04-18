@@ -26,7 +26,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
@@ -85,10 +84,8 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        //user = AppController.getString(context, "uid");
         user = thisUser.getUid();
         email = thisUser.getEmail();
-        //email = AppController.getString(context, "email");
 
         // issue the post request
         try {

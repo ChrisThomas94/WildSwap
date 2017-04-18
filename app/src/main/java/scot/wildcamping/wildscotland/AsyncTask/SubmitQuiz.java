@@ -18,13 +18,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
+ *
  */
 public class SubmitQuiz extends AsyncTask<String, String, String>{
 
@@ -33,6 +35,9 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
 
     OkHttpClient client = new OkHttpClient();
     public AsyncResponse delegate = null;
+
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
 
     private ProgressDialog pDialogKnownSites;
     private Context context;
@@ -76,8 +81,8 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
      * */
     protected String doInBackground(String... args) {
 
-        user = AppController.getString(context, "uid");
-        email = AppController.getString(context, "email");
+        user = thisUser.getUid();
+        email = thisUser.getEmail();
 
         // issue the post request
         try {

@@ -22,7 +22,7 @@ import scot.wildcamping.wildscotland.Objects.Question;
 public class QuestionListAdapter extends BaseAdapter {
 
     private Context context;
-    Quiz quiz = new Quiz();
+    private Quiz quiz = new Quiz();
     private SparseArray<Question> questions;
     private boolean update;
     private boolean isNew;

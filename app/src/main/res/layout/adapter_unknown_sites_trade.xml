@@ -21,6 +21,7 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="5dp"
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
         android:layout_marginRight="15dp"
@@ -105,6 +106,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         android:layout_marginTop="20dp">
 
         <View

@@ -3,9 +3,7 @@ package scot.wildcamping.wildscotland.AsyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,10 +15,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Objects.StoredData;
-import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
 public class CreateUser extends AsyncTask<String, String, String> {
@@ -66,7 +63,9 @@ public class CreateUser extends AsyncTask<String, String, String> {
         pDialog.setCancelable(true);
         pDialog.show();
 
-        token = AppController.getString(context, "token");
+        thisUser.setToken(AppController.getString(context, "token"));
+        token = thisUser.getToken();
+        AppController.setString(context, "token", "");
 
     }
 
@@ -100,11 +99,6 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     thisUser.setName(name);
                     thisUser.setUid(userId);
                     inst.setLoggedInUser(thisUser);
-
-                    //AppController.setString(context, "uid", userId);
-                    //AppController.setString(context, "name", name);
-                    //AppController.setString(context, "email", email);
-                    //AppController.setString(context, "password", password);
 
                 } else {
                     errorMsg = jObj.getString("error_msg");

@@ -129,16 +129,13 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        knownSitesMap = inst.getKnownSitesMap();
-        knownSiteSize = inst.getKnownSiteSize();
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
 
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-
-
-        System.out.println("owned unknownSiteSize: "+ownedSitesMap.size());
+        unknownSitesMap = inst.getUnknownSitesMap();
+        unknownSiteSize = inst.getUnknownSitesSize();
 
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
@@ -366,11 +363,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     public void showOwnedSites(){
         coll.clear();
         ownedMarkersList = new ArrayList<>();
-
-        if(add){
-            ownedSiteSize++;
-            add=false;
-        }
 
         if(ownedSiteSize > 0){
             System.out.println("I have an owned site");

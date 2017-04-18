@@ -3,29 +3,22 @@ package scot.wildcamping.wildscotland.AsyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.SparseArray;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 15-Mar-16.
+ *
  */
 public class UpdateSite extends AsyncTask<String, String, String> {
 
@@ -36,13 +29,14 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     OkHttpClient client = new OkHttpClient();
 
     private ProgressDialog pDialog;
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
 
     String postResponse;
 
     private Context context;
     Boolean owned;
     Boolean active = true;
-    String uid;
     String cid;
     String title;
     String description;
@@ -90,11 +84,9 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        uid = AppController.getString(context, "uid");
+        user = thisUser.getUid();
 
-        if(!active){
-      //      pDialog.setMessage("Deleting site...");
-        } else {
+        if(active){
             pDialog = new ProgressDialog(context);
             pDialog.setMessage("Updating site...");
             pDialog.setIndeterminate(false);
@@ -107,8 +99,6 @@ public class UpdateSite extends AsyncTask<String, String, String> {
      * Creating product
      * */
     protected String doInBackground(String... args) {
-
-        user = AppController.getString(context, "uid");
 
         if(!active && owned){
             try {
@@ -128,28 +118,13 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
 
-                try {
-
-                    JSONObject jObj = new JSONObject(postResponse);
-                    Boolean error = jObj.getBoolean("error");
-                    //int size = jObj.getInt("size");
-                    if (!error) {
-
-
-                    } else {
-                        //error message
-                    }
-
-                } catch (JSONException e) {
-
-                }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (active && !owned){
+        } else if (active){
             try {
-                String json = updateKnownSite(active, uid, cid, rating, image, imageNum);
+                String json = updateKnownSite(active, user, cid, rating, image, imageNum);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -157,8 +132,6 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            //none
         }
 
         return null;

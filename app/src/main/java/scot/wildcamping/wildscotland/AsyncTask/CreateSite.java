@@ -26,34 +26,38 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 16-Mar-16.
+ *
  */
 public class CreateSite extends AsyncTask<String, String, String> {
 
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate = null;
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
 
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
+
     private ProgressDialog pDialog;
     private Context context;
-    int relat;
-    String lat;
-    String lon;
-    String title;
-    String description;
-    String classification;
-    String rating;
-    String json;
+    private int relat;
+    private String lat;
+    private String lon;
+    private String title;
+    private String description;
+    private String classification;
+    private String rating;
+    private String json;
 
     Boolean feature1;
     Boolean feature2;
@@ -155,13 +159,13 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     imagesSingleLine.add(i,im.replaceAll("[\r\n]+", ""));
 
                 } catch (IOException e){
-
+                    e.printStackTrace();
                 }
             }
         }
 
-        uid = AppController.getString(context, "uid");
-        email = AppController.getString(context, "email");
+        uid = thisUser.getUid();
+        email = thisUser.getEmail();
     }
 
     /**
@@ -218,6 +222,8 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
                     newSite.setSiteAdmin(jsonSite.getString("site_admin"));
 
+                    System.out.println("owned site size" + ownedSitesSize);
+
                     //instance of known site class
                     StoredData inst = new StoredData();
                     //get current owned sites
@@ -250,11 +256,9 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     inst.setImages(knownGallery);
 
 
-                } else {
-
                 }
             } catch (JSONException e){
-
+                e.printStackTrace();
             }
 
         }catch (IOException e){
@@ -271,7 +275,6 @@ public class CreateSite extends AsyncTask<String, String, String> {
         // dismiss the dialog once done
         pDialog.dismiss();
 
-        delegate.processFinish(file_url);
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -287,9 +290,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
             }
 
         } catch (JSONException e){
-
+            e.printStackTrace();
         }
 
+        delegate.processFinish(file_url);
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -313,7 +317,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
             try {
                 jsonSingleImage.put("image" + i, images.get(i));
             }catch(JSONException j){
-
+                j.printStackTrace();
             }
 
             jsonGallery.put(jsonSingleImage);
@@ -386,33 +390,12 @@ public class CreateSite extends AsyncTask<String, String, String> {
         }
     }
 
-    public static double distance(double lat1, double lat2, double lon1,
-                                  double lon2) {
-
-        final int R = 6371; // Radius of the earth
-
-        Double latDistance = Math.toRadians(lat2 - lat1);
-        Double lonDistance = Math.toRadians(lon2 - lon1);
-        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
-
-        //double height = el1 - el2;
-
-        distance = Math.pow(distance, 2); //+ Math.pow(height, 2);
-
-        return Math.sqrt(distance);
-    }
-
-    public String getStringImage(Bitmap bmp){
+    private String getStringImage(Bitmap bmp){
         if(bmp != null){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] imageBytes = baos.toByteArray();
-            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            return encodedImage;
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
         } else {
             return null;
         }
@@ -421,8 +404,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;

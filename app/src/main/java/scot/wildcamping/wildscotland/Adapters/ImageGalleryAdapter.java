@@ -21,6 +21,7 @@ import scot.wildcamping.wildscotland.R;
 
 /**
  * Created by Chris on 19-Mar-17.
+ *
  */
 
 public class ImageGalleryAdapter extends PagerAdapter {

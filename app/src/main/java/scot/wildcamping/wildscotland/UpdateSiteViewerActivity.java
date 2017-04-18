@@ -45,8 +45,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     RelativeLayout addFeatures;
     RelativeLayout siteBuilder;
     ImageButton image1;
-    ImageButton image2;
-    ImageButton image3;
     RatingBar ratingBar;
     Button confirmCreation;
     double latitude;
@@ -57,13 +55,10 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     String descReq;
     String ratingReq;
     double rating;
-    String url = Appconfig.URL;
     Intent intent;
     int RESULT_LOAD_IMAGE = 0;
     Uri targetUri;
     String image;
-    Bitmap imageBit;
-    String imageMultiLine;
     String cid;
     GridView gridView;
     Gallery gallery;
@@ -84,22 +79,15 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     Boolean feature10;
 
     Boolean update = true;
-    Boolean lonLat;
     Boolean imageUpload = false;
-    ArrayList imageUris2 = new ArrayList();
     ArrayList<String> imagesList;
     SparseArray<Gallery> temp = new SparseArray<>();
     SparseArray<Gallery> images;
     StoredData inst = new StoredData();
 
-    ImageView close1;
-    ImageView close2;
-    ImageView close3;
-
-
     int arrayPos;
 
-    private Bitmap bitmap;
+    public Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +97,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
-
-
-        final int green = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-        final int gray = ContextCompat.getColor(getApplicationContext(), R.color.counter_text_color);
 
         //initializing views
         Lat =(TextView)findViewById(R.id.lat);
@@ -126,8 +110,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
         siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         or = (TextView)findViewById(R.id.or);
         gridView = (GridView) findViewById(R.id.gridView);
-
-        //title.setSelection(0);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -162,12 +144,6 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
 
             float ratingFloat = (float)rating;
             ratingBar.setRating(ratingFloat);
-
-            /*if(imageUpload) {
-                //imageUris = extras.getStringArray("images");
-                imageUris2 = extras.getStringArrayList("images");
-            }*/
-
         }
 
 
@@ -219,10 +195,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
             or.setVisibility(View.GONE);
 
 
-        } else {
-
         }
-
 
         feature1.equals(focused.getFeature1());
         feature2.equals(focused.getFeature2());
@@ -346,8 +319,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] imageBytes = baos.toByteArray();
-            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            return encodedImage;
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
         } else {
             return null;
         }
@@ -356,8 +328,7 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;

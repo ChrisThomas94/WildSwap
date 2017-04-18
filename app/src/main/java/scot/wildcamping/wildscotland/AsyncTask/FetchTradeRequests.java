@@ -3,18 +3,14 @@ package scot.wildcamping.wildscotland.AsyncTask;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.SparseArray;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
@@ -23,6 +19,7 @@ import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 12-Mar-16.
+ *
  */
 public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
@@ -31,19 +28,18 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
-    private Context context;
+    Context context;
     String user;
-    final int tradeStatus = 0;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
-    SparseArray<Trade> activeTrades = new SparseArray<>();
-    SparseArray<Trade> inactiveTrades = new SparseArray<>();
-    SparseArray<Trade> acceptedTrades = new SparseArray<>();
-    SparseArray<Trade> rejectedTrades = new SparseArray<>();
+    private SparseArray<Trade> activeTrades = new SparseArray<>();
+    private SparseArray<Trade> inactiveTrades = new SparseArray<>();
+    private SparseArray<Trade> acceptedTrades = new SparseArray<>();
+    private SparseArray<Trade> rejectedTrades = new SparseArray<>();
 
 
-    SparseArray<Trade> sentTrades = new SparseArray<>();
-    SparseArray<Trade> receivedTrades = new SparseArray<>();
+    private SparseArray<Trade> sentTrades = new SparseArray<>();
+    private SparseArray<Trade> receivedTrades = new SparseArray<>();
 
 
     public FetchTradeRequests(Context context) {
@@ -64,10 +60,9 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = thisUser.getUid();
-        //user = AppController.getString(context, "uid");
         // issue the post request
         try {
-            String json = getTradeRequests(user, tradeStatus);
+            String json = getTradeRequests(user);
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -145,12 +140,10 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                     inst.setRejectedTradesSize(rejectedTrades.size());
                     inst.setRejectedTrades(rejectedTrades);
 
-                } else {
-                    //error message
                 }
 
             } catch (JSONException e){
-
+                e.printStackTrace();
             }
 
         }catch (IOException e){
@@ -167,15 +160,6 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
         // dismiss the dialog once done
     }
 
-    private String doGetRequest(String url)throws IOException{
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
-
     private String doPostRequest(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
 
@@ -188,7 +172,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String getTradeRequests(String uid, int tradeStatus) {
+    private String getTradeRequests(String uid) {
         return "{\"tag\":\"" + "allTrades" + "\","
                 + "\"uid\":\"" + uid+ "\"}";
     }

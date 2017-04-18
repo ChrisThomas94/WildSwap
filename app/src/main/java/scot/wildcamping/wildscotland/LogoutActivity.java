@@ -12,7 +12,7 @@ import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 
-public class LogOut extends AppCompatActivity {
+public class LogoutActivity extends AppCompatActivity {
 
     TextView txtName;
     TextView txtEmail;
@@ -73,7 +73,7 @@ public class LogOut extends AppCompatActivity {
 
 
 
-        Intent intent = new Intent(LogOut.this, LoginActivity.class);
+        Intent intent = new Intent(LogoutActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

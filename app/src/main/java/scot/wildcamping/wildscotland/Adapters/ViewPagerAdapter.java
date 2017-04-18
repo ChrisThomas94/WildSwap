@@ -1,13 +1,13 @@
 package scot.wildcamping.wildscotland.Adapters;
 
-/**
+/*
+ *
  * Created by Chris on 01-Apr-16.
  *
  */
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.ViewGroup;
 
 import scot.wildcamping.wildscotland.BadgesFragment;
 import scot.wildcamping.wildscotland.SentTradesFragment;
@@ -15,7 +15,6 @@ import scot.wildcamping.wildscotland.KnownSitesFragment;
 import scot.wildcamping.wildscotland.ReceivedTradesFragment;
 import scot.wildcamping.wildscotland.QuestionFragment;
 import scot.wildcamping.wildscotland.OwnedSitesFragment;
-import scot.wildcamping.wildscotland.WrapContentViewPager;
 
 
 

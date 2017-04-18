@@ -5,30 +5,21 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.Appconfig;
-import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
 import scot.wildcamping.wildscotland.Objects.Trade;
 
 /**
  * Created by Chris on 12-Mar-16.
+ *
  */
 public class UpdateTrade extends AsyncTask<String, String, String> {
 
@@ -39,22 +30,16 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
 
     private ProgressDialog pDialog;
     private Context context;
-    int newTradeStatus;
-    int positiveTradeStatus = 2;
+    private int newTradeStatus;
     int negativeTradeStatus = 1;
-    final int relatOwn = 90;
-    final int relatTrade = 45;
-    List<LatLng> knownSites = new ArrayList<LatLng>();
-    Map<String, String> knownSitesString = new HashMap<>();
-    SparseArray<Site> map = new SparseArray<>();
-    String unique_tid;
+    private String unique_tid;
     String postResponse;
 
     SparseArray<Trade> activeTrades = new SparseArray<>();
 
-    StoredTrades trades = new StoredTrades();
+    private StoredTrades trades = new StoredTrades();
 
-    Trade trade = new Trade();
+    private Trade trade = new Trade();
 
 
     public UpdateTrade(Context context, String unique_tid, int newTradeStatus) {
@@ -91,8 +76,7 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
         int size = trades.getActiveTradesSize();
 
         for(int i=0; i<size; i++){
-            if(activeTrades.get(i).getUnique_tid().equals(unique_tid));
-
+            //if(activeTrades.get(i).getUnique_tid().equals(unique_tid));
             trade = activeTrades.get(i);
         }
 
@@ -107,52 +91,6 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
-
-            try {
-
-                JSONObject jObj = new JSONObject(postResponse);
-                Boolean error = jObj.getBoolean("error");
-                //int size = jObj.getInt("size");
-                if (!error) {
-                    //for (int i = 0; i < size; i++) {
-                        /*JSONObject jsonSite = jObj.getJSONObject("site" + i);
-                        String longitude = jsonSite.getString("longitude");
-                        String latitude = jsonSite.getString("latitude");
-                        double lon = Double.parseDouble(longitude);
-                        double lat = Double.parseDouble(latitude);
-                        LatLng position = new LatLng(lat, lon);
-
-                        Site siteClass = new Site();
-                        siteClass.setPosition(position);
-                        siteClass.setCid(jsonSite.getString("unique_cid"));
-                        siteClass.setTitle(jsonSite.getString("title"));
-                        siteClass.setDescription(jsonSite.getString("description"));
-                        siteClass.setRating(jsonSite.getDouble("rating"));
-                        siteClass.setFeature1(jsonSite.getString("feature1"));
-                        siteClass.setFeature2(jsonSite.getString("feature2"));
-                        siteClass.setFeature3(jsonSite.getString("feature3"));
-                        siteClass.setFeature4(jsonSite.getString("feature4"));
-                        siteClass.setFeature5(jsonSite.getString("feature5"));
-                        siteClass.setFeature6(jsonSite.getString("feature6"));
-                        siteClass.setFeature7(jsonSite.getString("feature7"));
-                        siteClass.setFeature8(jsonSite.getString("feature8"));
-                        siteClass.setFeature9(jsonSite.getString("feature9"));
-                        siteClass.setFeature10(jsonSite.getString("feature10"));*/
-
-                        //map.put(i, siteClass);
-                   // }
-
-                    //StoredData inst = new StoredData();
-                    //inst.setKnownSitesMap(map);
-                    //inst.setKnownSiteSize(size);
-
-                } else {
-                    //error message
-                }
-
-            } catch (JSONException e) {
-
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -187,17 +125,8 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
             }
 
         } catch (JSONException e){
-
+            e.printStackTrace();
         }
-    }
-
-    private String doGetRequest(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
     }
 
     private String doPostRequest(String url, String json) throws IOException {

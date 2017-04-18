@@ -15,14 +15,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import scot.wildcamping.wildscotland.AppController;
 import scot.wildcamping.wildscotland.Appconfig;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
+ *
  */
 public class FetchQuestions extends AsyncTask<String, String, String> {
 
@@ -30,7 +31,8 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
-
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
     private ProgressDialog pDialogKnownSites;
     private Context context;
     String user;
@@ -61,7 +63,8 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         if(email == null){
-            user = AppController.getString(context, "user");
+
+            user = thisUser.getUid();
         }
 
         // issue the post request
@@ -78,11 +81,6 @@ public class FetchQuestions extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
                     int size = jObj.getInt("size");
-
-                    //AppController.setString(context, "user_name", jObj.getString("name"));
-                    //AppController.setString(context, "user_email", jObj.getString("email"));
-                    //AppController.setString(context, "user_bio", jObj.getString("bio"));
-                    //AppController.setString(context, "user_profile_pic", jObj.getString("profile_pic"));
 
                     JSONObject jsonQuestion;
                     Question question;
