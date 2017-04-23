@@ -181,7 +181,7 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name=".CreateProfileActivity"
-            android:label="Bio"
+            android:label="Create Profile"
             android:theme= "@style/AppTheme"/>
 
         <!-- [START firebase_service] -->

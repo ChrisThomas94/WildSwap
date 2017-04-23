@@ -41,7 +41,6 @@ public class QuizActivity extends AppCompatActivity {
     Quiz inst;
     SparseArray<Question> question;
     boolean update;
-    boolean isNew;
     int progressValue;
     ProgressBar progress;
     TextView progressText;
@@ -54,8 +53,6 @@ public class QuizActivity extends AppCompatActivity {
     Boolean updateAns4 = true;
     Boolean updateAns5 = true;
     Boolean updateAns6 = true;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +67,6 @@ public class QuizActivity extends AppCompatActivity {
         if(extras != null)
         {
             update = extras.getBoolean("update");
-            isNew = extras.getBoolean("new");
         }
 
         mDrawerList = (ListView)findViewById(R.id.question_listview);
@@ -79,7 +75,7 @@ public class QuizActivity extends AppCompatActivity {
         progressText = (TextView)findViewById(R.id.progressText);
         frame = (RelativeLayout) findViewById(R.id.frame);
 
-        if(!update){
+        if(update){
             info.setVisibility(View.GONE);
         }
 
@@ -87,7 +83,7 @@ public class QuizActivity extends AppCompatActivity {
         question = new SparseArray<>();
         question = inst.getQuestions();
 
-        adapter = new QuestionListAdapter(this, question, update, isNew);
+        adapter = new QuestionListAdapter(this, question, update);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setClickable(true);
 
@@ -155,9 +151,6 @@ public class QuizActivity extends AppCompatActivity {
                 h.postDelayed(this, delay);
             }
         }, delay);
-
-
-
     }
 
     @Override
@@ -190,10 +183,10 @@ public class QuizActivity extends AppCompatActivity {
 
                 final Intent intent;
 
-                if(isNew) {
+                if(!update) {
                     AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
                     intent = new Intent(this, MainActivity_Spinner.class);
-                    intent.putExtra("new", true);
+                    intent.putExtra("update", false);
                 } else {
                     intent = new Intent(this, ProfileActivity.class);
                     intent.putExtra("this_user", true);

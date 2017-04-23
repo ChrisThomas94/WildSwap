@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:visibility="visible"
-        android:text="Complete this short quiz to help other otherUsers gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code and can be found here."
+        android:text="@string/quizText"
         android:clickable="true"/>
 
     <RelativeLayout

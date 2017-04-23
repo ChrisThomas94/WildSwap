@@ -101,8 +101,8 @@
     <string name="immediateFeature9"></string>
 
     <!--User Types-->
-    <string name="userType1">Casual</string>
-    <string name="userType2">Wild Camper</string>
+    <string name="userType1">Beginner</string>
+    <string name="userType2">Casual</string>
     <string name="userType3">Explorer</string>
 
     <!--User Descriptions-->
@@ -121,4 +121,11 @@
     <string name="rejected">- Rejected</string>
     <string name="accepted">- Accepted</string>
     <string name="pending">- Pending</string>
+
+    <string name="quizText">Complete this short quiz to help other users gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code and can be found here.</string>
+
+    <string name="welcomeText">Before you are let loose you will need to build a profile. Your profile will be viewed by other users that may wish to trade with you.\n
+
+    Do not feel obliged to use your real identity, the purpose of having a profile is for other users to gauge an idea about the type of person you are, not who you are.</string>
+
 </resources>

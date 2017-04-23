@@ -91,7 +91,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 } else {
                                     session.setLogin(true);
                                     intent = new Intent(Register.this, CreateProfileActivity.class);
-                                    intent.putExtra("new", true);
+                                    intent.putExtra("update", false);
                                     startActivity(intent);
                                     finish();
                                 }

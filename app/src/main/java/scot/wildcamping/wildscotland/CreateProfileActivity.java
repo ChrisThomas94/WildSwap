@@ -1,6 +1,8 @@
 package scot.wildcamping.wildscotland;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -90,7 +92,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     String coverPicString;
     String userType;
     Intent i;
-    boolean isNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         if(extras != null)
         {
             update = extras.getBoolean("update");
-            isNew = extras.getBoolean("new");
         }
 
         name = (TextView) findViewById(R.id.name);
@@ -129,7 +129,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         //name.setText(AppController.getString(this, "name"));
         name.setText(thisUser.getName());
 
-        if(!isNew){
+        if(update){
 
             profilePicString = thisUser.getProfile_pic();
             coverPicString = thisUser.getCover_pic();
@@ -177,8 +177,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 updateProgress();
                 updateUserType = false;
 
-            } else {
-
             }
 
 
@@ -196,6 +194,22 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 updateProgress();
             }
 
+        } else {
+
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setHomeButtonEnabled(false);
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setTitle("Welcome to Wild Scotland!");
+            builder1.setMessage(getResources().getString(R.string.welcomeText));
+            builder1.setPositiveButton("Let me in.", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert1 = builder1.create();
+            alert1.show();
         }
 
         addCoverPicture.setOnClickListener(new View.OnClickListener() {
@@ -376,8 +390,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 if(update){
                     intent.putExtra("update", true);
 
-                } else if (isNew){
-                    intent.putExtra("new", true);
+                } else if (!update){
+                    intent.putExtra("update", false);
                 }
 
                 if(isNetworkAvailable()) {
@@ -385,7 +399,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                     new FetchQuestions(this, AppController.getString(this, "email")).execute();
 
                     //asynk task updating bio
-                    new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, new AsyncResponse() {
+                    new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);

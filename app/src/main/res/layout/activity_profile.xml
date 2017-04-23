@@ -321,8 +321,9 @@
                         android:id="@+id/profilePicture"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:layout_marginTop="1.5dp"
+                        android:elevation="5dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:clickable="true"
                         android:scaleType="centerCrop"
                         android:visibility="visible" />

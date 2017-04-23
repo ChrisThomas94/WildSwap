@@ -21,6 +21,7 @@ import scot.wildcamping.wildscotland.Objects.User;
 
 /**
  * Created by Chris on 14-Apr-16.
+ *
  */
 public class UpdateProfile extends AsyncTask<String, String, String> {
 
@@ -44,14 +45,16 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     private String why;
     private String profile_pic;
     private String cover_pic;
+    Boolean update;
 
-    public UpdateProfile(Context context, String userType, String bio, String why, String profile_pic, String cover_pic, AsyncResponse delegate) {
+    public UpdateProfile(Context context, String userType, String bio, String why, String profile_pic, String cover_pic, Boolean update, AsyncResponse delegate) {
         this.context = context;
         this.userType = userType;
         this.bio = bio;
         this.why = why;
         this.profile_pic = profile_pic;
         this.cover_pic = cover_pic;
+        this.update = update;
         this.delegate = delegate;
     }
 
@@ -110,7 +113,13 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
                 thisUser.setProfile_pic(profile_pic);
                 thisUser.setCover_pic(cover_pic);
 
-                Toast.makeText(context, "Profile Updated!", Toast.LENGTH_LONG).show();
+                if(update){
+                    Toast.makeText(context, "Profile Updated!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(context, "Profile Created!", Toast.LENGTH_LONG).show();
+
+                }
 
             } else {
                 String errMsg = resp.getString("error_msg");
