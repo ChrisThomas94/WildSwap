@@ -8,6 +8,7 @@ package scot.wildcamping.wildscotland.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import scot.wildcamping.wildscotland.BadgesFragment;
 import scot.wildcamping.wildscotland.SentTradesFragment;
@@ -15,6 +16,7 @@ import scot.wildcamping.wildscotland.KnownSitesFragment;
 import scot.wildcamping.wildscotland.ReceivedTradesFragment;
 import scot.wildcamping.wildscotland.QuestionFragment;
 import scot.wildcamping.wildscotland.OwnedSitesFragment;
+
 
 
 
@@ -65,8 +67,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         return null;
     }
-
-    // This method return the titles for the Tabs in the Tab Strip
 
     @Override
     public CharSequence getPageTitle(int position) {

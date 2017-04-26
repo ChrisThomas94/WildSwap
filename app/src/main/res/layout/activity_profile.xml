@@ -10,14 +10,15 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 
-    <ScrollView
+    <scot.wildcamping.wildscotland.Adapters.CustomScrollView
         android:id="@+id/scroll"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:background="@color/list_item_title"
-        android:layout_below="@+id/tool_bar">
+        android:layout_below="@+id/tool_bar"
+        android:layout_above="@+id/progressLayout">
 
         <LinearLayout
             android:orientation="vertical"
@@ -332,7 +333,7 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -346,26 +347,27 @@
 
                 <View android:layout_width="match_parent"
                     android:layout_height="4dp"
+                    android:layout_below="@+id/tabs"
                     android:background="@drawable/toolbar_dropshadow"/>
 
-                <android.support.v4.view.ViewPager
+                <scot.wildcamping.wildscotland.Adapters.WrapContentViewPager
                     android:id="@+id/pager"
-                    android:layout_height="1500dp"
+                    android:layout_below="@+id/tabs"
+                    android:layout_height="0dp"
                     android:layout_width="match_parent"
                     android:layout_weight="1"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+    </scot.wildcamping.wildscotland.Adapters.CustomScrollView>
 
     <RelativeLayout
         android:id="@+id/progressLayout"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="80dp"
-        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:background="@color/list_item_title">
 

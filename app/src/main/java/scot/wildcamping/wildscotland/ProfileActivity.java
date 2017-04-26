@@ -183,7 +183,7 @@ public class ProfileActivity extends AppCompatActivity {
                 this.profile_pic.setImageBitmap(bit);
                 updateProgress();
 
-                System.out.println("update profile pic" + profile_pic);
+                System.out.println("update profile pic");
 
             }
 
@@ -191,7 +191,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Bitmap bit = StringToBitMap(cover_pic);
                 this.cover_pic.setImageBitmap(bit);
                 updateProgress();
-                System.out.println("update cover pic"+cover_pic);
+                System.out.println("update cover pic");
             }
 
             if(progressValue == 100){

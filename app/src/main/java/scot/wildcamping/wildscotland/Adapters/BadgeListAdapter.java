@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import scot.wildcamping.wildscotland.Objects.Badge;
 import scot.wildcamping.wildscotland.Objects.Question;
 import scot.wildcamping.wildscotland.Objects.Quiz;
 import scot.wildcamping.wildscotland.R;
@@ -29,21 +30,30 @@ public class BadgeListAdapter extends BaseAdapter {
     private Context context;
     private SparseBooleanArray collection;
     private SparseIntArray badges;
+    private SparseArray<Badge> allBadges;
 
-    public BadgeListAdapter(Context context, SparseBooleanArray collection, SparseIntArray badges){
+    public BadgeListAdapter(Context context, SparseBooleanArray collection, SparseIntArray badges, SparseArray<Badge> allBadges){
         this.context = context;
         this.collection = collection;
         this.badges = badges;
+        this.allBadges = allBadges;
+
+    }
+
+    private static final class ViewHolder{
+        private ImageView badgeThumbnail;
+        private TextView badgeTitle;
+        private TextView badgeDesc;
     }
 
     @Override
     public int getCount() {
-        return collection.size();
+        return allBadges.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return collection.get(position);
+        return allBadges.get(position);
     }
 
     @Override
@@ -54,18 +64,30 @@ public class BadgeListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        final ViewHolder viewHolder;
+
+
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.adapter_list_badges, null);
+            viewHolder = new ViewHolder();
+
+            viewHolder.badgeThumbnail = (ImageView) convertView.findViewById(R.id.badgeThumbnail);
+            viewHolder.badgeTitle = (TextView) convertView.findViewById(R.id.badgeTitle);
+            viewHolder.badgeDesc = (TextView) convertView.findViewById(R.id.badgeDesc);
+
+            convertView.setTag(viewHolder);
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView badgeThumbnail = (ImageView) convertView.findViewById(R.id.badgeThumbnail);
-        TextView badgeTitle = (TextView) convertView.findViewById(R.id.badgeTitle);
-        TextView badgeDesc = (TextView) convertView.findViewById(R.id.badgeDesc);
-
-        badgeThumbnail.setImageResource(badges.get(position));
-
+        if(allBadges.get(position) != null) {
+            viewHolder.badgeThumbnail.setImageResource(allBadges.get(position).getResource());
+            viewHolder.badgeTitle.setText(allBadges.get(position).getTitle());
+            viewHolder.badgeDesc.setText(allBadges.get(position).getDescription());
+        }
 
         return convertView;
     }

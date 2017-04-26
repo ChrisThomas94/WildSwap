@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/badgeThumbnail"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="@drawable/badge_icon_1"/>
 
     <TextView
@@ -18,9 +18,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/badgeThumbnail"
         android:text="Title"
+        android:paddingLeft="10dp"
         android:textStyle="bold"
-        android:padding="10dp"
-        android:textSize="30sp"/>
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/badgeDesc"
@@ -28,9 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/badgeTitle"
         android:layout_toRightOf="@+id/badgeThumbnail"
+        android:paddingLeft="10dp"
+
         android:text="Desc"
-        android:padding="5dp"
-        android:textSize="20sp"/>
+        android:textSize="15sp"/>
 
 </RelativeLayout>
 
