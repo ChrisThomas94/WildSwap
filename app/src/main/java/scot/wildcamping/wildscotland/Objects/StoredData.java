@@ -20,7 +20,15 @@ public class StoredData {
     private static SparseArray<Gallery> temp = new SparseArray<>();
     private static SparseArray<User> dealers = new SparseArray<>();
     private static User loggedInUser = new User();
+    private static SparseArray<Badge> badgeCollection = new SparseArray<>();
 
+    public static void setBadgeCollection(SparseArray<Badge> badgeCollection) {
+        StoredData.badgeCollection = badgeCollection;
+    }
+
+    public static SparseArray<Badge> getBadgeCollection() {
+        return badgeCollection;
+    }
 
     public User getLoggedInUser() {
         return loggedInUser;
