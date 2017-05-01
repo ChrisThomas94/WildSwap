@@ -18,9 +18,27 @@ public class User {
     private String cover_pic;
     private String token;
     private String userType;
-    private ArrayList<String> answers;
+    private ArrayList<Integer> answers;
     private int numSites;
     private int numTrades;
+    private int numVouch;
+    private ArrayList<Integer> badges;
+
+    public ArrayList<Integer> getBadges() {
+        return badges;
+    }
+
+    public void setBadges(ArrayList<Integer> badges) {
+        this.badges = badges;
+    }
+
+    public int getNumVouch() {
+        return numVouch;
+    }
+
+    public void setNumVouch(int numVouch) {
+        this.numVouch = numVouch;
+    }
 
     public void setNumSites(int numSites) {
         this.numSites = numSites;
@@ -54,10 +72,6 @@ public class User {
         this.token = token;
     }
 
-    public void setAnswers(ArrayList<String> answers) {
-        this.answers = answers;
-    }
-
     public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
     }
@@ -70,7 +84,11 @@ public class User {
         return token;
     }
 
-    public ArrayList<String> getAnswers() {
+    public void setAnswers(ArrayList<Integer> answers) {
+        this.answers = answers;
+    }
+
+    public ArrayList<Integer> getAnswers() {
         return answers;
     }
 

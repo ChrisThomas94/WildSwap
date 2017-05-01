@@ -195,7 +195,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
                 //open that user's profile
                 if(isNetworkAvailable()) {
-                    new FetchQuestions(this, siteAdmin).execute();
+                    //new FetchQuestions(this, siteAdmin).execute();
                 }
 
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);

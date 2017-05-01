@@ -25,11 +25,13 @@ public class QuestionListAdapter extends BaseAdapter {
     private Quiz quiz = new Quiz();
     private SparseArray<Question> questions;
     private boolean update;
+    private boolean display;
 
-    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update){
+    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean display){
         this.context = context;
         this.questions = questions;
         this.update = update;
+        this.display = display;
     }
 
     private static final class ViewHolder {
@@ -117,7 +119,7 @@ public class QuestionListAdapter extends BaseAdapter {
             }
         });
 
-        if(update){
+        if(!display){
             holder.answer1.setClickable(true);
             holder.answer2.setClickable(true);
             holder.answer3.setClickable(true);

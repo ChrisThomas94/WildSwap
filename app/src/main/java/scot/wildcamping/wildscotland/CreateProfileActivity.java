@@ -59,9 +59,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
 
-    private QuestionListAdapter adapter;
-    private ListView mDrawerList;
-    SparseArray<Question> question;
     boolean update = false;
     int RESULT_LOAD_IMAGE = 0;
     int progressValue = 0;
@@ -386,17 +383,11 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 }
 
                 final Intent intent = new Intent(this, QuizActivity.class);
-
-                if(update){
-                    intent.putExtra("update", true);
-
-                } else if (!update){
-                    intent.putExtra("update", false);
-                }
+                intent.putExtra("update", update);
 
                 if(isNetworkAvailable()) {
 
-                    new FetchQuestions(this, AppController.getString(this, "email")).execute();
+                    //new FetchQuestions(this, thisUser.getEmail()).execute();
 
                     //asynk task updating bio
                     new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {

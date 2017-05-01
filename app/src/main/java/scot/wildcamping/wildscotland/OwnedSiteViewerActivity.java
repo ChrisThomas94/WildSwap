@@ -503,6 +503,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
                 ArrayList<String> emails = new ArrayList<>();
                 final Intent i = new Intent(this, GiftSiteActivity.class);
+                i.putExtra("cid", cid);
                 new FetchUsers(this, emails, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {

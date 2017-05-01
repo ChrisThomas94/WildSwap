@@ -1,13 +1,15 @@
 package scot.wildcamping.wildscotland;
 
-/**
- * Created by Chris on 23-Dec-15.
- *
- */
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+/**
+ *
+ * Created by Chris on 23-Dec-15.
+ *
+ */
 
 public class AppController extends Application {
 

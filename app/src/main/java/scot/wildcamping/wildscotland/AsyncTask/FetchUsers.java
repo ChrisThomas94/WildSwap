@@ -102,6 +102,7 @@ public class FetchUsers extends AsyncTask<String, String, String> {
                             user.setProfile_pic(jsonUser.getString("profile_pic"));
                             user.setName(jsonUser.getString("name"));
                             user.setEmail(jsonUser.getString("email"));
+                            user.setUid(jsonUser.getString("unique_uid"));
 
                         } else {
 
@@ -116,6 +117,29 @@ public class FetchUsers extends AsyncTask<String, String, String> {
                             user.setUid(jsonUser.getString("unique_uid"));
                             user.setNumTrades(jsonUser.getInt("numTrades"));
                             user.setNumSites(jsonUser.getInt("numSites"));
+                            user.setNumVouch(jsonUser.getInt("vouch"));
+
+                            ArrayList<Integer> answers = new ArrayList<>();
+
+                            for(int x = 1; x<10; x++){
+                                answers.add(x-1, jsonUser.getInt("question" + x));
+                            }
+
+                            user.setAnswers(answers);
+
+                            JSONObject jsonBadges = jsonUser.getJSONObject("badges");
+
+                            ArrayList<Integer> badges = new ArrayList<>();
+
+                            System.out.println("badges length "+jsonBadges.length());
+
+                            for(int j = 1; j<=jsonBadges.length()-4; j++){
+                                int badge = jsonBadges.getInt("badge_"+j);
+                                System.out.println("badge "+ badge);
+                                badges.add(j-1, badge);
+                            }
+
+                            user.setBadges(badges);
 
                         }
 

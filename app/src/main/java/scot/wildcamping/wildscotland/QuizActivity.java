@@ -39,7 +39,8 @@ public class QuizActivity extends AppCompatActivity {
     ListView mDrawerList;
     TextView info;
     Quiz inst;
-    SparseArray<Question> question;
+    SparseArray<Question> allQuestions;
+    Question thisQuestion;
     boolean update;
     int progressValue;
     ProgressBar progress;
@@ -80,10 +81,29 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         inst = new Quiz();
-        question = new SparseArray<>();
-        question = inst.getQuestions();
+        allQuestions = new SparseArray<>();
+        //allQuestions = inst.getQuestions();
 
-        adapter = new QuestionListAdapter(this, question, update);
+
+
+        for(int i=1;  i<=7; i++){
+            thisQuestion = new Question();
+            String question = "@string/question" + (i);
+            String answer1 = "@string/question" + (i) + "_answer1";
+            String answer2 = "@string/question" + (i) + "_answer2";
+            String answer3 = "@string/question" + (i) + "_answer3";
+            String answer4 = "@string/question" + (i) + "_answer4";
+            thisQuestion.setQuestion(getResources().getString(getResources().getIdentifier(question, null, getPackageName())));
+            thisQuestion.setAnswer1(getResources().getString(getResources().getIdentifier(answer1, null, getPackageName())));
+            thisQuestion.setAnswer2(getResources().getString(getResources().getIdentifier(answer2, null, getPackageName())));
+            thisQuestion.setAnswer3(getResources().getString(getResources().getIdentifier(answer3, null, getPackageName())));
+            thisQuestion.setAnswer4(getResources().getString(getResources().getIdentifier(answer4, null, getPackageName())));
+            allQuestions.put(i-1, thisQuestion);
+        }
+        inst.setQuestions(allQuestions);
+
+
+        adapter = new QuestionListAdapter(this, allQuestions, update, false);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setClickable(true);
 
@@ -111,39 +131,39 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressValue = 0;
-                question = inst.getQuestions();
+                allQuestions = inst.getQuestions();
 
-                if(question.get(0).getAnswer() != 0 && updateAns0){
+                if(allQuestions.get(0).getAnswer() != 0 && updateAns0){
                     updateAns0 = false;
                     updateProgress();
                 }
 
-                if(question.get(1).getAnswer() != 0 && updateAns1){
+                if(allQuestions.get(1).getAnswer() != 0 && updateAns1){
                     updateAns1 = false;
                     updateProgress();
                 }
 
-                if(question.get(2).getAnswer() != 0 && updateAns2){
+                if(allQuestions.get(2).getAnswer() != 0 && updateAns2){
                     updateAns2 = false;
                     updateProgress();
                 }
 
-                if(question.get(3).getAnswer() != 0 && updateAns3){
+                if(allQuestions.get(3).getAnswer() != 0 && updateAns3){
                     updateAns3 = false;
                     updateProgress();
                 }
 
-                if(question.get(4).getAnswer() != 0 && updateAns4){
+                if(allQuestions.get(4).getAnswer() != 0 && updateAns4){
                     updateAns4 = false;
                     updateProgress();
                 }
 
-                if(question.get(5).getAnswer() != 0 && updateAns5){
+                if(allQuestions.get(5).getAnswer() != 0 && updateAns5){
                     updateAns5 = false;
                     updateProgress();
                 }
 
-                if(question.get(6).getAnswer() != 0 && updateAns6){
+                if(allQuestions.get(6).getAnswer() != 0 && updateAns6){
                     updateAns6 = false;
                     updateProgress();
                 }
@@ -165,26 +185,26 @@ public class QuizActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                question = inst.getQuestions();
-                question.clear();
+                //question = inst.getQuestions();
+                //question.clear();
 
                 finish();
                 return true;
 
             case R.id.action_submit:
 
-                question = inst.getQuestions();
+                //question = inst.getQuestions();
                 ArrayList<Integer> answers = new ArrayList<>();
 
-                for(int i=0; i<question.size(); i++){
-                    answers.add(i, question.get(i).getAnswer());
+                for(int i=0; i<allQuestions.size(); i++){
+                    answers.add(i, allQuestions.get(i).getAnswer());
                 }
 
 
                 final Intent intent;
 
                 if(!update) {
-                    AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
+                    //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
                     intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("update", false);
                 } else {

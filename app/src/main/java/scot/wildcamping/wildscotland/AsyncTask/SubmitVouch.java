@@ -3,6 +3,7 @@ package scot.wildcamping.wildscotland.AsyncTask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -18,46 +19,36 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import scot.wildcamping.wildscotland.Appconfig;
+import scot.wildcamping.wildscotland.Objects.Question;
+import scot.wildcamping.wildscotland.Objects.Quiz;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
 
 /**
- * Created by Chris on 14-Apr-16.
+ * Created by Chris on 09-Apr-16.
  *
  */
-public class UpdateProfile extends AsyncTask<String, String, String> {
+public class SubmitVouch extends AsyncTask<String, String, String>{
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
-
     public AsyncResponse delegate = null;
-
-    private ProgressDialog pDialog;
-
-    String postResponse;
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
-    private Context context;
-    String user;
-    private String userType;
-    private String bio;
-    private String why;
-    private String profile_pic;
-    private String cover_pic;
-    Boolean update;
 
-    public UpdateProfile(Context context, String userType, String bio, String why, String profile_pic, String cover_pic, Boolean update, AsyncResponse delegate) {
+    private ProgressDialog pDialogKnownSites;
+    private Context context;
+    private String email;
+    private String postResponse;
+
+    public SubmitVouch(Context context, String userEmail, AsyncResponse delegate) {
         this.context = context;
-        this.userType = userType;
-        this.bio = bio;
-        this.why = why;
-        this.profile_pic = profile_pic;
-        this.cover_pic = cover_pic;
-        this.update = update;
+        this.email = userEmail;
         this.delegate = delegate;
+
     }
 
     /**
@@ -66,12 +57,11 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Updating profile...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        pDialogKnownSites = new ProgressDialog(context);
+        pDialogKnownSites.setMessage("Submitting Answers ...");
+        pDialogKnownSites.setIndeterminate(false);
+        pDialogKnownSites.setCancelable(true);
+        pDialogKnownSites.show();
     }
 
     /**
@@ -79,13 +69,27 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
      * */
     protected String doInBackground(String... args) {
 
-        user = thisUser.getUid();
-
+        // issue the post request
         try {
-            String json = updateProfile(user, userType, bio, why, profile_pic, cover_pic);
+            String json = submitVouch(email);
             System.out.println("json: " + json);
+
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
+
+            try {
+
+                JSONObject jObj = new JSONObject(postResponse);
+                Boolean error = jObj.getBoolean("error");
+                if (!error) {
+
+                } else {
+                    //error message
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,10 +102,21 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
-        pDialog.dismiss();
+        // dismiss the dialog once donepDialog.dismiss();
+
         delegate.processFinish(file_url);
 
+        try {
+            if ((this.pDialogKnownSites != null) && this.pDialogKnownSites.isShowing()) {
+                this.pDialogKnownSites.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            // Handle or log or ignore
+        } catch (final Exception e) {
+            // Handle or log or ignore
+        } finally {
+            this.pDialogKnownSites = null;
+        }
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -109,34 +124,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
             boolean error = resp.getBoolean("error");
             if (!error) {
 
-                thisUser.setUserType(userType);
-                thisUser.setBio(bio);
-                thisUser.setWhy(why);
-                thisUser.setProfile_pic(profile_pic);
-                thisUser.setCover_pic(cover_pic);
-
-                if(update){
-                    Toast.makeText(context, "Profile Updated!", Toast.LENGTH_LONG).show();
-
-                } else {
-
-                    JSONObject jsonBadges = resp.getJSONObject("badges");
-
-                    ArrayList<Integer> badges = new ArrayList<>();
-
-                    System.out.println("badges length "+jsonBadges.length());
-
-                    for(int i = 1; i<=jsonBadges.length()-4;i++){
-                        int badge = jsonBadges.getInt("badge_"+i);
-                        System.out.println("badge "+ badge);
-                        badges.add(i-1, badge);
-                    }
-
-                    thisUser.setBadges(badges);
-
-                    Toast.makeText(context, "Profile Created!", Toast.LENGTH_LONG).show();
-
-                }
+                Toast.makeText(context, "Vouch Submitted!", Toast.LENGTH_LONG).show();
 
             } else {
                 String errMsg = resp.getString("error_msg");
@@ -146,6 +134,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         } catch (JSONException e){
 
         }
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -160,14 +149,10 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
+    private String submitVouch(String email) {
 
-    private String updateProfile(String uid, String userType, String bio, String why, String profile_pic, String cover_pic){
-        return "{\"tag\":\"" + "updateProfile" + "\","
-                + "\"uid\":\"" + uid + "\","
-                + "\"userType\":\"" + userType + "\","
-                + "\"bio\":\"" + bio + "\","
-                + "\"why\":\"" + why + "\","
-                + "\"profile_pic\":\"" + profile_pic + "\","
-                + "\"cover_pic\":\"" + cover_pic + "\"}";
+        return "{\"tag\":\"" + "vouch" + "\","
+                + "\"email\":\"" + email+ "\"}";
     }
+
 }

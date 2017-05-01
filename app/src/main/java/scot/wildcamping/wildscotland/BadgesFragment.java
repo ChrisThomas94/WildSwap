@@ -9,10 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.Adapters.BadgeListAdapter;
 import scot.wildcamping.wildscotland.Objects.Badge;
 import scot.wildcamping.wildscotland.Objects.Badges;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 
 public class BadgesFragment extends Fragment {
 
@@ -21,9 +26,13 @@ public class BadgesFragment extends Fragment {
 
     BadgeListAdapter adapter;
     ListView mDrawerList;
+    StoredData stored;
+    User thisUser;
     Badges inst = new Badges();
     SparseBooleanArray collection;
-    SparseIntArray badges = new SparseIntArray();
+    ArrayList<Integer> badges = new ArrayList<>();
+
+    TextView tally;
 
     SparseArray<Badge> allBadges = new SparseArray<>();
     Badge thisBadge;
@@ -33,6 +42,11 @@ public class BadgesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_badges_list, container, false);
+
+        stored = new StoredData();
+        thisUser = stored.getLoggedInUser();
+
+        tally = (TextView) rootView.findViewById(R.id.count);
 
         for(int i = 0; i<25; i++){
             thisBadge = new Badge();
@@ -44,18 +58,20 @@ public class BadgesFragment extends Fragment {
             thisBadge.setTitle(getResources().getString(getResources().getIdentifier(title, null, getActivity().getPackageName())));
             thisBadge.setDescription(getResources().getString(getResources().getIdentifier(desc, null, getActivity().getPackageName())));
             allBadges.put(i, thisBadge);
-            //badges.put(i, getResources().getIdentifier(uri, null, getActivity().getPackageName()));
         }
 
         inst.setBadges(allBadges);
-        //inst.setBadgesResource(badges);
 
-        System.out.println("title 1: " + inst.getBadges().get(1).getTitle());
-        System.out.println("title 2: " + inst.getBadges().get(2).getTitle());
-        System.out.println("title 3: " + inst.getBadges().get(3).getTitle());
-        System.out.println("title 4: " + inst.getBadges().get(4).getTitle());
+        badges = thisUser.getBadges();
 
+        int count = 0;
+        for(int i = 0; i<badges.size(); i++){
+            if(badges.get(i) == 1){
+                count++;
+            }
+        }
 
+        tally.setText(String.valueOf(count) + "/" + String.valueOf(badges.size()));
 
         mDrawerList = (ListView) rootView.findViewById(R.id.badge_listview);
 

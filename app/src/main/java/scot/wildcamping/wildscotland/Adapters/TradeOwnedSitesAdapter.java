@@ -105,7 +105,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
             siteThumbnail.setImageBitmap(imageBit);
         }
 
-        if(!profile_picString.equals("null") || !profile_picString.equals("")){
+        if(profile_picString != null && !profile_picString.equals("null") && !profile_picString.equals("")){
             Bitmap bit = StringToBitMap(profile_picString);
             profile_pic.setImageBitmap(bit);
         }

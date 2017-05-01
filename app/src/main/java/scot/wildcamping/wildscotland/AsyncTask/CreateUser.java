@@ -65,7 +65,7 @@ public class CreateUser extends AsyncTask<String, String, String> {
 
         thisUser.setToken(AppController.getString(context, "token"));
         token = thisUser.getToken();
-        AppController.setString(context, "token", "");
+        //AppController.setString(context, "token", "");
 
     }
 

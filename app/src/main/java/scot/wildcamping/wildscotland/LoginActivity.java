@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             final Intent intent = new Intent(this, MainActivity_Spinner.class);
 
-            new FetchQuestions(this, thisUser.getEmail()).execute();
+            //new FetchQuestions(this, thisUser.getEmail()).execute();
 
             new FetchUsers(this, users, new AsyncResponse() {
                 @Override

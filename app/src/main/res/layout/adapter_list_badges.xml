@@ -6,17 +6,25 @@
     android:elevation="5dp"
     android:descendantFocusability="blocksDescendants">
 
-    <ImageView
-        android:id="@+id/badgeThumbnail"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/badge_icon_1"/>
+    <FrameLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/circular_dimmer">
+
+        <ImageView
+            android:id="@+id/badgeThumbnail"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/badge_icon_1"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/badgeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/badgeThumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
         android:text="Title"
         android:paddingLeft="10dp"
         android:textStyle="bold"
@@ -27,9 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/badgeTitle"
-        android:layout_toRightOf="@+id/badgeThumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
         android:paddingLeft="10dp"
-
         android:text="Desc"
         android:textSize="15sp"/>
 

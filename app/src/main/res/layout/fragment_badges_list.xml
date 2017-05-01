@@ -12,27 +12,27 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Badges"
-            android:textStyle="bold"
             android:padding="10dp"
-            android:textSize="30sp"/>
+            android:text="Badges"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/viewChange"
-            android:text="0/25"
-            android:textStyle="bold"
             android:padding="10dp"
-            android:textSize="30sp"/>
+            android:text="0/25"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/viewChange"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

@@ -140,7 +140,7 @@ public class TradeView extends AppCompatActivity {
             case R.id.profile:
                 //open that user's profile
                 if(isNetworkAvailable()) {
-                    new FetchQuestions(this, emails.get(0)).execute();
+                    //new FetchQuestions(this, emails.get(0)).execute();
                 }
 
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);

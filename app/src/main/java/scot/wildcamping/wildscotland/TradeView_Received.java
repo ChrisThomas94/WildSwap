@@ -448,13 +448,7 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
 
             case R.id.profile:
                 if(isNetworkAvailable()) {
-                    try {
-                        String questions = new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
-                    } catch (InterruptedException e) {
-
-                    } catch (ExecutionException e) {
-
-                    }
+                    //new FetchQuestions(this, recieveSite.getSiteAdmin()).execute().get();
                 }
                 //open that user's profile
                 Intent in = new Intent(getApplicationContext(), ProfileActivity.class);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,7 +24,7 @@ import scot.wildcamping.wildscotland.Objects.User;
  * Created by Chris on 14-Apr-16.
  *
  */
-public class UpdateProfile extends AsyncTask<String, String, String> {
+public class UpdateBadges extends AsyncTask<String, String, String> {
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -42,20 +41,10 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     User thisUser = inst.getLoggedInUser();
     private Context context;
     String user;
-    private String userType;
-    private String bio;
-    private String why;
-    private String profile_pic;
-    private String cover_pic;
     Boolean update;
 
-    public UpdateProfile(Context context, String userType, String bio, String why, String profile_pic, String cover_pic, Boolean update, AsyncResponse delegate) {
+    public UpdateBadges(Context context, Boolean update, AsyncResponse delegate) {
         this.context = context;
-        this.userType = userType;
-        this.bio = bio;
-        this.why = why;
-        this.profile_pic = profile_pic;
-        this.cover_pic = cover_pic;
         this.update = update;
         this.delegate = delegate;
     }
@@ -82,7 +71,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
         user = thisUser.getUid();
 
         try {
-            String json = updateProfile(user, userType, bio, why, profile_pic, cover_pic);
+            String json = updateProfile(user);
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -109,14 +98,9 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
             boolean error = resp.getBoolean("error");
             if (!error) {
 
-                thisUser.setUserType(userType);
-                thisUser.setBio(bio);
-                thisUser.setWhy(why);
-                thisUser.setProfile_pic(profile_pic);
-                thisUser.setCover_pic(cover_pic);
 
                 if(update){
-                    Toast.makeText(context, "Profile Updated!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Badges Updated!", Toast.LENGTH_LONG).show();
 
                 } else {
 
@@ -161,13 +145,9 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     }
 
 
-    private String updateProfile(String uid, String userType, String bio, String why, String profile_pic, String cover_pic){
-        return "{\"tag\":\"" + "updateProfile" + "\","
+    private String updateProfile(String uid){
+        return "{\"tag\":\"" + "updateBadges" + "\","
                 + "\"uid\":\"" + uid + "\","
-                + "\"userType\":\"" + userType + "\","
-                + "\"bio\":\"" + bio + "\","
-                + "\"why\":\"" + why + "\","
-                + "\"profile_pic\":\"" + profile_pic + "\","
-                + "\"cover_pic\":\"" + cover_pic + "\"}";
+                + "\"uid\":\"" + uid + "\"}";
     }
 }

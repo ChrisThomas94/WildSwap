@@ -1,6 +1,8 @@
 package scot.wildcamping.wildscotland;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -20,6 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Adapters.UserListAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.GiftSite;
+import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredUsers;
 import scot.wildcamping.wildscotland.Objects.User;
 
@@ -28,42 +35,66 @@ public class GiftSiteActivity extends AppCompatActivity implements SearchView.On
     public GiftSiteActivity() {
     }
 
-    Button btnLogout;
     ListView mDrawerList;
     UserListAdapter adapter;
-
     SparseArray<User> fetchedUsers;
+    String cid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gift_site);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            cid = extras.getString("cid");
+        }
+
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        btnLogout = (Button) findViewById(R.id.btnLogout);
         mDrawerList = (ListView)findViewById(R.id.user_listview);
 
-
-        StoredUsers storedUsers = new StoredUsers();
-        fetchedUsers = storedUsers.getOtherUsers();
-
+        StoredData inst = new StoredData();
+        fetchedUsers = inst.getDealers();
 
         adapter = new UserListAdapter(this, fetchedUsers);
         mDrawerList.setAdapter(adapter);
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(GiftSiteActivity.this);
+                builder1.setTitle("Attention!");
+                builder1.setMessage("You are about to reveal this location to another user, this is your last chance to change your mind.");
+
+                builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        new GiftSite(GiftSiteActivity.this, fetchedUsers.get(position).getUid(), cid, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+
+                            }
+                        }).execute();
+
+                    }
+                });
+
+                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert1 = builder1.create();
+                alert1.show();
 
             }
         });

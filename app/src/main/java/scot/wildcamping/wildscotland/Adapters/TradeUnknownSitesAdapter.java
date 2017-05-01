@@ -133,12 +133,12 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
                 }
             }
 
-            if (!profile_picString.equals("null") || !profile_picString.equals("")) {
+            if (profile_picString != null && !profile_picString.equals("null") && !profile_picString.equals("")) {
                 Bitmap bit = StringToBitMap(profile_picString);
                 profile_pic.setImageBitmap(bit);
             }
 
-            if (!cover_picString.equals("null") || !cover_picString.equals("")) {
+            if (cover_picString != null && !cover_picString.equals("null") && !cover_picString.equals("")) {
                 Bitmap bit = StringToBitMap(cover_picString);
                 backgroundImage.setImageBitmap(bit);
             }

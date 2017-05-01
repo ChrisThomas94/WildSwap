@@ -37,8 +37,10 @@ import java.util.concurrent.ExecutionException;
 import de.hdodenhof.circleimageview.CircleImageView;
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
+import scot.wildcamping.wildscotland.AsyncTask.SubmitVouch;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.StoredTrades;
@@ -85,6 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
     RelativeLayout progressLayout;
     TextView numSitesText;
     TextView numTradesText;
+    TextView numVouches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
         userType = (TextView) findViewById(R.id.profileStatusText);
         numSitesText = (TextView) findViewById(R.id.numSites);
         numTradesText = (TextView) findViewById(R.id.numTrades);
+        numVouches = (TextView) findViewById(R.id.vouchNumber);
 
         int ownedSites = inst.getOwnedSiteSize();
         int completedTrades = trades.getAcceptedTradesSize();
@@ -153,6 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
             String cover_pic = thisUser.getCover_pic();
             String type = thisUser.getUserType();
             userType.setText(type);
+            int vouch = thisUser.getNumVouch();
 
             numSitesText.setText(String.valueOf(ownedSites));
             numTradesText.setText(String.valueOf(completedTrades));
@@ -178,7 +183,7 @@ public class ProfileActivity extends AppCompatActivity {
                 System.out.println("update why");
             }
 
-            if(!profile_pic.equals("null") && !profile_pic.equals("")){
+            if(profile_pic != null && !profile_pic.equals("null") && !profile_pic.equals("")){
                 Bitmap bit = StringToBitMap(profile_pic);
                 this.profile_pic.setImageBitmap(bit);
                 updateProgress();
@@ -187,12 +192,14 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
 
-            if(!cover_pic.equals("null") && !cover_pic.equals("")){
+            if(cover_pic != null && !cover_pic.equals("null") && !cover_pic.equals("")){
                 Bitmap bit = StringToBitMap(cover_pic);
                 this.cover_pic.setImageBitmap(bit);
                 updateProgress();
                 System.out.println("update cover pic");
             }
+
+            numVouches.setText(String.valueOf(vouch));
 
             if(progressValue == 100){
                 progressLayout.setVisibility(GONE);
@@ -213,6 +220,7 @@ public class ProfileActivity extends AppCompatActivity {
             txtEmail.setText(otherUser.getEmail());
             numTradesText.setText(String.valueOf(otherUser.getNumTrades()));
             numSitesText.setText(String.valueOf(otherUser.getNumSites()));
+            int vouch = otherUser.getNumVouch();
 
             String bio = otherUser.getBio();
 
@@ -236,6 +244,8 @@ public class ProfileActivity extends AppCompatActivity {
                 cover_pic.setImageBitmap(bit);
                 updateProgress();
             }
+
+            numVouches.setText(String.valueOf(vouch));
 
             progress.setVisibility(GONE);
             progressLayout.setVisibility(GONE);
@@ -351,7 +361,11 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.profile, menu);
+        if(this_user){
+            getMenuInflater().inflate(R.menu.profile, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.other_user_profile, menu);
+        }
         return true;
     }
 
@@ -367,7 +381,7 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
-                new FetchQuestions(this, thisUser.getEmail()).execute();
+                //new FetchQuestions(this, thisUser.getEmail()).execute();
             } else {
                 Snackbar.make(getWindow().getDecorView().getRootView(), "No network connection!", Snackbar.LENGTH_LONG)
                         .show();
@@ -379,6 +393,18 @@ public class ProfileActivity extends AppCompatActivity {
             intent.putExtra("update", true);
             startActivity(intent);
             return true;
+        } else if(id == R.id.vouch){
+            if(isNetworkAvailable()) {
+                new SubmitVouch(this, otherEmail, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                    }
+                }).execute();
+            } else {
+                Snackbar.make(getWindow().getDecorView().getRootView(), "No network connection!", Snackbar.LENGTH_LONG)
+                        .show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -81,7 +83,7 @@ public class Login extends AsyncTask<String, String, String> {
                 error = jObj.getBoolean("error");
 
                 if(!error) {
-                    userId= jObj.getString("uid");
+                    userId = jObj.getString("uid");
                     JSONObject user = jObj.getJSONObject("user");
                     String name = user.getString("name");
                     String email = user.getString("email");
@@ -93,6 +95,7 @@ public class Login extends AsyncTask<String, String, String> {
                     int numSites = user.getInt("numSites");
                     int numTrades = user.getInt("numTrades");
                     String token = user.getString("token");
+                    int numVouch = user.getInt("vouch");
 
 
                     thisUser.setUid(userId);
@@ -106,6 +109,21 @@ public class Login extends AsyncTask<String, String, String> {
                     thisUser.setNumSites(numSites);
                     thisUser.setNumTrades(numTrades);
                     thisUser.setToken(token);
+                    thisUser.setNumVouch(numVouch);
+
+                    JSONObject jsonBadges = jObj.getJSONObject("badges");
+
+                    ArrayList<Integer> badges = new ArrayList<>();
+
+                    System.out.println("badges length "+jsonBadges.length());
+
+                    for(int i = 1; i<=jsonBadges.length()-4;i++){
+                        int badge = jsonBadges.getInt("badge_"+i);
+                        System.out.println("badge "+ badge);
+                        badges.add(i-1, badge);
+                    }
+
+                    thisUser.setBadges(badges);
 
                     inst.setLoggedInUser(thisUser);
 
