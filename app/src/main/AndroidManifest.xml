@@ -119,7 +119,7 @@
 
         <activity
             android:name=".TradeView"
-            android:label="Sent Trade"
+            android:label="Trade Overview"
             android:theme="@style/AppTheme">
         </activity>
 
@@ -136,6 +136,11 @@
 
         <activity
             android:name=".KnownSiteActivity"
+            android:label="Known Site"
+            android:theme="@style/AppTheme"/>
+
+        <activity
+            android:name=".KnownSiteViewerActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
 

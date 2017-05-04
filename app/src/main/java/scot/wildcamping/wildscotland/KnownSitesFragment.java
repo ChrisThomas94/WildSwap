@@ -15,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Adapters.SiteListAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.FetchSiteImages;
+import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 
@@ -51,17 +54,30 @@ public class KnownSitesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), KnownSiteActivity.class);
+                final Intent intent = new Intent(getActivity(), KnownSiteViewerActivity.class);
                 intent.putExtra("arrayPosition", position);
-                //intent.putExtra("latitude", knownSites.get(position).getPosition().latitude);
-                //intent.putExtra("longitude", knownSites.get(position).getPosition().longitude);
                 intent.putExtra("cid", knownSites.get(position).getCid());
-                //intent.putExtra("title", knownSites.get(position).getTitle());
-                //intent.putExtra("description", knownSites.get(position).getDescription());
-                //intent.putExtra("rating", knownSites.get(position).getRating());
-                //intent.putExtra("profilePicString", knownSites.get(position).getImage());
                 intent.putExtra("prevState", 2);
-                startActivity(intent);
+
+                SparseArray<Gallery> images = inst.getImages();
+                String cid = knownSites.get(position).getCid();
+                String subCid = cid.substring(cid.length()-8);
+                int cidEnd = Integer.parseInt(subCid);
+
+                images.get(cidEnd, null);
+
+                if(images.get(cidEnd) == null && isNetworkAvailable()){
+                    new FetchSiteImages(getContext(), knownSites.get(position).getCid(), new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                        }
+                    }).execute();
+
+                } else {
+                    //no images previously fetched for this site
+                    startActivity(intent);
+                }
             }
         });
 

@@ -19,10 +19,6 @@ public class ReceivedTradesFragment extends Fragment {
 	
 	public ReceivedTradesFragment(){}
 
-    final String sent = "Sent";
-    final String received = "Received";
-
-    //SparseArray<Trade> activeTrades;
     SparseArray<Trade> receivedTrades = new SparseArray<>();
 
     StoredTrades trades;
@@ -42,6 +38,14 @@ public class ReceivedTradesFragment extends Fragment {
 
         trades = new StoredTrades();
         receivedTrades = trades.getReceivedTrades();
+
+        for(int i = 0; i<receivedTrades.size(); i++){
+
+            if(receivedTrades.get(i).getStatus() != 0){
+                receivedTrades.remove(i);
+            }
+
+        }
 
         if(receivedTrades.size() > 0){
             empty.setVisibility(View.GONE);

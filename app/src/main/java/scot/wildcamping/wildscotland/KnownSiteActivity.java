@@ -1,5 +1,6 @@
 package scot.wildcamping.wildscotland;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUnknownSites;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
@@ -247,22 +249,27 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                     }
 
                     if(isNetworkAvailable()) {
-                        try {
-                            String update = new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum).execute().get();
-                            String known_result = new FetchKnownSites(this, null).execute().get();
-                            String unknown_result = new FetchUnknownSites(this, null).execute().get();
+                        new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                new FetchKnownSites(KnownSiteActivity.this, new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        new FetchUnknownSites(KnownSiteActivity.this, new AsyncResponse() {
+                                            @Override
+                                            public void processFinish(String output) {
+                                                finish();
+                                            }
+                                        }).execute();
 
-                        } catch (InterruptedException e) {
-
-                        } catch (ExecutionException e) {
-
-                        }
+                                    }
+                                }).execute();
+                            }
+                        }).execute();
                     }
-
-                    finish();
                 }
+                break;
         }
-
     }
 
     @Override

@@ -166,10 +166,10 @@ public class MainActivity_Spinner extends AppCompatActivity {
             case 0:
                 if(isNetworkAvailable() && fetchData) {
 
-                    new FetchUnknownSites(this, new AsyncResponse() {
+                    new FetchKnownSites(this, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
-                            new FetchKnownSites(MainActivity_Spinner.this, new AsyncResponse() {
+                            new FetchUnknownSites(MainActivity_Spinner.this, new AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {
                                     MapsFragment mapsFragment = new MapsFragment();
@@ -178,11 +178,12 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
                                     setTitle(list.get(position));
                                     setRefreshActionButtonState(false);
-
                                 }
                             }).execute();
+
                         }
                     }).execute();
+
                 } else {
                     MapsFragment mapsFragment = new MapsFragment();
                     FragmentManager fragmentManager = getFragmentManager();

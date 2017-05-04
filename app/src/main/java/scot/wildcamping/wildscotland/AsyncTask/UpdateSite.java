@@ -22,6 +22,7 @@ import scot.wildcamping.wildscotland.Objects.User;
  */
 public class UpdateSite extends AsyncTask<String, String, String> {
 
+    private AsyncResponse delegate = null;
 
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
@@ -55,7 +56,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     String user;
     int imageNum;
 
-    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, int imageNum) {
+    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, int imageNum, AsyncResponse delegate) {
         this.context = context;
         this.owned = owned;
         this.active = active;
@@ -75,6 +76,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         this.feature10 = feature10;
         this.image = image;
         this.imageNum = imageNum;
+        this.delegate = delegate;
     }
 
     /**
@@ -164,6 +166,9 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         } catch (JSONException e){
 
         }
+
+        delegate.processFinish(file_url);
+
     }
 
 

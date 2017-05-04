@@ -1,12 +1,11 @@
 package scot.wildcamping.wildscotland;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -31,7 +31,9 @@ import java.util.List;
 
 import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
-import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
+import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
+import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.ReportSite;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
@@ -41,34 +43,19 @@ import scot.wildcamping.wildscotland.Objects.StoredData;
  * Created by Chris on 26-Feb-16.
  *
  */
-public class OwnedSiteViewerActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
+public class KnownSiteViewerActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
 
     int arrayPos;
     Double latitude;
     Double longitude;
     String cid;
-    String titleBun;
-    String descriptionBun;
-    Double ratingBun;
-    SparseArray<String> features;
-    Boolean feature1 = true;
-    Boolean feature2 = true;
-    Boolean feature3 = true;
-    Boolean feature4 = true;
-    Boolean feature5 = true;
-    Boolean feature6 = true;
-    Boolean feature7 = true;
-    Boolean feature8 = true;
-    Boolean feature9 = true;
-    Boolean feature10 = true;
     String imageStr;
     Bitmap imageBit;
     int prevState;
-    SparseArray<Site> owned = new SparseArray<>();
-    int RESULT_LOAD_IMAGE = 0;
+    SparseArray<Site> known = new SparseArray<>();
     SparseArray<Gallery> images;
     Address thisAddress;
-
+    double ratingOnStart;
 
     Gallery gallery;
     ArrayList<String> imagesList;
@@ -80,22 +67,13 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     ViewPager imageViews;
 
     ImageView expandedImage;
+    View parentLayout;
 
     TextView lat;
     TextView lon;
     TextView title;
     TextView description;
     RatingBar rating;
-    ImageView feature1Image;
-    ImageView feature2Image;
-    ImageView feature3Image;
-    ImageView feature4Image;
-    ImageView feature5Image;
-    ImageView feature6Image;
-    ImageView feature7Image;
-    ImageView feature8Image;
-    ImageView feature9Image;
-    ImageView feature10Image;
     ImageView distantTerrainFeatures;
     ImageView nearbyTerrainFeatures;
     ImageView immediateTerrainFeatures;
@@ -114,6 +92,9 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owned_site_viewer);
 
+        parentLayout = findViewById(android.R.id.content);
+
+
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
@@ -123,16 +104,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         title = (TextView)findViewById(R.id.siteViewTitle);
         description = (TextView)findViewById(R.id.siteViewDescription);
         rating = (RatingBar)findViewById(R.id.siteViewRating);
-        feature1Image = (ImageView)findViewById(R.id.preview_feature1);
-        feature2Image = (ImageView)findViewById(R.id.preview_feature2);
-        feature3Image = (ImageView)findViewById(R.id.preview_feature3);
-        feature4Image = (ImageView)findViewById(R.id.preview_feature4);
-        feature5Image = (ImageView)findViewById(R.id.preview_feature5);
-        feature6Image = (ImageView)findViewById(R.id.preview_feature6);
-        feature7Image = (ImageView)findViewById(R.id.preview_feature7);
-        feature8Image = (ImageView)findViewById(R.id.preview_feature8);
-        feature9Image = (ImageView)findViewById(R.id.preview_feature9);
-        feature10Image = (ImageView)findViewById(R.id.preview_feature10);
         distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
         nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
@@ -160,13 +131,15 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             arrayPos = extras.getInt("arrayPosition");
             cid = extras.getString("cid");
             prevState = extras.getInt("prevState");
-
         }
 
+        System.out.println("cid1" + cid);
+
         StoredData inst = new StoredData();
-        owned = inst.getOwnedSitesMap();
-        Site focused = owned.get(arrayPos);
+        known = inst.getKnownSitesMap();
+        Site focused = known.get(arrayPos);
         cid = focused.getCid();
+        System.out.println("cid" + cid);
         latitude = focused.getLat();
         longitude = focused.getLon();
         lat.setText("Latitude: "+latitude.toString());
@@ -175,6 +148,11 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         description.setText(focused.getDescription());
         rating.setRating((focused.getRating()).floatValue());
         ratedBy.setText("Rated By: " + focused.getRatedBy());
+
+        rating.setClickable(true);
+        rating.setIsIndicator(false);
+        ratingOnStart = rating.getRating();
+        System.out.println("rating on start" + ratingOnStart);
 
         StoredData ks = new StoredData();
         images = ks.getImages();
@@ -195,7 +173,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             imageViews.setVisibility(View.GONE);
         }
 
-        List<android.location.Address> address = focused.getAddress();
+        List<Address> address = focused.getAddress();
         thisAddress = address.get(0);
 
         country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
@@ -257,51 +235,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             }
         }*/
 
-        if(focused.getFeature1().equals("0")){
-            feature1Image.setVisibility(View.GONE);
-            feature1 = false;
-        }
-        if(focused.getFeature2().equals("0")){
-            feature2Image.setVisibility(View.GONE);
-            feature2 = false;
-        }
-        if(focused.getFeature3().equals("0")){
-            feature3Image.setVisibility(View.GONE);
-            feature3 = false;
-        }
-        if(focused.getFeature4().equals("0")){
-            feature4Image.setVisibility(View.GONE);
-            feature4 = false;
-        }
-        if(focused.getFeature5().equals("0")){
-            feature5Image.setVisibility(View.GONE);
-            feature5 = false;
-        }
-        if(focused.getFeature6().equals("0")){
-            feature6Image.setVisibility(View.GONE);
-            feature6 = false;
-        }
-        if(focused.getFeature7().equals("0")){
-            feature7Image.setVisibility(View.GONE);
-            feature7 = false;
-        }
-        if(focused.getFeature8().equals("0")){
-            feature8Image.setVisibility(View.GONE);
-            feature8 = false;
-        }
-        if(focused.getFeature9().equals("0")){
-            feature9Image.setVisibility(View.GONE);
-            feature9 = false;
-        }
-        if(focused.getFeature10().equals("0")){
-            feature10Image.setVisibility(View.GONE);
-            feature10 = false;
-        }
-
-        if(!feature1 && !feature2 && !feature3 && !feature4 && !feature5 && !feature6 && !feature7 && !feature8 && !feature9 && !feature10){
-            featuresBackground.setVisibility(View.GONE);
-        }
-
         close.setOnClickListener(this);
     }
 
@@ -309,8 +242,8 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     public void processFinish(String output){
 
         StoredData inst = new StoredData();
-        owned = inst.getOwnedSitesMap();
-        Site focused = owned.get(arrayPos);
+        known = inst.getOwnedSitesMap();
+        Site focused = known.get(arrayPos);
         cid = focused.getCid();
         latitude = focused.getLat();
         longitude = focused.getLon();
@@ -387,51 +320,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             }
         }*/
 
-        if(focused.getFeature1().equals("0")){
-            feature1Image.setVisibility(View.GONE);
-            feature1 = false;
-        }
-        if(focused.getFeature2().equals("0")){
-            feature2Image.setVisibility(View.GONE);
-            feature2 = false;
-        }
-        if(focused.getFeature3().equals("0")){
-            feature3Image.setVisibility(View.GONE);
-            feature3 = false;
-        }
-        if(focused.getFeature4().equals("0")){
-            feature4Image.setVisibility(View.GONE);
-            feature4 = false;
-        }
-        if(focused.getFeature5().equals("0")){
-            feature5Image.setVisibility(View.GONE);
-            feature5 = false;
-        }
-        if(focused.getFeature6().equals("0")){
-            feature6Image.setVisibility(View.GONE);
-            feature6 = false;
-        }
-        if(focused.getFeature7().equals("0")){
-            feature7Image.setVisibility(View.GONE);
-            feature7 = false;
-        }
-        if(focused.getFeature8().equals("0")){
-            feature8Image.setVisibility(View.GONE);
-            feature8 = false;
-        }
-        if(focused.getFeature9().equals("0")){
-            feature9Image.setVisibility(View.GONE);
-            feature9 = false;
-        }
-        if(focused.getFeature10().equals("0")){
-            feature10Image.setVisibility(View.GONE);
-            feature10 = false;
-        }
-
-        if(!feature1 && !feature2 && !feature3 && !feature4 && !feature5 && !feature6 && !feature7 && !feature8 && !feature9 && !feature10){
-            featuresBackground.setVisibility(View.GONE);
-        }
-
     }
 
 
@@ -479,14 +367,44 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             case android.R.id.home:
 
                 //Intent intent = null;
-                if(prevState == 1) {
-                    Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
-                    intent.putExtra("fragment", 1);
-                    startActivity(intent);
-                    finish();
+
+                double ratingOnExit = rating.getRating();
+
+                if(ratingOnExit != ratingOnStart){
+
+                    String newRating = Double.toString(ratingOnExit);
+
+                    new UpdateSite(this, false, true, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, null, 0, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+
+                            new FetchKnownSites(KnownSiteViewerActivity.this, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    if(prevState == 1) {
+                                        Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
+                                        intent.putExtra("fragment", 1);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        finish();
+                                    }
+                                }
+                            }).execute();
+                        }
+                    }).execute();
+
                 } else {
-                    finish();
+                    if(prevState == 1) {
+                        Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
+                        intent.putExtra("fragment", 1);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        finish();
+                    }
                 }
+
                 return true;
 
             case R.id.showOnMap:
@@ -499,78 +417,23 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
 
                 break;
 
-            case R.id.gift:
+            case R.id.report:
 
-                ArrayList<String> emails = new ArrayList<>();
-                final Intent i = new Intent(this, GiftSiteActivity.class);
-                i.putExtra("cid", cid);
-                new FetchUsers(this, emails, new AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) {
-                        startActivity(i);
-                    }
-                }).execute();
+                new CreateNotification(this, Appconfig.myToken).execute();
 
-                break;
+                Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
 
-            case R.id.delete:
+                /*Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(KnownSiteViewerActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }*/
 
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-                builder1.setTitle("Attention!");
-                builder1.setMessage("Are you sure you want to delete this site?");
-
-                builder1.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
-                        boolean active = false;
-                        //String ratingReq = Double.toString(ratingBun);
-                        final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
-                        //trigger php to deactivate site
-                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0, new AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                startActivity(intent);
-                                finish();
-                            }
-                        }).execute();
-
-                    }
-
-                });
-
-                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alert1 = builder1.create();
-                alert1.show();
-
-                break;
-
-            case R.id.update:
-                intent = new Intent(getApplicationContext(),UpdateSiteViewerActivity.class);
-                //bundle all current details into "add site"
-                intent.putExtra("arrayPosition", arrayPos);
-                intent.putExtra("image", hasImages);
-
-                intent.putExtra("feature1", feature1);
-                intent.putExtra("feature2", feature2);
-                intent.putExtra("feature3", feature3);
-                intent.putExtra("feature4", feature4);
-                intent.putExtra("feature5", feature5);
-                intent.putExtra("feature6", feature6);
-                intent.putExtra("feature7", feature7);
-                intent.putExtra("feature8", feature8);
-                intent.putExtra("feature9", feature9);
-                intent.putExtra("feature10", feature10);
-
-                startActivity(intent);
-                finish();
                 break;
 
         }
@@ -580,7 +443,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.owned_site_viewer, menu);
+        inflater.inflate(R.menu.known_site_viewer, menu);
         return true;
     }
 

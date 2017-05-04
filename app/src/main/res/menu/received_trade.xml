@@ -30,7 +30,7 @@
         android:layout_height="28dip"
         android:scaleType="fitXY"
         app:showAsAction="never"
-        android:title="Email"/>
+        android:title="Contact User"/>
 
     <item
         android:id="@+id/profile"

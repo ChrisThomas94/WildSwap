@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
@@ -336,7 +337,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             case R.id.accept_trade:
 
                 //update trade record in db positively
-                new UpdateTrade(this, unique_tid, PositiveTradeStatus).execute();
+                new UpdateTrade(this, unique_tid, PositiveTradeStatus, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                    }
+                }).execute();
                 new CreateNotification(this, recieve_token).execute();
 
                 //create new entry in user_has_trades with relat 45
@@ -351,7 +357,12 @@ public class TradeView_Received extends AppCompatActivity implements View.OnClic
             case R.id.reject_trade:
 
                 //update trade record in db
-                new UpdateTrade(this, unique_tid, NegativeTradeStatus).execute();
+                new UpdateTrade(this, unique_tid, NegativeTradeStatus, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                    }
+                }).execute();
                 new CreateNotification(this, recieve_token).execute();
 
                 if(isNetworkAvailable()) {

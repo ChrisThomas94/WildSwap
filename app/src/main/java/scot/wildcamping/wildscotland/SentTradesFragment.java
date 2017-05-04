@@ -43,6 +43,14 @@ public class SentTradesFragment extends Fragment {
         trades = new StoredTrades();
         sentTrades = trades.getSentTrades();
 
+        for(int i = 0; i<sentTrades.size(); i++){
+
+            if(sentTrades.get(i).getStatus() != 0){
+                sentTrades.remove(i);
+            }
+
+        }
+
         if(sentTrades.size() == 0){
             empty.setVisibility(View.VISIBLE);
         } else {

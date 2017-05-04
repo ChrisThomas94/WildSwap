@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import scot.wildcamping.wildscotland.Adapters.ImageGridAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
@@ -263,15 +264,20 @@ public class UpdateSiteViewerActivity extends AppCompatActivity implements View.
                         imageSingleLine = image.replaceAll("[\r\n]+", "");
                     }
 
-                    new UpdateSite(this, true, active, cid, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine, 0).execute();
+                    new UpdateSite(this, true, active, cid, titleReq, descReq, ratingReq, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageSingleLine, 0, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            Intent intent = new Intent(getApplicationContext(),
+                                    MainActivity_Spinner.class);
+                            intent.putExtra("latitude", latitude);
+                            intent.putExtra("longitude", longitude);
+                            intent.putExtra("update", true);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
 
-                    intent = new Intent(getApplicationContext(),
-                            MainActivity_Spinner.class);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("update", true);
-                    startActivity(intent);
-                    finish();
+
 
                 } else {
                     Snackbar.make(v, "Please enter the details!", Snackbar.LENGTH_LONG).show();

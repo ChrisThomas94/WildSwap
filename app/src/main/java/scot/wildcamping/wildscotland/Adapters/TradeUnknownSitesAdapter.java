@@ -103,7 +103,7 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
 
             if(!address.isEmpty()) {
                 Address thisAddress = address.get(0);
-                if(thisAddress.getLocality().equals("null")){
+                if(thisAddress.getLocality() == null || thisAddress.getLocality().equals("null")){
                     country.setText(thisAddress.getCountryName());
                 } else {
                     country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());

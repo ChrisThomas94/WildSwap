@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import scot.wildcamping.wildscotland.Adapters.TradeOwnedSitesAdapter;
 import scot.wildcamping.wildscotland.Adapters.TradeUnknownSitesAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchUsers;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateTrade;
 import scot.wildcamping.wildscotland.Objects.Site;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 import scot.wildcamping.wildscotland.Objects.User;
-
 
 public class TradeView extends AppCompatActivity {
 
@@ -43,6 +43,9 @@ public class TradeView extends AppCompatActivity {
     SparseArray<Site> unknownSite = new SparseArray<>();
     SparseArray<User> dealers = new SparseArray<>();
     ArrayList<String> emails = new ArrayList<>();
+    User trader;
+
+    String recieve_token;
 
     Site recieveSite;
     String send_cid;
@@ -51,6 +54,7 @@ public class TradeView extends AppCompatActivity {
     int status;
     String date;
     int negativeTradeStatus = 1;
+    int PositiveTradeStatus = 2;
     Boolean sent = false;
     Boolean received = false;
 
@@ -75,6 +79,10 @@ public class TradeView extends AppCompatActivity {
             status = extras.getInt("status");
         }
 
+        if(status == 2){
+            //findKnownSite();
+        }
+
         unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
         ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
 
@@ -93,6 +101,13 @@ public class TradeView extends AppCompatActivity {
                 unknownPage.setAdapter(unknownSites);
             }
         }).execute();
+
+        System.out.println("dealers size "+dealers.size());
+
+        recieve_token = unknownSite.get(0).getToken();
+
+        //trader = dealers.get(0);
+        //recieve_token = trader.getToken();
     }
 
     @Override
@@ -118,12 +133,37 @@ public class TradeView extends AppCompatActivity {
 
                 //update trade record in db
                 if(isNetworkAvailable()) {
-                    new UpdateTrade(this, unique_tid, negativeTradeStatus).execute();
+                    final Intent intent = new Intent(getApplicationContext(),
+                            MainActivity_Spinner.class);
+                    new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
                 }
-                Intent intent = new Intent(getApplicationContext(),
-                        MainActivity_Spinner.class);
-                startActivity(intent);
-                finish();
+
+
+                break;
+
+            case R.id.action_accept:
+                if(isNetworkAvailable()) {
+                    final Intent intent = new Intent(getApplicationContext(),
+                            MainActivity_Spinner.class);
+
+                    //update trade record in db positively
+                    //create new entry in user_has_trades with relat 45
+                    new UpdateTrade(this, unique_tid, PositiveTradeStatus, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            new CreateNotification(TradeView.this, recieve_token).execute();
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
+                }
+
                 break;
 
             case R.id.action_contact:
@@ -180,21 +220,21 @@ public class TradeView extends AppCompatActivity {
     public void findOwnedSite(){
         if(sent) {
 
-            //loop through all owned sites and find the site that has been offered for trading
+            //loop through all known sites and find the site that has been offered for trading
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (send_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
-                    System.out.println("owned site found");
+                    System.out.println("known site found");
                     break;
                 }
             }
         } else if(received) {
 
-            //loop through all owned sites and find the site that has been offered for trading
+            //loop through all known sites and find the site that has been offered for trading
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (recieve_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
-                    System.out.println("owned site found");
+                    System.out.println("known site found");
                     break;
                 }
             }

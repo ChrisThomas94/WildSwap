@@ -145,7 +145,14 @@ public class ProfileActivity extends AppCompatActivity {
         numVouches = (TextView) findViewById(R.id.vouchNumber);
 
         int ownedSites = inst.getOwnedSiteSize();
-        int completedTrades = trades.getAcceptedTradesSize();
+        //int completedTrades = trades.getAcceptedTradesSize();
+        int completedTrades = 0;
+        
+        for(int i = 0; i<trades.getInactiveTradesSize(); i++){
+            if(trades.getInactiveTrades().get(i).getStatus() == 2){
+                completedTrades++;
+            }
+        }
 
         if(this_user){
 

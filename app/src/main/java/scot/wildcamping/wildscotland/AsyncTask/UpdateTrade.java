@@ -28,6 +28,8 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
 
     OkHttpClient client = new OkHttpClient();
 
+    private AsyncResponse delegate = null;
+
     private ProgressDialog pDialog;
     private Context context;
     private int newTradeStatus;
@@ -42,10 +44,11 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
     private Trade trade = new Trade();
 
 
-    public UpdateTrade(Context context, String unique_tid, int newTradeStatus) {
+    public UpdateTrade(Context context, String unique_tid, int newTradeStatus, AsyncResponse delegate) {
         this.context = context;
         this.unique_tid = unique_tid;
         this.newTradeStatus = newTradeStatus;
+        this.delegate = delegate;
     }
 
     /**
@@ -103,8 +106,6 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
-        pDialog.dismiss();
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -127,6 +128,10 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
         } catch (JSONException e){
             e.printStackTrace();
         }
+
+        delegate.processFinish(file_url);
+        // dismiss the dialog once done
+        pDialog.dismiss();
     }
 
     private String doPostRequest(String url, String json) throws IOException {

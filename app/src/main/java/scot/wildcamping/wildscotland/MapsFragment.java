@@ -133,6 +133,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
 
+        knownSitesMap = inst.getKnownSitesMap();
+        knownSiteSize = inst.getKnownSiteSize();
+
         unknownSitesMap = inst.getUnknownSitesMap();
         unknownSiteSize = inst.getUnknownSitesSize();
 
@@ -366,7 +369,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         ownedMarkersList = new ArrayList<>();
 
         if(ownedSiteSize > 0){
-            System.out.println("I have an owned site");
+            System.out.println("I have a owned site");
             for(int i = 0; i< ownedSiteSize; i++){
 
                 Site currentSite = ownedSitesMap.get(i);
@@ -376,7 +379,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             }
 
         } else {
-            //no owned sites
+            //no known sites
         }
     }
 
@@ -388,6 +391,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         List<Marker> knownMarkersList = new ArrayList<>();
 
         if(knownSiteSize > 0) {
+            System.out.println("I have an known site");
             for (int i = 0; i < knownSiteSize; i++) {
                 Site currentSite = knownSitesMap.get(i);
                 knownMarker = collKnown.addMarker((new MarkerOptions().position(currentSite.getPosition()).icon(BitmapDescriptorFactory.fromResource(R.drawable.greenpin32)).title(currentSite.getTitle()).snippet(currentSite.getDescription())));
@@ -692,11 +696,30 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         Site currentSite = knownSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteActivity.class);
+                            final Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
-                            startActivity(intent);
+
+                            SparseArray<Gallery> images = inst.getImages();
+                            String cid = currentSite.getCid();
+                            String id = cid.substring(cid.length()-8);
+                            int cidEnd = Integer.parseInt(id);
+
+                            images.get(cidEnd, null);
+
+                            if(images.get(cidEnd) == null){
+                                new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        startActivity(intent);
+                                    }
+                                }).execute();
+
+                            } else {
+                                //no images previously fetched for this site
+                                startActivity(intent);
+                            }
                             break;
                         }
                     }
