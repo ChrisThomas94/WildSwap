@@ -117,20 +117,17 @@ public class GiftSiteActivity extends AppCompatActivity implements SearchView.On
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.user_search, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
         SearchManager searchManager = (SearchManager) this.getSystemService(SEARCH_SERVICE);
 
-        SearchView searchView = null;
-        if(searchItem != null){
-            searchView = (SearchView) searchItem.getActionView();
-        }
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
-        if(searchView != null){
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-        }
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
 
-        return super.onCreateOptionsMenu(menu);
+
+        return true;
     }
 
     @Override
@@ -140,6 +137,7 @@ public class GiftSiteActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        System.out.println("new text " + newText);
         adapter.getFilter().filter(newText);
 
         return true;

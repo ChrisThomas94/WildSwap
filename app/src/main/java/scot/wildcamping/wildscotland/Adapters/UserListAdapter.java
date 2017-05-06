@@ -28,23 +28,26 @@ import scot.wildcamping.wildscotland.R;
 public class UserListAdapter extends BaseAdapter implements Filterable {
 
     private Context context;
-    private SparseArray<User> fetchedUsers;
+    private List<User> fetchedUsers;
     private List<User> filterUsers;
     private UserFilter userFilter;
 
     public UserListAdapter(Context context, SparseArray<User> fetchedUsers){
         this.context = context;
-        this.fetchedUsers = fetchedUsers;
+        this.fetchedUsers = asList(fetchedUsers);
+        this.filterUsers = asList(fetchedUsers);
+
+        getFilter();
     }
 
     @Override
     public int getCount() {
-        return fetchedUsers.size();
+        return filterUsers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return fetchedUsers.get(position);
+        return filterUsers.get(position);
     }
 
     @Override
@@ -64,11 +67,11 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
         TextView email = (TextView) convertView.findViewById(R.id.email);
         ImageView profile_pic = (ImageView) convertView.findViewById(R.id.profile_pic);
 
-        String image = fetchedUsers.get(position).getProfile_pic();
+        String image = filterUsers.get(position).getProfile_pic();
         Bitmap compress = StringToBitMap(image);
 
-        name.setText(fetchedUsers.get(position).getName());
-        email.setText(fetchedUsers.get(position).getEmail());
+        name.setText(filterUsers.get(position).getName());
+        email.setText(filterUsers.get(position).getEmail());
         profile_pic.setImageBitmap(compress);
 
         return convertView;
@@ -87,6 +90,7 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
     @Override
     public Filter getFilter(){
 
+        System.out.println("user filter "+ userFilter);
         if(userFilter == null){
             userFilter = new UserFilter();
         }
@@ -101,10 +105,10 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
             if (constraint!=null && constraint.length()>0) {
                 ArrayList<User> tempList = new ArrayList<>();
 
-                filterUsers = asList(fetchedUsers);
+                //filterUsers = fetchedUsers;
 
                 // search content in friend list
-                for (User user : filterUsers) {
+                for (User user : fetchedUsers) {
                     if (user.getEmail().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         tempList.add(user);
                     }
@@ -113,8 +117,8 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
                 filterResults.count = tempList.size();
                 filterResults.values = tempList;
             } else {
-                filterResults.count = filterUsers.size();
-                filterResults.values = filterUsers;
+                filterResults.count = fetchedUsers.size();
+                filterResults.values = fetchedUsers;
             }
 
             return filterResults;
