@@ -112,7 +112,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_owned_site_viewer);
+        setContentView(R.layout.activity_site_viewer);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

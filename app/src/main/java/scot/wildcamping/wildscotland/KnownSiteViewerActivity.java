@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
-import scot.wildcamping.wildscotland.AsyncTask.ReportSite;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
@@ -90,7 +88,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_owned_site_viewer);
+        setContentView(R.layout.activity_site_viewer);
 
         parentLayout = findViewById(android.R.id.content);
 

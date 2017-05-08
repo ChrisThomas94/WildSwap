@@ -17,6 +17,6 @@ public class Appconfig {
 
     //webserver
     //public static String URL = "http://wild.nick-hope.co.uk/WildScotlandAPI/login_register_api/";
-    //public static String URL = "http://wildswap.com/API/";
+    //public static String URL = "http://wildswap.com/API/index.php";
 
 }
