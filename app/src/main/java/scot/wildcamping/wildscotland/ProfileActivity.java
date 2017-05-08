@@ -388,6 +388,15 @@ public class ProfileActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
+                //FetchBadges
+                BadgeManager bM = new BadgeManager(this);
+                bM.checkTradeBadges();
+                bM.checkReportedBadges();
+                bM.checkGiftedBadges();
+                bM.checkCountryBadges();
+                bM.checkContributorBadges();
+                bM.checkSiteBadges();
+
                 //new FetchQuestions(this, thisUser.getEmail()).execute();
             } else {
                 Snackbar.make(getWindow().getDecorView().getRootView(), "No network connection!", Snackbar.LENGTH_LONG)

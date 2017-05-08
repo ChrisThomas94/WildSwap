@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +58,7 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
         super.onPreExecute();
 
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Updating profile...");
+        pDialog.setMessage("Updating Badges...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
@@ -69,9 +70,10 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = thisUser.getUid();
+        ArrayList<Integer> badges = thisUser.getBadges();
 
         try {
-            String json = updateProfile(user);
+            String json = updateBadges(user, badges);
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -145,9 +147,12 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     }
 
 
-    private String updateProfile(String uid){
+    private String updateBadges(String uid, ArrayList<Integer> badges){
+
+        JSONArray jsonBadges = new JSONArray(badges);
+
         return "{\"tag\":\"" + "updateBadges" + "\","
                 + "\"uid\":\"" + uid + "\","
-                + "\"uid\":\"" + uid + "\"}";
+                + "\"badges\":\"" + jsonBadges + "\"}";
     }
 }

@@ -31,6 +31,7 @@ import scot.wildcamping.wildscotland.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateSite;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.UpdateBadges;
 import scot.wildcamping.wildscotland.Objects.StoredData;
 
 public class AddSiteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -416,13 +417,16 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                                         new FetchKnownSites(AddSiteActivity.this, new AsyncResponse() {
                                             @Override
                                             public void processFinish(String output) {
+
+                                                BadgeManager bM = new BadgeManager(AddSiteActivity.this);
+                                                bM.checkSiteBadges();
+
                                                 startActivity(intent);
                                                 finish();
                                             }
                                         }).execute();
                                     }
                                 }).execute();
-
                             }
                         }
                     });

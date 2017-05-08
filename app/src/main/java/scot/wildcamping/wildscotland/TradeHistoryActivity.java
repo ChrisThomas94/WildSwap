@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +56,8 @@ public class TradeHistoryActivity extends AppCompatActivity {
         trades = new StoredTrades();
         inactiveTrades = new SparseArray<>();
         inactiveTrades = trades.getInactiveTrades();
+
+        System.out.println("inactive trades: "+inactiveTrades.size());
 
         if(inactiveTrades.size() == 0){
             empty.setVisibility(View.VISIBLE);
@@ -101,7 +105,8 @@ public class TradeHistoryActivity extends AppCompatActivity {
                 //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 //startActivity(intent);
                 finish();
-                return true;
+                break;
+
         }
         return (super.onOptionsItemSelected(menuItem));
     }

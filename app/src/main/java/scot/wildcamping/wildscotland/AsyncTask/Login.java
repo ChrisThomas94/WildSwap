@@ -111,6 +111,16 @@ public class Login extends AsyncTask<String, String, String> {
                     thisUser.setToken(token);
                     thisUser.setNumVouch(numVouch);
 
+                    ArrayList<Integer> answers = new ArrayList<>();
+
+                    for(int x = 1; x<10; x++){
+                        answers.add(x-1, user.getInt("question" + x));
+                        System.out.println(user.getInt("question" + x));
+                    }
+
+                    thisUser.setAnswers(answers);
+
+
                     JSONObject jsonBadges = jObj.getJSONObject("badges");
 
                     ArrayList<Integer> badges = new ArrayList<>();

@@ -157,6 +157,10 @@ public class TradeView extends AppCompatActivity {
                     new UpdateTrade(this, unique_tid, PositiveTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
+
+                            BadgeManager bM = new BadgeManager(TradeView.this);
+                            bM.checkTradeBadges();
+
                             new CreateNotification(TradeView.this, recieve_token).execute();
                             startActivity(intent);
                             finish();

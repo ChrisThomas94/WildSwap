@@ -119,11 +119,14 @@ public class FetchUsers extends AsyncTask<String, String, String> {
                             user.setNumTrades(jsonUser.getInt("numTrades"));
                             user.setNumSites(jsonUser.getInt("numSites"));
                             user.setNumVouch(jsonUser.getInt("vouch"));
+                            user.setNumGifted(jsonUser.getInt("gifted"));
+                            user.setNumReported(jsonUser.getInt("reported"));
 
                             ArrayList<Integer> answers = new ArrayList<>();
 
                             for(int x = 1; x<10; x++){
                                 answers.add(x-1, jsonUser.getInt("question" + x));
+                                System.out.println(jsonUser.getInt("question" + x));
                             }
 
                             user.setAnswers(answers);

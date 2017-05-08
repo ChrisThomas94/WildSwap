@@ -98,7 +98,7 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
                     int size = jObj.getInt("size");
-
+                    ArrayList<Integer> answers = new ArrayList<>(thisUser.getAnswers());
                     JSONObject jsonQuestion;
                     Question question;
                     for (int i = 0; i < size; i++) {
@@ -110,10 +110,13 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
                         question.setAnswer3(jsonQuestion.getString("answer3"));
                         question.setAnswer4(jsonQuestion.getString("answer4"));
                         question.setAnswer(jsonQuestion.getInt("answer"));
+                        answers.set(i, jsonQuestion.getInt("answer"));
 
                         arrayQuestions.put(i, question);
 
                     }
+                    
+                    thisUser.setAnswers(answers);
 
                     Quiz inst = new Quiz();
                     inst.setQuestions(arrayQuestions);

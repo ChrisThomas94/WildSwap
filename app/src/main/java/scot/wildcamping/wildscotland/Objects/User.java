@@ -22,7 +22,25 @@ public class User {
     private int numSites;
     private int numTrades;
     private int numVouch;
+    private int numGifted;
+    private int numReported;
     private ArrayList<Integer> badges;
+
+    public int getNumGifted() {
+        return numGifted;
+    }
+
+    public int getNumReported() {
+        return numReported;
+    }
+
+    public void setNumGifted(int numGifted) {
+        this.numGifted = numGifted;
+    }
+
+    public void setNumReported(int numReported) {
+        this.numReported = numReported;
+    }
 
     public ArrayList<Integer> getBadges() {
         return badges;

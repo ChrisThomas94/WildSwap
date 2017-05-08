@@ -12,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import scot.wildcamping.wildscotland.Objects.Quiz;
+import scot.wildcamping.wildscotland.Objects.StoredData;
+import scot.wildcamping.wildscotland.Objects.User;
 import scot.wildcamping.wildscotland.R;
 import scot.wildcamping.wildscotland.Objects.Question;
 
@@ -26,6 +28,8 @@ public class QuestionListAdapter extends BaseAdapter {
     private SparseArray<Question> questions;
     private boolean update;
     private boolean display;
+    private StoredData inst = new StoredData();
+    private User thisUser = inst.getLoggedInUser();
 
     public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean display){
         this.context = context;
@@ -95,7 +99,8 @@ public class QuestionListAdapter extends BaseAdapter {
         holder.answers.clearCheck();
 
         if(questions.get(position).getAnswer()>-1){
-            holder.answers.check(questions.get(position).getAnswer());
+            //holder.answers.check(questions.get(position).getAnswer());
+            holder.answers.check(thisUser.getAnswers().get(position));
         } else {
             holder.answers.clearCheck();
         }

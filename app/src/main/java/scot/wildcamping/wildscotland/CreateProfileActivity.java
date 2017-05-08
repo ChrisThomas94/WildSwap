@@ -67,6 +67,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     Boolean uploadCover = true;
     Boolean updateBio = true;
     Boolean updateWhy = true;
+    Boolean anyUpdates = false;
 
     TextView name;
     EditText bio;
@@ -88,6 +89,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     String profilePicString;
     String coverPicString;
     String userType;
+    String oldBio;
+    String oldWhy;
     Intent i;
 
     @Override
@@ -125,6 +128,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
         //name.setText(AppController.getString(this, "name"));
         name.setText(thisUser.getName());
+        oldBio = bio.getText().toString();
+        oldWhy = why.getText().toString();
 
         if(update){
 
@@ -226,6 +231,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 i.putExtra("imageType", "cover");
                 addCoverPicture.setVisibility(View.GONE);
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
+                anyUpdates = true;
+
             }
         });
 
@@ -235,6 +242,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 i.putExtra("imageType", "profile");
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
+                anyUpdates = true;
 
             }
         });
@@ -297,6 +305,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 }
 
                 updateUserType = false;
+                anyUpdates = true;
+
                 userType = userTypeText1.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_green_button);
                 userType2.setBackgroundResource(R.drawable.rounded_white_button);
@@ -311,6 +321,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 }
 
                 updateUserType = false;
+                anyUpdates = true;
+
                 userType = userTypeText2.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_white_button);
                 userType2.setBackgroundResource(R.drawable.rounded_green_button);
@@ -325,6 +337,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 }
 
                 updateUserType = false;
+                anyUpdates = true;
+
                 userType = userTypeText3.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_white_button);
                 userType2.setBackgroundResource(R.drawable.rounded_white_button);
@@ -385,21 +399,28 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 final Intent intent = new Intent(this, QuizActivity.class);
                 intent.putExtra("update", update);
 
-                if(isNetworkAvailable()) {
+                //if any changes have been made
+                if(anyUpdates || !newBio.equals(oldBio) || !newWhy.equals(oldWhy)) {
 
-                    //new FetchQuestions(this, thisUser.getEmail()).execute();
+                    if (isNetworkAvailable()) {
 
-                    //asynk task updating bio
-                    new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).execute();
+                        //new FetchQuestions(this, thisUser.getEmail()).execute();
+
+                        //asynk task updating bio
+                        new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).execute();
+                    } else {
+                        //show no network error!
+                        Log.d("Error", "There is no network");
+                        startActivity(intent);
+                        finish();
+                    }
                 } else {
-                    //show no network error!
-                    Log.d("Error","There is no network");
                     startActivity(intent);
                     finish();
                 }

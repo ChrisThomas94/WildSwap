@@ -124,12 +124,6 @@
         </activity>
 
         <activity
-            android:name=".TradeView_Received"
-            android:label="Received Trade"
-            android:theme="@style/AppTheme">
-        </activity>
-
-        <activity
             android:name=".OwnedSiteViewerActivity"
             android:label="Owned Site"
             android:theme="@style/AppTheme"/>
