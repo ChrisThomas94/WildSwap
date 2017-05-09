@@ -23,6 +23,7 @@ public class Site {
     private int ratedBy;
     private Double lat;
     private Double lon;
+    private int numOwners;
 
     private String classification;
 
@@ -52,6 +53,14 @@ public class Site {
     private String image2;
     private String image3;
     private SparseArray<Gallery> images;
+
+    public int getNumOwners() {
+        return numOwners;
+    }
+
+    public void setNumOwners(int numOwners) {
+        this.numOwners = numOwners;
+    }
 
     public String getDisplay_pic() {
         return display_pic;

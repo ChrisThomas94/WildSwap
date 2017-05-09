@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 import scot.wildcamping.wildscotland.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildscotland.Adapters.ViewPagerAdapter;
+import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildscotland.AsyncTask.FetchQuestions;
 import scot.wildcamping.wildscotland.AsyncTask.FetchTradeRequests;
@@ -279,15 +280,16 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
             return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
-                try {
-                    String trades_result = new FetchTradeRequests(this).execute().get();
-                } catch (InterruptedException e) {
-
-                } catch (ExecutionException e) {
-
-                }
+                new FetchTradeRequests(this, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        displayView(2);
+                    }
+                }).execute();
+            } else {
+                displayView(2);
             }
-            displayView(2);
+
         } else if(id == R.id.action_tradeHistory){
             Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
             startActivity(intent);

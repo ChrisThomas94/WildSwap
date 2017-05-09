@@ -222,7 +222,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                 intent.setData(Uri.parse("mailto:"));
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{focused.getSiteAdmin()});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Wild Swap - Trade");
                 intent.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
                 startActivity(intent);
                 break;

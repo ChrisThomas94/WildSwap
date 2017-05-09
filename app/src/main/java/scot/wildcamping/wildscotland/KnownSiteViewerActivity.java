@@ -32,6 +32,7 @@ import scot.wildcamping.wildscotland.Adapters.ImageGalleryAdapter;
 import scot.wildcamping.wildscotland.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildscotland.AsyncTask.CreateNotification;
 import scot.wildcamping.wildscotland.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildscotland.AsyncTask.ReportSite;
 import scot.wildcamping.wildscotland.AsyncTask.UpdateSite;
 import scot.wildcamping.wildscotland.Objects.Gallery;
 import scot.wildcamping.wildscotland.Objects.Site;
@@ -419,7 +420,16 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
                 new CreateNotification(this, Appconfig.myToken).execute();
 
-                Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
+
+                new ReportSite(this, cid, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
+
+                    }
+                }).execute();
+
+
 
                 /*Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");

@@ -48,6 +48,7 @@ public class SentTradesFragment extends Fragment {
             if(sentTrades.get(i).getStatus() != 0){
                 sentTrades.remove(i);
             }
+            System.out.println("trade left here:" +i);
 
         }
 

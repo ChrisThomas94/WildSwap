@@ -45,6 +45,8 @@ public class ReceivedTradesFragment extends Fragment {
                 receivedTrades.remove(i);
             }
 
+            System.out.println("trade left here:" +i);
+
         }
 
         if(receivedTrades.size() > 0){

@@ -1,7 +1,9 @@
 package scot.wildcamping.wildscotland.AsyncTask;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.util.SparseArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +31,8 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     OkHttpClient client = new OkHttpClient();
 
     Context context;
+    private AsyncResponse delegate = null;
+    private ProgressDialog pDialog;
     String user;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
@@ -42,8 +46,9 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     private SparseArray<Trade> receivedTrades = new SparseArray<>();
 
 
-    public FetchTradeRequests(Context context) {
+    public FetchTradeRequests(Context context, AsyncResponse delegate) {
         this.context = context;
+        this.delegate = delegate;
     }
 
     /**
@@ -51,7 +56,14 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        //super.onPreExecute();
+        Log.d("Fetch Trades", "Fetch Trades Pre Execute");
+        pDialog = new ProgressDialog(context);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Fetching Trades ...");
+        pDialog.setIndeterminate(true);
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     /**
@@ -66,8 +78,6 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
-
-
 
             try {
 
@@ -158,6 +168,12 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
+
+        delegate.processFinish(file_url);
+
+        Log.d("Fetch Images", "Post Execute");
+        pDialog.dismiss();
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {

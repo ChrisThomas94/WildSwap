@@ -1,10 +1,12 @@
 package scot.wildcamping.wildscotland.Adapters;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -61,6 +63,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
 
         Site thisSite = ownedSites.get(position);
 
+        RelativeLayout relativeLayout = (RelativeLayout) itemView.findViewById(R.id.ownedLayout);
         ImageView siteThumbnail = (ImageView) itemView.findViewById(R.id.image);
         TextView title = (TextView) itemView.findViewById(R.id.title);
         TextView amateur = (TextView) itemView.findViewById(R.id.classificationA);
@@ -68,6 +71,12 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
         TextView expert = (TextView) itemView.findViewById(R.id.classificationE);
         TextView country = (TextView) itemView.findViewById(R.id.country);
         CircleImageView profile_pic = (CircleImageView) itemView.findViewById(R.id.profilePicture);
+
+        if(getCount() == 1){
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) relativeLayout.getLayoutParams();
+            params.setMargins(45, 0 , 45, 0);
+            relativeLayout.setLayoutParams(params);
+        }
 
         String profile_picString = thisUser.getProfile_pic();
 

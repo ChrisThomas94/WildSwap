@@ -33,6 +33,7 @@ public class TradeView extends AppCompatActivity {
 
     PagerAdapter ownedSites;
     PagerAdapter unknownSites;
+
     ViewPager unknownPage;
     ViewPager ownedPage;
 
@@ -41,6 +42,7 @@ public class TradeView extends AppCompatActivity {
     SparseArray<Site> unknownMap = inst.getUnknownSitesMap();
     SparseArray<Site> ownedSite = new SparseArray<>();
     SparseArray<Site> unknownSite = new SparseArray<>();
+    SparseArray<Site> knownSite = new SparseArray<>();
     SparseArray<User> dealers = new SparseArray<>();
     ArrayList<String> emails = new ArrayList<>();
     User trader;
@@ -81,30 +83,49 @@ public class TradeView extends AppCompatActivity {
 
         if(status == 2){
             //findKnownSite();
+            unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
+            ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
+
+            findOwnedSite();
+            findKnownSite();
+
+            new FetchUsers(this, emails, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    dealers = inst.getDealers();
+                    ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedSite);
+                    ownedPage.setAdapter(ownedSites);
+
+                    unknownSites = new TradeUnknownSitesAdapter(getApplicationContext(), knownSite, dealers);
+                    unknownPage.setAdapter(unknownSites);
+                }
+            }).execute();
+
+        } else {
+
+            unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
+            ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
+
+            findOwnedSite();
+            findUnknownSite();
+
+            new FetchUsers(this, emails, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+
+                    dealers = inst.getDealers();
+                    ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedSite);
+                    ownedPage.setAdapter(ownedSites);
+
+                    unknownSites = new TradeUnknownSitesAdapter(getApplicationContext(), unknownSite, dealers);
+                    unknownPage.setAdapter(unknownSites);
+                }
+            }).execute();
+
+            System.out.println("dealers size "+dealers.size());
+
+            recieve_token = unknownSite.get(0).getToken();
         }
-
-        unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
-        ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
-
-        findOwnedSite();
-        findUnknownSite();
-
-        new FetchUsers(this, emails, new AsyncResponse() {
-            @Override
-            public void processFinish(String output) {
-
-                dealers = inst.getDealers();
-                ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedSite);
-                ownedPage.setAdapter(ownedSites);
-
-                unknownSites = new TradeUnknownSitesAdapter(getApplicationContext(), unknownSite, dealers);
-                unknownPage.setAdapter(unknownSites);
-            }
-        }).execute();
-
-        System.out.println("dealers size "+dealers.size());
-
-        recieve_token = unknownSite.get(0).getToken();
 
         //trader = dealers.get(0);
         //recieve_token = trader.getToken();
@@ -113,10 +134,16 @@ public class TradeView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if(sent) {
-            inflater.inflate(R.menu.sent_trade, menu);
-        } else if(received){
-            inflater.inflate(R.menu.received_trade, menu);
+
+        if(status == 2 || status == 3){
+            inflater.inflate(R.menu.inactive_trade, menu);
+        } else {
+
+            if (sent) {
+                inflater.inflate(R.menu.sent_trade, menu);
+            } else if (received) {
+                inflater.inflate(R.menu.received_trade, menu);
+            }
         }
             return true;
     }
@@ -176,7 +203,7 @@ public class TradeView extends AppCompatActivity {
                 i.setData(Uri.parse("mailto:"));
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Swap - Trade");
                 i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
                 startActivity(i);
                 break;
@@ -219,6 +246,9 @@ public class TradeView extends AppCompatActivity {
                 }
             }
         }
+
+        emails.add(0, unknownSite.get(0).getSiteAdmin());
+
     }
 
     public void findOwnedSite(){
@@ -228,7 +258,7 @@ public class TradeView extends AppCompatActivity {
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (send_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
-                    System.out.println("known site found");
+                    System.out.println("owned site found");
                     break;
                 }
             }
@@ -238,11 +268,38 @@ public class TradeView extends AppCompatActivity {
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (recieve_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
+                    System.out.println("owned site found");
+                    break;
+                }
+            }
+        }
+    }
+
+    public void findKnownSite(){
+
+        if(sent) {
+
+            //loop through all known sites and find the site that was offered for trading
+            for (int i = 0; i < ownedMap.size(); i++) {
+                if (send_cid.equals(ownedMap.get(i).getCid())) {
+                    knownSite.put(0, ownedMap.get(i));
+                    System.out.println("known site found");
+                    break;
+                }
+            }
+        } else if(received) {
+
+            //loop through all known sites and find the site that was offered for trading
+            for (int i = 0; i < ownedMap.size(); i++) {
+                if (recieve_cid.equals(ownedMap.get(i).getCid())) {
+                    knownSite.put(0, ownedMap.get(i));
                     System.out.println("known site found");
                     break;
                 }
             }
         }
+
+        emails.add(0, knownSite.get(0).getSiteAdmin());
     }
 
     public Bitmap StringToBitMap(String encodedString){

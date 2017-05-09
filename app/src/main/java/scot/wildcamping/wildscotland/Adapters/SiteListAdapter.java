@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -63,7 +66,11 @@ public class SiteListAdapter extends BaseAdapter {
         TextView amateur = (TextView) convertView.findViewById(R.id.classificationA);
         TextView casual = (TextView) convertView.findViewById(R.id.classificationC);
         TextView expert = (TextView) convertView.findViewById(R.id.classificationE);
+        FrameLayout classA = (FrameLayout) convertView.findViewById(R.id.classAFrame);
+        FrameLayout classC = (FrameLayout) convertView.findViewById(R.id.classCFrame);
+        FrameLayout classE = (FrameLayout) convertView.findViewById(R.id.classEFrame);
         TextView country = (TextView) convertView.findViewById(R.id.country);
+        TextView knownNum = (TextView) convertView.findViewById(R.id.knownNumber);
 
         List<Address> address = knownSites.get(position).getAddress();
         Address thisAddress = address.get(0);
@@ -75,6 +82,12 @@ public class SiteListAdapter extends BaseAdapter {
         String casualText = casual.getText().toString();
         String expertText = expert.getText().toString();
 
+        knownNum.setText(String.valueOf(knownSites.get(position).getNumOwners()));
+
+        classA.setVisibility(View.INVISIBLE);
+        classC.setVisibility(View.INVISIBLE);
+        classE.setVisibility(View.INVISIBLE);
+
         amateur.setVisibility(View.INVISIBLE);
         casual.setVisibility(View.INVISIBLE);
         expert.setVisibility(View.INVISIBLE);
@@ -83,12 +96,15 @@ public class SiteListAdapter extends BaseAdapter {
 
         } else if(knownSites.get(position).getClassification().equals(amateurText)){
             amateur.setVisibility(View.VISIBLE);
+            classA.setVisibility(View.VISIBLE);
 
         } else if(knownSites.get(position).getClassification().equals(casualText)){
             casual.setVisibility(View.VISIBLE);
+            classC.setVisibility(View.VISIBLE);
 
         } else if(knownSites.get(position).getClassification().equals(expertText)){
             expert.setVisibility(View.VISIBLE);
+            classE.setVisibility(View.VISIBLE);
 
         } else {
 

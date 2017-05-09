@@ -223,17 +223,22 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                 break;
 
             case 2:
-                Intent in = new Intent(getApplicationContext(), TradesActivity.class);
+                final Intent in = new Intent(getApplicationContext(), TradesActivity.class);
                 in.putExtra("new", register);
                 in.putExtra("sitesTutorial", sitesTutorial);
                 in.putExtra("tradesTutorial", tradesTutorial);
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this).execute();
-                    startActivity(in);
-                    overridePendingTransition(0, 0);
-                    finish();
+                    new FetchTradeRequests(this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(in);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        }
+                    }).execute();
+
                 } else {
                     startActivity(in);
                     overridePendingTransition(0, 0);

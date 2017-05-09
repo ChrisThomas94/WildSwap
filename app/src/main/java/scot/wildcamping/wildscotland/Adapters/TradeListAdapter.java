@@ -60,10 +60,16 @@ public class TradeListAdapter extends BaseAdapter{
         TextView titleTrade = (TextView)convertView.findViewById(R.id.titleTrade);
         TextView outcomeTrade = (TextView)convertView.findViewById(R.id.outcomeTrade);
 
+        System.out.println("size" + activeTrades.size());
+        System.out.println("position" + position);
+
+        System.out.println("trade" + activeTrades.get(position));
+
         String direction = activeTrades.get(position).getUserRelation();
         int status = activeTrades.get(position).getStatus();
 
         title.setText(direction);
+        System.out.println("direction" + direction);
 
         if(status == 1){
             outcomeTrade.setText(R.string.rejected);

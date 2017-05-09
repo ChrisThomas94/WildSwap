@@ -336,14 +336,19 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
 
             case 2:
-                Intent trade = new Intent(getApplicationContext(), TradesActivity.class);
+                final Intent trade = new Intent(getApplicationContext(), TradesActivity.class);
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this).execute();
-                    startActivity(trade);
-                    overridePendingTransition(0, 0);
-                    finish();
+                    new FetchTradeRequests(this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(trade);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        }
+                    }).execute();
+
                 } else {
                     startActivity(trade);
                     overridePendingTransition(0, 0);

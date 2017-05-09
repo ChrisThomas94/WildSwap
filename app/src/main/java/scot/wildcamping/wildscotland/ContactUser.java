@@ -44,7 +44,7 @@ public class ContactUser extends AppCompatActivity implements View.OnClickListen
         }
 
         to.setText(contact);
-        subject.setText("Wild Scotland - Trade: " + date);
+        subject.setText("Wild Swap - Trade: " + date);
 
 
     }

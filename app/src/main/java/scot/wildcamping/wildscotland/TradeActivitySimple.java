@@ -110,8 +110,11 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedMap);
                 ownedPage.setAdapter(ownedSites);
                 ownedPage.setClipToPadding(false);
-                ownedPage.setPadding(100, 0, 100, 0);
-                ownedPage.setPageMargin(30);
+
+                if(ownedMap.size() > 1){
+                    ownedPage.setPadding(100, 0, 100, 0);
+                    ownedPage.setPageMargin(30);
+                }
 
                 if(ownedMap.size()%2 == 1){
                     ownedPage.setCurrentItem((ownedMap.size()/2));
@@ -185,7 +188,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 i.setData(Uri.parse("mailto:"));
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_EMAIL, new String[]{siteAdmin});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Scotland - Trade");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Swap - Trade");
                 i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
 
                 startActivity(i);

@@ -39,7 +39,7 @@
         android:layout_width="28dip"
         android:layout_height="28dip"
         android:scaleType="fitXY"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:title="Profile"/>
 
 

@@ -225,15 +225,20 @@ public class MainActivity_Spinner extends AppCompatActivity {
                 break;
 
             case 2:
-                Intent i = new Intent(getApplicationContext(), TradesActivity.class);
+                final Intent i = new Intent(getApplicationContext(), TradesActivity.class);
                 i.putExtra("new", isNew);
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this).execute();
-                    startActivity(i);
-                    overridePendingTransition(0, 0);
-                    finish();
+                    new FetchTradeRequests(this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(i);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        }
+                    }).execute();
+
                 } else {
                     startActivity(i);
                     overridePendingTransition(0, 0);
@@ -293,8 +298,14 @@ public class MainActivity_Spinner extends AppCompatActivity {
             displayView(0, true);
             return true;
         } else if(id == R.id.action_tradeHistory){
-            Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
-            startActivity(intent);
+            final Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
+
+            new FetchTradeRequests(this, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    startActivity(intent);
+                }
+            }).execute();
             return true;
         }
         return super.onOptionsItemSelected(item);

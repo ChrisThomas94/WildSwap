@@ -128,8 +128,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
         //name.setText(AppController.getString(this, "name"));
         name.setText(thisUser.getName());
-        oldBio = bio.getText().toString();
-        oldWhy = why.getText().toString();
 
         if(update){
 
@@ -164,18 +162,21 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             if(thisUser.getUserType().equals(getResources().getString(R.string.userType1))){
                 userType = userTypeText1.getText().toString();
                 userType1.setBackgroundResource(R.drawable.rounded_green_button);
+                userTypeDescription.setText(R.string.userTypeDescription1);
                 updateProgress();
                 updateUserType = false;
 
             } else if (thisUser.getUserType().equals(getResources().getString(R.string.userType2))){
                 userType = userTypeText2.getText().toString();
                 userType2.setBackgroundResource(R.drawable.rounded_green_button);
+                userTypeDescription.setText(R.string.userTypeDescription2);
                 updateProgress();
                 updateUserType = false;
 
             } else if (thisUser.getUserType().equals(getResources().getString(R.string.userType3))){
                 userType = userTypeText3.getText().toString();
                 userType3.setBackgroundResource(R.drawable.rounded_green_button);
+                userTypeDescription.setText(R.string.userTypeDescription3);
                 updateProgress();
                 updateUserType = false;
 
@@ -184,15 +185,19 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
             if(thisUser.getBio().equals("null")){
                 bio.setText("");
+                oldBio = "";
             } else {
-                bio.setText(thisUser.getBio());
+                oldBio = thisUser.getBio();
+                bio.setText(oldBio);
                 updateProgress();
             }
 
             if(thisUser.getWhy().equals("null")){
                 why.setText("");
+                oldWhy = "";
             } else {
-                why.setText(thisUser.getWhy());
+                oldWhy = thisUser.getWhy();
+                why.setText(oldWhy);
                 updateProgress();
             }
 
@@ -202,7 +207,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             ab.setHomeButtonEnabled(false);
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("Welcome to Wild Scotland!");
+            builder1.setTitle("Welcome to Wild Swap!");
             builder1.setMessage(getResources().getString(R.string.welcomeText));
             builder1.setPositiveButton("Let me in.", new DialogInterface.OnClickListener() {
                 @Override
@@ -403,8 +408,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 if(anyUpdates || !newBio.equals(oldBio) || !newWhy.equals(oldWhy)) {
 
                     if (isNetworkAvailable()) {
-
-                        //new FetchQuestions(this, thisUser.getEmail()).execute();
 
                         //asynk task updating bio
                         new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {

@@ -120,6 +120,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         String distant = jsonSite.getString("distantTerrain");
                         String nearby = jsonSite.getString("nearbyTerrain");
                         String immediate = jsonSite.getString("immediateTerrain");
+                        int numOwners = jsonSite.getInt("num_owners");
 
                         //features
 
@@ -150,6 +151,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setDistant(distant);
                         siteClass.setNearby(nearby);
                         siteClass.setImmediate(immediate);
+                        siteClass.setNumOwners(numOwners);
                         siteClass.setFeature1(jsonSite.getString("feature1"));
                         siteClass.setFeature2(jsonSite.getString("feature2"));
                         siteClass.setFeature3(jsonSite.getString("feature3"));

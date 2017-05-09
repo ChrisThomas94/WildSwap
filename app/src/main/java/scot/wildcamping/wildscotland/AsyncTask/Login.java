@@ -114,8 +114,8 @@ public class Login extends AsyncTask<String, String, String> {
                     ArrayList<Integer> answers = new ArrayList<>();
 
                     for(int x = 1; x<10; x++){
-                        answers.add(x-1, user.getInt("question" + x));
-                        System.out.println(user.getInt("question" + x));
+                        answers.add(x-1, user.getInt("answer" + x));
+                        System.out.println(user.getInt("answer" + x));
                     }
 
                     thisUser.setAnswers(answers);

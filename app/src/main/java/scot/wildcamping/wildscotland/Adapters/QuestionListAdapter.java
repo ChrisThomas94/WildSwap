@@ -98,9 +98,10 @@ public class QuestionListAdapter extends BaseAdapter {
         holder.answers.setOnCheckedChangeListener(null);
         holder.answers.clearCheck();
 
+        //if(thisUser.getAnswers().get(position) > -1){
         if(questions.get(position).getAnswer()>-1){
-            //holder.answers.check(questions.get(position).getAnswer());
-            holder.answers.check(thisUser.getAnswers().get(position));
+            holder.answers.check(questions.get(position).getAnswer());
+            //holder.answers.check(thisUser.getAnswers().get(position));
         } else {
             holder.answers.clearCheck();
         }
@@ -112,6 +113,7 @@ public class QuestionListAdapter extends BaseAdapter {
                 questions = quiz.getQuestions();
 
                 if (checkedId > -1) {
+                    //thisUser.getAnswers().get(position);
                     questions.get(position).setAnswer(checkedId);
                     quiz.setQuestions(questions);
                     System.out.println("adapter click");
