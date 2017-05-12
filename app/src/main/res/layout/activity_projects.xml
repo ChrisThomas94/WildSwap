@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camping"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/outdoorAccessCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scottish Outdoor Access Code\n"
+        android:contentDescription="http://www.findaspring.com/category/locations/europe/england/"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conservation"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/findaSpring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find a Spring\n"
+        android:contentDescription="http://www.findaspring.com/category/locations/europe/england/"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hiking"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/mba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mountain Bothy Association\n"/>
+
+
+</LinearLayout>

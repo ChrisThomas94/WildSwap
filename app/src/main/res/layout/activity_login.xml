@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:id="@+id/logo"
-            android:src="@drawable/logo_transparent"/>
+            android:src="@drawable/ecology"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/email_loginlayout"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="scot.wildcamping.wildscotland">
+    package="scot.wildcamping.wildswap">
 
     <!-- Used by the Google Maps API to download map tiles from Google Maps servers. -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="scot.wildcamping.wildscotland.AppController"
+        android:name="scot.wildcamping.wildswap.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -51,7 +51,7 @@
              See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_launcher_large_white" />
+            android:resource="@drawable/ecology_white" />
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
@@ -60,12 +60,12 @@
         <!-- [END fcm_default_icon] -->
 
         <activity
-            android:name=".MainActivity_Spinner"
+            android:name="scot.wildcamping.wildswap.MainActivity_Spinner"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".LogoutActivity"
+            android:name="scot.wildcamping.wildswap.LogoutActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
 
@@ -73,7 +73,7 @@
         </activity>
 
         <activity
-            android:name="SplashActivity"
+            android:name="scot.wildcamping.wildswap.SplashActivity"
             android:theme="@style/SplashTheme">
 
         <intent-filter>
@@ -84,25 +84,25 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name="scot.wildcamping.wildswap.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
 
         </activity>
 
         <activity
-            android:name=".Register"
+            android:name="scot.wildcamping.wildswap.Register"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".AddSiteActivity"
+            android:name="scot.wildcamping.wildswap.AddSiteActivity"
             android:label="New Site"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
-            android:name=".GiftSiteActivity"
+            android:name="scot.wildcamping.wildswap.GiftSiteActivity"
             android:label="Gift Site"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden">
@@ -112,80 +112,88 @@
         </activity>
 
         <activity
-            android:name=".TradeActivitySimple"
+            android:name="scot.wildcamping.wildswap.TradeActivitySimple"
             android:label="Trade"
             android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".TradeView"
+            android:name="scot.wildcamping.wildswap.TradeView"
             android:label="Trade Overview"
             android:theme="@style/AppTheme">
         </activity>
 
         <activity
-            android:name=".OwnedSiteViewerActivity"
+            android:name="scot.wildcamping.wildswap.OwnedSiteViewerActivity"
             android:label="Owned Site"
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".KnownSiteActivity"
+            android:name="scot.wildcamping.wildswap.KnownSiteActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".KnownSiteViewerActivity"
+            android:name="scot.wildcamping.wildswap.KnownSiteViewerActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name=".FeaturesActivity"
+        <activity android:name="scot.wildcamping.wildswap.FeaturesActivity"
             android:label="Select Features"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".SiteBuilder"
+        <activity android:name="scot.wildcamping.wildswap.SiteBuilder"
             android:label="Site Builder"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".ContactUser"
+        <activity android:name="scot.wildcamping.wildswap.ContactUser"
             android:label="Contact User"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".SettingsActivity"
+        <activity android:name="scot.wildcamping.wildswap.SettingsActivity"
             android:label="Settings"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".SitesActivity"
+        <activity android:name="scot.wildcamping.wildswap.SitesActivity"
             android:label="Sites"
             android:theme= "@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".TradesActivity"
+        <activity android:name="scot.wildcamping.wildswap.TradesActivity"
             android:label="Trades"
             android:theme= "@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".TradeHistoryActivity"
+        <activity android:name="scot.wildcamping.wildswap.TradeHistoryActivity"
             android:label="Trade History"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".ProfileActivity"
+        <activity android:name="scot.wildcamping.wildswap.ProfileActivity"
             android:label="Profile"
             android:theme= "@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".QuizActivity"
+        <activity android:name="scot.wildcamping.wildswap.QuizActivity"
             android:label="Quiz"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name=".UpdateSiteViewerActivity"
+        <activity android:name="scot.wildcamping.wildswap.UpdateSiteViewerActivity"
             android:label="Update Site"
             android:theme= "@style/AppTheme"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".CreateProfileActivity"
+        <activity android:name="scot.wildcamping.wildswap.CreateProfileActivity"
             android:label="Create Profile"
+            android:theme= "@style/AppTheme"/>
+
+        <activity android:name="scot.wildcamping.wildswap.ProjectsActivity"
+            android:label="Related Projects"
+            android:theme= "@style/AppTheme"/>
+
+        <activity android:name="scot.wildcamping.wildswap.AcknowledgementsActivity"
+            android:label="Acknowledgements"
             android:theme= "@style/AppTheme"/>
 
         <!-- [START firebase_service] -->
         <service
-            android:name=".firebase.MyFirebaseMessagingService">
+            android:name="scot.wildcamping.wildswap.firebase.MyFirebaseMessagingService">
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -196,7 +204,7 @@
 
         <!-- [START firebase_iid_service] -->
         <service
-            android:name=".firebase.MyFirebaseInstanceIDService">
+            android:name="scot.wildcamping.wildswap.firebase.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
