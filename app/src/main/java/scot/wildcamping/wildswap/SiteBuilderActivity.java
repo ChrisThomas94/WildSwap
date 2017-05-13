@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,8 +17,9 @@ import static android.view.View.GONE;
 
 /**
  * Created by Chris on 03-Mar-16.
+ *
  */
-public class SiteBuilder extends AppCompatActivity implements View.OnClickListener {
+public class SiteBuilderActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView distantTerrain;
     ImageView nearbyTerrain;
@@ -55,6 +57,11 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
     TextView feature7Text;
     TextView feature8Text;
     TextView feature9Text;
+
+    FrameLayout feature4dimmer;
+    FrameLayout feature5dimmer;
+    FrameLayout feature6dimmer;
+
 
     TextView distant;
     TextView nearby;
@@ -161,6 +168,10 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
         feature8Thumbnail = (ImageView)findViewById(R.id.feature8thumbnail);
         feature9Thumbnail = (ImageView)findViewById(R.id.feature9thumbnail);
 
+        feature4dimmer = (FrameLayout) findViewById(R.id.feature4dimmer);
+        feature5dimmer = (FrameLayout) findViewById(R.id.feature5dimmer);
+        feature6dimmer = (FrameLayout) findViewById(R.id.feature6dimmer);
+
         distant = (TextView)findViewById(R.id.distantPlaceholderText);
         nearby = (TextView)findViewById(R.id.nearbyPlaceholderText);
         immediate = (TextView)findViewById(R.id.immediatePlaceholderText);
@@ -227,6 +238,10 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
 
         feature9Thumbnail.setImageResource(0);
         feature9box.setVisibility(GONE);
+
+        feature4dimmer.getForeground().setAlpha(0);
+        feature5dimmer.getForeground().setAlpha(0);
+        feature6dimmer.getForeground().setAlpha(0);
 
     }
 
@@ -878,6 +893,7 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     instructions.setText(R.string.nearbyTerrain);
                     resetProgressCircle(feature1circle, feature2circle, feature3circle, feature4circle, feature5circle, feature6circle, feature7circle);
                     //change thumbnail imagesUri?
+
                     feature1Thumbnail.setImageResource(R.drawable.hillthumbnail);
                     feature2Thumbnail.setImageResource(R.drawable.forestthumbnail);
                     feature3Thumbnail.setImageResource(R.drawable.plainsthumbnail);
@@ -898,6 +914,21 @@ public class SiteBuilder extends AppCompatActivity implements View.OnClickListen
                     feature7Text.setText(R.string.nearbyFeature7);
                     feature8Text.setText(R.string.nearbyFeature8);
                     feature9Text.setText(R.string.nearbyFeature9);
+
+
+                    if(distantTerrain.getTag().equals("ocean1")){
+                        //no loch
+                        feature4dimmer.getForeground().setAlpha(150);
+                        feature4box.setClickable(false);
+                    } else {
+                        //no beach
+                        feature5dimmer.getForeground().setAlpha(150);
+                        feature5box.setClickable(false);
+
+                        //no cliff
+                        feature6dimmer.getForeground().setAlpha(150);
+                        feature6box.setClickable(false);
+                    }
 
                 } else if (selectNearbyTerrain){
                     selectNearbyTerrain = false;

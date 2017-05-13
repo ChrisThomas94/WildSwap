@@ -71,13 +71,6 @@
                         android:textColor="#333333"
                         android:textSize="25dp" />
 
-                    <TextView
-                        android:id="@+id/enter_bio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Enter a short bio here. This may be viewed by other otherUsers and will help them to decide whether or not to trade locations with you."
-                        android:layout_margin="20dp"/>
-
                 </LinearLayout>
 
             </RelativeLayout>

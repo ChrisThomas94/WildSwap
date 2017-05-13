@@ -108,7 +108,14 @@ public class SiteListAdapter extends BaseAdapter {
 
         }
 
-        if(knownSites.get(position).getDisplay_pic() == null){
+        if(knownSites.get(position).getDisplay_pic() == null || knownSites.get(position).getDisplay_pic().equals("")){
+
+            if(knownSites.get(position).getDistant() != null && knownSites.get(position).getNearby() != null && knownSites.get(position).getImmediate() != null){
+
+                String distant = knownSites.get(position).getDistant();
+                int distantID = context.getResources().getIdentifier("drawable/"+ distant, null, context.getPackageName());
+                siteThumbnail.setImageResource(distantID);
+            }
 
         } else {
             String image = knownSites.get(position).getDisplay_pic();

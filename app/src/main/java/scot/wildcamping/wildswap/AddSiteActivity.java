@@ -161,6 +161,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             immediate = extras.getString("immediateTerrain");
 
             if(distant != null && nearby != null && immediate != null){
+                updateProgress();
                 int distantID = this.getResources().getIdentifier("drawable/"+ distant, null, this.getPackageName());
                 int nearbyID = this.getResources().getIdentifier("drawable/"+ nearby, null, this.getPackageName());
                 int immediateID = this.getResources().getIdentifier("drawable/"+ immediate, null, this.getPackageName());
@@ -343,8 +344,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.siteBuilder:
 
-                updateProgress();
-                Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilder.class);
+                Intent siteBuilder = new Intent(getApplicationContext(), SiteBuilderActivity.class);
                 siteBuilder.putExtra("image", imageUpload);
                 siteBuilder.putExtra("latitude", latitude);
                 siteBuilder.putExtra("longitude", longitude);

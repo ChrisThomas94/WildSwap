@@ -7,7 +7,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ecology"/>
+            android:src="@drawable/ecology_small"/>
     </item>
 
 </layer-list>

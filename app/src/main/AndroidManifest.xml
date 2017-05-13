@@ -142,7 +142,7 @@
             android:label="Select Features"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name="scot.wildcamping.wildswap.SiteBuilder"
+        <activity android:name="scot.wildcamping.wildswap.SiteBuilderActivity"
             android:label="Site Builder"
             android:theme= "@style/AppTheme"/>
 

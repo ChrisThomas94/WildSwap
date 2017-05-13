@@ -32,6 +32,7 @@ public class BadgeManager {
 
     public BadgeManager(Context context){
         this.context = context;
+        System.out.println("im in badge manager");
     }
 
 

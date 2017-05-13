@@ -1,7 +1,10 @@
 package scot.wildcamping.wildswap.AsyncTask;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,7 +20,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildswap.AddSiteActivity;
 import scot.wildcamping.wildswap.Appconfig;
+import scot.wildcamping.wildswap.BadgeManager;
+import scot.wildcamping.wildswap.MainActivity_Spinner;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.User;
 
@@ -43,6 +49,7 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     Boolean update;
+    AlertDialog.Builder builder1;
 
     public UpdateBadges(Context context, Boolean update, AsyncResponse delegate) {
         this.context = context;
@@ -55,13 +62,20 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
      * */
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        //super.onPreExecute();
 
-        pDialog = new ProgressDialog(context);
+        /*pDialog = new ProgressDialog(context);
         pDialog.setMessage("Updating Badges...");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
-        pDialog.show();
+        pDialog.show();*/
+
+        builder1 = new AlertDialog.Builder(context);
+        builder1.setTitle("Badge Unlocked!");
+        builder1.setMessage("You have unlocked a new badge!");
+
+        AlertDialog alert1 = builder1.create();
+        alert1.show();
     }
 
     /**
@@ -78,6 +92,46 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
 
+            try {
+                JSONObject resp = new JSONObject(postResponse);
+
+                boolean error = resp.getBoolean("error");
+                if (!error) {
+
+
+                    if(update){
+                        Toast.makeText(context, "Badges Updated!", Toast.LENGTH_LONG).show();
+
+                    } else {
+
+                        JSONObject jsonBadges = resp.getJSONObject("badges");
+
+                        ArrayList<Integer> newBadges = new ArrayList<>();
+
+                        System.out.println("badges length "+jsonBadges.length());
+
+                        for(int i = 1; i<=jsonBadges.length()-4;i++){
+                            int badge = jsonBadges.getInt("badge_"+i);
+                            System.out.println("badge "+ badge);
+                            newBadges.add(i-1, badge);
+                        }
+
+                        thisUser.setBadges(newBadges);
+
+                        Toast.makeText(context, "Profile Created!", Toast.LENGTH_LONG).show();
+
+                    }
+
+                } else {
+                    String errMsg = resp.getString("error_msg");
+                    Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e){
+
+            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,48 +144,17 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
      **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+
+        builder1.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        //pDialog.dismiss();
         delegate.processFinish(file_url);
 
-
-        try {
-            JSONObject resp = new JSONObject(postResponse);
-
-            boolean error = resp.getBoolean("error");
-            if (!error) {
-
-
-                if(update){
-                    Toast.makeText(context, "Badges Updated!", Toast.LENGTH_LONG).show();
-
-                } else {
-
-                    JSONObject jsonBadges = resp.getJSONObject("badges");
-
-                    ArrayList<Integer> badges = new ArrayList<>();
-
-                    System.out.println("badges length "+jsonBadges.length());
-
-                    for(int i = 1; i<=jsonBadges.length()-4;i++){
-                        int badge = jsonBadges.getInt("badge_"+i);
-                        System.out.println("badge "+ badge);
-                        badges.add(i-1, badge);
-                    }
-
-                    thisUser.setBadges(badges);
-
-                    Toast.makeText(context, "Profile Created!", Toast.LENGTH_LONG).show();
-
-                }
-
-            } else {
-                String errMsg = resp.getString("error_msg");
-                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
-            }
-
-        } catch (JSONException e){
-
-        }
     }
 
     private String doPostRequest(String url, String json) throws IOException {
