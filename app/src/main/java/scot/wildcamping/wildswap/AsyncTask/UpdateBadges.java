@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -50,6 +51,8 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     String user;
     Boolean update;
     AlertDialog.Builder builder1;
+    AlertDialog alert1;
+    Button button;
 
     public UpdateBadges(Context context, Boolean update, AsyncResponse delegate) {
         this.context = context;
@@ -60,7 +63,6 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     /**
      * Before starting background thread Show Progress Dialog
      * */
-    @Override
     protected void onPreExecute() {
         //super.onPreExecute();
 
@@ -74,7 +76,22 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
         builder1.setTitle("Badge Unlocked!");
         builder1.setMessage("You have unlocked a new badge!");
 
-        AlertDialog alert1 = builder1.create();
+        builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                delegate.processFinish("win");
+            }
+        });
+
+        alert1 = builder1.create();
+        alert1.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+            }
+        });
+
         alert1.show();
     }
 
@@ -98,29 +115,19 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
                 boolean error = resp.getBoolean("error");
                 if (!error) {
 
+                    JSONObject jsonBadges = resp.getJSONObject("badges");
 
-                    if(update){
-                        Toast.makeText(context, "Badges Updated!", Toast.LENGTH_LONG).show();
+                    ArrayList<Integer> newBadges = new ArrayList<>();
 
-                    } else {
+                    System.out.println("badges length "+jsonBadges.length());
 
-                        JSONObject jsonBadges = resp.getJSONObject("badges");
-
-                        ArrayList<Integer> newBadges = new ArrayList<>();
-
-                        System.out.println("badges length "+jsonBadges.length());
-
-                        for(int i = 1; i<=jsonBadges.length()-4;i++){
-                            int badge = jsonBadges.getInt("badge_"+i);
-                            System.out.println("badge "+ badge);
-                            newBadges.add(i-1, badge);
-                        }
-
-                        thisUser.setBadges(newBadges);
-
-                        Toast.makeText(context, "Profile Created!", Toast.LENGTH_LONG).show();
-
+                    for(int i = 1; i<=jsonBadges.length()-4;i++){
+                        int badge = jsonBadges.getInt("badge_"+i);
+                        System.out.println("badge "+ badge);
+                        newBadges.add(i-1, badge);
                     }
+
+                    thisUser.setBadges(newBadges);
 
                 } else {
                     String errMsg = resp.getString("error_msg");
@@ -142,19 +149,11 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     /**
      * After completing background task Dismiss the progress dialog and add markers
      **/
-    protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
+    protected void onPostExecute(final String file_url) {
 
-        builder1.setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        //pDialog.dismiss();
-        delegate.processFinish(file_url);
-
+        System.out.println("on post execute");
+        //alert1.dismiss();
+        alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
     }
 
     private String doPostRequest(String url, String json) throws IOException {

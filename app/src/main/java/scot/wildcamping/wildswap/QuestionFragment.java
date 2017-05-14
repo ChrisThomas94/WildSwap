@@ -1,5 +1,6 @@
 package scot.wildcamping.wildswap;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -21,7 +22,8 @@ public class QuestionFragment extends Fragment {
     private QuestionListAdapter adapter;
     private ListView mDrawerList;
     Quiz inst;
-    SparseArray<Question> question;
+    SparseArray<Question> allQuestions;
+    Question thisQuestion;
 
 
     @Override
@@ -33,10 +35,26 @@ public class QuestionFragment extends Fragment {
         mDrawerList = (ListView) rootView.findViewById(R.id.question_listview);
 
         inst = new Quiz();
-        question = new SparseArray<>();
-        question = inst.getQuestions();
+        allQuestions = new SparseArray<>();
+        //allQuestions = inst.getQuestions();
 
-        adapter = new QuestionListAdapter(getActivity(), question, false, true);
+        for(int i=1;  i<=7; i++){
+            thisQuestion = new Question();
+            String question = "@string/question" + (i);
+            String answer1 = "@string/question" + (i) + "_answer1";
+            String answer2 = "@string/question" + (i) + "_answer2";
+            String answer3 = "@string/question" + (i) + "_answer3";
+            String answer4 = "@string/question" + (i) + "_answer4";
+            thisQuestion.setQuestion(getResources().getString(getResources().getIdentifier(question, null, getActivity().getPackageName())));
+            thisQuestion.setAnswer1(getResources().getString(getResources().getIdentifier(answer1, null, getActivity().getPackageName())));
+            thisQuestion.setAnswer2(getResources().getString(getResources().getIdentifier(answer2, null, getActivity().getPackageName())));
+            thisQuestion.setAnswer3(getResources().getString(getResources().getIdentifier(answer3, null, getActivity().getPackageName())));
+            thisQuestion.setAnswer4(getResources().getString(getResources().getIdentifier(answer4, null, getActivity().getPackageName())));
+            allQuestions.put(i-1, thisQuestion);
+        }
+        inst.setQuestions(allQuestions);
+
+        adapter = new QuestionListAdapter(getActivity(), allQuestions, false, true);
         mDrawerList.setAdapter(adapter);
 
         return rootView;

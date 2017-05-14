@@ -82,8 +82,6 @@ public class QuizActivity extends AppCompatActivity {
         allQuestions = new SparseArray<>();
         //allQuestions = inst.getQuestions();
 
-
-
         for(int i=1;  i<=7; i++){
             thisQuestion = new Question();
             String question = "@string/question" + (i);

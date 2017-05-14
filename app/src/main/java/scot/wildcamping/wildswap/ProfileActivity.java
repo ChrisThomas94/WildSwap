@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
@@ -31,6 +32,7 @@ import scot.wildcamping.wildswap.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildswap.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildswap.AsyncTask.SubmitVouch;
+import scot.wildcamping.wildswap.AsyncTask.UpdateBadges;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.StoredTrades;
 import scot.wildcamping.wildswap.Objects.User;
@@ -200,6 +202,14 @@ public class ProfileActivity extends AppCompatActivity {
             if(progressValue == 100){
                 progressLayout.setVisibility(GONE);
             }
+
+            BadgeManager bM = new BadgeManager(this);
+            bM.checkTradeBadges();
+            bM.checkReportedBadges();
+            bM.checkGiftedBadges();
+            bM.checkCountryBadges();
+            bM.checkContributorBadges();
+            bM.checkSiteBadges();
 
         } else {
 
@@ -390,6 +400,13 @@ public class ProfileActivity extends AppCompatActivity {
                 bM.checkCountryBadges();
                 bM.checkContributorBadges();
                 bM.checkSiteBadges();
+
+                new UpdateBadges(this, true, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                    }
+                }).execute();
 
                 //new FetchQuestions(this, thisUser.getEmail()).execute();
             } else {

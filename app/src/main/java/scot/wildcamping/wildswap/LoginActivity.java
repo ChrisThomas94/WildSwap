@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildswap.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildswap.AsyncTask.Login;
 import scot.wildcamping.wildswap.AsyncTask.FetchUsers;
 import scot.wildcamping.wildswap.Objects.StoredData;
@@ -73,8 +74,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             new FetchUsers(this, users, new AsyncResponse() {
                 @Override
                 public void processFinish(String output) {
-                    startActivity(intent);
-                    finish();
+                    new FetchTradeRequests(LoginActivity.this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
                 }
             }).execute();
         }
