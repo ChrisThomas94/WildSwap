@@ -122,14 +122,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             @Override
                             public void processFinish(String output) {
 
-                                BadgeManager bM = new BadgeManager(LoginActivity.this);
-                                bM.checkSiteBadges();
-                                bM.checkContributorBadges();
-                                bM.checkCountryBadges();
-                                bM.checkGiftedBadges();
-                                bM.checkReportedBadges();
-                                bM.checkTradeBadges();
-
                                 if(output != null){
                                     session.setLogin(true);
                                     AppController.setString(getApplicationContext(), "email", email);

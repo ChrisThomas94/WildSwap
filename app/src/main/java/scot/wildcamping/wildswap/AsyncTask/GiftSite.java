@@ -42,6 +42,7 @@ public class GiftSite extends AsyncTask<String, String, String> {
     String cid;
     String recipient_uid;
     String postResponse;
+    String output;
 
     public GiftSite(Context context, String recipient_uid, String cid, AsyncResponse delegate) {
 
@@ -74,7 +75,7 @@ public class GiftSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, recipient_uid, cid);
+            String json = giftSite(uid, recipient_uid, cid);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+postResponse);
@@ -84,8 +85,13 @@ public class GiftSite extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
 
                 if(!error) {
+                    int gifted = thisUser.getNumGifted();
+                    thisUser.setNumGifted(gifted+1);
 
+                    output = "Site gifted!";
 
+                } else {
+                    output = jObj.getString("error_msg");
                 }
             } catch (JSONException e){
                 e.printStackTrace();
@@ -105,25 +111,7 @@ public class GiftSite extends AsyncTask<String, String, String> {
         // dismiss the dialog once done
         pDialog.dismiss();
 
-
-        try {
-            JSONObject resp = new JSONObject(postResponse);
-
-            boolean error = resp.getBoolean("error");
-            if (!error) {
-
-                Toast.makeText(context, "Site gifted!", Toast.LENGTH_LONG).show();
-
-            }else {
-                String errMsg = resp.getString("error_msg");
-                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
-            }
-
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        delegate.processFinish(file_url);
+        delegate.processFinish(output);
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -136,7 +124,7 @@ public class GiftSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String addSite(String uid, String recipient_uid, String cid) {
+    private String giftSite(String uid, String recipient_uid, String cid) {
 
         return "{\"tag\":\"" + "giftSite" + "\","
                 + "\"uid\":\"" + recipient_uid + "\","

@@ -80,8 +80,7 @@ public class ReportSite extends AsyncTask<String, String, String> {
                 Boolean error = jObj.getBoolean("error");
 
                 if (!error) {
-
-
+                    thisUser.setNumReported(thisUser.getNumReported()+1);
 
                 } else {
 

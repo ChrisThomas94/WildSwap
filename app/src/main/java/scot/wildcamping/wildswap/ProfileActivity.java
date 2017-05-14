@@ -1,6 +1,8 @@
 package scot.wildcamping.wildswap;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -400,13 +402,6 @@ public class ProfileActivity extends AppCompatActivity {
                 bM.checkCountryBadges();
                 bM.checkContributorBadges();
                 bM.checkSiteBadges();
-
-                new UpdateBadges(this, true, new AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) {
-
-                    }
-                }).execute();
 
                 //new FetchQuestions(this, thisUser.getEmail()).execute();
             } else {

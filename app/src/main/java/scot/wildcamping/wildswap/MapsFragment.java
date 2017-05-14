@@ -186,6 +186,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         mMapView.getMapAsync(this);
 
         if(register){
+
+            BadgeManager bm = new BadgeManager(getActivity());
+
             Boolean newCamper = false;
             String answer = AppController.getString(this.getActivity(),"newCamper");
             System.out.println("new camper answer: "+answer);
@@ -281,6 +284,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
+
+            BadgeManager bM = new BadgeManager(getActivity());
+            bM.checkSiteBadges();
+            bM.checkCountryBadges();
+
             //getActivity().getIntent().removeExtra("add");
         } else if (trade){
             LatLng tradeSite = new LatLng(newLat, newLon);

@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -98,6 +100,8 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     thisUser.setEmail(email);
                     thisUser.setName(name);
                     thisUser.setUid(userId);
+                    ArrayList<Integer> answers = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0));
+                    thisUser.setAnswers(answers);
                     inst.setLoggedInUser(thisUser);
 
                 } else {

@@ -50,9 +50,6 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     private Context context;
     String user;
     Boolean update;
-    AlertDialog.Builder builder1;
-    AlertDialog alert1;
-    Button button;
 
     public UpdateBadges(Context context, Boolean update, AsyncResponse delegate) {
         this.context = context;
@@ -72,27 +69,6 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
         pDialog.setCancelable(true);
         pDialog.show();*/
 
-        builder1 = new AlertDialog.Builder(context);
-        builder1.setTitle("Badge Unlocked!");
-        builder1.setMessage("You have unlocked a new badge!");
-
-        builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                delegate.processFinish("win");
-            }
-        });
-
-        alert1 = builder1.create();
-        alert1.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-            }
-        });
-
-        alert1.show();
     }
 
     /**
@@ -152,8 +128,8 @@ public class UpdateBadges extends AsyncTask<String, String, String> {
     protected void onPostExecute(final String file_url) {
 
         System.out.println("on post execute");
-        //alert1.dismiss();
-        alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+        delegate.processFinish("win");
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {

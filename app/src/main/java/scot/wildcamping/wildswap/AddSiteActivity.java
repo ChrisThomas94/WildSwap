@@ -417,8 +417,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                                             @Override
                                             public void processFinish(String output) {
 
-                                                BadgeManager bM = new BadgeManager(AddSiteActivity.this);
-                                                bM.checkSiteBadges();
+                                                //BadgeManager bM = new BadgeManager(AddSiteActivity.this);
+                                                //bM.checkSiteBadges();
 
                                                 startActivity(intent);
                                                 finish();

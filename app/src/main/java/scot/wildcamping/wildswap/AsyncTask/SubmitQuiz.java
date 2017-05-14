@@ -44,16 +44,6 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
     String user;
     String email;
     ArrayList<Integer> answers;
-    int answer1;
-    int answer2;
-    int answer3;
-    int answer4;
-    int answer5;
-    int answer6;
-    int answer7;
-    int answer8;
-    int answer9;
-    SparseArray<Question> arrayQuestions = new SparseArray<>();
     String postResponse;
 
     public SubmitQuiz(Context context, ArrayList<Integer> answers, AsyncResponse delegate) {
@@ -97,29 +87,18 @@ public class SubmitQuiz extends AsyncTask<String, String, String>{
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
                 if (!error) {
-                    int size = jObj.getInt("size");
                     ArrayList<Integer> answers = new ArrayList<>(thisUser.getAnswers());
-                    JSONObject jsonQuestion;
-                    Question question;
-                    for (int i = 0; i < size; i++) {
-                        jsonQuestion = jObj.getJSONObject("question" + i);
-                        question = new Question();
-                        question.setQuestion(jsonQuestion.getString("question"));
-                        question.setAnswer1(jsonQuestion.getString("answer1"));
-                        question.setAnswer2(jsonQuestion.getString("answer2"));
-                        question.setAnswer3(jsonQuestion.getString("answer3"));
-                        question.setAnswer4(jsonQuestion.getString("answer4"));
-                        question.setAnswer(jsonQuestion.getInt("answer"));
-                        answers.set(i, jsonQuestion.getInt("answer"));
+                    JSONArray jsonAnswers = jObj.getJSONArray("answers");
 
-                        arrayQuestions.put(i, question);
+                    System.out.println("json array:" + jsonAnswers);
 
+                    if(jsonAnswers != null){
+                        for(int i = 0; i<jsonAnswers.length(); i++){
+                            answers.add(jsonAnswers.getInt(i));
+                        }
                     }
 
                     thisUser.setAnswers(answers);
-
-                    Quiz inst = new Quiz();
-                    inst.setQuestions(arrayQuestions);
 
                 } else {
                     //error message

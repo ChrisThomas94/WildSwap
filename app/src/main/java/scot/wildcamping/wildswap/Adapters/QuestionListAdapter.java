@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import scot.wildcamping.wildswap.Objects.Quiz;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.User;
@@ -24,12 +26,13 @@ import scot.wildcamping.wildswap.Objects.Question;
 public class QuestionListAdapter extends BaseAdapter {
 
     private Context context;
-    private Quiz quiz = new Quiz();
+    //private Quiz quiz = new Quiz();
     private SparseArray<Question> questions;
     private boolean update;
     private boolean display;
     private StoredData inst = new StoredData();
     private User thisUser = inst.getLoggedInUser();
+    ArrayList<Integer> answers = thisUser.getAnswers();
 
     public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean display){
         this.context = context;
@@ -98,29 +101,27 @@ public class QuestionListAdapter extends BaseAdapter {
         holder.answers.setOnCheckedChangeListener(null);
         holder.answers.clearCheck();
 
-        //if(thisUser.getAnswers().get(position) > -1){
-        if(questions.get(position).getAnswer()>-1){
-            holder.answers.check(questions.get(position).getAnswer());
-            //holder.answers.check(thisUser.getAnswers().get(position));
-        } else {
-            holder.answers.clearCheck();
+        if(answers != null) {
+            if (answers.get(position) > -1) {
+                holder.answers.check(answers.get(position));
+            } else {
+                holder.answers.clearCheck();
+            }
         }
+
 
         holder.answers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                questions = quiz.getQuestions();
-
                 if (checkedId > -1) {
-                    //thisUser.getAnswers().get(position);
-                    questions.get(position).setAnswer(checkedId);
-                    quiz.setQuestions(questions);
+                    answers.set(position, checkedId);
+
                     System.out.println("adapter click");
 
                 } else {
-                    if (questions.get(position).getAnswer() > -1) {
-                        questions.removeAt(questions.get(position).getAnswer());
+                    if(answers.get(position) > -1){
+                        answers.set(position, 0);
                     }
                 }
             }

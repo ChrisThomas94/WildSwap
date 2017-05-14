@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import scot.wildcamping.wildswap.Adapters.UserListAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
@@ -70,6 +71,11 @@ public class GiftSiteActivity extends AppCompatActivity implements SearchView.On
                         new GiftSite(GiftSiteActivity.this, fetchedUsers.get(position).getUid(), cid, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
+
+                                BadgeManager bM = new BadgeManager(GiftSiteActivity.this);
+                                bM.checkGiftedBadges();
+
+                                Toast.makeText(GiftSiteActivity.this, output, Toast.LENGTH_LONG).show();
 
                             }
                         }).execute();

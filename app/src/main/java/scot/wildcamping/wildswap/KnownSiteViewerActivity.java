@@ -420,6 +420,8 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
                 new CreateNotification(this, Appconfig.myToken).execute();
 
+                BadgeManager bm = new BadgeManager(this);
+                bm.checkReportedBadges();
 
                 new ReportSite(this, cid, new AsyncResponse() {
                     @Override

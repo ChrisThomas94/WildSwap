@@ -26,6 +26,8 @@ import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildswap.AsyncTask.SubmitQuiz;
 import scot.wildcamping.wildswap.Objects.Question;
 import scot.wildcamping.wildswap.Objects.Quiz;
+import scot.wildcamping.wildswap.Objects.StoredData;
+import scot.wildcamping.wildswap.Objects.User;
 
 /**
  * Created by Chris on 09-Apr-16.
@@ -36,7 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     QuestionListAdapter adapter;
     ListView mDrawerList;
     TextView info;
-    Quiz inst;
+    //Quiz inst;
     SparseArray<Question> allQuestions;
     Question thisQuestion;
     boolean update;
@@ -44,6 +46,10 @@ public class QuizActivity extends AppCompatActivity {
     ProgressBar progress;
     TextView progressText;
     RelativeLayout frame;
+    StoredData inst = new StoredData();
+    User thisUser = inst.getLoggedInUser();
+    ArrayList<Integer> answers = thisUser.getAnswers();
+
 
     Boolean updateAns0 = true;
     Boolean updateAns1 = true;
@@ -78,9 +84,7 @@ public class QuizActivity extends AppCompatActivity {
             info.setVisibility(View.GONE);
         }
 
-        inst = new Quiz();
         allQuestions = new SparseArray<>();
-        //allQuestions = inst.getQuestions();
 
         for(int i=1;  i<=7; i++){
             thisQuestion = new Question();
@@ -96,8 +100,6 @@ public class QuizActivity extends AppCompatActivity {
             thisQuestion.setAnswer4(getResources().getString(getResources().getIdentifier(answer4, null, getPackageName())));
             allQuestions.put(i-1, thisQuestion);
         }
-        inst.setQuestions(allQuestions);
-
 
         adapter = new QuestionListAdapter(this, allQuestions, update, false);
         mDrawerList.setAdapter(adapter);
@@ -127,39 +129,38 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressValue = 0;
-                allQuestions = inst.getQuestions();
 
-                if(allQuestions.get(0).getAnswer() != 0 && updateAns0){
+                if(answers.get(0) != 0 && updateAns0){
                     updateAns0 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(1).getAnswer() != 0 && updateAns1){
+                if(answers.get(1) != 0 && updateAns1){
                     updateAns1 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(2).getAnswer() != 0 && updateAns2){
+                if(answers.get(2) != 0 && updateAns2){
                     updateAns2 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(3).getAnswer() != 0 && updateAns3){
+                if(answers.get(3) != 0 && updateAns3){
                     updateAns3 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(4).getAnswer() != 0 && updateAns4){
+                if(answers.get(4) != 0 && updateAns4){
                     updateAns4 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(5).getAnswer() != 0 && updateAns5){
+                if(answers.get(5) != 0 && updateAns5){
                     updateAns5 = false;
                     updateProgress();
                 }
 
-                if(allQuestions.get(6).getAnswer() != 0 && updateAns6){
+                if(answers.get(6) != 0 && updateAns6){
                     updateAns6 = false;
                     updateProgress();
                 }
@@ -190,11 +191,11 @@ public class QuizActivity extends AppCompatActivity {
             case R.id.action_submit:
 
                 //question = inst.getQuestions();
-                ArrayList<Integer> answers = new ArrayList<>();
+                //ArrayList<Integer> newAnswers = new ArrayList<>();
 
-                for(int i=0; i<allQuestions.size(); i++){
-                    answers.add(i, allQuestions.get(i).getAnswer());
-                }
+                /*for(int i=0; i<allQuestions.size(); i++){
+                    newAnswers.add(i, allQuestions.get(i).getAnswer());
+                }*/
 
 
                 final Intent intent;
