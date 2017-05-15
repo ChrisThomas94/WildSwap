@@ -25,6 +25,15 @@ public class User {
     private int numGifted;
     private int numReported;
     private ArrayList<Integer> badges;
+    private String country;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public int getNumGifted() {
         return numGifted;

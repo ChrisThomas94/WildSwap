@@ -5,42 +5,50 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/trade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_margin="15dp"
-        android:elevation="5dp"
-        android:descendantFocusability="blocksDescendants"
-        android:background="@drawable/clear_shadow">
-
-        <TextView
-            android:id="@+id/title"
+        <RelativeLayout
+            android:id="@+id/trade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="5dp"
-            android:text="Sent/Received"/>
+            android:padding="15dp"
+            android:layout_margin="15dp"
+            android:elevation="5dp"
+            android:descendantFocusability="blocksDescendants"
+            android:background="@drawable/clear_shadow">
 
-        <TextView
-            android:id="@+id/outcomeTrade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="5dp"
-            android:layout_toRightOf="@+id/title"
-            android:text="Accepted/Rejected"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_white_button">
 
-        <TextView
-            android:id="@+id/titleTrade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="5dp"
-            android:layout_below="@+id/title"
-            android:text="Trade 1"/>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:padding="5dp"
+                    android:text="Sent/Received"/>
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/outcomeTrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:padding="5dp"
+                    android:layout_toRightOf="@+id/title"
+                    android:text="Accepted/Rejected"/>
+
+                <TextView
+                    android:id="@+id/titleTrade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:padding="5dp"
+                    android:layout_below="@+id/title"
+                    android:text="Trade 1"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
 
 </RelativeLayout>

@@ -20,7 +20,7 @@ public class ReceivedTradesFragment extends Fragment {
 	public ReceivedTradesFragment(){}
 
     SparseArray<Trade> receivedTrades = new SparseArray<>();
-
+    SparseArray<Trade> openReceivedTrades;
     StoredTrades trades;
 
     private TradeListAdapter adapter;
@@ -38,18 +38,21 @@ public class ReceivedTradesFragment extends Fragment {
 
         trades = new StoredTrades();
         receivedTrades = trades.getReceivedTrades();
+        openReceivedTrades = new SparseArray<>();
+        int j =0;
 
         for(int i = 0; i<receivedTrades.size(); i++){
 
-            if(receivedTrades.get(i).getStatus() != 0){
-                receivedTrades.remove(i);
+            if(receivedTrades.get(i).getStatus() == 0){
+                openReceivedTrades.put(j, receivedTrades.get(i));
+                j++;
             }
 
             System.out.println("trade left here:" +i);
 
         }
 
-        if(receivedTrades.size() > 0){
+        if(openReceivedTrades.size() > 0){
             empty.setVisibility(View.GONE);
         }
 
@@ -59,15 +62,15 @@ public class ReceivedTradesFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), TradeView.class);
                 intent.putExtra("received", true);
-                intent.putExtra("unique_tid", receivedTrades.get(position).getUnique_tid());
-                intent.putExtra("send_cid", receivedTrades.get(position).getSend_cid());
-                intent.putExtra("recieve_cid", receivedTrades.get(position).getRecieve_cid());
-                intent.putExtra("date", receivedTrades.get(position).getDate());
+                intent.putExtra("unique_tid", openReceivedTrades.get(position).getUnique_tid());
+                intent.putExtra("send_cid", openReceivedTrades.get(position).getSend_cid());
+                intent.putExtra("recieve_cid", openReceivedTrades.get(position).getRecieve_cid());
+                intent.putExtra("date", openReceivedTrades.get(position).getDate());
                 startActivity(intent);
             }
         });
 
-        adapter = new TradeListAdapter(getActivity(), receivedTrades);
+        adapter = new TradeListAdapter(getActivity(), openReceivedTrades);
         mDrawerList.setAdapter(adapter);
 
         return rootView;

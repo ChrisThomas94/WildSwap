@@ -39,16 +39,18 @@ public class CreateUser extends AsyncTask<String, String, String> {
     private String name;
     private String email;
     private String password;
+    private String country;
     Boolean error;
     private String errorMsg;
     StoredData inst = new StoredData();
     User thisUser = new User();
 
-    public CreateUser(Context context, String name, String email, String password, AsyncResponse delegate) {
+    public CreateUser(Context context, String name, String email, String password, String country, AsyncResponse delegate) {
         this.context = context;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.country = country;
         this.delegate = delegate;
     }
 
@@ -81,7 +83,7 @@ public class CreateUser extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = register(name, token, email, password);
+            String json = register(name, token, email, password, country);
             System.out.println("json: " + json);
             String postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -96,10 +98,13 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     JSONObject user = jObj.getJSONObject("user");
                     String name = user.getString("name");
                     String email = user.getString("email");
+                    String country = user.getString("country");
+                    AppController.setString(context, "country", country);
 
                     thisUser.setEmail(email);
                     thisUser.setName(name);
                     thisUser.setUid(userId);
+                    thisUser.setCountry(country);
                     ArrayList<Integer> answers = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0));
                     thisUser.setAnswers(answers);
                     inst.setLoggedInUser(thisUser);
@@ -148,10 +153,11 @@ public class CreateUser extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String register(String name, String token, String email, String password) {
+    private String register(String name, String token, String email, String password, String country) {
         return "{\"tag\":\"" + "register" + "\","
                 + "\"name\":\"" + name + "\","
                 + "\"token\":\"" + token + "\","
+                + "\"country\":\"" + country + "\","
                 + "\"email\":\"" + email + "\","
                 + "\"password\":\"" + password + "\"}";
     }

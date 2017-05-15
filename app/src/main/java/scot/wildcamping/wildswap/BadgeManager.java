@@ -33,6 +33,7 @@ public class BadgeManager {
 
     private Context context;
     StoredData inst = new StoredData();
+    StoredTrades allTrades = new StoredTrades();
     private StoredTrades trading = new StoredTrades();
     private User thisUser = inst.getLoggedInUser();
     private ArrayList<Integer> badges = thisUser.getBadges();
@@ -41,10 +42,21 @@ public class BadgeManager {
 
     public BadgeManager(Context context){
         this.context = context;
+
+        System.out.println("i am in badge manager");
+    }
+
+    public void awardJoinBadge(){
+        ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
         badges.set(0, 1);
         newBadge = 1;
 
-        System.out.println("i am in badge manager");
+        if(!badges.equals(existingBadges)){
+            updateBadges();
+        }
+
+        thisUser.setBadges(badges);
 
     }
 
@@ -52,9 +64,6 @@ public class BadgeManager {
     public void checkSiteBadges(){
         int ownedSize = inst.getOwnedSiteSize();
         ArrayList<Integer> existingBadges = new ArrayList<>(badges);
-
-        System.out.println("badges before update" + badges);
-        System.out.println("exist badges before update: " + existingBadges);
 
         if(ownedSize >= 1 && ownedSize < 2){
             //unlock badge_2
@@ -92,11 +101,6 @@ public class BadgeManager {
             update = true;
         }
 
-
-        System.out.println("badges: "+badges);
-        System.out.println("existing badges: " + existingBadges);
-
-        System.out.println("comparison of badges: " + !badges.equals(existingBadges));
         //is this comparison robust??
         if(!badges.equals(existingBadges)){
             updateBadges();
@@ -106,8 +110,16 @@ public class BadgeManager {
     }
 
     public void checkTradeBadges(){
-        int trades = trading.getAcceptedTradesSize();
+        //int trades = trading.getAcceptedTradesSize();
         ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
+        int trades = 0;
+
+        for(int i = 0; i<allTrades.getInactiveTradesSize(); i++){
+            if(allTrades.getInactiveTrades().get(i).getStatus() == 2){
+                trades++;
+            }
+        }
 
         if(trades >= 1 && trades <5){
             //unlock badge_6
@@ -313,53 +325,56 @@ public class BadgeManager {
 
         System.out.println("i tried to update badges");
 
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setTitle("New Badge Unlocked!");
-        builder1.setMessage("You have unlocked a new badge!");
+        if(newBadge != 0) {
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.badge_popup, null);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setTitle("New Badge Unlocked!");
+            builder1.setMessage("You have unlocked a new badge!");
 
-        final TextView badgeTitle = (TextView) dialogView.findViewById(R.id.badgeTitle);
-        final ImageView badgeThumbnail = (ImageView) dialogView.findViewById(R.id.badgeThumbnail);
-        final TextView badgeDesc = (TextView) dialogView.findViewById(R.id.badgeDesc);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            View dialogView = inflater.inflate(R.layout.badge_popup, null);
 
-        final String uri = "@drawable/badge_icon_" + (newBadge);
-        final String title = "@string/badge_title_" + (newBadge);
-        final String desc = "@string/badge_desc_" + (newBadge);
+            final TextView badgeTitle = (TextView) dialogView.findViewById(R.id.badgeTitle);
+            final ImageView badgeThumbnail = (ImageView) dialogView.findViewById(R.id.badgeThumbnail);
+            final TextView badgeDesc = (TextView) dialogView.findViewById(R.id.badgeDesc);
 
-        badgeTitle.setText(context.getResources().getIdentifier(title, null, context.getPackageName()));
-        badgeThumbnail.setImageResource(context.getResources().getIdentifier(uri, null, context.getPackageName()));
-        badgeDesc.setText(context.getResources().getIdentifier(desc, null, context.getPackageName()));
+            final String uri = "@drawable/badge_icon_" + (newBadge);
+            final String title = "@string/badge_title_" + (newBadge);
+            final String desc = "@string/badge_desc_" + (newBadge);
 
-        builder1.setView(dialogView);
+            badgeTitle.setText(context.getResources().getIdentifier(title, null, context.getPackageName()));
+            badgeThumbnail.setImageResource(context.getResources().getIdentifier(uri, null, context.getPackageName()));
+            badgeDesc.setText(context.getResources().getIdentifier(desc, null, context.getPackageName()));
 
-        builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+            builder1.setView(dialogView);
 
-        final AlertDialog alert1 = builder1.create();
+            builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
-        alert1.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+            final AlertDialog alert1 = builder1.create();
 
-            }
-        });
+            alert1.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 
-        alert1.show();
+                }
+            });
 
-        new UpdateBadges(context, true, new AsyncResponse() {
-            @Override
-            public void processFinish(String output) {
-                alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+            alert1.show();
 
-            }
-        }).execute();
+            new UpdateBadges(context, true, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+
+                }
+            }).execute();
+        }
 
     }
 }

@@ -51,6 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
                     android:layout_alignParentRight="true">
 
                     <ImageButton
@@ -79,7 +80,7 @@
 
                 <TextView
                     android:id="@+id/country"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_centerVertical="true"

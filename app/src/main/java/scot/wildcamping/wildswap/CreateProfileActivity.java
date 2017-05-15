@@ -214,6 +214,14 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             alert1.show();
         }
 
+        if(!update){
+            userType = userTypeText1.getText().toString();
+            userType1.setBackgroundResource(R.drawable.rounded_green_button);
+            userTypeDescription.setText(R.string.userTypeDescription1);
+            updateProgress();
+            updateUserType = false;
+        }
+
         addCoverPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -184,10 +184,10 @@ public class TradeView extends AppCompatActivity {
                         @Override
                         public void processFinish(String output) {
 
-                            BadgeManager bM = new BadgeManager(TradeView.this);
-                            bM.checkTradeBadges();
-
                             new CreateNotification(TradeView.this, recieve_token).execute();
+                            intent.putExtra("latitude", unknownSite.get(0).getLat());
+                            intent.putExtra("longitude", unknownSite.get(0).getLon());
+                            intent.putExtra("add", true);
                             startActivity(intent);
                             finish();
                         }

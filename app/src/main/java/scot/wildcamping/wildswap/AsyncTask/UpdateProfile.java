@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -29,7 +30,10 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
-    OkHttpClient client = new OkHttpClient();
+    OkHttpClient.Builder client = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS);
 
     public AsyncResponse delegate = null;
 
@@ -155,7 +159,7 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
                 .post(body)
                 .build();
         System.out.println("request: " + request);
-        Response response = client.newCall(request).execute();
+        Response response = client.build().newCall(request).execute();
         return response.body().string();
     }
 

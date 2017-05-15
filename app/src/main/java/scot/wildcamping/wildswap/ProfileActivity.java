@@ -1,8 +1,6 @@
 package scot.wildcamping.wildswap;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +10,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
@@ -34,7 +31,6 @@ import scot.wildcamping.wildswap.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildswap.AsyncTask.FetchTradeRequests;
 import scot.wildcamping.wildswap.AsyncTask.SubmitVouch;
-import scot.wildcamping.wildswap.AsyncTask.UpdateBadges;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.StoredTrades;
 import scot.wildcamping.wildswap.Objects.User;

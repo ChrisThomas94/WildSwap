@@ -3,6 +3,7 @@ package scot.wildcamping.wildswap.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.support.v4.view.PagerAdapter;
 import android.util.Base64;
@@ -10,6 +11,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,6 +62,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
 
         Site thisSite = ownedSites.get(position);
 
+        FrameLayout classLayout = (FrameLayout) itemView.findViewById(R.id.classLayout);
         RelativeLayout relativeLayout = (RelativeLayout) itemView.findViewById(R.id.ownedLayout);
         ImageView siteThumbnail = (ImageView) itemView.findViewById(R.id.image);
         TextView title = (TextView) itemView.findViewById(R.id.title);
@@ -95,12 +98,15 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
 
             if (thisSite.getClassification().equals(amateurText)) {
                 amateur.setVisibility(View.VISIBLE);
+                classLayout.setBackgroundResource(R.drawable.rounded_green_button);
 
             } else if (thisSite.getClassification().equals(casualText)) {
                 casual.setVisibility(View.VISIBLE);
+                classLayout.setBackgroundResource(R.drawable.rounded_orange_button);
 
             } else if (thisSite.getClassification().equals(expertText)) {
                 expert.setVisibility(View.VISIBLE);
+                classLayout.setBackgroundResource(R.drawable.rounded_red_button);
 
             }
         }

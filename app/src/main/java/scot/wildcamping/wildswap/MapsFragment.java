@@ -120,7 +120,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     int unknownSiteSize;
 
     List<Marker> ownedMarkersList;
-
+    BadgeManager bM;
     View v;
 
     @Override
@@ -128,7 +128,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        bM = new BadgeManager(getActivity());
+        //.getAppli
+
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
 
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
@@ -187,7 +191,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         if(register){
 
-            BadgeManager bm = new BadgeManager(getActivity());
+            bM.awardJoinBadge();
 
             Boolean newCamper = false;
             String answer = AppController.getString(this.getActivity(),"newCamper");
@@ -285,9 +289,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
 
-            BadgeManager bM = new BadgeManager(getActivity());
+
             bM.checkSiteBadges();
             bM.checkCountryBadges();
+            bM.checkTradeBadges();
 
             //getActivity().getIntent().removeExtra("add");
         } else if (trade){
@@ -305,7 +310,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     .newCameraPosition(cameraPosition));
         } else {
             // center Map on Scotland
+
+            //String country = AppController.getString(getContext(), "country");
+
             CameraPosition cameraPosition = new CameraPosition.Builder()
+
                     .target(SCOTLAND.getCenter()).zoom(prevZoom).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));

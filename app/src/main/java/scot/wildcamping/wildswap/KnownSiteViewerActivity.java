@@ -420,12 +420,12 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
                 new CreateNotification(this, Appconfig.myToken).execute();
 
-                BadgeManager bm = new BadgeManager(this);
-                bm.checkReportedBadges();
-
                 new ReportSite(this, cid, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
+
+                        BadgeManager bm = new BadgeManager(KnownSiteViewerActivity.this);
+                        bm.checkReportedBadges();
                         Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
 
                     }

@@ -7,7 +7,7 @@ package scot.wildcamping.wildswap;
 public class Appconfig {
 
     //localhost
-    public static String URL = "http://192.168.0.14:81/WildScotland_API/";
+    //public static String URL = "http://192.168.0.14:81/WildScotland_API/";
 
     public static String firebase = "https://fcm.googleapis.com/fcm/send";
 
@@ -17,6 +17,6 @@ public class Appconfig {
 
     //webserver
     //public static String URL = "http://wild.nick-hope.co.uk/WildScotlandAPI/login_register_api/";
-    //public static String URL = "http://wildswap.com/API/index.php";
+    public static String URL = "http://wildswap.com/API/index.php";
 
 }

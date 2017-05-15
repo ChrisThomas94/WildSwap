@@ -59,19 +59,21 @@
             android:layout_alignParentBottom="true"
             android:padding="10dp"/>
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/classLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:padding="10dp">
+            android:background="@drawable/rounded_green_button"
+            android:layout_margin="10dp">
 
             <TextView
                 android:id="@+id/classificationA"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@drawable/rounded_green_button"
+                android:background="@drawable/rounded_white_button"
                 android:text="Amateur"
                 android:textSize="15sp"/>
 
@@ -80,7 +82,7 @@
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@drawable/rounded_orange_button"
+                android:background="@drawable/rounded_white_button"
                 android:text="Casual"
                 android:textSize="15sp"/>
 
@@ -89,11 +91,12 @@
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@drawable/rounded_red_button"
+                android:background="@drawable/rounded_white_button"
                 android:text="Expert"
                 android:textSize="15sp"/>
 
-        </RelativeLayout>
+
+        </FrameLayout>
 
     </RelativeLayout>
 

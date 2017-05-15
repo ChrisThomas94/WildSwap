@@ -11,6 +11,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -80,6 +81,7 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
 
         if(!dealer.equals(null)) {
             System.out.println("site " + thisSite);
+            FrameLayout classLayout = (FrameLayout) itemView.findViewById(R.id.classifications);
             ImageView backgroundImage = (ImageView) itemView.findViewById(R.id.backgroundImage);
             CircleImageView profile_pic = (CircleImageView) itemView.findViewById(R.id.profilePicture);
             TextView title = (TextView) itemView.findViewById(R.id.recieveTitle);
@@ -123,12 +125,15 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
 
                 if (thisSite.getClassification().equals(amateurText)) {
                     amateur.setVisibility(View.VISIBLE);
+                    classLayout.setBackgroundResource(R.drawable.rounded_green_button);
 
                 } else if (thisSite.getClassification().equals(casualText)) {
                     casual.setVisibility(View.VISIBLE);
+                    classLayout.setBackgroundResource(R.drawable.rounded_orange_button);
 
                 } else if (thisSite.getClassification().equals(expertText)) {
                     expert.setVisibility(View.VISIBLE);
+                    classLayout.setBackgroundResource(R.drawable.rounded_red_button);
 
                 }
             }
