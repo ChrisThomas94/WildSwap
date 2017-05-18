@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import scot.wildcamping.wildswap.Objects.Badge;
@@ -37,10 +39,13 @@ public class BadgeListAdapter extends BaseAdapter {
     }
 
     private static final class ViewHolder{
-        private FrameLayout thumbnail;
+        //private FrameLayout thumbnail;
         private ImageView badgeThumbnail;
         private TextView badgeTitle;
         private TextView badgeDesc;
+        //int image;
+        //String title;
+        //String description;
     }
 
     @Override
@@ -63,34 +68,39 @@ public class BadgeListAdapter extends BaseAdapter {
 
         final ViewHolder viewHolder;
 
-
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.adapter_list_badges, null);
             viewHolder = new ViewHolder();
 
-            viewHolder.thumbnail = (FrameLayout) convertView.findViewById(R.id.thumbnail);
+            //viewHolder.thumbnail = (FrameLayout) convertView.findViewById(R.id.thumbnail);
             viewHolder.badgeThumbnail = (ImageView) convertView.findViewById(R.id.badgeThumbnail);
             viewHolder.badgeTitle = (TextView) convertView.findViewById(R.id.badgeTitle);
             viewHolder.badgeDesc = (TextView) convertView.findViewById(R.id.badgeDesc);
 
             convertView.setTag(viewHolder);
 
+            //viewHolder.image = allBadges.get(position).getResource();
+            //viewHolder.title = allBadges.get(position).getTitle();
+            //viewHolder.description = allBadges.get(position).getDescription();
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         if(allBadges.get(position) != null) {
+            //Picasso.with(context).load(allBadges.get(position).getResource()).into(viewHolder.badgeThumbnail);
             viewHolder.badgeThumbnail.setImageResource(allBadges.get(position).getResource());
             viewHolder.badgeTitle.setText(allBadges.get(position).getTitle());
             viewHolder.badgeDesc.setText(allBadges.get(position).getDescription());
 
-            if(badges.get(position)==0){
-                viewHolder.thumbnail.getForeground().setAlpha(200);
+            if(badges.get(position)!=0){
+                viewHolder.badgeThumbnail.getForeground().setAlpha(0);
 
             } else {
-                viewHolder.thumbnail.getForeground().setAlpha(0);
+                //viewHolder.thumbnail.getForeground().setAlpha(200);
+
             }
         }
 

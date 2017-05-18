@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class BadgesFragment extends Fragment {
     }
 
     BadgeListAdapter adapter;
-    ListView mDrawerList;
+    NonScrollListView mDrawerList;
     StoredData stored;
     User thisUser;
     Badges inst = new Badges();
@@ -49,7 +50,7 @@ public class BadgesFragment extends Fragment {
 
         for(int i = 0; i<25; i++){
             thisBadge = new Badge();
-            String uri = "@drawable/badge_icon_" + (i+1);
+            String uri = "@mipmap/badge_icon_" +(i+1);
             String title = "@string/badge_title_" + (i+1);
             String desc = "@string/badge_desc_" + (i+1);
 
@@ -72,7 +73,7 @@ public class BadgesFragment extends Fragment {
 
         tally.setText(String.valueOf(count) + "/" + String.valueOf(badges.size()));
 
-        mDrawerList = (ListView) rootView.findViewById(R.id.badge_listview);
+        mDrawerList = (NonScrollListView) rootView.findViewById(R.id.badge_listview);
 
         collection = inst.getCollection();
 

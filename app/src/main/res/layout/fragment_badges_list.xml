@@ -30,11 +30,14 @@
 
     </RelativeLayout>
 
-    <ListView
+    <scot.wildcamping.wildswap.NonScrollListView
         android:id="@+id/badge_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:divider="#00000000"
+        android:fastScrollEnabled="true"
+        android:persistentDrawingCache="scrolling"
+        android:scrollingCache="true"
         android:layout_margin="5dp"
         android:dividerHeight="10dp"
         android:clickable="true"

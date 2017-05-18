@@ -87,7 +87,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/rounded_linear_layout"
-                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
@@ -96,12 +98,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/rounded_grey_button">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add Image"
+                        android:text="Add Images"
                         android:padding="15dp"
                         android:textSize="@dimen/feature_text"
                         android:layout_toRightOf="@+id/addPhoto"/>
@@ -119,6 +122,7 @@
 
                 <RelativeLayout
                     android:id="@+id/addedImages"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -126,7 +130,6 @@
                         android:id="@+id/gridView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
                         android:drawSelectorOnTop="true"
                         android:gravity="center"
                         android:numColumns="3"
@@ -144,6 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="OR"
+                    android:visibility="gone"
                     android:layout_gravity="center"
                     android:padding="10dp"/>
 
@@ -152,6 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:visibility="gone"
                     android:background="@drawable/rounded_grey_button">
 
                     <ImageView
@@ -203,13 +208,13 @@
 
                 </RelativeLayout>
 
-                    <CheckBox
-                        android:id="@+id/imagePermission"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:visibility="gone"
-                        android:text="Allow other otherUsers to see this image"/>
+                <CheckBox
+                    android:id="@+id/imagePermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:text="Allow other otherUsers to see this image"/>
 
 
             </LinearLayout>

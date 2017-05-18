@@ -11,6 +11,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     RelativeLayout addImage;
     RelativeLayout siteBuilder;
     RelativeLayout addFeature;
+    RelativeLayout addedImages;
     TextView or;
     ImageView distantTerrainFeatures;
     ImageView nearbyTerrainFeatures;
@@ -118,6 +121,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         siteBuilder = (RelativeLayout)findViewById(R.id.siteBuilder);
         addFeature = (RelativeLayout)findViewById(R.id.addFeaturesRel);
         imagePermission = (CheckBox)findViewById(R.id.imagePermission);
+        addedImages = (RelativeLayout)findViewById(R.id.addedImages);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         progress = (ProgressBar)findViewById(R.id.progressBar);
         progressText = (TextView) findViewById(R.id.progressText);
@@ -202,6 +206,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             if(imageUpload) {
                 //imageUris = extras.getStringArray("images");
                 imageUris2 = extras.getStringArrayList("images");
+                addedImages.setVisibility(View.VISIBLE);
             }
 
             rating = extras.getFloat("rating");
@@ -382,63 +387,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.progressBar:
 
                 if(progressValue > 0) {
-
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
-                    builder1.setTitle("Attention!");
-                    builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
-
-                    builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            latReq = Lat.getText().toString();
-                            lonReq = Lon.getText().toString();
-                            titleReq = title.getText().toString();
-                            descReq = description.getText().toString();
-                            ratingReq = Float.toString(ratingBar.getRating());
-                            permission = imagePermission.isChecked();
-
-                            if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
-
-                                titleReq = titleReq.replace("'", "\'");
-                                descReq = descReq.replace("'", "\'");
-
-                                final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
-                                intent.putExtra("latitude", latitude);
-                                intent.putExtra("longitude", longitude);
-                                intent.putExtra("add", true);
-                                intent.putExtra("data", false);
-
-                                new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
-                                    @Override
-                                    public void processFinish(String output) {
-
-                                        new FetchKnownSites(AddSiteActivity.this, new AsyncResponse() {
-                                            @Override
-                                            public void processFinish(String output) {
-
-                                                //BadgeManager bM = new BadgeManager(AddSiteActivity.this);
-                                                //bM.checkSiteBadges();
-
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        }).execute();
-                                    }
-                                }).execute();
-                            }
-                        }
-                    });
-
-                    builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    AlertDialog alert1 = builder1.create();
-                    alert1.show();
+                    submit();
                 } else {
                     Snackbar.make(v, "Please make some changes!", Snackbar.LENGTH_LONG).show();
                 }
@@ -460,6 +409,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 updateProgress();
             }
             updateImage = true;
+            addedImages.setVisibility(View.VISIBLE);
 
             if (clip == null) {
                 Uri uri = data.getData();
@@ -518,8 +468,20 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_site, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+
+            case R.id.action_submit:
+                submit();
+                break;
+
             case android.R.id.home:
 
                 Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
@@ -528,7 +490,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("data", false);
                 startActivity(intent);
                 finish();
-                return true;
+                break;
         }
         return (super.onOptionsItemSelected(menuItem));
     }
@@ -539,5 +501,64 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         progress.setProgress(progressValue);
         progressText.setText(progressValue+"% Complete");
 
+    }
+
+    public void submit(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
+        builder1.setTitle("Attention!");
+        builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
+
+        builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                latReq = Lat.getText().toString();
+                lonReq = Lon.getText().toString();
+                titleReq = title.getText().toString();
+                descReq = description.getText().toString();
+                ratingReq = Float.toString(ratingBar.getRating());
+                permission = imagePermission.isChecked();
+
+                if (!latReq.isEmpty() && !lonReq.isEmpty() && !titleReq.isEmpty() && !descReq.isEmpty() && !ratingReq.isEmpty()) {
+
+                    titleReq = titleReq.replace("'", "\'");
+                    descReq = descReq.replace("'", "\'");
+
+                    final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("add", true);
+                    intent.putExtra("data", false);
+
+                    new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+
+                            new FetchKnownSites(AddSiteActivity.this, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+
+                                    //BadgeManager bM = new BadgeManager(AddSiteActivity.this);
+                                    //bM.checkSiteBadges();
+
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).execute();
+                        }
+                    }).execute();
+                }
+            }
+        });
+
+        builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert1 = builder1.create();
+        alert1.show();
     }
 }

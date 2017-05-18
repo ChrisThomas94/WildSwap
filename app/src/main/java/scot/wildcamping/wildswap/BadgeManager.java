@@ -338,7 +338,7 @@ public class BadgeManager {
             final ImageView badgeThumbnail = (ImageView) dialogView.findViewById(R.id.badgeThumbnail);
             final TextView badgeDesc = (TextView) dialogView.findViewById(R.id.badgeDesc);
 
-            final String uri = "@drawable/badge_icon_" + (newBadge);
+            final String uri = "@mipmap/badge_icon_" + (newBadge);
             final String title = "@string/badge_title_" + (newBadge);
             final String desc = "@string/badge_desc_" + (newBadge);
 

@@ -108,6 +108,8 @@
     <string name="question5">It is acceptable to leave food scraps as&#8230;</string>
     <string name="question6">I am the kind of wild camper who&#8230;</string>
     <string name="question7">It is acceptable to move boulders so long as&#8230;</string>
+    <string name="question8">It is acceptable to move boulders so long as&#8230;</string>
+    <string name="question9">It is acceptable to move boulders so long as&#8230;</string>
 
     <!--Answers -->
     <string name="question1_answer1">1 night</string>
@@ -138,6 +140,16 @@
     <string name="question7_answer2">you move it back to where you found it.</string>
     <string name="question7_answer3">it won\'t roll away.</string>
     <string name="question7_answer4">there are lots of boulders.</string>
+
+    <string name="question8_answer1">it is not covered in moss.</string>
+    <string name="question8_answer2">you move it back to where you found it.</string>
+    <string name="question8_answer3">it won\'t roll away.</string>
+    <string name="question8_answer4">there are lots of boulders.</string>
+
+    <string name="question9_answer1">it is not covered in moss.</string>
+    <string name="question9_answer2">you move it back to where you found it.</string>
+    <string name="question9_answer3">it won\'t roll away.</string>
+    <string name="question9_answer4">there are lots of boulders.</string>
 
     <!--User Types-->
     <string name="userType1">Beginner</string>

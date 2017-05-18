@@ -20,7 +20,7 @@ public class QuestionFragment extends Fragment {
     }
 
     private QuestionListAdapter adapter;
-    private ListView mDrawerList;
+    private NonScrollListView mDrawerList;
     Quiz inst;
     SparseArray<Question> allQuestions;
     Question thisQuestion;
@@ -32,12 +32,12 @@ public class QuestionFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_question, container, false);
 
-        mDrawerList = (ListView) rootView.findViewById(R.id.question_listview);
+        mDrawerList = (NonScrollListView) rootView.findViewById(R.id.question_listview);
 
         inst = new Quiz();
         allQuestions = new SparseArray<>();
 
-        for(int i=1;  i<=7; i++){
+        for(int i=1;  i<=9; i++){
             thisQuestion = new Question();
             String question = "@string/question" + (i);
             String answer1 = "@string/question" + (i) + "_answer1";

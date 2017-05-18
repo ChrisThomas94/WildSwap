@@ -127,6 +127,7 @@ public class GiftSite extends AsyncTask<String, String, String> {
     private String giftSite(String uid, String recipient_uid, String cid) {
 
         return "{\"tag\":\"" + "giftSite" + "\","
+                + "\"send_uid\":\"" + uid + "\","
                 + "\"uid\":\"" + recipient_uid + "\","
                 + "\"cid\":\"" + cid + "\"}";
     }

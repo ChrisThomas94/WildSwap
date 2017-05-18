@@ -393,7 +393,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     private String getStringImage(Bitmap bmp){
         if(bmp != null){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
             byte[] imageBytes = baos.toByteArray();
             return Base64.encodeToString(imageBytes, Base64.DEFAULT);
         } else {

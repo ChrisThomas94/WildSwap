@@ -161,7 +161,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         //FragmentManager fragmentManager;
         switch (position) {
             case 0:
-                if(isNetworkAvailable() && fetchData) {
+                if(isNetworkAvailable() && (fetchData || refresh)) {
 
                     new FetchKnownSites(this, new AsyncResponse() {
                         @Override
@@ -277,18 +277,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
         if (id == R.id.action_settings1) {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
-            return true;
-        } else if (id == R.id.action_search1) {
-            Toast.makeText(getApplicationContext(), "Search Clicked",
-                    Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_add1) {
-            Toast.makeText(getApplicationContext(), "Add Clicked",
-                    Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.action_delete1) {
-            Toast.makeText(getApplicationContext(), "Delete Clicked",
-                    Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.action_refresh) {
             setRefreshActionButtonState(true);

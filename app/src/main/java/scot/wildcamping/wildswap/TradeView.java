@@ -245,6 +245,7 @@ public class TradeView extends AppCompatActivity {
                 }
             }
         }
+        System.out.println("unknown sites size " + unknownMap.size());
 
         emails.add(0, unknownSite.get(0).getSiteAdmin());
 
