@@ -204,6 +204,7 @@ public class QuizActivity extends AppCompatActivity {
                     //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
                     intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("update", false);
+                    intent.putExtra("new", true);
                 } else {
                     intent = new Intent(this, ProfileActivity.class);
                     intent.putExtra("this_user", true);

@@ -142,6 +142,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

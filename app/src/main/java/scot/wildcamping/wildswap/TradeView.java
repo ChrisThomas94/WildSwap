@@ -102,8 +102,8 @@ public class TradeView extends AppCompatActivity {
 
         } else {
 
-            unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
-            ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
+            unknownPage = (ViewPager) findViewById(R.id.unknownSiteViewPager);
+            ownedPage = (ViewPager) findViewById(R.id.ownedSiteViewPager);
 
             findOwnedSite();
             findUnknownSite();
@@ -118,12 +118,14 @@ public class TradeView extends AppCompatActivity {
 
                     unknownSites = new TradeUnknownSitesAdapter(getApplicationContext(), unknownSite, dealers);
                     unknownPage.setAdapter(unknownSites);
+
                 }
             }).execute();
 
-            System.out.println("dealers size "+dealers.size());
-
             recieve_token = unknownSite.get(0).getToken();
+
+            System.out.println("dealers size " + dealers.size());
+
         }
 
         //trader = dealers.get(0);
@@ -224,6 +226,7 @@ public class TradeView extends AppCompatActivity {
 
     public void findUnknownSite(){
         if(sent) {
+            System.out.println("sent");
             //loop through all unknown sites and find the site that has been selected to trade
             for (int i = 0; i < unknownMap.size(); i++) {
                 if (recieve_cid.equals(unknownMap.get(i).getCid())) {
@@ -234,7 +237,7 @@ public class TradeView extends AppCompatActivity {
                 }
             }
         } else if (received) {
-
+            System.out.println("received");
             //loop through all unknown sites and find the site that has been selected to trade
             for (int i = 0; i < unknownMap.size(); i++) {
                 if (send_cid.equals(unknownMap.get(i).getCid())) {
@@ -245,10 +248,15 @@ public class TradeView extends AppCompatActivity {
                 }
             }
         }
+        System.out.println("send_cid" + send_cid);
+        System.out.println("unkown map" + unknownMap.get(0).getCid());
+        System.out.println("receive_cid" + recieve_cid);
+
         System.out.println("unknown sites size " + unknownMap.size());
 
-        emails.add(0, unknownSite.get(0).getSiteAdmin());
-
+        if(unknownSite.size()>0) {
+            emails.add(0, unknownSite.get(0).getSiteAdmin());
+        }
     }
 
     public void findOwnedSite(){

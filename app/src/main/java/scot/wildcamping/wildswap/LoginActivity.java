@@ -56,12 +56,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         session = new SessionManager(getApplicationContext());
 
+        if(thisUser.getEmail() == null){
+            session.setLogin(false);
+        }
 
         //If the session is logged in move to MainActivity
         if (session.isLoggedIn()) {
 
             System.out.println("session editor "+session.editor.toString());
 
+            System.out.println("thisUser" + thisUser.getEmail());
             thisUser.setEmail(AppController.getString(this, "email"));
 
             ArrayList<String> users = new ArrayList<>();
@@ -83,12 +87,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }).execute();
                 }
             }).execute();
+        } else {
+
         }
     }
 
 
     @Override
     public void onBackPressed() {
+
     }
 
     @Override
