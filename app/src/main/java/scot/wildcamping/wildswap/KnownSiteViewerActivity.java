@@ -166,6 +166,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             ImageGalleryAdapter adapter = new ImageGalleryAdapter(this, imagesList);
             imageViews.setPageMargin(-150);
             imageViews.setAdapter(adapter);
+            imageViews.setOffscreenPageLimit(imagesList.size()-1);
             hasImages = true;
 
         } else {

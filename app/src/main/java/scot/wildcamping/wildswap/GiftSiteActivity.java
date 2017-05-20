@@ -76,7 +76,6 @@ public class GiftSiteActivity extends AppCompatActivity implements SearchView.On
                                 bM.checkGiftedBadges();
 
                                 Toast.makeText(GiftSiteActivity.this, output, Toast.LENGTH_LONG).show();
-                                finish();
 
                             }
                         }).execute();

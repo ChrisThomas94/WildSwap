@@ -25,6 +25,8 @@ import scot.wildcamping.wildswap.Objects.User;
  */
 public class CreateTrade extends AsyncTask<String, String, String> {
 
+    private AsyncResponse delegate = null;
+
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
@@ -35,16 +37,18 @@ public class CreateTrade extends AsyncTask<String, String, String> {
     String user;
     final int tradeStatus = 0;
     String postResponse;
+    String errMsg;
 
     private String send_cid;
     private String recieve_cid;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
 
-    public CreateTrade(Context context, String send_cid, String recieve_cid) {
+    public CreateTrade(Context context, String send_cid, String recieve_cid, AsyncResponse delegate) {
         this.context = context;
         this.send_cid = send_cid;
         this.recieve_cid = recieve_cid;
+        this.delegate = delegate;
     }
 
     /**
@@ -86,7 +90,6 @@ public class CreateTrade extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -97,13 +100,16 @@ public class CreateTrade extends AsyncTask<String, String, String> {
                 Toast.makeText(context, "Trade Sent!", Toast.LENGTH_LONG).show();
 
             }else {
-                String errMsg = resp.getString("error_msg");
-                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
+                errMsg = resp.getString("error_msg");
             }
 
         } catch (JSONException e){
             e.printStackTrace();
         }
+
+        delegate.processFinish(errMsg);
+
+        pDialog.dismiss();
     }
 
     private String doPostRequest(String url, String json) throws IOException {

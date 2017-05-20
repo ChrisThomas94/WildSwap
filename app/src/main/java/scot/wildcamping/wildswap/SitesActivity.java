@@ -114,7 +114,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
         ShowcaseView sv = new ShowcaseView.Builder(this)
                 .setTarget(t)
                 .setContentTitle("Owned Locations")
-                .setContentText("All of the locations that you add to the unknownSitesMap interface will be listed here.")
+                .setContentText("All of the locations that you add to the map will be listed here.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .setShowcaseEventListener(this)

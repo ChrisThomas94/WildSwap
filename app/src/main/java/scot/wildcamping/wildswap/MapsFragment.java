@@ -221,7 +221,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             //Create better text for when a new camper installs the app, point them to additional info
             addWildLocationString = "I see that you have never been wild camping before...";
         } else {
-            addWildLocationString = "This button allows you to add a wild location to the unknownSitesMap.";
+            addWildLocationString = "You can add a wild location making it available for trading by pressing this button.";
         }
 
         ShowcaseView sv = new ShowcaseView.Builder(getActivity())
@@ -327,7 +327,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         // set listeners for buttons
         addSite.setClickable(true);
-        addSite.setOnClickListener(new MyOnClickListener(googleMap));
+        //addSite.setOnClickListener(new MyOnClickListener(googleMap));
+        addSite.setOnClickListener(new noPopupClickListener(googleMap));
 
         owned.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -421,6 +422,63 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
     public void hideKnownSites(){
         collKnown.clear();
+    }
+
+    class noPopupClickListener implements View.OnClickListener{
+
+        GoogleMap googleMap;
+
+        public noPopupClickListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onClick(final View view) {
+
+            googleMap.getUiSettings().setAllGesturesEnabled(true);
+            layout_main.getForeground().setAlpha(0);
+
+            hideUnknownSites(googleMap);
+            hideKnownSites();
+            hideOwnedSites();
+            owned.setChecked(false);
+            known.setChecked(false);
+            unknown.setChecked(false);
+
+            Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+
+            addSite.setVisibility(View.GONE);
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                @Override
+                public void onMapClick(LatLng point) {
+                    clicked = true;
+                    newLat = point.latitude;
+                    newLon = point.longitude;
+
+                    try {
+                        List<Address> address = geocoder.getFromLocation(point.latitude, point.longitude, 1);
+                        System.out.println("address: "+ address);
+
+                        if(address.isEmpty()){
+
+                            Toast.makeText(getActivity(), "Unsuitable Location!", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+                            intent.putExtra("latitude", point.latitude);
+                            intent.putExtra("longitude", point.longitude);
+                            getActivity().startActivity(intent);
+                        }
+
+                    } catch (IOException e){
+                        Log.getStackTraceString(e);
+                    }
+                }
+            });
+        }
+
     }
 
     class MyOnClickListener implements View.OnClickListener{
@@ -726,7 +784,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                             images.get(cidEnd, null);
 
                             if(images.get(cidEnd) == null){
-                                new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
+                                new FetchSiteImages(getActivity(), currentSite.getCid(), new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
                                         startActivity(intent);

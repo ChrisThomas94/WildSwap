@@ -118,7 +118,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
         ShowcaseView sv = new ShowcaseView.Builder(this)
                 .setTarget(t)
                 .setContentTitle("Active Trades")
-                .setContentText("Trades that are awaiting a response are listed here.")
+                .setContentText("Trade requests that you have received from other users will be listed in this tab.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .setShowcaseEventListener(this)
@@ -139,7 +139,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
         showcaseView = new ShowcaseView.Builder(this)
                 .setTarget( new PointTarget(810, 300))
                 .setContentTitle("Trade History")
-                .setContentText("TradesActivity that have been responded to are listed here.")
+                .setContentText("Trade requests that you have sent to other users will be listed in this tab.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .build();
@@ -149,6 +149,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
 
     @Override
     public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
 
     }
 

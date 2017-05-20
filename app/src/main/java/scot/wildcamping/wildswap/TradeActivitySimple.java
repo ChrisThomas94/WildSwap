@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -166,7 +167,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         int currentOwnedSite = ownedPage.getCurrentItem();
 
         String siteAdmin = selectedUnknownSites.get(currentSite).getSiteAdmin();
-        String token = selectedUnknownSites.get(currentSite).getToken();
+        final String token = selectedUnknownSites.get(currentSite).getToken();
         String recieve_cid = selectedUnknownSites.get(currentSite).getCid();
         LatLng position = selectedUnknownSites.get(currentSite).getPosition();
 
@@ -205,18 +206,32 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
             case R.id.action_submit:
 
-                if(isNetworkAvailable()) {
-                    new CreateTrade(this, send_cid, recieve_cid).execute();
-                    new CreateNotification(this, token).execute();
-                }
-
-                Intent intent = new Intent(getApplicationContext(),
+                final Intent intent = new Intent(getApplicationContext(),
                         MainActivity_Spinner.class);
                 intent.putExtra("trade", true);
                 intent.putExtra("latitude", position.latitude);
                 intent.putExtra("longitude", position.longitude);
-                startActivity(intent);
-                finish();
+
+                if(isNetworkAvailable()) {
+                    new CreateTrade(this, send_cid, recieve_cid, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+
+                            if(output != null){
+                                Toast.makeText(TradeActivitySimple.this, output, Toast.LENGTH_LONG).show();
+
+                            } else {
+                                new CreateNotification(TradeActivitySimple.this, token).execute();
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }).execute();
+                } else {
+                    Toast.makeText(this, "No connection", Toast.LENGTH_LONG).show();
+
+                }
+
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));

@@ -92,6 +92,7 @@ public class TradeView extends AppCompatActivity {
                 @Override
                 public void processFinish(String output) {
                     dealers = inst.getDealers();
+                    System.out.println("dealer:"+dealers.get(0));
                     ownedSites = new TradeOwnedSitesAdapter(getApplicationContext(), ownedSite);
                     ownedPage.setAdapter(ownedSites);
 
@@ -187,8 +188,8 @@ public class TradeView extends AppCompatActivity {
                         public void processFinish(String output) {
 
                             new CreateNotification(TradeView.this, recieve_token).execute();
-                            intent.putExtra("latitude", unknownSite.get(0).getLat());
-                            intent.putExtra("longitude", unknownSite.get(0).getLon());
+                            intent.putExtra("latitude", unknownSite.get(0).getPosition().latitude);
+                            intent.putExtra("longitude", unknownSite.get(0).getPosition().longitude);
                             intent.putExtra("add", true);
                             startActivity(intent);
                             finish();
@@ -254,9 +255,7 @@ public class TradeView extends AppCompatActivity {
 
         System.out.println("unknown sites size " + unknownMap.size());
 
-        if(unknownSite.size()>0) {
-            emails.add(0, unknownSite.get(0).getSiteAdmin());
-        }
+        emails.add(0, unknownSite.get(0).getSiteAdmin());
     }
 
     public void findOwnedSite(){
