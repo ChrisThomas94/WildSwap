@@ -67,7 +67,7 @@ public class KnownSitesFragment extends Fragment {
                 images.get(cidEnd, null);
 
                 if(images.get(cidEnd) == null && isNetworkAvailable()){
-                    new FetchSiteImages(getContext(), knownSites.get(position).getCid(), new AsyncResponse() {
+                    new FetchSiteImages(getActivity(), knownSites.get(position).getCid(), new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);

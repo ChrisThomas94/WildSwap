@@ -136,7 +136,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
         switch (v.getId())
         {
-            case R.id.yourSite:
+            case R.id.ownedSiteLinear:
 
                 final Intent i = new Intent(this, OwnedSiteViewerActivity.class);
                 i.putExtra("cid", send_cid);
@@ -221,9 +221,13 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(TradeActivitySimple.this, output, Toast.LENGTH_LONG).show();
 
                             } else {
-                                new CreateNotification(TradeActivitySimple.this, token).execute();
-                                startActivity(intent);
-                                finish();
+                                new CreateNotification(TradeActivitySimple.this, token, new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).execute();
                             }
                         }
                     }).execute();

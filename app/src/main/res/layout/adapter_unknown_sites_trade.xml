@@ -26,6 +26,7 @@
         android:layout_marginTop="70dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
+        android:focusable="false"
         android:padding="15dp"
         android:background="@drawable/clear_shadow">
 
@@ -123,6 +124,7 @@
             android:visibility="visible"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="2.5dp"
             android:elevation="5dp"
             android:scaleType="centerCrop"
             android:clickable="true"

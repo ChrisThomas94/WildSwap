@@ -214,7 +214,8 @@ public class ProfileActivity extends AppCompatActivity {
             for(int i = 0; i<dealers.size(); i++){
                 if(dealers.get(i).getEmail().equals(otherEmail)){
                     otherUser = dealers.get(i);
-                    System.out.println(dealers.get(i).getEmail());
+                    inst.setOtherUser(otherUser);
+                    System.out.println("dealer email: "+dealers.get(i).getEmail());
                     break;
                 }
             }
@@ -226,12 +227,24 @@ public class ProfileActivity extends AppCompatActivity {
             numSitesText.setText(String.valueOf(otherUser.getNumSites()));
             int vouch = otherUser.getNumVouch();
 
+            String type = otherUser.getUserType();
+            userType.setText(type);
+
             String bio = otherUser.getBio();
+            String why = otherUser.getWhy();
 
             if(bio.equals("null")){
                 txtBio.setText("");
             } else {
                 txtBio.setText(bio);
+            }
+
+            if(why.equals("null")){
+                txtWhy.setText("");
+            } else {
+                txtWhy.setText(why);
+                updateProgress();
+                System.out.println("update why");
             }
 
             String image = otherUser.getProfile_pic();
@@ -399,7 +412,7 @@ public class ProfileActivity extends AppCompatActivity {
                 bM.checkContributorBadges();
                 bM.checkSiteBadges();
 
-                //new FetchQuestions(this, thisUser.getEmail()).execute();
+                //new FetchQuestions(this, user.getEmail()).execute();
             } else {
                 Snackbar.make(getWindow().getDecorView().getRootView(), "No network connection!", Snackbar.LENGTH_LONG)
                         .show();

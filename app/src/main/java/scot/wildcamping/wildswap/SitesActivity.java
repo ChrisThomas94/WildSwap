@@ -108,6 +108,8 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
         lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lps.setMargins(90,0,0,90);
 
+        pager.setVisibility(View.INVISIBLE);
+
         //ViewTarget t = new ViewTarget();
         PointTarget t = new PointTarget(280, 300);
 
@@ -137,6 +139,28 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                 .setContentText("All of the locations that you acquire through trading with other users will be listed here.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        pager.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                    }
+
+                })
                 .build();
         showcaseView.setButtonPosition(lps);
         sitesTutorial = true;

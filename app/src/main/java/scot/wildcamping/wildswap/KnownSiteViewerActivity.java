@@ -419,20 +419,21 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
             case R.id.report:
 
-                new CreateNotification(this, Appconfig.myToken).execute();
-
-                new ReportSite(this, cid, new AsyncResponse() {
+                new CreateNotification(this, Appconfig.myToken, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
+                        new ReportSite(KnownSiteViewerActivity.this, cid, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
 
-                        BadgeManager bm = new BadgeManager(KnownSiteViewerActivity.this);
-                        bm.checkReportedBadges();
-                        Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
+                                BadgeManager bm = new BadgeManager(KnownSiteViewerActivity.this);
+                                bm.checkReportedBadges();
+                                Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
 
+                            }
+                        }).execute();
                     }
                 }).execute();
-
-
 
                 /*Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");

@@ -39,6 +39,7 @@ public class TradeView extends AppCompatActivity {
     StoredData inst = new StoredData();
     SparseArray<Site> ownedMap = inst.getOwnedSitesMap();
     SparseArray<Site> unknownMap = inst.getUnknownSitesMap();
+    SparseArray<Site> knownMap = inst.getKnownSitesMap();
     SparseArray<Site> ownedSite = new SparseArray<>();
     SparseArray<Site> unknownSite = new SparseArray<>();
     SparseArray<Site> knownSite = new SparseArray<>();
@@ -164,6 +165,7 @@ public class TradeView extends AppCompatActivity {
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
                             MainActivity_Spinner.class);
+                        intent.putExtra("data", true);
                     new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
@@ -180,6 +182,10 @@ public class TradeView extends AppCompatActivity {
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
                             MainActivity_Spinner.class);
+                    intent.putExtra("latitude", unknownSite.get(0).getPosition().latitude);
+                    intent.putExtra("longitude", unknownSite.get(0).getPosition().longitude);
+                    intent.putExtra("add", true);
+                    intent.putExtra("data", true);
 
                     //update trade record in db positively
                     //create new entry in user_has_trades with relat 45
@@ -187,12 +193,14 @@ public class TradeView extends AppCompatActivity {
                         @Override
                         public void processFinish(String output) {
 
-                            new CreateNotification(TradeView.this, recieve_token).execute();
-                            intent.putExtra("latitude", unknownSite.get(0).getPosition().latitude);
-                            intent.putExtra("longitude", unknownSite.get(0).getPosition().longitude);
-                            intent.putExtra("add", true);
-                            startActivity(intent);
-                            finish();
+                            new CreateNotification(TradeView.this, recieve_token, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).execute();
+
                         }
                     }).execute();
                 }
@@ -285,23 +293,27 @@ public class TradeView extends AppCompatActivity {
     public void findKnownSite(){
 
         if(sent) {
-
             //loop through all known sites and find the site that was offered for trading
-            for (int i = 0; i < ownedMap.size(); i++) {
-                if (send_cid.equals(ownedMap.get(i).getCid())) {
-                    knownSite.put(0, ownedMap.get(i));
-                    System.out.println("known site found");
+            for (int i = 0; i < knownMap.size(); i++) {
+                System.out.println("site owned map" + knownMap.get(i).getCid());
+                if (recieve_cid.equals(knownMap.get(i).getCid())) {
+                    knownSite.put(0, knownMap.get(i));
+                    System.out.println("known site found - received");
                     break;
+                } else {
+                    System.out.println("Could not find site - received");
                 }
             }
-        } else if(received) {
 
+        } else if(received) {
             //loop through all known sites and find the site that was offered for trading
-            for (int i = 0; i < ownedMap.size(); i++) {
-                if (recieve_cid.equals(ownedMap.get(i).getCid())) {
-                    knownSite.put(0, ownedMap.get(i));
-                    System.out.println("known site found");
+            for (int i = 0; i < knownMap.size(); i++) {
+                if (send_cid.equals(knownMap.get(i).getCid())) {
+                    knownSite.put(0, knownMap.get(i));
+                    System.out.println("known site found - sent");
                     break;
+                } else {
+                    System.out.println("Could not find site - sent");
                 }
             }
         }

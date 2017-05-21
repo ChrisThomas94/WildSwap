@@ -84,6 +84,9 @@
         </activity>
 
         <activity
+            android:name="scot.wildcamping.wildswap.WelcomeActivity"/>
+
+        <activity
             android:name="scot.wildcamping.wildswap.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">

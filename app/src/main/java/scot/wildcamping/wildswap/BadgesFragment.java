@@ -7,8 +7,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,10 +25,11 @@ public class BadgesFragment extends Fragment {
     BadgeListAdapter adapter;
     NonScrollListView mDrawerList;
     StoredData stored;
-    User thisUser;
+    User user;
     Badges inst = new Badges();
     SparseBooleanArray collection;
     ArrayList<Integer> badges = new ArrayList<>();
+    Boolean thisUser;
 
     TextView tally;
 
@@ -43,8 +42,18 @@ public class BadgesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_badges_list, container, false);
 
+        Bundle extras = getActivity().getIntent().getExtras();
+        if(extras != null) {
+            thisUser = extras.getBoolean("this_user");
+        }
+
         stored = new StoredData();
-        thisUser = stored.getLoggedInUser();
+
+        if(thisUser) {
+            user = stored.getLoggedInUser();
+        } else {
+            user = stored.getOtherUser();
+        }
 
         tally = (TextView) rootView.findViewById(R.id.count);
 
@@ -62,7 +71,7 @@ public class BadgesFragment extends Fragment {
 
         inst.setBadges(allBadges);
 
-        badges = thisUser.getBadges();
+        badges = user.getBadges();
 
         int count = 0;
         for(int i = 0; i<badges.size(); i++){

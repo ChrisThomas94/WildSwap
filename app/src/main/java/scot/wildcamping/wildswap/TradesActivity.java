@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import scot.wildcamping.wildswap.Adapters.CustomSpinnerAdapter;
 import scot.wildcamping.wildswap.Adapters.ViewPagerAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
+import scot.wildcamping.wildswap.AsyncTask.FetchKnownSites;
 import scot.wildcamping.wildswap.AsyncTask.FetchTradeRequests;
 
 
@@ -112,6 +113,8 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
         lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lps.setMargins(90,0,0,90);
 
+        pager.setVisibility(View.INVISIBLE);
+
         //ViewTarget t = new ViewTarget();
         PointTarget t = new PointTarget(280, 300);
 
@@ -142,6 +145,27 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
                 .setContentText("Trade requests that you have sent to other users will be listed in this tab.")
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        pager.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                    }
+                })
                 .build();
         showcaseView.setButtonPosition(lps);
         tradesTutorial = true;
@@ -149,7 +173,6 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
 
     @Override
     public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
 
     }
 
@@ -227,13 +250,26 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
                 break;
 
             case 1:
-                Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
+                final Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
                 intent.putExtra("new", register);
                 intent.putExtra("sitesTutorial", sitesTutorial);
                 intent.putExtra("tradesTutorial", tradesTutorial);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
+
+                if(isNetworkAvailable()){
+                    new FetchKnownSites(this, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                            overridePendingTransition(0, 0);
+                            finish();
+                        }
+                    }).execute();
+                } else {
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    finish();
+                }
+
                 break;
 
             case 2:

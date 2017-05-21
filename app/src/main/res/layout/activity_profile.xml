@@ -60,6 +60,24 @@
                     android:padding="10dp">
 
                     <RelativeLayout
+                        android:id="@+id/profileStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:background="@drawable/rounded_green_button">
+
+                        <TextView
+                            android:id="@+id/profileStatusText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Classification"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/rounded_white_button"
+                            android:textSize="15sp"/>
+
+                        </RelativeLayout>
+
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true">
@@ -193,45 +211,13 @@
 
                     </LinearLayout>
 
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/profileStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/stats"
-                    android:elevation="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/clear_shadow"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/verification"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/verified" />
-
-                    <TextView
-                        android:id="@+id/profileStatusText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/verification"
-                        android:text="Verified Profile"
-                        android:textSize="20sp" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/otherInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/profileStatus"
+                    android:layout_below="@+id/stats"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"

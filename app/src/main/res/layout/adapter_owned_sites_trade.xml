@@ -121,6 +121,7 @@
             android:visibility="visible"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="2.5dp"
             android:elevation="5dp"
             android:scaleType="centerCrop"
             android:clickable="true"

@@ -31,14 +31,23 @@ public class QuestionListAdapter extends BaseAdapter {
     private boolean update;
     private boolean display;
     private StoredData inst = new StoredData();
-    private User thisUser = inst.getLoggedInUser();
-    ArrayList<Integer> answers = thisUser.getAnswers();
+    private User user;
+    ArrayList<Integer> answers;
 
-    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean display){
+    public QuestionListAdapter(Context context, SparseArray<Question> questions, boolean update, boolean thisUser, boolean display){
         this.context = context;
         this.questions = questions;
         this.update = update;
         this.display = display;
+
+        if(thisUser){
+            user = inst.getLoggedInUser();
+        } else {
+            user = inst.getOtherUser();
+        }
+
+        this.answers = user.getAnswers();
+
     }
 
     private static final class ViewHolder {

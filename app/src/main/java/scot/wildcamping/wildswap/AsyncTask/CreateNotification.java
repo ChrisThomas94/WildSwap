@@ -24,6 +24,8 @@ public class CreateNotification extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient client = new OkHttpClient();
+    public AsyncResponse delegate = null;
+
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
@@ -33,10 +35,11 @@ public class CreateNotification extends AsyncTask<String, String, String> {
     private String token;
     private String key;
 
-    public CreateNotification(Context context, String token) {
+    public CreateNotification(Context context, String token, AsyncResponse delegate) {
         this.context = context;
         this.key = Appconfig.serverKey;
         this.token = token;
+        this.delegate = delegate;
     }
 
     /**
@@ -90,12 +93,16 @@ public class CreateNotification extends AsyncTask<String, String, String> {
                 Log.d("No error", resp.toString());
             }else {
                 String errMsg = resp.getString("error_msg");
-                Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
+                System.out.println("error " + errMsg);
+                //Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e){
             Log.d("JSON Exception", e.toString());
         }
+
+        delegate.processFinish(file_url);
+
     }
 
     private String doPostRequest(String url, String json) throws IOException {
@@ -103,7 +110,6 @@ public class CreateNotification extends AsyncTask<String, String, String> {
 
         Request request = new Request.Builder()
                 .url(url)
-
                 .addHeader("Authorization", "key=" + key)
                 .post(body)
                 .build();

@@ -198,7 +198,11 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        pDialog.dismiss();
+
+        if ((pDialog != null) && pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+
         delegate.processFinish(file_url);
 
     }

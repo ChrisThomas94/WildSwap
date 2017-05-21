@@ -109,14 +109,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
                 String country = getUserCountry(this);
                 System.out.println("Country" + country);
-                Locale loc = new Locale ("", country);
-                loc.getDisplayCountry();
-                String countryName = loc.getDisplayName();
-                System.out.println("locale country "+loc.getDisplayCountry());
+
+                //Locale loc = new Locale ("", country);
+                //loc.getDisplayCountry();
+                //String countryName = loc.getDisplayName();
+                //System.out.println("locale country "+loc.getDisplayCountry());
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     if(isNetworkAvailable()) {
-                        new CreateUser(this, name, email, password, countryName, new AsyncResponse() {
+                        new CreateUser(this, name, email, password, country, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
                                 if(!output.equals("null")){

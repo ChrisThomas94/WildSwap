@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -43,7 +44,10 @@ public class CreateSite extends AsyncTask<String, String, String> {
     public final MediaType JSON
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
-    OkHttpClient client = new OkHttpClient();
+    OkHttpClient.Builder client = new OkHttpClient.Builder()
+            .connectTimeout(30,TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS);
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
@@ -302,7 +306,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 .url(url)
                 .post(body)
                 .build();
-        Response response = client.newCall(request).execute();
+        Response response = client.build().newCall(request).execute();
         return response.body().string();
     }
 

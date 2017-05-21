@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             System.out.println("session editor "+session.editor.toString());
 
-            System.out.println("thisUser" + thisUser.getEmail());
+            System.out.println("user" + thisUser.getEmail());
             thisUser.setEmail(AppController.getString(this, "email"));
 
             ArrayList<String> users = new ArrayList<>();
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             final Intent intent = new Intent(this, MainActivity_Spinner.class);
 
-            //new FetchQuestions(this, thisUser.getEmail()).execute();
+            //new FetchQuestions(this, user.getEmail()).execute();
 
             new FetchUsers(this, users, new AsyncResponse() {
                 @Override

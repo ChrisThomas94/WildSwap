@@ -53,7 +53,7 @@ public class SubmitVouch extends AsyncTask<String, String, String>{
     protected void onPreExecute() {
         super.onPreExecute();
         pDialogKnownSites = new ProgressDialog(context);
-        pDialogKnownSites.setMessage("Submitting Answers ...");
+        pDialogKnownSites.setMessage("Vouching for user ...");
         pDialogKnownSites.setIndeterminate(false);
         pDialogKnownSites.setCancelable(true);
         pDialogKnownSites.show();

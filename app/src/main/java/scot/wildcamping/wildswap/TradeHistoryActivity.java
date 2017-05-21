@@ -59,8 +59,10 @@ public class TradeHistoryActivity extends AppCompatActivity {
 
         if(inactiveTrades.size() == 0){
             empty.setVisibility(View.VISIBLE);
+            mDrawerList.setVisibility(View.GONE);
         } else {
             empty.setVisibility(View.GONE);
+            mDrawerList.setVisibility(View.VISIBLE);
         }
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,20 +90,11 @@ public class TradeHistoryActivity extends AppCompatActivity {
         mDrawerList.setAdapter(adapter);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
-                //startActivity(intent);
                 finish();
                 break;
 

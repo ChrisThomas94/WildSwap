@@ -31,9 +31,9 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
             = MediaType.parse("application/json;  charset=utf-8"); // charset=utf-8
 
     OkHttpClient.Builder client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS);
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS);
 
     public AsyncResponse delegate = null;
 

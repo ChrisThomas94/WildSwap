@@ -168,12 +168,12 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
+        Log.d("Fetch Images", "Post Execute");
+        if ((pDialog != null) && pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
 
         delegate.processFinish(file_url);
-
-        Log.d("Fetch Images", "Post Execute");
-        pDialog.dismiss();
-
     }
 
     private String doPostRequest(String url, String json) throws IOException {

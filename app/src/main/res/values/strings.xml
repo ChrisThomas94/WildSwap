@@ -6,6 +6,26 @@
     <string name="title_activity_register">Register</string>
     <string name="google_maps_key">AIzaSyAcdnOoy0diO5vmcwdTtpzsMkx2iQeeBvs</string>
 
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Welcome!</string>
+    <string name="slide_1_desc">Here at Wild Swap we love exploring the great outdoors and preserving nature for the future generations.</string>
+
+    <string name="slide_2_title">Plot Locations!</string>
+    <string name="slide_2_desc">Add wild locations that you discover to our map interface.</string>
+
+    <string name="slide_3_title">Trade Locations!</string>
+    <string name="slide_3_desc">Find a location you wish to know the exact coordinates of and send a trade request to the user that plotted it.</string>
+
+    <string name="slide_4_title">Build Communities!</string>
+    <string name="slide_4_desc">Trade with other users and build a community surrounding the locations that you all love to visit.</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+
     <!--sliding window tutorial -->
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Slider Menu Opened</string>
@@ -232,4 +252,89 @@
     <string name="badge_desc_23">Own locations in 5 different countries</string>
     <string name="badge_desc_24">Own locations in 10 different countries</string>
     <string name="badge_desc_25">Own locations in 15 different countries</string>
+
+    <string name="GB_lat">55</string>
+    <string name="GB_lon">-4</string>
+    <string name="GB_zoom">5</string>
+
+    <string name="US_lat">38</string>
+    <string name="US_lon">-97</string>
+    <string name="US_zoom">3</string>
+
+    <string name="CA_lat">60</string>
+    <string name="CA_lon">-95</string>
+    <string name="CA_zoom">3</string>
+
+    <string name="AU_lat">-27</string>
+    <string name="AU_lon">133</string>
+    <string name="AU_zoom">3.5</string>
+
+    <string name="NZ_lat">-41</string>
+    <string name="NZ_lon">174</string>
+    <string name="NZ_zoom">5</string>
+
+    <string name="FR_lat">46</string>
+    <string name="FR_lon">2</string>
+    <string name="FR_zoom">5</string>
+
+    <string name="ES_lat">40</string>
+    <string name="ES_lon">-4</string>
+    <string name="ES_zoom">5</string>
+
+    <string name="SE_lat">62</string>
+    <string name="SE_lon">15</string>
+    <string name="SE_zoom">4.5</string>
+
+    <string name="CH_lat">47</string>
+    <string name="CH_lon">8</string>
+    <string name="CH_zoom">6.5</string>
+
+    <string name="NO_lat">62</string>
+    <string name="NO_lon">10</string>
+    <string name="NO_zoom">4.5</string>
+
+    <string name="NL_lat">52.5</string>
+    <string name="NL_lon">5.75</string>
+    <string name="NL_zoom">7</string>
+
+    <string name="NP_lat">28</string>
+    <string name="NP_lon">84</string>
+    <string name="NP_zoom">6</string>
+
+    <string name="IT_lat">42.8333</string>
+    <string name="IT_lon">12.8333</string>
+    <string name="IT_zoom">5.3</string>
+
+    <string name="IE_lat">53</string>
+    <string name="IE_lon">-8</string>
+    <string name="IE_zoom">6.5</string>
+
+    <string name="IN_lat">20</string>
+    <string name="IN_lon">77</string>
+    <string name="IN_zoom">4.5</string>
+
+    <string name="IS_lat">65</string>
+    <string name="IS_lon">-18</string>
+    <string name="IS_zoom">5.2</string>
+
+    <string name="DK_lat">56</string>
+    <string name="DK_lon">10</string>
+    <string name="DK_zoom">6.5</string>
+
+    <string name="CN_lat">35</string>
+    <string name="CN_lon">105</string>
+    <string name="CN_zoom">3</string>
+
+    <string name="BE_lat">50.8333</string>
+    <string name="BE_lon">4</string>
+    <string name="BE_zoom">7</string>
+
+    <string name="AT_lat">47.3333</string>
+    <string name="AT_lon">13.3333</string>
+    <string name="AT_zoom">6</string>
+
+    <string name="PT_lat">39.5</string>
+    <string name="PT_lon">-8</string>
+    <string name="PT_zoom">6.6</string>
+
 </resources>

@@ -39,7 +39,7 @@ public class BadgeListAdapter extends BaseAdapter {
     }
 
     private static final class ViewHolder{
-        //private FrameLayout thumbnail;
+        private FrameLayout thumbnail;
         private ImageView badgeThumbnail;
         private TextView badgeTitle;
         private TextView badgeDesc;
@@ -74,7 +74,7 @@ public class BadgeListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.adapter_list_badges, null);
             viewHolder = new ViewHolder();
 
-            //viewHolder.thumbnail = (FrameLayout) convertView.findViewById(R.id.thumbnail);
+            viewHolder.thumbnail = (FrameLayout) convertView.findViewById(R.id.badgeDimmer);
             viewHolder.badgeThumbnail = (ImageView) convertView.findViewById(R.id.badgeThumbnail);
             viewHolder.badgeTitle = (TextView) convertView.findViewById(R.id.badgeTitle);
             viewHolder.badgeDesc = (TextView) convertView.findViewById(R.id.badgeDesc);
@@ -96,7 +96,7 @@ public class BadgeListAdapter extends BaseAdapter {
             viewHolder.badgeDesc.setText(allBadges.get(position).getDescription());
 
             if(badges.get(position)!=0){
-                viewHolder.badgeThumbnail.getForeground().setAlpha(0);
+                viewHolder.thumbnail.getForeground().setAlpha(0);
 
             } else {
                 //viewHolder.thumbnail.getForeground().setAlpha(200);

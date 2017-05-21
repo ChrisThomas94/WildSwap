@@ -39,12 +39,13 @@
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollHorizontally="false"
                         android:text="Title"
                         android:inputType="textMultiLine"
                         android:textStyle="bold"
                         android:padding="10dp"
                         android:maxLength="21"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:textSize="30sp"/>
 
 
@@ -59,8 +60,9 @@
                         android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:scrollHorizontally="false"
+                        android:inputType="textMultiLine"
                         android:text="Description"
-                        android:inputType="text"
                         android:textSize="15sp"
                         android:maxLines="10"
                         android:padding="10dp"/>

@@ -69,7 +69,7 @@ public class OwnedSitesFragment extends Fragment {
                 images.get(cidEnd, null);
 
                 if(images.get(cidEnd) == null && isNetworkAvailable()){
-                    new FetchSiteImages(getContext(), ownedSites.get(position).getCid(), new AsyncResponse() {
+                    new FetchSiteImages(getActivity(), ownedSites.get(position).getCid(), new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);

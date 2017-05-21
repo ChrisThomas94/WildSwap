@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import scot.wildcamping.wildswap.Objects.Site;
 import scot.wildcamping.wildswap.Objects.StoredData;
+import scot.wildcamping.wildswap.Objects.StoredTrades;
+import scot.wildcamping.wildswap.Objects.Trade;
 import scot.wildcamping.wildswap.Objects.User;
 
 public class LogoutActivity extends AppCompatActivity {
@@ -54,8 +56,12 @@ public class LogoutActivity extends AppCompatActivity {
     private void logoutUser() {
         session.setLogin(false);
         StoredData inst = new StoredData();
+        StoredTrades allTrades = new StoredTrades();
         SparseArray<Site> ownedSites = inst.getOwnedSitesMap();
         SparseArray<User> dealers = inst.getDealers();
+        SparseArray<Trade> trades = allTrades.getAllTrades();
+        trades.clear();
+        
         User thisUser = new User();
 
         inst.setLoggedInUser(thisUser);

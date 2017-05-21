@@ -64,6 +64,7 @@ import scot.wildcamping.wildswap.Objects.AppClusterItem;
 import scot.wildcamping.wildswap.Objects.Gallery;
 import scot.wildcamping.wildswap.Objects.Site;
 import scot.wildcamping.wildswap.Objects.StoredData;
+import scot.wildcamping.wildswap.Objects.User;
 
 public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
@@ -71,8 +72,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
     MapView mMapView;
 
-    LatLngBounds SCOTLAND = new LatLngBounds(new LatLng(55, -8), new LatLng(59.5, -1.7));
+    LatLng userCountry;
     LatLng bunSite;
+    double country_lon;
+    double country_lat;
+    float countryZoom;
     boolean add = false;
     boolean trade = false;
     boolean update = false;
@@ -88,13 +92,16 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     CheckBox owned;
     CheckBox known;
     CheckBox unknown;
+    RelativeLayout ownedFilterLayout;
+    RelativeLayout knownFilterLayout;
+    RelativeLayout unknownFilterLayout;
 
     Marker ownedMarker;
     Marker knownMarker;
 
     Cluster<AppClusterItem> clickedCluster;
     Cluster<AppClusterItem> previouslyClickedCluster = null;
-    String user;
+    User user;
     ClusterManager<AppClusterItem> mClusterManager;
     MarkerManager mMarkerManager;
     MarkerManager.Collection coll;
@@ -143,6 +150,33 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         unknownSitesMap = inst.getUnknownSitesMap();
         unknownSiteSize = inst.getUnknownSitesSize();
 
+        user = inst.getLoggedInUser();
+        String country = user.getCountry();
+
+        String countryRes_lat = "@string/" + country + "_lat";
+        String countryRes_lon = "@string/" + country + "_lon";
+        String countryRes_zoom = "@string/" + country + "_zoom";
+
+        if(getResources().getIdentifier(countryRes_lat, null, getActivity().getPackageName()) != 0){
+            country_lat = Double.parseDouble(getResources().getString(getResources().getIdentifier(countryRes_lat, null, getActivity().getPackageName())));
+        } else {
+            country_lat = Double.parseDouble(getResources().getString(R.string.GB_lat));
+        }
+
+        if(getResources().getIdentifier(countryRes_lon, null, getActivity().getPackageName()) != 0){
+            country_lon = Double.parseDouble(getResources().getString(getResources().getIdentifier(countryRes_lon, null, getActivity().getPackageName())));
+        } else {
+            country_lon = Double.parseDouble(getResources().getString(R.string.GB_lon));
+        }
+
+        if(getResources().getIdentifier(countryRes_zoom, null, getActivity().getPackageName()) != 0){
+            countryZoom = Float.parseFloat(getResources().getString(getResources().getIdentifier(countryRes_zoom, null, getActivity().getPackageName())));
+        } else {
+            countryZoom = Float.parseFloat(getResources().getString(R.string.GB_zoom));
+        }
+
+        userCountry = new LatLng(country_lat, country_lon);
+
         Bundle extras = getActivity().getIntent().getExtras();
         if(extras != null)
         {
@@ -174,7 +208,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();// needed to get the unknownSitesMap to display immediately
 
-
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -186,6 +219,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         owned = (CheckBox) v.findViewById(R.id.ownedFilter);
         known = (CheckBox) v.findViewById(R.id.knownFilter);
         unknown = (CheckBox) v.findViewById(R.id.unkownFilter);
+        ownedFilterLayout = (RelativeLayout) v.findViewById(R.id.ownedFilterLayout);
+        knownFilterLayout = (RelativeLayout) v.findViewById(R.id.knownFilterLayout);
+        unknownFilterLayout = (RelativeLayout) v.findViewById(R.id.unknownFilterLayout);
 
         mMapView.getMapAsync(this);
 
@@ -214,6 +250,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lps.setMargins(90,0,0,90);
+
+        ownedFilterLayout.setVisibility(View.INVISIBLE);
+        knownFilterLayout.setVisibility(View.INVISIBLE);
+        unknownFilterLayout.setVisibility(View.INVISIBLE);
 
         String addWildLocationString = "";
 
@@ -245,6 +285,29 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                                 .setContentText("Other screens can be accessed via this menu.")
                                 .blockAllTouches()
                                 .setStyle(R.style.CustomShowcaseTheme)
+                                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                                    @Override
+                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                        ownedFilterLayout.setVisibility(View.VISIBLE);
+                                        knownFilterLayout.setVisibility(View.VISIBLE);
+                                        unknownFilterLayout.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                                    }
+                                })
                                 .build();
                         sv2.setButtonPosition(lps);
                     }
@@ -287,7 +350,18 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    updateMap(mClusterManager, googleMap);
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
 
 
             bM.checkSiteBadges();
@@ -301,13 +375,33 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(tradeSite).zoom(7).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    updateMap(mClusterManager, googleMap);
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
 
         } else if(update){
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(bunSite).zoom(10).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    updateMap(mClusterManager, googleMap);
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         } else {
             // center Map on Scotland
 
@@ -315,9 +409,19 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
 
-                    .target(SCOTLAND.getCenter()).zoom(prevZoom).build();
+                    .target(userCountry).zoom(countryZoom).build();
             googleMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(cameraPosition));
+                    .newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    updateMap(mClusterManager, googleMap);
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
 
         //hide clusters if zoom too much
@@ -713,6 +817,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                     updateMap(mClusterManager, googleMap);
 
                 }
+            } else {
+
             }
         }
     }
@@ -819,7 +925,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                             images.get(cidEnd, null);
 
                             if(images.get(cidEnd) == null){
-                                new FetchSiteImages(getContext(), currentSite.getCid(), new AsyncResponse() {
+                                new FetchSiteImages(getActivity(), currentSite.getCid(), new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
                                         startActivity(intent);

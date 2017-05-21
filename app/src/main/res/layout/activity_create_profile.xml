@@ -218,7 +218,6 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:textSize="15sp"
-                            android:maxLines="1"
                             android:padding="10dp"/>
                     </android.support.design.widget.TextInputLayout>
 
@@ -244,7 +243,6 @@
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:textSize="15sp"
-                            android:maxLines="1"
                             android:padding="10dp"/>
                     </android.support.design.widget.TextInputLayout>
 

@@ -95,13 +95,14 @@ public class Login extends AsyncTask<String, String, String> {
                     int numTrades = user.getInt("numTrades");
                     String token = user.getString("token");
                     int numVouch = user.getInt("vouch");
-
+                    String country = user.getString("country");
 
                     thisUser.setUid(userId);
                     thisUser.setName(name);
                     thisUser.setEmail(email);
                     thisUser.setBio(bio);
                     thisUser.setWhy(why);
+                    thisUser.setCountry(country);
                     thisUser.setUserType(userType);
                     thisUser.setCover_pic(cover_pic);
                     thisUser.setProfile_pic(profile_pic);

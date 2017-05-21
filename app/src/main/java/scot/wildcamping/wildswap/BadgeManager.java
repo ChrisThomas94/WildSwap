@@ -329,7 +329,6 @@ public class BadgeManager {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setTitle("New Badge Unlocked!");
-            builder1.setMessage("You have unlocked a new badge!");
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             View dialogView = inflater.inflate(R.layout.badge_popup, null);

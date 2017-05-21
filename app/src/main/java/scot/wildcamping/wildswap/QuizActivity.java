@@ -25,7 +25,6 @@ import scot.wildcamping.wildswap.Adapters.QuestionListAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildswap.AsyncTask.SubmitQuiz;
 import scot.wildcamping.wildswap.Objects.Question;
-import scot.wildcamping.wildswap.Objects.Quiz;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.User;
 
@@ -47,8 +46,9 @@ public class QuizActivity extends AppCompatActivity {
     TextView progressText;
     RelativeLayout frame;
     StoredData inst = new StoredData();
-    User thisUser = inst.getLoggedInUser();
-    ArrayList<Integer> answers = thisUser.getAnswers();
+    User user = inst.getLoggedInUser();
+    ArrayList<Integer> answers = user.getAnswers();
+    Boolean thisUser = true;
 
 
     Boolean updateAns0 = true;
@@ -101,7 +101,7 @@ public class QuizActivity extends AppCompatActivity {
             allQuestions.put(i-1, thisQuestion);
         }
 
-        adapter = new QuestionListAdapter(this, allQuestions, update, false);
+        adapter = new QuestionListAdapter(this, allQuestions, update, thisUser, false);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setClickable(true);
 
@@ -205,6 +205,7 @@ public class QuizActivity extends AppCompatActivity {
                     intent = new Intent(this, MainActivity_Spinner.class);
                     intent.putExtra("update", false);
                     intent.putExtra("new", true);
+                    intent.putExtra("data", true);
                 } else {
                     intent = new Intent(this, ProfileActivity.class);
                     intent.putExtra("this_user", true);

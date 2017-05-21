@@ -21,6 +21,7 @@
         android:layout_gravity="end">
 
         <RelativeLayout
+            android:id="@+id/ownedFilterLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -42,6 +43,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/knownFilterLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -63,6 +65,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/unknownFilterLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -84,8 +87,6 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-
 
     <ImageButton
         android:layout_width="90dp"

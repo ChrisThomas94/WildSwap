@@ -24,6 +24,8 @@ public class QuestionFragment extends Fragment {
     Quiz inst;
     SparseArray<Question> allQuestions;
     Question thisQuestion;
+    Boolean thisUser;
+    Boolean update = false;
 
 
     @Override
@@ -31,6 +33,11 @@ public class QuestionFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_question, container, false);
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        if(extras != null) {
+            thisUser = extras.getBoolean("this_user");
+        }
 
         mDrawerList = (NonScrollListView) rootView.findViewById(R.id.question_listview);
 
@@ -53,7 +60,7 @@ public class QuestionFragment extends Fragment {
         }
         inst.setQuestions(allQuestions);
 
-        adapter = new QuestionListAdapter(getActivity(), allQuestions, false, true);
+        adapter = new QuestionListAdapter(getActivity(), allQuestions, update, thisUser, true);
         mDrawerList.setAdapter(adapter);
 
         return rootView;
