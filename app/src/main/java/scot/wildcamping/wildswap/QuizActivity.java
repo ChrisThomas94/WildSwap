@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -58,6 +59,9 @@ public class QuizActivity extends AppCompatActivity {
     Boolean updateAns4 = true;
     Boolean updateAns5 = true;
     Boolean updateAns6 = true;
+    Boolean updateAns7 = true;
+    Boolean updateAns8 = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +90,7 @@ public class QuizActivity extends AppCompatActivity {
 
         allQuestions = new SparseArray<>();
 
-        for(int i=1;  i<=7; i++){
+        for(int i=1;  i<=9; i++){
             thisQuestion = new Question();
             String question = "@string/question" + (i);
             String answer1 = "@string/question" + (i) + "_answer1";
@@ -165,6 +169,16 @@ public class QuizActivity extends AppCompatActivity {
                     updateProgress();
                 }
 
+                if(answers.get(7) != 0 && updateAns7){
+                    updateAns7 = false;
+                    updateProgress();
+                }
+
+                if(answers.get(8) != 0 && updateAns8){
+                    updateAns8 = false;
+                    updateProgress();
+                }
+
                 h.postDelayed(this, delay);
             }
         }, delay);
@@ -220,6 +234,8 @@ public class QuizActivity extends AppCompatActivity {
                             finish();
                         }
                     }).execute();
+                } else {
+                    //Snackbar;
                 }
 
                 break;
@@ -236,10 +252,10 @@ public class QuizActivity extends AppCompatActivity {
 
     public void updateProgress(){
 
-        if(!updateAns6){
-            progressValue = progress.getProgress()+16;
+        if(!updateAns8){
+            progressValue = progress.getProgress()+12;
         } else {
-            progressValue = progress.getProgress() + 14;
+            progressValue = progress.getProgress() + 11;
         }
         progress.setProgress(progressValue);
         progressText.setText(progressValue+"% Complete");

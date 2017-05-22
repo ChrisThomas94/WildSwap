@@ -78,6 +78,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     ImageView close;
     ScrollView scroll;
     ViewPager imageViews;
+    boolean showDialog = true;
 
     ImageView expandedImage;
 
@@ -505,7 +506,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 ArrayList<String> emails = new ArrayList<>();
                 final Intent i = new Intent(this, GiftSiteActivity.class);
                 i.putExtra("cid", cid);
-                new FetchUsers(this, emails, new AsyncResponse() {
+                new FetchUsers(this, emails, showDialog, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
                         startActivity(i);

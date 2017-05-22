@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,7 +34,7 @@ import scot.wildcamping.wildswap.AsyncTask.FetchTradeRequests;
 public class SitesActivity extends AppCompatActivity implements OnShowcaseEventListener{
 
     // Declaring Your View and Variables
-
+    private Menu optionsMenu;
     private Spinner spinner_nav;
     Toolbar toolbar;
     ViewPager pager;
@@ -46,12 +48,15 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
     boolean register = false;
     boolean sitesTutorial = false;
     boolean tradesTutorial;
-
+    boolean showDialog = true;
+    View parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sites);
+
+        parentLayout = findViewById(android.R.id.content);
 
         user = AppController.getString(this, "user");
 
@@ -244,6 +249,19 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
 
             case 1:
 
+                if(isNetworkAvailable()) {
+                    setRefreshActionButtonState(true);
+                    showDialog = false;
+
+                    new FetchKnownSites(SitesActivity.this, showDialog, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            setRefreshActionButtonState(false);
+                        }
+                    }).execute();
+                } else {
+                    Snackbar.make(parentLayout, "No connection", Snackbar.LENGTH_LONG).show();
+                }
                 break;
 
             case 2:
@@ -254,7 +272,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this, new AsyncResponse() {
+                    new FetchTradeRequests(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(in);
@@ -287,8 +305,9 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        this.optionsMenu = menu;
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -304,18 +323,8 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
-            if(isNetworkAvailable()) {
+            displayView(1);
 
-                new FetchKnownSites(SitesActivity.this, new AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) {
-                        displayView(1);
-                    }
-                }).execute();
-
-            } else {
-                displayView(1);
-            }
         } else if(id == R.id.action_tradeHistory){
             Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
             startActivity(intent);
@@ -330,5 +339,19 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (optionsMenu != null) {
+            final MenuItem refreshItem = optionsMenu
+                    .findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.actionbar_progress);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }

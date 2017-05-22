@@ -101,10 +101,8 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog and add markers
      **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
-        pDialog.dismiss();
-        delegate.processFinish(file_url);
 
+        String errMsg = "Success";
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -142,13 +140,17 @@ public class UpdateProfile extends AsyncTask<String, String, String> {
                 }
 
             } else {
-                String errMsg = resp.getString("error_msg");
+                errMsg = resp.getString("error_msg");
                 Toast.makeText(context, errMsg, Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e){
 
         }
+
+        // dismiss the dialog once done
+        pDialog.dismiss();
+        delegate.processFinish(errMsg);
     }
 
     private String doPostRequest(String url, String json) throws IOException {

@@ -216,7 +216,9 @@
                             android:id="@+id/bio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:scrollHorizontally="false"
+                            android:inputType="textMultiLine"
+                            android:maxLines="10"
                             android:textSize="15sp"
                             android:padding="10dp"/>
                     </android.support.design.widget.TextInputLayout>
@@ -241,7 +243,9 @@
                             android:id="@+id/why"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:scrollHorizontally="false"
+                            android:inputType="textMultiLine"
+                            android:maxLines="10"
                             android:textSize="15sp"
                             android:padding="10dp"/>
                     </android.support.design.widget.TextInputLayout>

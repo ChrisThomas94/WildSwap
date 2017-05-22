@@ -59,6 +59,7 @@ public class TradeView extends AppCompatActivity {
     int PositiveTradeStatus = 2;
     Boolean sent = false;
     Boolean received = false;
+    boolean showDialog = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class TradeView extends AppCompatActivity {
             findOwnedSite();
             findKnownSite();
 
-            new FetchUsers(this, emails, new AsyncResponse() {
+            new FetchUsers(this, emails, showDialog, new AsyncResponse() {
                 @Override
                 public void processFinish(String output) {
                     dealers = inst.getDealers();
@@ -110,7 +111,7 @@ public class TradeView extends AppCompatActivity {
             findOwnedSite();
             findUnknownSite();
 
-            new FetchUsers(this, emails, new AsyncResponse() {
+            new FetchUsers(this, emails, showDialog, new AsyncResponse() {
                 @Override
                 public void processFinish(String output) {
 
@@ -159,18 +160,45 @@ public class TradeView extends AppCompatActivity {
                 finish();
                 return true;
 
+            case R.id.action_reject:
+
+                //update trade record in db
+                if(isNetworkAvailable()) {
+                    final Intent intent = new Intent(getApplicationContext(),
+                            MainActivity_Spinner.class);
+                    intent.putExtra("data", false);
+                    new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+
+                        new CreateNotification(TradeView.this, recieve_token, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).execute();
+
+                        }
+                    }).execute();
+                }
+
+                break;
+
             case R.id.action_cancel:
 
                 //update trade record in db
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
                             MainActivity_Spinner.class);
-                        intent.putExtra("data", true);
+                        intent.putExtra("data", false);
+
                     new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
-                            startActivity(intent);
-                            finish();
+                        startActivity(intent);
+                        finish();
+
                         }
                     }).execute();
                 }
@@ -184,7 +212,7 @@ public class TradeView extends AppCompatActivity {
                             MainActivity_Spinner.class);
                     intent.putExtra("latitude", unknownSite.get(0).getPosition().latitude);
                     intent.putExtra("longitude", unknownSite.get(0).getPosition().longitude);
-                    intent.putExtra("add", true);
+                    intent.putExtra("trade", true);
                     intent.putExtra("data", true);
 
                     //update trade record in db positively

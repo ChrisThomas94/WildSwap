@@ -52,6 +52,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     SparseArray<User> dealers;
     String send_cid;
     String trade = "trade";
+    boolean showDialog = true;
 
     ViewPager unknownPage;
     ViewPager ownedPage;
@@ -97,7 +98,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             }
         }
 
-        new FetchUsers(this, emails, new AsyncResponse() {
+        new FetchUsers(this, emails, showDialog, new AsyncResponse() {
             @Override
             public void processFinish(String output) {
                 //set the adapters off populating

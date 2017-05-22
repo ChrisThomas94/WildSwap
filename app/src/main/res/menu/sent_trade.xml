@@ -13,16 +13,6 @@
         android:title="Cancel"/>
 
     <item
-        android:id="@+id/action_contact"
-        android:icon="@drawable/letter"
-        android:orderInCategory="100"
-        android:layout_width="28dip"
-        android:layout_height="28dip"
-        android:scaleType="fitXY"
-        app:showAsAction="never"
-        android:title="Email"/>
-
-    <item
         android:id="@+id/profile"
         android:icon="@drawable/shape"
         android:orderInCategory="100"

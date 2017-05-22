@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import scot.wildcamping.wildswap.AppController;
 import scot.wildcamping.wildswap.Appconfig;
 import scot.wildcamping.wildswap.Objects.StoredData;
 import scot.wildcamping.wildswap.Objects.User;
@@ -136,6 +137,15 @@ public class Login extends AsyncTask<String, String, String> {
                     thisUser.setBadges(badges);
 
                     inst.setLoggedInUser(thisUser);
+
+                    AppController.setString(context, "uid", userId);
+                    AppController.setString(context, "email", email);
+                    AppController.setString(context, "bio", bio);
+                    AppController.setString(context, "why", why);
+                    AppController.setString(context, "country", country);
+                    AppController.setString(context, "userType", userType);
+                    AppController.setString(context, "cover_pic", cover_pic);
+                    AppController.setString(context, "profile_pic", profile_pic);
 
                 } else {
                     // login error

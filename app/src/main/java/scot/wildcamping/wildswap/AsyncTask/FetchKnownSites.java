@@ -55,11 +55,12 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
     SparseArray<Site> owned = new SparseArray<>();
     User thisUser = inst.getLoggedInUser();
     Geocoder geocoder;
+    Boolean showDialog = true;
 
-
-    public FetchKnownSites(Context context, AsyncResponse delegate) {
+    public FetchKnownSites(Context context, Boolean showDialog, AsyncResponse delegate) {
         this.context = context;
         this.delegate = delegate;
+        this.showDialog = showDialog;
     }
 
     /**
@@ -71,12 +72,15 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
         geocoder = new Geocoder(context, Locale.getDefault());
 
         Log.d("Fetch Known Sites", "Fetch Known Sites Pre Execute");
-        pDialog = new ProgressDialog(context);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching Sites ...");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(false);
-        pDialog.show();
+
+        if(showDialog) {
+            pDialog = new ProgressDialog(context);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setMessage("Fetching Sites ...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
     }
 
     /**
@@ -199,8 +203,10 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
      **/
     protected void onPostExecute(String file_url) {
 
-        if ((pDialog != null) && pDialog.isShowing()) {
-            pDialog.dismiss();
+        if(showDialog) {
+            if ((pDialog != null) && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
         }
 
         delegate.processFinish(file_url);

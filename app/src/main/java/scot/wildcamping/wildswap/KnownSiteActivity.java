@@ -71,6 +71,8 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
     StoredData inst = new StoredData();
     SparseArray<Gallery> temp = new SparseArray<>();
 
+    Boolean showDialog = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,10 +252,10 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                         new UpdateSite(this, false, active, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, imageSingleLine, imageNum, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
-                                new FetchKnownSites(KnownSiteActivity.this, new AsyncResponse() {
+                                new FetchKnownSites(KnownSiteActivity.this, showDialog, new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
-                                        new FetchUnknownSites(KnownSiteActivity.this, new AsyncResponse() {
+                                        new FetchUnknownSites(KnownSiteActivity.this, showDialog, new AsyncResponse() {
                                             @Override
                                             public void processFinish(String output) {
                                                 finish();

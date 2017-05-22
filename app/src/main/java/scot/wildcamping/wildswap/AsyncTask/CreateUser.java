@@ -105,7 +105,7 @@ public class CreateUser extends AsyncTask<String, String, String> {
                     thisUser.setName(name);
                     thisUser.setUid(userId);
                     thisUser.setCountry(country);
-                    ArrayList<Integer> answers = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0));
+                    ArrayList<Integer> answers = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0));
                     thisUser.setAnswers(answers);
                     inst.setLoggedInUser(thisUser);
 

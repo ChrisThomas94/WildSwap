@@ -61,7 +61,7 @@ public class LogoutActivity extends AppCompatActivity {
         SparseArray<User> dealers = inst.getDealers();
         SparseArray<Trade> trades = allTrades.getAllTrades();
         trades.clear();
-        
+
         User thisUser = new User();
 
         inst.setLoggedInUser(thisUser);
@@ -76,8 +76,6 @@ public class LogoutActivity extends AppCompatActivity {
         AppController.setString(this, "bio", "");
         AppController.setString(this, "profile_pic", "null");
         AppController.setString(this, "cover_pic", "null");
-
-
 
         Intent intent = new Intent(LogoutActivity.this, LoginActivity.class);
         startActivity(intent);

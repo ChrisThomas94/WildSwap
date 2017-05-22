@@ -59,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
     User thisUser = inst.getLoggedInUser();
     SparseArray<User> dealers = inst.getDealers();
     StoredTrades trades = new StoredTrades();
+    Boolean showDialog = true;
 
     User otherUser;
 
@@ -350,7 +351,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this, new AsyncResponse() {
+                    new FetchTradeRequests(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(trade);

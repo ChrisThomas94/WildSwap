@@ -51,6 +51,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
     boolean register = false;
     boolean tradesTutorial = false;
     boolean sitesTutorial;
+    boolean showDialog = true;
 
 
     @Override
@@ -256,7 +257,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
                 intent.putExtra("tradesTutorial", tradesTutorial);
 
                 if(isNetworkAvailable()){
-                    new FetchKnownSites(this, new AsyncResponse() {
+                    new FetchKnownSites(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(intent);
@@ -313,7 +314,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
             return true;
         } else if (id == R.id.action_refresh) {
             if(isNetworkAvailable()) {
-                new FetchTradeRequests(this, new AsyncResponse() {
+                new FetchTradeRequests(this, showDialog, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
                         displayView(2);

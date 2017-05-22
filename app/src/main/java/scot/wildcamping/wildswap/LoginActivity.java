@@ -60,36 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             session.setLogin(false);
         }
 
-        //If the session is logged in move to MainActivity
-        if (session.isLoggedIn()) {
-
-            System.out.println("session editor "+session.editor.toString());
-
-            System.out.println("user" + thisUser.getEmail());
-            thisUser.setEmail(AppController.getString(this, "email"));
-
-            ArrayList<String> users = new ArrayList<>();
-            users.add(0, thisUser.getEmail());
-
-            final Intent intent = new Intent(this, MainActivity_Spinner.class);
-
-            //new FetchQuestions(this, user.getEmail()).execute();
-
-            new FetchUsers(this, users, new AsyncResponse() {
-                @Override
-                public void processFinish(String output) {
-                    new FetchTradeRequests(LoginActivity.this, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).execute();
-                }
-            }).execute();
-        } else {
-
-        }
     }
 
 
@@ -131,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 if(output != null){
                                     session.setLogin(true);
-                                    AppController.setString(getApplicationContext(), "email", email);
                                     startActivity(intent);
                                     finish();
                                 }

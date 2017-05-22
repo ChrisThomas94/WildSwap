@@ -34,6 +34,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     private AsyncResponse delegate = null;
     private ProgressDialog pDialog;
     String user;
+    Boolean showDialog = true;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
     private SparseArray<Trade> activeTrades = new SparseArray<>();
@@ -46,9 +47,10 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     private SparseArray<Trade> receivedTrades = new SparseArray<>();
 
 
-    public FetchTradeRequests(Context context, AsyncResponse delegate) {
+    public FetchTradeRequests(Context context, Boolean showDialog, AsyncResponse delegate) {
         this.context = context;
         this.delegate = delegate;
+        this.showDialog = showDialog;
     }
 
     /**
@@ -58,12 +60,14 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     protected void onPreExecute() {
         //super.onPreExecute();
         Log.d("Fetch Trades", "Fetch Trades Pre Execute");
-        pDialog = new ProgressDialog(context);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching Trades ...");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(false);
-        pDialog.show();
+        if(showDialog) {
+            pDialog = new ProgressDialog(context);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setMessage("Fetching Trades ...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
     }
 
     /**
@@ -169,8 +173,10 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         Log.d("Fetch Images", "Post Execute");
-        if ((pDialog != null) && pDialog.isShowing()) {
-            pDialog.dismiss();
+        if(showDialog) {
+            if ((pDialog != null) && pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
         }
 
         delegate.processFinish(file_url);

@@ -40,16 +40,18 @@ public class FetchUsers extends AsyncTask<String, String, String> {
     private ProgressDialog pDialog;
     private Context context;
     private Boolean boolAllUsers = true;
+    Boolean showPDialog = true;
 
     StoredData inst = new StoredData();
     private SparseArray<User> fetchedUsers = new SparseArray<>();
     User thisUser = inst.getLoggedInUser();
 
 
-    public FetchUsers(Context context, ArrayList<String> emails, AsyncResponse delegate) {
+    public FetchUsers(Context context, ArrayList<String> emails, Boolean showPDialog, AsyncResponse delegate) {
         this.context = context;
         this.emails = emails;
         this.delegate = delegate;
+        this.showPDialog = showPDialog;
 
         if(!emails.isEmpty()){
             boolAllUsers = false;
@@ -63,12 +65,15 @@ public class FetchUsers extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching User Data...");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(false);
-        pDialog.show();
+
+        if(showPDialog) {
+            pDialog = new ProgressDialog(context);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setMessage("Fetching User Data...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
 
     }
 
@@ -99,12 +104,16 @@ public class FetchUsers extends AsyncTask<String, String, String> {
 
                         if(boolAllUsers){
 
-                            user.setProfile_pic(jsonUser.getString("profile_pic"));
-                            user.setName(jsonUser.getString("name"));
-                            user.setEmail(jsonUser.getString("email"));
-                            user.setUid(jsonUser.getString("unique_uid"));
-                            //user.setToken(jsonUser.getString("token"));
+                            if(jsonUser.getString("email").equals(thisUser.getEmail())){
 
+                            } else {
+
+                                user.setProfile_pic(jsonUser.getString("profile_pic"));
+                                user.setName(jsonUser.getString("name"));
+                                user.setEmail(jsonUser.getString("email"));
+                                user.setUid(jsonUser.getString("unique_uid"));
+                                user.setToken(jsonUser.getString("token"));
+                            }
                         } else {
 
                             user.setProfile_pic(jsonUser.getString("profile_pic"));
@@ -178,7 +187,9 @@ public class FetchUsers extends AsyncTask<String, String, String> {
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once donepDialog.dismiss();
         delegate.processFinish(file_url);
-        pDialog.dismiss();
+        if(showPDialog) {
+            pDialog.dismiss();
+        }
     }
 
     private String doPostRequest(String url, String json) throws IOException {

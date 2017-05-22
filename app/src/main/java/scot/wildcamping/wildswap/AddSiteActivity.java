@@ -100,6 +100,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean updateTitle = false;
     Boolean updateDesc = false;
     Boolean updateImage = false;
+    Boolean showDialog = false;
 
     Intent intent;
 
@@ -528,23 +529,14 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("add", true);
-                    intent.putExtra("data", false);
+                    intent.putExtra("data", true);
 
                     new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
 
-                            new FetchKnownSites(AddSiteActivity.this, new AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-
-                                    //BadgeManager bM = new BadgeManager(AddSiteActivity.this);
-                                    //bM.checkSiteBadges();
-
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).execute();
+                            startActivity(intent);
+                            finish();
                         }
                     }).execute();
                 }

@@ -393,6 +393,11 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
                 String profileSingleLine = null;
                 String coverSingleLine = null;
+                String bioSingleLine = newBio.replaceAll("[\r\n]+", "");
+                String whySingleLine = newWhy.replaceAll("[\r\n]+", "");
+
+                thisUser.setBio(bioSingleLine);
+                thisUser.setWhy(whySingleLine);
 
                 if(profilePicString != null) {
                     profileSingleLine = profilePicString.replaceAll("[\r\n]+", "");
@@ -413,11 +418,14 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                     if (isNetworkAvailable()) {
 
                         //asynk task updating bio
-                        new UpdateProfile(this, userType, newBio, newWhy, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
+                        new UpdateProfile(this, userType, bioSingleLine, whySingleLine, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
-                                startActivity(intent);
-                                finish();
+
+                                if(output.equals("Success")) {
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
                         }).execute();
                     } else {

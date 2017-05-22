@@ -366,11 +366,12 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             bM.checkSiteBadges();
             bM.checkCountryBadges();
-            bM.checkTradeBadges();
 
             //getActivity().getIntent().removeExtra("add");
         } else if (trade){
             LatLng tradeSite = new LatLng(newLat, newLon);
+
+            bM.checkTradeBadges();
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(tradeSite).zoom(7).build();

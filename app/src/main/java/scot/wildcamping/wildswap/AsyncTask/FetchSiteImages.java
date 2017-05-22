@@ -86,6 +86,7 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
 
                 JSONObject jObj = new JSONObject(postResponse);
                 Boolean error = jObj.getBoolean("error");
+                System.out.println("post response: " + postResponse);
 
                 //create an instance of Known sites
                 StoredData inst = new StoredData();
@@ -101,6 +102,7 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
 
 
                     for(int i=0; i<jsonArr.length();i++){
+                        System.out.println("image array item" + i + " " + jsonArr.get(i));
                         JSONObject jsonImages = jsonArr.getJSONObject(i);
                         String image = jsonImages.getString("image1");
                         images.add(i, image);

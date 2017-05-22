@@ -86,6 +86,8 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     FrameLayout classC;
     FrameLayout classE;
 
+    Boolean showDialog = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -378,7 +380,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                         @Override
                         public void processFinish(String output) {
 
-                            new FetchKnownSites(KnownSiteViewerActivity.this, new AsyncResponse() {
+                            new FetchKnownSites(KnownSiteViewerActivity.this, showDialog, new AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {
                                     if(prevState == 1) {

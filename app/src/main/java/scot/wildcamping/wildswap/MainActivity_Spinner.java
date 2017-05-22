@@ -40,12 +40,6 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
     private Menu optionsMenu;
     private Toolbar toolbar;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
-    SparseArray<Trade> activeTrades;
-    StoredTrades trades;
-    String noOfTradesStr;
 
     String user;
     double latitude;
@@ -56,6 +50,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
     boolean fetchData = true;
     int fragment = 0;
     boolean isNew;
+    boolean showDialog = true;
 
     private Spinner spinner_nav;
     ArrayList<String> list;
@@ -143,7 +138,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
-                displayView(position, false);
+                displayView(position, false, true);
             }
 
             @Override
@@ -151,33 +146,32 @@ public class MainActivity_Spinner extends AppCompatActivity {
             }
         });
 
-        StoredUsers users = new StoredUsers();
-        User keyUser = users.getKeyUser();
-        System.out.println("email " + keyUser.getEmail());
+        //StoredUsers users = new StoredUsers();
+        //User keyUser = users.getKeyUser();
+        //System.out.println("email " + keyUser.getEmail());
     }
 
-    private void displayView(final int position, Boolean refresh) {
+    private void displayView(final int position, Boolean refresh, final Boolean showDialog) {
         // update the main content by replacing fragments
         //FragmentManager fragmentManager;
         switch (position) {
             case 0:
                 if(isNetworkAvailable() && (fetchData || refresh)) {
 
-                    new FetchKnownSites(this, new AsyncResponse() {
+                    new FetchUnknownSites(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
-                            new FetchUnknownSites(MainActivity_Spinner.this, new AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    MapsFragment mapsFragment = new MapsFragment();
-                                    FragmentManager fragmentManager = getFragmentManager();
-                                    fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
+                                new FetchKnownSites(MainActivity_Spinner.this, showDialog, new AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        MapsFragment mapsFragment = new MapsFragment();
+                                        FragmentManager fragmentManager = getFragmentManager();
+                                        fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
-                                    setTitle(list.get(position));
-                                    setRefreshActionButtonState(false);
-                                }
-                            }).execute();
-
+                                        setTitle(list.get(position));
+                                        setRefreshActionButtonState(false);
+                                    }
+                                }).execute();
                         }
                     }).execute();
 
@@ -200,7 +194,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     StoredData sites = new StoredData();
                     if(sites.getKnownSiteSize() == 0){
 
-                        new FetchKnownSites(this, new AsyncResponse() {
+                        new FetchKnownSites(this, showDialog, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
                                 startActivity(intent);
@@ -227,7 +221,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
 
                 if (isNetworkAvailable()) {
 
-                    new FetchTradeRequests(this, new AsyncResponse() {
+                    new FetchTradeRequests(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             startActivity(i);
@@ -280,12 +274,12 @@ public class MainActivity_Spinner extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_refresh) {
             setRefreshActionButtonState(true);
-            displayView(0, true);
+            displayView(0, true, false);
             return true;
         } else if(id == R.id.action_tradeHistory){
             final Intent intent = new Intent(getApplicationContext(), TradeHistoryActivity.class);
 
-            new FetchTradeRequests(this, new AsyncResponse() {
+            new FetchTradeRequests(this, showDialog, new AsyncResponse() {
                 @Override
                 public void processFinish(String output) {
                     startActivity(intent);

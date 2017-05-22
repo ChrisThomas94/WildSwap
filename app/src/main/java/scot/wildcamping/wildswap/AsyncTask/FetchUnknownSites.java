@@ -44,15 +44,17 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
     final int relatTrade = 45;
     private SparseArray<Site> unknownSites = new SparseArray<>();
     Geocoder geocoder;
+    Boolean showDialog = true;
 
     StoredData inst = new StoredData();
     SparseArray<Site> knownSites = new SparseArray<>();
     User thisUser = inst.getLoggedInUser();
     int knownSize;
 
-    public FetchUnknownSites(Context context, AsyncResponse delegate) {
+    public FetchUnknownSites(Context context, Boolean showDialog, AsyncResponse delegate) {
         this.context = context;
         this.delegate = delegate;
+        this.showDialog = showDialog;
     }
 
     /**
@@ -63,13 +65,14 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
         geocoder = new Geocoder(context, Locale.getDefault());
 
         Log.d("Fetch Unknown Sites", "Fetch Unknown Sites Pre Execute");
-        pDialog = new ProgressDialog(context);
-        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pDialog.setMessage("Fetching Unknown Sites ...");
-        pDialog.setIndeterminate(true);
-        pDialog.setCancelable(false);
-        pDialog.show();
-
+        if(showDialog) {
+            pDialog = new ProgressDialog(context);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setMessage("Fetching Unknown Sites ...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
     }
 
     /**
@@ -169,7 +172,9 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog
      * **/
     protected void onPostExecute(String file_url) {
-        pDialog.dismiss();
+        if(showDialog) {
+            pDialog.dismiss();
+        }
         delegate.processFinish(file_url);
     }
 
