@@ -79,6 +79,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     TextView userTypeDescription;
     ProgressBar progress;
     TextView progressText;
+    RelativeLayout progressLayout;
 
 
     String profilePicString;
@@ -120,6 +121,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         userTypeDescription = (TextView) findViewById(R.id.userTypeDescription);
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progressText = (TextView) findViewById(R.id.progressText);
+        progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
 
         //name.setText(AppController.getString(this, "name"));
         name.setText(thisUser.getName());
@@ -202,9 +204,9 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             ab.setHomeButtonEnabled(false);
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            builder1.setTitle("Welcome to Wild Swap!");
+            builder1.setTitle("Thanks for Registering!");
             builder1.setMessage(getResources().getString(R.string.welcomeText));
-            builder1.setPositiveButton("Let me in.", new DialogInterface.OnClickListener() {
+            builder1.setPositiveButton("GOT IT", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -354,6 +356,10 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 userTypeDescription.setText(R.string.userTypeDescription3);
                 break;
 
+            case R.id.progressLayout:
+
+                submit();
+                break;
         }
     }
 
@@ -368,76 +374,14 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-
                 //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
                 //startActivity(intent);
                 finish();
                 return true;
 
             case R.id.action_submit:
-
-
                 //AppController.setString(this, "bio", bio.getText().toString());
-
-                String newBio = bio.getText().toString();
-
-                if(newBio.isEmpty()){
-                    newBio = "null";
-                }
-
-                String newWhy = why.getText().toString();
-
-                if(newWhy.isEmpty()){
-                    newWhy = "null";
-                }
-
-                String profileSingleLine = null;
-                String coverSingleLine = null;
-                String bioSingleLine = newBio.replaceAll("[\r\n]+", "");
-                String whySingleLine = newWhy.replaceAll("[\r\n]+", "");
-
-                thisUser.setBio(bioSingleLine);
-                thisUser.setWhy(whySingleLine);
-
-                if(profilePicString != null) {
-                    profileSingleLine = profilePicString.replaceAll("[\r\n]+", "");
-                    thisUser.setProfile_pic(profilePicString);
-                }
-
-                if(coverPicString != null){
-                    coverSingleLine = coverPicString.replaceAll("[\r\n]+", "");
-                    thisUser.setCover_pic(coverPicString);
-                }
-
-                final Intent intent = new Intent(this, QuizActivity.class);
-                intent.putExtra("update", update);
-
-                //if any changes have been made
-                if(anyUpdates || !newBio.equals(oldBio) || !newWhy.equals(oldWhy)) {
-
-                    if (isNetworkAvailable()) {
-
-                        //asynk task updating bio
-                        new UpdateProfile(this, userType, bioSingleLine, whySingleLine, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-
-                                if(output.equals("Success")) {
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        }).execute();
-                    } else {
-                        //show no network error!
-                        Log.d("Error", "There is no network");
-                        startActivity(intent);
-                        finish();
-                    }
-                } else {
-                    startActivity(intent);
-                    finish();
-                }
+                submit();
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));
@@ -499,9 +443,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
                 }
 
-
-
-
             } catch (FileNotFoundException e){
                 e.printStackTrace();
             }
@@ -509,10 +450,72 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    public void submit(){
+        String newBio = bio.getText().toString();
+
+        if(newBio.isEmpty()){
+            newBio = "null";
+        }
+
+        String newWhy = why.getText().toString();
+
+        if(newWhy.isEmpty()){
+            newWhy = "null";
+        }
+
+        String profileSingleLine = null;
+        String coverSingleLine = null;
+        String bioSingleLine = newBio.replaceAll("[\r\n]+", "");
+        String whySingleLine = newWhy.replaceAll("[\r\n]+", "");
+
+        thisUser.setBio(bioSingleLine);
+        thisUser.setWhy(whySingleLine);
+
+        if(profilePicString != null) {
+            profileSingleLine = profilePicString.replaceAll("[\r\n]+", "");
+            thisUser.setProfile_pic(profilePicString);
+        }
+
+        if(coverPicString != null){
+            coverSingleLine = coverPicString.replaceAll("[\r\n]+", "");
+            thisUser.setCover_pic(coverPicString);
+        }
+
+        final Intent intent = new Intent(this, QuizActivity.class);
+        intent.putExtra("update", update);
+
+        //if any changes have been made
+        if(anyUpdates || !newBio.equals(oldBio) || !newWhy.equals(oldWhy)) {
+
+            if (isNetworkAvailable()) {
+
+                //asynk task updating bio
+                new UpdateProfile(this, userType, bioSingleLine, whySingleLine, profileSingleLine, coverSingleLine, update, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+
+                        if(output.equals("Success")) {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }).execute();
+            } else {
+                //show no network error!
+                Log.d("Error", "There is no network");
+                startActivity(intent);
+                finish();
+            }
+        } else {
+            startActivity(intent);
+            finish();
+        }
+    }
+
     public String getStringImage(Bitmap bmp){
         if(bmp != null){
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
             byte[] imageBytes = baos.toByteArray();
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             return encodedImage;
@@ -576,7 +579,12 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
         progressValue = progress.getProgress()+20;
         progress.setProgress(progressValue);
-        progressText.setText(progressValue + "% Complete");
+
+        if(progressValue >= 100){
+            progressText.setText("CONTINUE");
+        } else {
+            progressText.setText(progressValue + "% Complete");
+        }
 
     }
 

@@ -18,19 +18,18 @@
 
     <style name="CustomShowcaseTheme" parent="ShowcaseView.Light">
         <item name="sv_backgroundColor">#3300A621</item>
-        <item name="sv_showcaseColor">@color/colorPrimary</item>
-        <item name="sv_buttonText">Close</item>
+        <item name="sv_showcaseColor">@color/colorPrimaryDark</item>
+        <item name="sv_buttonText">NEXT</item>
         <item name="sv_tintButtonColor">true</item>
         <item name="sv_titleTextAppearance">@style/CustomTitle</item>
     </style>
 
-    <style name="CustomShowcaseTheme2" parent="ShowcaseView">
+    <style name="CustomShowcaseTheme2" parent="ShowcaseView.Light">
         <item name="sv_backgroundColor">#3300A621</item>
-        <item name="sv_showcaseColor">@color/colorPrimary</item>
-        <item name="sv_buttonText">Close</item>
+        <item name="sv_showcaseColor">@color/colorPrimaryDark</item>
+        <item name="sv_buttonText">CLOSE</item>
         <item name="sv_tintButtonColor">true</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle2</item>
-        <item name="sv_detailTextAppearance">@style/CustomText</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
     </style>
 
     <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">

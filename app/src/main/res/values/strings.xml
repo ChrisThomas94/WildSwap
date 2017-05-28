@@ -18,13 +18,17 @@
     <string name="slide_2_desc">Add wild locations that you discover to our map interface.</string>
 
     <string name="slide_3_title">Trade Locations!</string>
-    <string name="slide_3_desc">Find a location you wish to know the exact coordinates of and send a trade request to the user that plotted it.</string>
+    <string name="slide_3_desc">Request to trade locations added by other users for one of your own.</string>
 
     <string name="slide_4_title">Build Communities!</string>
-    <string name="slide_4_desc">Trade with other users and build a community surrounding the locations that you all love to visit.</string>
+    <string name="slide_4_desc">Build a community around the locations that you all love to visit.</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+
+    <string name="map_showcase_1">You can add a wild location making it available for trading by pressing this button.</string>
+    <string name="map_showcase_2">Click on the blue circles to initiate a trade.</string>
+    <string name="map_showcase_3">Other screens can be accessed via this menu.</string>
 
     <!--sliding window tutorial -->
     <string name="action_settings">Settings</string>
@@ -193,11 +197,11 @@
     <string name="accepted">- Accepted</string>
     <string name="pending">- Pending</string>
 
-    <string name="quizText">Complete this short quiz to help other users gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code and can be found here.</string>
+    <string name="quizText">Complete this short quiz to help other users gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code.</string>
 
     <string name="welcomeText">Before you are let loose you will need to build a profile. Your profile will be viewed by other users that may wish to trade with you.\n
 
-    Do not feel obliged to use your real identity, the purpose of having a profile is for other users to gauge an idea about the type of person you are, not who you are.</string>
+    Do not feel obliged to use your real identity, the purpose of having a profile is for other users to get an idea about the type of person you are, not who you are.</string>
 
     <!--Badge Titles-->
     <string name="badge_title_1">Early Adopter</string>

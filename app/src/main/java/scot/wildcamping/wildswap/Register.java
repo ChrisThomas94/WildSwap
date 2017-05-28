@@ -116,23 +116,29 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 //System.out.println("locale country "+loc.getDisplayCountry());
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    if(isNetworkAvailable()) {
-                        new CreateUser(this, name, email, password, country, new AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                if(!output.equals("null")){
-                                    //do nothing
-                                    Snackbar.make(v, output, Snackbar.LENGTH_LONG).show();
 
-                                } else {
-                                    session.setLogin(true);
-                                    intent = new Intent(Register.this, CreateProfileActivity.class);
-                                    intent.putExtra("update", false);
-                                    startActivity(intent);
-                                    finish();
+                    if(password.length() >= 6){
+                        if(isNetworkAvailable()) {
+                            new CreateUser(this, name, email, password, country, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    if(!output.equals("null")){
+                                        //do nothing
+                                        Snackbar.make(v, output, Snackbar.LENGTH_LONG).show();
+
+                                    } else {
+                                        session.setLogin(true);
+                                        intent = new Intent(Register.this, CreateProfileActivity.class);
+                                        intent.putExtra("update", false);
+                                        startActivity(intent);
+                                        finish();
+                                    }
                                 }
-                            }
-                        }).execute();
+                            }).execute();
+                        }
+                    } else {
+                        Snackbar.make(v, "Please choose a password with a minimum of six characters!", Snackbar.LENGTH_LONG)
+                                .show();
                     }
                 } else {
                     Snackbar.make(v, "Please enter the credentials!", Snackbar.LENGTH_LONG)

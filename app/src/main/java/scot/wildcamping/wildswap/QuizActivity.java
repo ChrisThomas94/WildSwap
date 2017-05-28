@@ -1,6 +1,8 @@
 package scot.wildcamping.wildswap;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -37,15 +39,16 @@ public class QuizActivity extends AppCompatActivity {
 
     QuestionListAdapter adapter;
     ListView mDrawerList;
-    TextView info;
-    //Quiz inst;
     SparseArray<Question> allQuestions;
     Question thisQuestion;
     boolean update;
     int progressValue;
+
     ProgressBar progress;
     TextView progressText;
+    RelativeLayout progressLayout;
     RelativeLayout frame;
+
     StoredData inst = new StoredData();
     User user = inst.getLoggedInUser();
     ArrayList<Integer> answers = user.getAnswers();
@@ -78,14 +81,25 @@ public class QuizActivity extends AppCompatActivity {
             update = extras.getBoolean("update");
         }
 
+        progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
         mDrawerList = (ListView)findViewById(R.id.question_listview);
-        info = (TextView)findViewById(R.id.info);
         progress = (ProgressBar)findViewById(R.id.progressBar);
         progressText = (TextView)findViewById(R.id.progressText);
         frame = (RelativeLayout) findViewById(R.id.frame);
 
-        if(update){
-            info.setVisibility(View.GONE);
+        if(!update) {
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setTitle("One Last Thing!");
+            builder1.setMessage(getResources().getString(R.string.quizText));
+            builder1.setPositiveButton("LET ME IN!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert1 = builder1.create();
+            alert1.show();
         }
 
         allQuestions = new SparseArray<>();
@@ -113,16 +127,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("CLICK");
-            }
-        });
-
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://www.outdooraccess-scotland.com/public/camping";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
             }
         });
 
@@ -182,6 +186,37 @@ public class QuizActivity extends AppCompatActivity {
                 h.postDelayed(this, delay);
             }
         }, delay);
+
+        progressLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent;
+
+                if(!update) {
+                    //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
+                    intent = new Intent(QuizActivity.this, MainActivity_Spinner.class);
+                    intent.putExtra("update", false);
+                    intent.putExtra("new", true);
+                    intent.putExtra("data", true);
+                } else {
+                    intent = new Intent(QuizActivity.this, ProfileActivity.class);
+                    intent.putExtra("this_user", true);
+                }
+
+                //asynk task updating answers
+                if(isNetworkAvailable()) {
+                    new SubmitQuiz(QuizActivity.this, answers, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }).execute();
+                } else {
+                    //Snackbar;
+                }
+            }
+        });
     }
 
     @Override
@@ -258,7 +293,12 @@ public class QuizActivity extends AppCompatActivity {
             progressValue = progress.getProgress() + 11;
         }
         progress.setProgress(progressValue);
-        progressText.setText(progressValue+"% Complete");
+
+        if(progressValue >= 100){
+            progressText.setText("CONTINUE");
+        } else {
+            progressText.setText(progressValue + "% Complete");
+        }
 
     }
 

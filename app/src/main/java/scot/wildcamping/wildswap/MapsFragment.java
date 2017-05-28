@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -81,6 +82,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean trade = false;
     boolean update = false;
     boolean register = false;
+    boolean clickActive = false;
     double newLat;
     double newLon;
 
@@ -95,6 +97,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     RelativeLayout ownedFilterLayout;
     RelativeLayout knownFilterLayout;
     RelativeLayout unknownFilterLayout;
+    FrameLayout frame;
 
     Marker ownedMarker;
     Marker knownMarker;
@@ -111,6 +114,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     FrameLayout layout_main;
     Intent intent;
     Geocoder geocoder;
+    Snackbar snackBar = null;
 
     private final int MAX_ZOOM = 8;
     private float prevZoom = 5;
@@ -187,6 +191,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             update = extras.getBoolean("update");
             register = extras.getBoolean("new");
 
+            getActivity().getIntent().removeExtra("new");
+
             System.out.println(newLat);
             System.out.println(newLon);
             System.out.println(add);
@@ -222,29 +228,31 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         ownedFilterLayout = (RelativeLayout) v.findViewById(R.id.ownedFilterLayout);
         knownFilterLayout = (RelativeLayout) v.findViewById(R.id.knownFilterLayout);
         unknownFilterLayout = (RelativeLayout) v.findViewById(R.id.unknownFilterLayout);
+        frame = (FrameLayout) v.findViewById(R.id.buttonFrame);
 
-        mMapView.getMapAsync(this);
+
+                mMapView.getMapAsync(this);
 
         if(register){
 
             bM.awardJoinBadge();
+            showcase();
 
-            Boolean newCamper = false;
-            String answer = AppController.getString(this.getActivity(),"newCamper");
-            System.out.println("new camper answer: "+answer);
-            if(answer.equals("2131755550")){
-                newCamper = true;
-                showcase(newCamper);
-            } else {
-                showcase(newCamper);
-            }
+            //Boolean newCamper = false;
+            //String answer = AppController.getString(this.getActivity(),"newCamper");
+            //System.out.println("new camper answer: "+answer);
+            //if(answer.equals("2131755550")){
+                //newCamper = true;
+            //} else {
+                //showcase(newCamper);
+            //}
         }
 
         return v;
 
     }
 
-    public void showcase(Boolean newCamper){
+    public void showcase(){
         RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         // This aligns button to the bottom left side of screen
         lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -255,19 +263,19 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         knownFilterLayout.setVisibility(View.INVISIBLE);
         unknownFilterLayout.setVisibility(View.INVISIBLE);
 
-        String addWildLocationString = "";
+        String addWildLocationString = "You can add a wild location making it available for trading by pressing this button.";
 
-        if(newCamper){
+        /*if(newCamper){
             //Create better text for when a new camper installs the app, point them to additional info
             addWildLocationString = "I see that you have never been wild camping before...";
         } else {
             addWildLocationString = "You can add a wild location making it available for trading by pressing this button.";
-        }
+        }*/
 
         ShowcaseView sv = new ShowcaseView.Builder(getActivity())
                 .setTarget(new ViewTarget(addSite))
                 .setContentTitle("Adding Wild Locations")
-                .setContentText(addWildLocationString)
+                .setContentText(getResources().getString(R.string.map_showcase_1))
                 .blockAllTouches()
                 .setStyle(R.style.CustomShowcaseTheme)
                 .setShowcaseEventListener(new OnShowcaseEventListener() {
@@ -280,17 +288,52 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         lps.setMargins(90,0,0,90);
 
                         ShowcaseView sv2 = new ShowcaseView.Builder(getActivity())
-                                .setTarget(new ViewTarget(R.id.spinner_nav, getActivity()))
-                                .setContentTitle("Main Menu")
-                                .setContentText("Other screens can be accessed via this menu.")
+                                .setTarget(new ViewTarget(mMapView))
+                                .setContentTitle("Trading")
+                                .setContentText(getResources().getString(R.string.map_showcase_2))
                                 .blockAllTouches()
                                 .setStyle(R.style.CustomShowcaseTheme)
                                 .setShowcaseEventListener(new OnShowcaseEventListener() {
                                     @Override
                                     public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                        ownedFilterLayout.setVisibility(View.VISIBLE);
-                                        knownFilterLayout.setVisibility(View.VISIBLE);
-                                        unknownFilterLayout.setVisibility(View.VISIBLE);
+                                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        // This aligns button to the bottom left side of screen
+                                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+                                        lps.setMargins(90,0,0,90);
+                                        ShowcaseView sv3 = new ShowcaseView.Builder(getActivity())
+                                            .setTarget(new ViewTarget(R.id.spinner_nav, getActivity()))
+                                            .setContentTitle("Main Menu")
+                                            .setContentText(getResources().getString(R.string.map_showcase_3))
+                                            .blockAllTouches()
+                                            .setStyle(R.style.CustomShowcaseTheme2)
+                                            .setShowcaseEventListener(new OnShowcaseEventListener() {
+                                                @Override
+                                                public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                                    ownedFilterLayout.setVisibility(View.VISIBLE);
+                                                    knownFilterLayout.setVisibility(View.VISIBLE);
+                                                    unknownFilterLayout.setVisibility(View.VISIBLE);
+                                                    register = false;
+                                                }
+
+                                                @Override
+                                                public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                                                }
+
+                                                @Override
+                                                public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                                                }
+
+                                                @Override
+                                                public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                                                }
+                                            })
+                                            .build();
+                                        sv3.setButtonPosition(lps);
                                     }
 
                                     @Override
@@ -310,6 +353,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                                 })
                                 .build();
                         sv2.setButtonPosition(lps);
+
                     }
 
                     @Override
@@ -540,48 +584,71 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         @Override
         public void onClick(final View view) {
 
-            googleMap.getUiSettings().setAllGesturesEnabled(true);
-            layout_main.getForeground().setAlpha(0);
+            if (clickActive) {
 
-            hideUnknownSites(googleMap);
-            hideKnownSites();
-            hideOwnedSites();
-            owned.setChecked(false);
-            known.setChecked(false);
-            unknown.setChecked(false);
+                clickActive = false;
 
-            Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE).show();
+                addSite.setRotation(90);
+                frame.setPadding(0, 120, 0, 0);
 
-            addSite.setVisibility(View.GONE);
+                snackBar.dismiss();
+                showUnknownSites(googleMap);
+                showKnownSites();
+                showOwnedSites();
+                owned.setChecked(true);
+                known.setChecked(true);
 
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                googleMap.setOnMapClickListener(null);
 
-                @Override
-                public void onMapClick(LatLng point) {
-                    clicked = true;
-                    newLat = point.latitude;
-                    newLon = point.longitude;
+            } else {
 
-                    try {
-                        List<Address> address = geocoder.getFromLocation(point.latitude, point.longitude, 1);
-                        System.out.println("address: "+ address);
+                clickActive = true;
+                snackBar = Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE);
 
-                        if(address.isEmpty()){
+                frame.setPadding(0, 0, 0, 120);
+                addSite.setRotation(45);
 
-                            Toast.makeText(getActivity(), "Unsuitable Location!", Toast.LENGTH_LONG).show();
+                googleMap.getUiSettings().setAllGesturesEnabled(true);
+                layout_main.getForeground().setAlpha(0);
 
-                        } else {
-                            Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
-                            intent.putExtra("latitude", point.latitude);
-                            intent.putExtra("longitude", point.longitude);
-                            getActivity().startActivity(intent);
+                hideUnknownSites(googleMap);
+                hideKnownSites();
+                hideOwnedSites();
+                owned.setChecked(false);
+                known.setChecked(false);
+                unknown.setChecked(false);
+
+                snackBar.show();
+
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        clicked = true;
+                        newLat = point.latitude;
+                        newLon = point.longitude;
+
+                        try {
+                            List<Address> address = geocoder.getFromLocation(point.latitude, point.longitude, 1);
+                            System.out.println("address: " + address);
+
+                            if (address.isEmpty()) {
+
+                                Toast.makeText(getActivity(), "Unsuitable Location!", Toast.LENGTH_LONG).show();
+
+                            } else {
+                                Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+                                intent.putExtra("latitude", point.latitude);
+                                intent.putExtra("longitude", point.longitude);
+                                getActivity().startActivity(intent);
+                            }
+
+                        } catch (IOException e) {
+                            Log.getStackTraceString(e);
                         }
-
-                    } catch (IOException e){
-                        Log.getStackTraceString(e);
                     }
-                }
-            });
+                });
+            }
         }
 
     }

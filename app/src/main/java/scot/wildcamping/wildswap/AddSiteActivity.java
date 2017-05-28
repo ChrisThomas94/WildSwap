@@ -247,6 +247,11 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         classification = classificationA.getText().toString();
         classDescription.setText(R.string.amateurClassification);
 
+        if(!updateClassification){
+            updateProgress();
+        }
+        updateClassification = true;
+
         //setting onclick listeners
         title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -500,7 +505,12 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         progressValue = progress.getProgress()+25;
         progress.setProgress(progressValue);
-        progressText.setText(progressValue+"% Complete");
+
+        if(progressValue >= 100){
+            progressText.setText("CONTINUE");
+        } else {
+            progressText.setText(progressValue+"% Complete");
+        }
 
     }
 

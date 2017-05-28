@@ -66,6 +66,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
             register = extras.getBoolean("new");
             sitesTutorial = extras.getBoolean("sitesTutorial");
             tradesTutorial = extras.getBoolean("tradesTutorial");
+
         }
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
