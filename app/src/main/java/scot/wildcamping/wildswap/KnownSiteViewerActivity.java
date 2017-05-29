@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
     ImageView expandedImage;
     View parentLayout;
+
+    Site focused;
 
     TextView lat;
     TextView lon;
@@ -138,7 +141,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
         StoredData inst = new StoredData();
         known = inst.getKnownSitesMap();
-        Site focused = known.get(arrayPos);
+        focused = known.get(arrayPos);
         cid = focused.getCid();
         System.out.println("cid" + cid);
         latitude = focused.getLat();
@@ -236,6 +239,13 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                 feature1 = false;
             }
         }*/
+
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Toast.makeText(getApplicationContext(), "Rating Updated!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         close.setOnClickListener(this);
     }
@@ -366,48 +376,21 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+
             case android.R.id.home:
 
-                //Intent intent = null;
-
-                double ratingOnExit = rating.getRating();
-
-                if(ratingOnExit != ratingOnStart){
-
-                    String newRating = Double.toString(ratingOnExit);
-
-                    new UpdateSite(this, false, true, cid, null, null, newRating, null, null, null, null, null, null, null, null, null, null, null, 0, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-
-                            new FetchKnownSites(KnownSiteViewerActivity.this, showDialog, new AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    if(prevState == 1) {
-                                        Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
-                                        intent.putExtra("fragment", 1);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        finish();
-                                    }
-                                }
-                            }).execute();
-                        }
-                    }).execute();
-
-                } else {
-                    if(prevState == 1) {
-                        Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
-                        intent.putExtra("fragment", 1);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        finish();
-                    }
-                }
+                updateRating();
 
                 return true;
+
+            case R.id.profile:
+
+                Intent profile = new Intent(this, ProfileActivity.class);
+                profile.putExtra("email", focused.getSiteAdmin());
+                profile.putExtra("this_user", false);
+                startActivity(profile);
+
+                break;
 
             case R.id.showOnMap:
                 Intent intent = new Intent(this, MainActivity_Spinner.class);
@@ -459,6 +442,51 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.known_site_viewer, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        updateRating();
+    }
+
+    public void updateRating(){
+        double ratingOnExit = rating.getRating();
+
+        if(ratingOnExit != ratingOnStart){
+
+            String newRating = Double.toString(ratingOnExit);
+
+            new UpdateSite(this, false, true, cid, null, null, null, newRating, null, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+
+                    new FetchKnownSites(KnownSiteViewerActivity.this, showDialog, new AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            if(prevState == 1) {
+                                Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
+                                intent.putExtra("fragment", 1);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                finish();
+                            }
+                        }
+                    }).execute();
+                }
+            }).execute();
+
+        } else {
+            if(prevState == 1) {
+                Intent intent = new Intent(getApplicationContext(),SitesActivity.class);
+                intent.putExtra("fragment", 1);
+                startActivity(intent);
+                finish();
+            } else {
+                finish();
+            }
+        }
     }
 
     public String getStringImage(Bitmap bmp){

@@ -59,6 +59,7 @@ public class TradeListAdapter extends BaseAdapter{
         TextView title = (TextView) convertView.findViewById(R.id.title);
         TextView titleTrade = (TextView)convertView.findViewById(R.id.titleTrade);
         TextView outcomeTrade = (TextView)convertView.findViewById(R.id.outcomeTrade);
+        TextView tradeLocation = (TextView)convertView.findViewById(R.id.tradeLocation);
 
         System.out.println("size" + activeTrades.size());
         System.out.println("position" + position);
@@ -67,8 +68,10 @@ public class TradeListAdapter extends BaseAdapter{
 
         String direction = activeTrades.get(position).getUserRelation();
         int status = activeTrades.get(position).getStatus();
+        String location = activeTrades.get(position).getLocation();
 
         title.setText(direction);
+        tradeLocation.setText(location);
         System.out.println("direction" + direction);
 
         if(status == 1){

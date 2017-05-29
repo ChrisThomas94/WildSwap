@@ -2,6 +2,8 @@ package scot.wildcamping.wildswap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -19,7 +21,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import scot.wildcamping.wildswap.Adapters.TradeOwnedSitesAdapter;
 import scot.wildcamping.wildswap.Adapters.TradeUnknownSitesAdapter;
@@ -57,6 +62,9 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     ViewPager unknownPage;
     ViewPager ownedPage;
 
+    Geocoder geocoder;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +73,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
+
+        geocoder = new Geocoder(this, Locale.getDefault());
 
         ownedMap = inst.getOwnedSitesMap();
         unknownMap = inst.getUnknownSitesMap();
@@ -171,26 +181,25 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         final String token = selectedUnknownSites.get(currentSite).getToken();
         String recieve_cid = selectedUnknownSites.get(currentSite).getCid();
         LatLng position = selectedUnknownSites.get(currentSite).getPosition();
-
         String send_cid = ownedMap.get(currentOwnedSite).getCid();
+
+        List<Address> address;
+        String saveAddress = "Address unobtainable";
+
+        try {
+            address = geocoder.getFromLocation(position.latitude, position.longitude, 1);
+            saveAddress = address.get(0).getCountryName() + ", " + address.get(0).getLocality();
+
+        } catch (IOException e) {
+
+        }
+
 
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
                 finish();
                 return true;
-
-            case R.id.action_contact:
-
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setData(Uri.parse("mailto:"));
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_EMAIL, new String[]{siteAdmin});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Swap - Trade");
-                i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
-
-                startActivity(i);
-                break;
 
             case R.id.profile:
 
@@ -214,7 +223,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                 intent.putExtra("longitude", position.longitude);
 
                 if(isNetworkAvailable()) {
-                    new CreateTrade(this, send_cid, recieve_cid, new AsyncResponse() {
+                    new CreateTrade(this, send_cid, recieve_cid, saveAddress, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
 

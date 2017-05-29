@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,10 +30,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import scot.wildcamping.wildswap.Adapters.ImageGridAdapter;
 import scot.wildcamping.wildswap.Adapters.ImageUriGridAdapter;
 import scot.wildcamping.wildswap.AsyncTask.AsyncResponse;
 import scot.wildcamping.wildswap.AsyncTask.CreateSite;
 import scot.wildcamping.wildswap.AsyncTask.FetchKnownSites;
+import scot.wildcamping.wildswap.AsyncTask.UpdateSite;
+import scot.wildcamping.wildswap.Objects.Gallery;
+import scot.wildcamping.wildswap.Objects.Site;
 import scot.wildcamping.wildswap.Objects.StoredData;
 
 public class AddSiteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -56,6 +61,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     CheckBox imagePermission;
     ViewGroup.LayoutParams layoutParams;
     GridView gridView;
+    GridView updateGridView;
     FrameLayout classA;
     FrameLayout classC;
     FrameLayout classE;
@@ -63,6 +69,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     ProgressBar progress;
     TextView progressText;
 
+    String cid;
     double latitude;
     double longitude;
     String latReq;
@@ -90,7 +97,6 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     String titlePassed;
     String descPassed;
     int relat = 90;
-    Boolean update;
     Boolean imageUpload = false;
     StoredData inst = new StoredData();
     ArrayList imageUris2 = new ArrayList();
@@ -101,6 +107,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean updateDesc = false;
     Boolean updateImage = false;
     Boolean showDialog = false;
+    Boolean update = false;
+    int arrayPos;
 
     Intent intent;
 
@@ -126,6 +134,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
         progress = (ProgressBar)findViewById(R.id.progressBar);
         progressText = (TextView) findViewById(R.id.progressText);
+        updateGridView = (GridView) findViewById(R.id.updateGridView);
         gridView = (GridView) findViewById(R.id.gridView);
         or = (TextView)findViewById(R.id.or);
         distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
@@ -152,6 +161,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
+            update = extras.getBoolean("update");
+            arrayPos = extras.getInt("arrayPosition");
+
             latitude = extras.getDouble("latitude");
             longitude = extras.getDouble("longitude");
 
@@ -161,11 +173,26 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             Lat.setText(lat);
             Lon.setText(lon);
 
-            distant = extras.getString("distantTerrain");
-            nearby = extras.getString("nearbyTerrain");
-            immediate = extras.getString("immediateTerrain");
+            titlePassed = extras.getString("title");
+            descPassed = extras.getString("description");
+            imageUpload = extras.getBoolean("image");
 
-            if(distant != null && nearby != null && immediate != null){
+            if(imageUpload && !update) {
+                //imageUris = extras.getStringArray("images");
+                imageUris2 = extras.getStringArrayList("images");
+                addedImages.setVisibility(View.VISIBLE);
+            }
+
+            //rating = extras.getFloat("rating");
+
+            //float ratingFloat = (float)rating;
+            //ratingBar.setRating(rating);
+
+            //distant = extras.getString("distantTerrain");
+            //nearby = extras.getString("nearbyTerrain");
+            //immediate = extras.getString("immediateTerrain");
+
+            /*if(distant != null && nearby != null && immediate != null){
                 updateProgress();
                 int distantID = this.getResources().getIdentifier("drawable/"+ distant, null, this.getPackageName());
                 int nearbyID = this.getResources().getIdentifier("drawable/"+ nearby, null, this.getPackageName());
@@ -181,9 +208,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
                 addImage.setVisibility(View.GONE);
                 or.setVisibility(View.GONE);
-            }
+            }*/
 
-            feature1 = extras.getBoolean("feature1");
+            /*feature1 = extras.getBoolean("feature1");
             feature2 = extras.getBoolean("feature2");
             feature3 = extras.getBoolean("feature3");
             feature4 = extras.getBoolean("feature4");
@@ -198,59 +225,133 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 addFeature.setBackgroundResource(R.drawable.rounded_green_button);
             } else {
                 addFeature.setBackgroundResource(R.drawable.rounded_grey_button);
+            }*/
+        }
+
+        if(update){
+
+            Site focused = inst.getOwnedSitesMap().get(arrayPos);
+            title.setText(focused.getTitle());
+            updateProgress();
+
+            description.setText(focused.getDescription());
+            updateProgress();
+
+            SparseArray<Gallery> images = inst.getImages();
+            cid = focused.getCid();
+            String id = cid.substring(cid.length()-8);
+            int cidEnd = Integer.parseInt(id);
+            Gallery gallery = images.get(cidEnd);
+            ArrayList<String> imagesList = gallery.getGallery();
+
+            if(imageUpload){
+
+                updateProgress();
+
+                System.out.println("images list 0 "+imagesList.get(0));
+
+                ImageGridAdapter adapter = new ImageGridAdapter(this, R.layout.grid_item_layout, imagesList);
+
+                int imagesNum = imagesList.size();
+
+                System.out.println("clip data: " + imagesList.size());
+                layoutParams = updateGridView.getLayoutParams();
+                int row = 3*(Math.round(imagesNum/3));
+                System.out.println("row: " + row);
+                int dif = (imagesNum%3);
+
+                System.out.println("dif" + dif);
+
+                if (dif ==1){
+                    row = row+3;
+                } else if (dif ==2){
+                    row = row+3;
+                }
+
+                layoutParams.height = (row*105);
+
+                System.out.println("height" + layoutParams.height);
+
+                updateGridView.setLayoutParams(layoutParams);
+                updateGridView.setAdapter(adapter);
+
+                updateImage = true;
+                addedImages.setVisibility(View.VISIBLE);
+
+                siteBuilder.setVisibility(View.GONE);
+                or.setVisibility(View.GONE);
             }
 
-            titlePassed = extras.getString("title");
-            descPassed = extras.getString("description");
-            imageUpload = extras.getBoolean("image");
+            classification = focused.getClassification();
+            updateProgress();
+
+            if(classification.equals(classificationA.getText())){
+                classA.getForeground().setAlpha(0);
+                classC.getForeground().setAlpha(150);
+                classE.getForeground().setAlpha(150);
+                classDescription.setText(R.string.amateurClassification);
+
+            } else if(classification.equals(classificationC.getText())){
+                classC.getForeground().setAlpha(0);
+                classA.getForeground().setAlpha(150);
+                classE.getForeground().setAlpha(150);
+                classDescription.setText(R.string.casualClassification);
+
+            } else if(classification.equals(classificationE.getText())){
+                classE.getForeground().setAlpha(0);
+                classC.getForeground().setAlpha(150);
+                classA.getForeground().setAlpha(150);
+                classDescription.setText(R.string.expertClassification);
+            }
+
+            //position
+            latitude = focused.getPosition().latitude;
+            longitude = focused.getPosition().longitude;
+
+            String lat = Double.toString(latitude);
+            String lon = Double.toString(longitude);
+
+            Lat.setText(lat);
+            Lon.setText(lon);
+
+        } else {
+
+            if(titlePassed == null){
+                title.setText(R.string.titleDefault);
+            } else {
+                title.setText(titlePassed);
+            }
+
+            if(descPassed == null){
+                description.setText(R.string.descriptionDefault);
+            } else {
+                description.setText(descPassed);
+            }
+
+            System.out.println(imageUpload);
+
 
             if(imageUpload) {
-                //imageUris = extras.getStringArray("images");
-                imageUris2 = extras.getStringArrayList("images");
-                addedImages.setVisibility(View.VISIBLE);
+
+                ImageUriGridAdapter adapter = new ImageUriGridAdapter(this, R.layout.grid_item_layout, imageUris2);
+                gridView.setAdapter(adapter);
+
+                siteBuilder.setVisibility(View.GONE);
+                or.setVisibility(View.GONE);
             }
 
-            rating = extras.getFloat("rating");
+            classA.getForeground().setAlpha(0);
+            classC.getForeground().setAlpha(150);
+            classE.getForeground().setAlpha(150);
+            classification = classificationA.getText().toString();
+            classDescription.setText(R.string.amateurClassification);
 
-            //float ratingFloat = (float)rating;
-            ratingBar.setRating(rating);
-
+            if(!updateClassification){
+                updateProgress();
+            }
+            updateClassification = true;
         }
 
-        if(titlePassed == null){
-            title.setText(R.string.titleDefault);
-        } else {
-            title.setText(titlePassed);
-        }
-
-        if(descPassed == null){
-            description.setText(R.string.descriptionDefault);
-        } else {
-            description.setText(descPassed);
-        }
-
-        System.out.println(imageUpload);
-
-
-        if(imageUpload) {
-
-            ImageUriGridAdapter adapter = new ImageUriGridAdapter(this, R.layout.grid_item_layout, imageUris2);
-            gridView.setAdapter(adapter);
-
-            siteBuilder.setVisibility(View.GONE);
-            or.setVisibility(View.GONE);
-        }
-
-        classA.getForeground().setAlpha(0);
-        classC.getForeground().setAlpha(150);
-        classE.getForeground().setAlpha(150);
-        classification = classificationA.getText().toString();
-        classDescription.setText(R.string.amateurClassification);
-
-        if(!updateClassification){
-            updateProgress();
-        }
-        updateClassification = true;
 
         //setting onclick listeners
         title.addTextChangedListener(new TextWatcher() {
@@ -393,7 +494,11 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.progressBar:
 
                 if(progressValue > 0) {
-                    submit();
+                    if(update){
+                        update();
+                    } else {
+                        submit();
+                    }
                 } else {
                     Snackbar.make(v, "Please make some changes!", Snackbar.LENGTH_LONG).show();
                 }
@@ -465,7 +570,12 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
 
-        Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+        if(update){
+            Toast.makeText(getApplicationContext(), "Update canceled!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+        }
+
         intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
         intent.putExtra("add", false);
         intent.putExtra("data", false);
@@ -485,12 +595,23 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         switch (menuItem.getItemId()) {
 
             case R.id.action_submit:
-                submit();
+
+                if(update){
+                    update();
+                } else {
+                    submit();
+                }
+
                 break;
 
             case android.R.id.home:
 
-                Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+                if(update){
+                    Toast.makeText(getApplicationContext(), "Update canceled!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
+                }
+
                 intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
                 intent.putExtra("add", false);
                 intent.putExtra("data", false);
@@ -512,6 +633,27 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             progressText.setText(progressValue+"% Complete");
         }
 
+    }
+
+    public void update(){
+
+        titleReq = title.getText().toString();
+        descReq = description.getText().toString();
+
+        titleReq = titleReq.replace("'", "\'");
+        descReq = descReq.replace("'", "\'");
+
+        new UpdateSite(this, true, true, cid, titleReq, descReq, classification, "0", imageUris2, new AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("update", true);
+                startActivity(intent);
+                finish();
+            }
+        }).execute();
     }
 
     public void submit(){

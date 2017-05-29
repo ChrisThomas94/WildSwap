@@ -61,11 +61,11 @@ public class ImageGridAdapter extends ArrayAdapter {
             imageView = (ImageView) row.findViewById(R.id.image);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            //String image = data.get(position).toString();
-            //Bitmap compress = StringToBitMap(image);
+            String image = data.get(position).toString();
+            Bitmap compress = StringToBitMap(image);
 
-            //imageView.setImageBitmap(compress);
-            Picasso.with(context).load(data.get(position).toString()).into(imageView);
+            imageView.setImageBitmap(compress);
+            //Picasso.with(context).load(data.get(position).toString()).into(imageView);
 
 
         } else {

@@ -59,6 +59,7 @@ public class TradeView extends AppCompatActivity {
     int PositiveTradeStatus = 2;
     Boolean sent = false;
     Boolean received = false;
+    Boolean reject = false;
     boolean showDialog = true;
 
     @Override
@@ -162,12 +163,14 @@ public class TradeView extends AppCompatActivity {
 
             case R.id.action_reject:
 
+                reject = true;
+
                 //update trade record in db
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
                             MainActivity_Spinner.class);
                     intent.putExtra("data", false);
-                    new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
+                    new UpdateTrade(this, reject, unique_tid, negativeTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
 
@@ -193,7 +196,7 @@ public class TradeView extends AppCompatActivity {
                             MainActivity_Spinner.class);
                         intent.putExtra("data", false);
 
-                    new UpdateTrade(this, unique_tid, negativeTradeStatus, new AsyncResponse() {
+                    new UpdateTrade(this, reject, unique_tid, negativeTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                         startActivity(intent);
@@ -217,7 +220,7 @@ public class TradeView extends AppCompatActivity {
 
                     //update trade record in db positively
                     //create new entry in user_has_trades with relat 45
-                    new UpdateTrade(this, unique_tid, PositiveTradeStatus, new AsyncResponse() {
+                    new UpdateTrade(this, reject, unique_tid, PositiveTradeStatus, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
 
@@ -233,17 +236,6 @@ public class TradeView extends AppCompatActivity {
                     }).execute();
                 }
 
-                break;
-
-            case R.id.action_contact:
-
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setData(Uri.parse("mailto:"));
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_EMAIL, new String[]{recieveSite.getSiteAdmin()});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Wild Swap - Trade");
-                i.putExtra(Intent.EXTRA_TEXT, "Hello fellow wild camper, I am contacting you because...");
-                startActivity(i);
                 break;
 
             case R.id.profile:

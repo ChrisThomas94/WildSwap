@@ -129,10 +129,25 @@
                     android:layout_height="wrap_content">
 
                     <GridView
+                        android:id="@+id/updateGridView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawSelectorOnTop="true"
+                        android:gravity="center"
+                        android:numColumns="3"
+                        android:verticalSpacing="5dp"
+                        android:horizontalSpacing="5dp"
+                        android:isScrollContainer="false"
+                        android:stretchMode="columnWidth"
+                        android:focusable="true"
+                        android:clickable="true"/>
+
+                    <GridView
                         android:id="@+id/gridView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawSelectorOnTop="true"
+                        android:layout_below="@+id/updateGridView"
                         android:gravity="center"
                         android:numColumns="3"
                         android:verticalSpacing="5dp"

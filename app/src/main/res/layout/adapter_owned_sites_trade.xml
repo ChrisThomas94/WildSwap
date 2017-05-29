@@ -54,12 +54,12 @@
 
         <TextView
             android:id="@+id/country"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleAndRatingBar"
             android:textSize="15sp"
-            android:text="Scotland, Loch Lomond"
-            android:padding="10dp"/>
+            android:paddingLeft="5dp"
+            android:text="Scotland, Loch Lomond"/>
 
         <TextView
             android:id="@+id/ownedPlaceholder"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="Owned Site"
-            android:padding="10dp"/>
+            android:padding="5dp"/>
 
         <FrameLayout
             android:id="@+id/classLayout"
@@ -76,7 +76,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:background="@drawable/rounded_green_button"
-            android:layout_margin="10dp">
+            android:layout_margin="5dp">
 
             <TextView
                 android:id="@+id/classificationA"

@@ -16,6 +16,7 @@ import okhttp3.Response;
 import scot.wildcamping.wildswap.Appconfig;
 import scot.wildcamping.wildswap.Objects.StoredTrades;
 import scot.wildcamping.wildswap.Objects.Trade;
+import scot.wildcamping.wildswap.TradeActivitySimple;
 
 /**
  * Created by Chris on 12-Mar-16.
@@ -36,6 +37,7 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
     int negativeTradeStatus = 1;
     private String unique_tid;
     String postResponse;
+    Boolean reject;
 
     SparseArray<Trade> activeTrades = new SparseArray<>();
 
@@ -44,8 +46,9 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
     private Trade trade = new Trade();
 
 
-    public UpdateTrade(Context context, String unique_tid, int newTradeStatus, AsyncResponse delegate) {
+    public UpdateTrade(Context context, Boolean reject, String unique_tid, int newTradeStatus, AsyncResponse delegate) {
         this.context = context;
+        this.reject = reject;
         this.unique_tid = unique_tid;
         this.newTradeStatus = newTradeStatus;
         this.delegate = delegate;
@@ -60,7 +63,11 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
         pDialog = new ProgressDialog(context);
 
         if(newTradeStatus == negativeTradeStatus){
-            pDialog.setMessage("Canceling trade...");
+            if(reject){
+                pDialog.setMessage("Rejecting trade...");
+            } else {
+                pDialog.setMessage("Canceling trade...");
+            }
         } else {
             pDialog.setMessage("Accepting trade...");
         }
@@ -118,7 +125,11 @@ public class UpdateTrade extends AsyncTask<String, String, String> {
 
             } else if(!error && newTradeStatus == 1) {
 
-                Toast.makeText(context, "Trade Rejected!", Toast.LENGTH_LONG).show();
+                if(reject) {
+                    Toast.makeText(context, "Trade Rejected!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Trade Cancelled!", Toast.LENGTH_LONG).show();
+                }
 
             } else {
                 String errMsg = resp.getString("error_msg");

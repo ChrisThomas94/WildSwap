@@ -108,6 +108,7 @@ public class FetchTradeRequests extends AsyncTask<String, String, String> {
                         trade.setRecieve_cid(jsonTrade.getString("recieve_cid_fk"));
                         trade.setDate(jsonTrade.getString("created_at"));
                         trade.setStatus(jsonTrade.getInt("status"));
+                        trade.setLocation(jsonTrade.getString("location"));
 
                         if(jsonTrade.getString("sender_uid_fk").equals(user)){
                             trade.setUserRelation("Sent");

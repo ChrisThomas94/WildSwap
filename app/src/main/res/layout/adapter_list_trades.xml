@@ -7,9 +7,9 @@
 
         <RelativeLayout
             android:id="@+id/trade"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:padding="10dp"
             android:layout_margin="15dp"
             android:elevation="5dp"
             android:descendantFocusability="blocksDescendants"
@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:padding="5dp"
-                    android:text="Sent/Received"/>
+                    android:text="Direction"/>
 
                 <TextView
                     android:id="@+id/outcomeTrade"
@@ -35,16 +35,27 @@
                     android:textSize="20dp"
                     android:padding="5dp"
                     android:layout_toRightOf="@+id/title"
-                    android:text="Accepted/Rejected"/>
+                    android:text="Status"/>
 
                 <TextView
                     android:id="@+id/titleTrade"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:padding="5dp"
                     android:layout_below="@+id/title"
-                    android:text="Trade 1"/>
+                    android:text="Time Elapsed"/>
+
+                <TextView
+                    android:id="@+id/tradeLocation"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:padding="5dp"
+                    android:gravity="end"
+                    android:layout_below="@+id/title"
+                    android:layout_alignParentEnd="true"
+                    android:text="Location"/>
 
             </RelativeLayout>
 

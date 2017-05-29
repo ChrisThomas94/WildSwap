@@ -2,11 +2,21 @@ package scot.wildcamping.wildswap.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.widget.Toast;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,41 +51,23 @@ public class UpdateSite extends AsyncTask<String, String, String> {
     String cid;
     String title;
     String description;
-    String rating;
-    Boolean feature1;
-    Boolean feature2;
-    Boolean feature3;
-    Boolean feature4;
-    Boolean feature5;
-    Boolean feature6;
-    Boolean feature7;
-    Boolean feature8;
-    Boolean feature9;
-    Boolean feature10;
-    String image;
     String user;
-    int imageNum;
+    String classification;
+    String rating;
 
-    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image, int imageNum, AsyncResponse delegate) {
+    ArrayList<String> images;
+    ArrayList<String> imagesSingleLine;
+
+    public UpdateSite(Context context, Boolean owned , Boolean active, String cid, String title, String description, String classification, String rating, ArrayList<String> images, AsyncResponse delegate) {
         this.context = context;
         this.owned = owned;
         this.active = active;
         this.cid = cid;
         this.title = title;
         this.description = description;
+        this.images = images;
+        this.classification = classification;
         this.rating = rating;
-        this.feature1 = feature1;
-        this.feature2 = feature2;
-        this.feature3 = feature3;
-        this.feature4 = feature4;
-        this.feature5 = feature5;
-        this.feature6 = feature6;
-        this.feature7 = feature7;
-        this.feature8 = feature8;
-        this.feature9 = feature9;
-        this.feature10 = feature10;
-        this.image = image;
-        this.imageNum = imageNum;
         this.delegate = delegate;
     }
 
@@ -94,6 +86,23 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
+        }
+
+        imagesSingleLine = new ArrayList<>();
+        if(images.size() != 0) {
+            for(int i = 0; i< images.size(); i++){
+
+                Uri imageUri = Uri.parse(images.get(i));
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                    String im = getStringImage(bitmap);
+                    imagesSingleLine.add(i,im.replaceAll("[\r\n]+", ""));
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -115,7 +124,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         } else if (active && owned) {
             // issue the post request
             try {
-                String json = updateSite(active, user, cid, title, description, rating, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, image);
+                String json = updateSite(active, user, cid, title, description, classification, imagesSingleLine);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -126,7 +135,7 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             }
         } else if (active){
             try {
-                String json = updateKnownSite(active, user, cid, rating, image, imageNum);
+                String json = updateKnownSite(active, user, cid, rating);
                 System.out.println("json: " + json);
                 postResponse = doPostRequest(Appconfig.URL, json);      //json
                 System.out.println("post response: " + postResponse);
@@ -184,25 +193,48 @@ public class UpdateSite extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String updateSite(boolean active, String user, String cid, String title, String description, String rating, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, String image) {
-        return "{\"tag\":\"" + "updateSite" + "\","
+    private String updateSite(boolean active, String user, String cid, String title, String description, String classification, ArrayList<String> images) {
+
+        JSONArray jsonGallery = new JSONArray();
+
+        for(int i = 0; i<images.size(); i++){
+
+            JSONObject jsonSingleImage = new JSONObject();
+
+            try {
+                jsonSingleImage.put("image" + i, images.get(i));
+            }catch(JSONException j){
+                j.printStackTrace();
+            }
+
+            jsonGallery.put(jsonSingleImage);
+
+        }
+
+        String withImage =  "{\"tag\":\"" + "updateSite" + "\","
                 + "\"active\":\"" + active + "\","
                 + "\"uid\":\"" + user + "\","
                 + "\"cid\":\"" + cid + "\","
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
-                + "\"rating\":\"" + rating + "\","
-                + "\"feature1\":\"" + feature1 + "\","
-                + "\"feature2\":\"" + feature2 + "\","
-                + "\"feature3\":\"" + feature3 + "\","
-                + "\"feature4\":\"" + feature4 + "\","
-                + "\"feature5\":\"" + feature5 + "\","
-                + "\"feature6\":\"" + feature6 + "\","
-                + "\"feature7\":\"" + feature7 + "\","
-                + "\"feature8\":\"" + feature8 + "\","
-                + "\"feature9\":\"" + feature9 + "\","
-                + "\"feature10\":\"" + feature10 + "\","
-                + "\"profile_pic\":\"" + image + "\"}";
+                + "\"classification\":\"" + classification + "\","
+                + "\"images\":" + jsonGallery + "}";
+
+        String withoutImage = "{\"tag\":\"" + "updateSite" + "\","
+                + "\"active\":\"" + active + "\","
+                + "\"uid\":\"" + user + "\","
+                + "\"cid\":\"" + cid + "\","
+                + "\"title\":\"" + title + "\","
+                + "\"description\":\"" + description + "\","
+                + "\"classification\":\"" + classification + "\"}";
+
+        if(images.isEmpty()){
+            return withoutImage;
+        } else {
+            return withImage;
+        }
+
+
     }
 
     private String deleteSite(String cid, Boolean active) {
@@ -211,15 +243,23 @@ public class UpdateSite extends AsyncTask<String, String, String> {
                 + "\"active\":\"" + active + "\"}";
     }
 
-    private String updateKnownSite(Boolean active, String uid, String cid, String rating, String image, int imageNum){
+    private String updateKnownSite(Boolean active, String uid, String cid, String rating){
         return "{\"tag\":\"" + "updateKnownSite" + "\","
                 + "\"active\":\"" + active + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"cid\":\"" + cid + "\","
-                + "\"rating\":\"" + rating + "\","
-                + "\"profile_pic\":\"" + image + "\","
-                + "\"imageNum\":\"" + imageNum + "\"}";
+                + "\"rating\":\"" + rating + "\"}";
+    }
 
+    private String getStringImage(Bitmap bmp){
+        if(bmp != null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+            byte[] imageBytes = baos.toByteArray();
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        } else {
+            return null;
+        }
     }
 
 }

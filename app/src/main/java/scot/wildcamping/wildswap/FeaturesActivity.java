@@ -334,7 +334,7 @@ public class FeaturesActivity extends AppCompatActivity implements View.OnClickL
 
                 Intent i;
                 if(update){
-                    i = new Intent(getApplicationContext(), UpdateSiteViewerActivity.class);
+                    i = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     //bundle for update
                     i.putExtra("arrayPosition", arrayPos);
@@ -376,7 +376,7 @@ public class FeaturesActivity extends AppCompatActivity implements View.OnClickL
 
                 Intent intent;
                 if(update){
-                    intent = new Intent(getApplicationContext(), UpdateSiteViewerActivity.class);
+                    intent = new Intent(getApplicationContext(), AddSiteActivity.class);
 
                     //bundle for update
                     intent.putExtra("arrayPosition", arrayPos);

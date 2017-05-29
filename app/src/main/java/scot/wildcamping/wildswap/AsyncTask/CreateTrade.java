@@ -41,13 +41,15 @@ public class CreateTrade extends AsyncTask<String, String, String> {
 
     private String send_cid;
     private String recieve_cid;
+    private String tradeLocation;
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
 
-    public CreateTrade(Context context, String send_cid, String recieve_cid, AsyncResponse delegate) {
+    public CreateTrade(Context context, String send_cid, String recieve_cid, String tradeLocation, AsyncResponse delegate) {
         this.context = context;
         this.send_cid = send_cid;
         this.recieve_cid = recieve_cid;
+        this.tradeLocation = tradeLocation;
         this.delegate = delegate;
     }
 
@@ -73,7 +75,7 @@ public class CreateTrade extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = tradeRequest(user, tradeStatus, send_cid, recieve_cid);
+            String json = tradeRequest(user, tradeStatus, tradeLocation, send_cid, recieve_cid);
             System.out.println("json: " + json);
             postResponse = doPostRequest(Appconfig.URL, json);      //json
             System.out.println("post response: " + postResponse);
@@ -124,10 +126,11 @@ public class CreateTrade extends AsyncTask<String, String, String> {
         return response.body().string();
     }
 
-    private String tradeRequest(String uid, int tradeStatus, String send_cid, String recieve_cid) {
+    private String tradeRequest(String uid, int tradeStatus, String tradeLocation, String send_cid, String recieve_cid) {
         return "{\"tag\":\"" + "tradeRequest" + "\","
                 + "\"uid\":\"" + uid + "\","
                 + "\"tradeStatus\":\"" + tradeStatus + "\","
+                + "\"tradeLocation\":\"" + tradeLocation + "\","
                 + "\"send_cid\":\"" + send_cid + "\","
                 + "\"recieve_cid\":\"" + recieve_cid + "\"}";
     }

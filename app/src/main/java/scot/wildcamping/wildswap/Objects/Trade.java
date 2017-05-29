@@ -13,6 +13,15 @@ public class Trade {
     private String date;
     private String userRelation;
     private int status;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public void setUnique_tid(String unique_tid){
         this.unique_tid = unique_tid;

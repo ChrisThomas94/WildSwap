@@ -233,7 +233,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
 
                 break;
 
-            case R.id.updateKnown:
+            /*case R.id.updateKnown:
 
                 if (rating.getRating() == focused.getRating().floatValue() && newImage == null) {
                     //nothing has changed
@@ -268,7 +268,7 @@ public class KnownSiteActivity extends AppCompatActivity implements View.OnClick
                         }).execute();
                     }
                 }
-                break;
+                break;*/
         }
     }
 

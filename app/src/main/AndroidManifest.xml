@@ -177,11 +177,6 @@
             android:label="Quiz"
             android:theme= "@style/AppTheme"/>
 
-        <activity android:name="scot.wildcamping.wildswap.UpdateSiteViewerActivity"
-            android:label="Update Site"
-            android:theme= "@style/AppTheme"
-            android:windowSoftInputMode="stateHidden"/>
-
         <activity android:name="scot.wildcamping.wildswap.CreateProfileActivity"
             android:label="Create Profile"
             android:theme= "@style/AppTheme"/>

@@ -530,7 +530,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                         //String ratingReq = Double.toString(ratingBun);
                         final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
                         //trigger php to deactivate site
-                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, null, null, null, null, null, null, null, null, imageStr, 0, new AsyncResponse() {
+                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
                                 startActivity(intent);
@@ -555,22 +555,11 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.update:
-                intent = new Intent(getApplicationContext(),UpdateSiteViewerActivity.class);
+                intent = new Intent(getApplicationContext(),AddSiteActivity.class);
                 //bundle all current details into "add site"
+                intent.putExtra("update", true);
                 intent.putExtra("arrayPosition", arrayPos);
                 intent.putExtra("image", hasImages);
-
-                intent.putExtra("feature1", feature1);
-                intent.putExtra("feature2", feature2);
-                intent.putExtra("feature3", feature3);
-                intent.putExtra("feature4", feature4);
-                intent.putExtra("feature5", feature5);
-                intent.putExtra("feature6", feature6);
-                intent.putExtra("feature7", feature7);
-                intent.putExtra("feature8", feature8);
-                intent.putExtra("feature9", feature9);
-                intent.putExtra("feature10", feature10);
-
                 startActivity(intent);
                 finish();
                 break;
