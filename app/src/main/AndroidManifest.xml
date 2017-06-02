@@ -191,7 +191,7 @@
 
         <!-- [START firebase_service] -->
         <service
-            android:name="scot.wildcamping.wildswap.firebase.MyFirebaseMessagingService">
+            android:name="scot.wildcamping.wildswap.firebase.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

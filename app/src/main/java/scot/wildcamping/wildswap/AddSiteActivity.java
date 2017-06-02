@@ -230,6 +230,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         if(update){
 
+            getSupportActionBar().setTitle("Update Site");
+
             Site focused = inst.getOwnedSitesMap().get(arrayPos);
             title.setText(focused.getTitle());
             updateProgress();
@@ -628,7 +630,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         progress.setProgress(progressValue);
 
         if(progressValue >= 100){
-            progressText.setText("CONTINUE");
+            progressText.setText("GO");
         } else {
             progressText.setText(progressValue+"% Complete");
         }

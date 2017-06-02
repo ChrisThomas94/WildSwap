@@ -56,6 +56,7 @@ public class CreateNotification extends AsyncTask<String, String, String> {
     protected String doInBackground(String... args) {
 
         user = thisUser.getUid();
+        System.out.println("token: " + token);
 
         // issue the post request
         try {
@@ -84,6 +85,8 @@ public class CreateNotification extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
 
+        System.out.println("Create Notification on Post Execute");
+
         // dismiss the dialog once done
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -100,6 +103,7 @@ public class CreateNotification extends AsyncTask<String, String, String> {
         } catch (JSONException e){
             Log.d("JSON Exception", e.toString());
         }
+
 
         delegate.processFinish(file_url);
 

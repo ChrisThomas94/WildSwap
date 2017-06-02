@@ -42,5 +42,12 @@
         android:layout_height="wrap_content"
         android:text="Mountain Bothy Association\n"/>
 
+    <TextView
+        android:id="@+id/walkHighlands"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Walk Highlands\n"
+        android:contentDescription="https://www.walkhighlands.co.uk/"/>
+
 
 </LinearLayout>

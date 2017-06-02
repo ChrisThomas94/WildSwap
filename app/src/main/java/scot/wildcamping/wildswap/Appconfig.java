@@ -11,7 +11,7 @@ public class Appconfig {
 
     public static String firebase = "https://fcm.googleapis.com/fcm/send";
 
-    public static String serverKey = "AAAA78qREAk:APA91bHTdJ1vqfBtGYbtvV0HPemIOZcvB6Fp7sgivH01EgljX6szov1tlS8BkspCeY3zDjZvtv63RijU_dIF8J_1b7C4nHHNCGM-r07ptX1tOt7ddQ3jYnZb8ZphJwLUS29-Mx9ien20";
+    public static String serverKey = "AAAA78qREAk:APA91bHbJULtohupXtbXF6_IcbneFo26aiaGyI-2bJE0E44C7rUhqRni0AUw5m-My-8CJXAbj2Qarre4sv5J9G6Erefs2cizunKZKvijJ5GLY9FDzcC0lmv9BqQaLFFCfCoygJ03W_me";
 
     public static String myToken = "ed_pZSkR4HA:APA91bHSwBls2GYxx0RPNC6nkWvV5v-6o8R4iew8EC9d0zOxRxxXTQbRGeCVdW3xbeMyNXCmI8hkerCaloAR3HKc_ufsuU9JSs5nSO5PbsrSNoWOHjLohiZscd49gENcfIkNpLEg-K5S";
 

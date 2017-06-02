@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         multiDexEnabled true
-        applicationId "scot.wildcamping.wildscotland"
+        applicationId "scot.wildcamping.wildswap"
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
@@ -33,6 +33,7 @@ allprojects {
 dependencies {
     //compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
+    compile 'com.github.medyo:android-about-page:1.2.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:design:25.3.1'

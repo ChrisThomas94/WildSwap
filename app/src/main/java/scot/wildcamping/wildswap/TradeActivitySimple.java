@@ -227,10 +227,10 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                         @Override
                         public void processFinish(String output) {
 
-                            if(output != null){
-                                Toast.makeText(TradeActivitySimple.this, output, Toast.LENGTH_LONG).show();
+                            Toast.makeText(TradeActivitySimple.this, output, Toast.LENGTH_LONG).show();
 
-                            } else {
+                            if(output.equals("Trade Sent!")){
+                                System.out.println("Create Trade Notification");
                                 new CreateNotification(TradeActivitySimple.this, token, new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {

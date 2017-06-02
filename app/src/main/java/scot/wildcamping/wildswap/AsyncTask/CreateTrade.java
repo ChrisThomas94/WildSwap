@@ -91,7 +91,7 @@ public class CreateTrade extends AsyncTask<String, String, String> {
      * After completing background task Dismiss the progress dialog
      * **/
     protected void onPostExecute(String file_url) {
-        // dismiss the dialog once done
+        String msg = null;
 
         try {
             JSONObject resp = new JSONObject(postResponse);
@@ -99,18 +99,18 @@ public class CreateTrade extends AsyncTask<String, String, String> {
             boolean error = resp.getBoolean("error");
             if (!error) {
 
-                Toast.makeText(context, "Trade Sent!", Toast.LENGTH_LONG).show();
-
+                msg = "Trade Sent!";
             }else {
-                errMsg = resp.getString("error_msg");
+                msg = resp.getString("error_msg");
             }
 
         } catch (JSONException e){
             e.printStackTrace();
         }
 
-        delegate.processFinish(errMsg);
+        delegate.processFinish(msg);
 
+        // dismiss the dialog once done
         pDialog.dismiss();
     }
 

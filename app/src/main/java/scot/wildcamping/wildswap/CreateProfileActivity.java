@@ -81,7 +81,6 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
     TextView progressText;
     RelativeLayout progressLayout;
 
-
     String profilePicString;
     String coverPicString;
     String userType;
@@ -127,6 +126,8 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         name.setText(thisUser.getName());
 
         if(update){
+
+            getSupportActionBar().setTitle("Update Profile");
 
             profilePicString = thisUser.getProfile_pic();
             coverPicString = thisUser.getCover_pic();
@@ -301,7 +302,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         userType1.setOnClickListener(this);
         userType2.setOnClickListener(this);
         userType3.setOnClickListener(this);
-
+        progress.setOnClickListener(this);
     }
 
     @Override
@@ -356,9 +357,11 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
                 userTypeDescription.setText(R.string.userTypeDescription3);
                 break;
 
-            case R.id.progressLayout:
+            case R.id.progressBar:
 
-                submit();
+                if(progressValue >= 100) {
+                    submit();
+                }
                 break;
         }
     }
@@ -581,7 +584,7 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
         progress.setProgress(progressValue);
 
         if(progressValue >= 100){
-            progressText.setText("CONTINUE");
+            progressText.setText("GO");
         } else {
             progressText.setText(progressValue + "% Complete");
         }

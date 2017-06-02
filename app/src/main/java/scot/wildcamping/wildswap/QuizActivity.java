@@ -54,7 +54,6 @@ public class QuizActivity extends AppCompatActivity {
     ArrayList<Integer> answers = user.getAnswers();
     Boolean thisUser = true;
 
-
     Boolean updateAns0 = true;
     Boolean updateAns1 = true;
     Boolean updateAns2 = true;
@@ -187,33 +186,11 @@ public class QuizActivity extends AppCompatActivity {
             }
         }, delay);
 
-        progressLayout.setOnClickListener(new View.OnClickListener() {
+        progress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent;
-
-                if(!update) {
-                    //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
-                    intent = new Intent(QuizActivity.this, MainActivity_Spinner.class);
-                    intent.putExtra("update", false);
-                    intent.putExtra("new", true);
-                    intent.putExtra("data", true);
-                } else {
-                    intent = new Intent(QuizActivity.this, ProfileActivity.class);
-                    intent.putExtra("this_user", true);
-                }
-
-                //asynk task updating answers
-                if(isNetworkAvailable()) {
-                    new SubmitQuiz(QuizActivity.this, answers, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).execute();
-                } else {
-                    //Snackbar;
+                if(progressValue >= 100) {
+                    submitAnswers();
                 }
             }
         });
@@ -231,48 +208,12 @@ public class QuizActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                //question = inst.getQuestions();
-                //question.clear();
-
                 finish();
                 return true;
 
             case R.id.action_submit:
 
-                //question = inst.getQuestions();
-                //ArrayList<Integer> newAnswers = new ArrayList<>();
-
-                /*for(int i=0; i<allQuestions.size(); i++){
-                    newAnswers.add(i, allQuestions.get(i).getAnswer());
-                }*/
-
-
-                final Intent intent;
-
-                if(!update) {
-                    //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
-                    intent = new Intent(this, MainActivity_Spinner.class);
-                    intent.putExtra("update", false);
-                    intent.putExtra("new", true);
-                    intent.putExtra("data", true);
-                } else {
-                    intent = new Intent(this, ProfileActivity.class);
-                    intent.putExtra("this_user", true);
-                }
-
-                //asynk task updating answers
-                if(isNetworkAvailable()) {
-                    new SubmitQuiz(this, answers, new AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            startActivity(intent);
-                            finish();
-                        }
-                    }).execute();
-                } else {
-                    //Snackbar;
-                }
-
+                submitAnswers();
                 break;
         }
         return (super.onOptionsItemSelected(menuItem));
@@ -295,11 +236,39 @@ public class QuizActivity extends AppCompatActivity {
         progress.setProgress(progressValue);
 
         if(progressValue >= 100){
-            progressText.setText("CONTINUE");
+            progressText.setText("GO");
         } else {
             progressText.setText(progressValue + "% Complete");
         }
 
+    }
+
+    public void submitAnswers(){
+        final Intent intent;
+
+        if(!update) {
+            //AppController.setString(QuizActivity.this, "newCamper", Integer.toString(answers.get(1)));
+            intent = new Intent(this, MainActivity_Spinner.class);
+            intent.putExtra("update", false);
+            intent.putExtra("new", true);
+            intent.putExtra("data", true);
+        } else {
+            intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("this_user", true);
+        }
+
+        //asynk task updating answers
+        if(isNetworkAvailable()) {
+            new SubmitQuiz(this, answers, new AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    startActivity(intent);
+                    finish();
+                }
+            }).execute();
+        } else {
+            //Snackbar;
+        }
     }
 
 }

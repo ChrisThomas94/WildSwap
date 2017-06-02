@@ -4,7 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
-    <string name="google_maps_key">AIzaSyAcdnOoy0diO5vmcwdTtpzsMkx2iQeeBvs</string>
+    <string name="google_maps_key">AIzaSyDK-EeqaaodWU9Xq0m_NU9OAxLeL3yltZY</string>
 
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
@@ -132,8 +132,8 @@
     <string name="question5">It is acceptable to leave food scraps as&#8230;</string>
     <string name="question6">I am the kind of wild camper who&#8230;</string>
     <string name="question7">It is acceptable to move boulders so long as&#8230;</string>
-    <string name="question8">It is acceptable to move boulders so long as&#8230;</string>
-    <string name="question9">It is acceptable to move boulders so long as&#8230;</string>
+    <string name="question8">I usually travel to wild locations by&#8230;</string>
+    <string name="question9">I usually visit wild locations&#8230;</string>
 
     <!--Answers -->
     <string name="question1_answer1">1 night</string>
@@ -165,15 +165,15 @@
     <string name="question7_answer3">it won\'t roll away.</string>
     <string name="question7_answer4">there are lots of boulders.</string>
 
-    <string name="question8_answer1">it is not covered in moss.</string>
-    <string name="question8_answer2">you move it back to where you found it.</string>
-    <string name="question8_answer3">it won\'t roll away.</string>
-    <string name="question8_answer4">there are lots of boulders.</string>
+    <string name="question8_answer1">car.</string>
+    <string name="question8_answer2">motorbike.</string>
+    <string name="question8_answer3">push bike.</string>
+    <string name="question8_answer4">campervan.</string>
 
-    <string name="question9_answer1">it is not covered in moss.</string>
-    <string name="question9_answer2">you move it back to where you found it.</string>
-    <string name="question9_answer3">it won\'t roll away.</string>
-    <string name="question9_answer4">there are lots of boulders.</string>
+    <string name="question9_answer1">in a group.</string>
+    <string name="question9_answer2">solo.</string>
+    <string name="question9_answer3">with my partner.</string>
+    <string name="question9_answer4">with my animal.</string>
 
     <!--User Types-->
     <string name="userType1">Beginner</string>

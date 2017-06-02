@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by Chris on 12-May-17.
  *
@@ -25,12 +27,34 @@ public class AcknowledgementsActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        TextView flatIcon = (TextView) findViewById(R.id.flatIcon);
+        CircleImageView freepik = (CircleImageView) findViewById(R.id.freepik);
+        CircleImageView google = (CircleImageView) findViewById(R.id.google);
+        CircleImageView iconpond = (CircleImageView) findViewById(R.id.iconpond);
 
-        flatIcon.setOnClickListener(new View.OnClickListener() {
+        freepik.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://www.flaticon.com";
+                String url = "http://www.freepik.com/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://www.google.com/";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
+        iconpond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://www.flaticon.com/authors/popcorns-arts";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
