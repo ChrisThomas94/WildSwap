@@ -223,8 +223,8 @@
     <string name="badge_title_17">Park Ranger</string>
     <string name="badge_title_18">1000 Words</string>
     <string name="badge_title_19">Trip Advisor</string>
-    <string name="badge_title_20">Contributor</string>
-    <string name="badge_title_21">2nd Opinion</string>
+    <string name="badge_title_20">Quiz Master</string>
+    <string name="badge_title_21">I Know Him</string>
     <string name="badge_title_22">Vacationer</string>
     <string name="badge_title_23">Explorer</string>
     <string name="badge_title_24">Globe Trotter</string>
@@ -250,8 +250,8 @@
     <string name="badge_desc_17">Aided in the quality control of 20 locations</string>
     <string name="badge_desc_18">Upload an image of a site</string>
     <string name="badge_desc_19">Rate a site you received through a trade</string>
-    <string name="badge_desc_20">Contributor 3</string>
-    <string name="badge_desc_21">Upload an image of a site you received through a trade</string>
+    <string name="badge_desc_20">Complete the quiz</string>
+    <string name="badge_desc_21">Vouch for another user</string>
     <string name="badge_desc_22">Own locations in 2 different countries</string>
     <string name="badge_desc_23">Own locations in 5 different countries</string>
     <string name="badge_desc_24">Own locations in 10 different countries</string>

@@ -36,6 +36,7 @@ import scot.wildcamping.wildswap.Objects.StoredTrades;
 import scot.wildcamping.wildswap.Objects.User;
 
 import static android.view.View.GONE;
+import static scot.wildcamping.wildswap.R.id.vouch;
 
 /**
  *
@@ -60,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
     SparseArray<User> dealers = inst.getDealers();
     StoredTrades trades = new StoredTrades();
     Boolean showDialog = true;
+    int vouchNum;
 
     User otherUser;
 
@@ -154,7 +156,7 @@ public class ProfileActivity extends AppCompatActivity {
             String cover_pic = thisUser.getCover_pic();
             String type = thisUser.getUserType();
             userType.setText(type);
-            int vouch = thisUser.getNumVouch();
+            vouchNum = thisUser.getNumVouch();
 
             numSitesText.setText(String.valueOf(ownedSites));
             numTradesText.setText(String.valueOf(completedTrades));
@@ -196,7 +198,7 @@ public class ProfileActivity extends AppCompatActivity {
                 System.out.println("update cover pic");
             }
 
-            numVouches.setText(String.valueOf(vouch));
+            numVouches.setText(String.valueOf(vouchNum));
 
             if(progressValue == 100){
                 progressLayout.setVisibility(GONE);
@@ -226,7 +228,7 @@ public class ProfileActivity extends AppCompatActivity {
             txtEmail.setText(otherUser.getEmail());
             numTradesText.setText(String.valueOf(otherUser.getNumTrades()));
             numSitesText.setText(String.valueOf(otherUser.getNumSites()));
-            int vouch = otherUser.getNumVouch();
+            vouchNum = otherUser.getNumVouch();
 
             String type = otherUser.getUserType();
             userType.setText(type);
@@ -263,7 +265,7 @@ public class ProfileActivity extends AppCompatActivity {
                 updateProgress();
             }
 
-            numVouches.setText(String.valueOf(vouch));
+            numVouches.setText(String.valueOf(vouchNum));
 
             progress.setVisibility(GONE);
             progressLayout.setVisibility(GONE);
@@ -425,12 +427,15 @@ public class ProfileActivity extends AppCompatActivity {
             intent.putExtra("update", true);
             startActivity(intent);
             return true;
-        } else if(id == R.id.vouch){
+        } else if(id == vouch){
             if(isNetworkAvailable()) {
                 new SubmitVouch(this, otherEmail, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
-
+                        vouchNum++;
+                        numVouches.setText(String.valueOf(vouchNum));
+                        BadgeManager bm = new BadgeManager(ProfileActivity.this);
+                        bm.awardVouchBadge();
                     }
                 }).execute();
             } else {

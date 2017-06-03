@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,6 +17,8 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 import scot.wildcamping.wildswap.Adapters.TradeOwnedSitesAdapter;
 import scot.wildcamping.wildswap.Adapters.TradeUnknownSitesAdapter;
@@ -35,6 +37,7 @@ public class TradeView extends AppCompatActivity {
 
     ViewPager unknownPage;
     ViewPager ownedPage;
+    LinearLayout unknownSitesBackground;
 
     StoredData inst = new StoredData();
     SparseArray<Site> ownedMap = inst.getOwnedSitesMap();
@@ -65,7 +68,7 @@ public class TradeView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_view_sent);
+        setContentView(R.layout.activity_trade_view);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
@@ -83,10 +86,11 @@ public class TradeView extends AppCompatActivity {
             status = extras.getInt("status");
         }
 
+        unknownSitesBackground = (LinearLayout) findViewById(R.id.unknownSitesLinear);
+        unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
+        ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
+
         if(status == 2){
-            //findKnownSite();
-            unknownPage = (ViewPager)findViewById(R.id.unknownSiteViewPager);
-            ownedPage = (ViewPager)findViewById(R.id.ownedSiteViewPager);
 
             findOwnedSite();
             findKnownSite();
@@ -105,9 +109,6 @@ public class TradeView extends AppCompatActivity {
             }).execute();
 
         } else {
-
-            unknownPage = (ViewPager) findViewById(R.id.unknownSiteViewPager);
-            ownedPage = (ViewPager) findViewById(R.id.ownedSiteViewPager);
 
             findOwnedSite();
             findUnknownSite();

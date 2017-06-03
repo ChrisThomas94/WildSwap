@@ -84,6 +84,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean update = false;
     boolean register = false;
     boolean clickActive = false;
+    boolean image = false;
     double newLat;
     double newLon;
 
@@ -191,6 +192,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             trade = extras.getBoolean("trade");
             update = extras.getBoolean("update");
             register = extras.getBoolean("new");
+            image = extras.getBoolean("image");
 
             getActivity().getIntent().removeExtra("new");
 
@@ -411,6 +413,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             bM.checkSiteBadges();
             bM.checkCountryBadges();
+
+            if(image){
+                bM.awardImageBadge();
+            }
 
             //getActivity().getIntent().removeExtra("add");
         } else if (trade){

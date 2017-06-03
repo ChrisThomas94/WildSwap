@@ -324,11 +324,10 @@
                         android:elevation="5dp"
                         app:civ_border_width="2dp"
                         app:civ_border_color="#fff"
-                        android:src="@drawable/pic_of_me"
                         android:layout_centerHorizontal="true"
                         android:clickable="true"
                         android:scaleType="centerCrop"
-                        android:visibility="visible" />
+                        android:visibility="visible"/>
 
                 </RelativeLayout>
 

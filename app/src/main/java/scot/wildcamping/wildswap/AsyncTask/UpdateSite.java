@@ -88,19 +88,21 @@ public class UpdateSite extends AsyncTask<String, String, String> {
             pDialog.show();
         }
 
-        imagesSingleLine = new ArrayList<>();
-        if(images.size() != 0) {
-            for(int i = 0; i< images.size(); i++){
+        if(images != null) {
+            imagesSingleLine = new ArrayList<>();
+            if (images.size() != 0) {
+                for (int i = 0; i < images.size(); i++) {
 
-                Uri imageUri = Uri.parse(images.get(i));
+                    Uri imageUri = Uri.parse(images.get(i));
 
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                    String im = getStringImage(bitmap);
-                    imagesSingleLine.add(i,im.replaceAll("[\r\n]+", ""));
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                        String im = getStringImage(bitmap);
+                        imagesSingleLine.add(i, im.replaceAll("[\r\n]+", ""));
 
-                } catch (IOException e){
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

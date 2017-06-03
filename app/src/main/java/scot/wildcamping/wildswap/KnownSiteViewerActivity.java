@@ -244,6 +244,9 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 Toast.makeText(getApplicationContext(), "Rating Updated!", Toast.LENGTH_SHORT).show();
+
+                BadgeManager bM = new BadgeManager(KnownSiteViewerActivity.this);
+                bM.awardRateBadge();
             }
         });
 
@@ -472,6 +475,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                             } else {
                                 finish();
                             }
+
                         }
                     }).execute();
                 }

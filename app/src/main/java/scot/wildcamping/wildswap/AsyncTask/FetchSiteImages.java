@@ -15,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -160,15 +162,28 @@ public class FetchSiteImages extends AsyncTask<String, String, String> {
 
 
     private String doPostRequest(String url, String json) throws IOException {
-        RequestBody body = RequestBody.create(JSON, json);
 
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        System.out.println("request: " + request);
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+        try {
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            System.out.println("request: " + request);
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch(SocketTimeoutException e) {
+            e.printStackTrace();
+
+        } catch (ConnectException e){
+            e.printStackTrace();
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     private String getImages(String cid) {

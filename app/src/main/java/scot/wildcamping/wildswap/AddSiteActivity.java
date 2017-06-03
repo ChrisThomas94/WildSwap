@@ -558,6 +558,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     Uri uri = item.getUri();
                     imageUris2.add(i,uri.toString());
                 }
+
             }
         }
 
@@ -684,6 +685,10 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("add", true);
                     intent.putExtra("data", true);
+
+                    if(imageUpload){
+                        intent.putExtra("image", true);
+                    }
 
                     new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
                         @Override

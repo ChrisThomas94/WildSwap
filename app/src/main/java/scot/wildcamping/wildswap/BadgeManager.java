@@ -258,6 +258,58 @@ public class BadgeManager {
         }
     }
 
+    public void awardImageBadge(){
+        ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
+        badges.set(17, 1);
+        newBadge = 18;
+
+        if(!badges.equals(existingBadges)){
+            updateBadges();
+        }
+
+        thisUser.setBadges(badges);
+    }
+
+    public void awardRateBadge(){
+        ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
+        badges.set(18, 1);
+        newBadge = 19;
+
+        if(!badges.equals(existingBadges)){
+            updateBadges();
+        }
+
+        thisUser.setBadges(badges);
+    }
+
+    public void awardQuizBadge(){
+        ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
+        badges.set(19, 1);
+        newBadge = 20;
+
+        if(!badges.equals(existingBadges)){
+            updateBadges();
+        }
+
+        thisUser.setBadges(badges);
+    }
+
+    public void awardVouchBadge(){
+        ArrayList<Integer> existingBadges = new ArrayList<>(badges);
+
+        badges.set(20, 1);
+        newBadge = 21;
+
+        if(!badges.equals(existingBadges)){
+            updateBadges();
+        }
+
+        thisUser.setBadges(badges);
+    }
+
     public void checkContributorBadges(){
 
         thisUser.setBadges(badges);
