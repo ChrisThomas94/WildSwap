@@ -6,19 +6,16 @@
     <color name="colorAccent">#303030</color>
 
     <color name="list_item_title">#fff</color>
-    <color name="list_background">#303030</color>
-    <color name="list_background_pressed">#669933</color>
-    <color name="list_divider">#272727</color>
-    <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
+    <color name="rating_bar_color">#DBDBDB</color>
     <color name="cancel_anything">#E6462C</color>
     <color name="casual">#ff8533</color>
 
+    <color name="text_dark">#333333</color>
+    <color name="text_light">#808080</color>
+
+
     <!-- Screens background color-->
-    <color name="bg_screen1">#f64c73</color>
-    <color name="bg_screen2">#20d2bb</color>
-    <color name="bg_screen3">#3395ff</color>
-    <color name="bg_screen4">#c873f4</color>
 
     <!-- dots inactive colors -->
     <color name="dot_dark_screen1">#c5c4c4</color>

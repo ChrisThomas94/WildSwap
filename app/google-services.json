@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1029895688201:android:e28b5a168f8f19a4",
+        "mobilesdk_app_id": "1:1029895688201:android:1574d8bd9c091cff",
         "android_client_info": {
-          "package_name": "scot.wildcamping.wildswap"
+          "package_name": "com.wildswap.wildswapapp"
         }
       },
       "oauth_client": [

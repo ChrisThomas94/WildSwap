@@ -87,86 +87,87 @@
                         android:textSize="30sp"/>
 
                         <RelativeLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/country"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:padding="10dp"
-                            android:textSize="15sp"
-                            android:text="Scotland, Loch Lomond" />
+                            <TextView
+                                android:id="@+id/country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:padding="10dp"
+                                android:layout_marginRight="100dp"
+                                android:textSize="15sp"
+                                android:text="Scotland, Loch Lomond" />
 
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/country"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp">
-
-                            <FrameLayout
-                                android:id="@+id/classificationAFrame"
+                            <RelativeLayout
+                                android:id="@+id/classifications"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:background="@drawable/rounded_green_button">
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp">
 
-                                <TextView
-                                    android:id="@+id/classificationA"
-                                    android:layout_width="75dp"
+                                <FrameLayout
+                                    android:id="@+id/classificationAFrame"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:clickable="true"
-                                    android:background="@drawable/rounded_white_button"
-                                    android:text="Amateur"
-                                    android:textSize="15sp"/>
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/rounded_green_button">
 
-                            </FrameLayout>
+                                    <TextView
+                                        android:id="@+id/classificationA"
+                                        android:layout_width="75dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:clickable="true"
+                                        android:background="@drawable/rounded_white_button"
+                                        android:text="Amateur"
+                                        android:textSize="15sp"/>
 
-                            <FrameLayout
-                                android:id="@+id/classificationCFrame"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:background="@drawable/rounded_orange_button">
+                                </FrameLayout>
 
-                                <TextView
-                                    android:id="@+id/classificationC"
-                                    android:layout_width="75dp"
+                                <FrameLayout
+                                    android:id="@+id/classificationCFrame"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@id/classificationA"
-                                    android:gravity="center"
-                                    android:clickable="true"
-                                    android:background="@drawable/rounded_white_button"
-                                    android:text="Casual"
-                                    android:textSize="15sp"/>
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/rounded_orange_button">
 
-                            </FrameLayout>
+                                    <TextView
+                                        android:id="@+id/classificationC"
+                                        android:layout_width="75dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/classificationA"
+                                        android:gravity="center"
+                                        android:clickable="true"
+                                        android:background="@drawable/rounded_white_button"
+                                        android:text="Casual"
+                                        android:textSize="15sp"/>
+
+                                </FrameLayout>
 
 
-                            <FrameLayout
-                                android:id="@+id/classificationEFrame"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:background="@drawable/rounded_red_button">
-
-                                <TextView
-                                    android:id="@+id/classificationE"
-                                    android:layout_width="75dp"
+                                <FrameLayout
+                                    android:id="@+id/classificationEFrame"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:clickable="true"
-                                    android:layout_toRightOf="@id/classificationC"
-                                    android:background="@drawable/rounded_white_button"
-                                    android:text="Expert"
-                                    android:textSize="15sp"/>
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/rounded_red_button">
 
-                            </FrameLayout>
+                                    <TextView
+                                        android:id="@+id/classificationE"
+                                        android:layout_width="75dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:clickable="true"
+                                        android:layout_toRightOf="@id/classificationC"
+                                        android:background="@drawable/rounded_white_button"
+                                        android:text="Expert"
+                                        android:textSize="15sp"/>
 
-                        </RelativeLayout>
+                                </FrameLayout>
+
+                            </RelativeLayout>
 
                     </RelativeLayout>
 

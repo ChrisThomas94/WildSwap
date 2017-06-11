@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">Wild Swap</string>
-    <string name="title_activity_maps">Maps</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
-    <string name="google_maps_key">AIzaSyDK-EeqaaodWU9Xq0m_NU9OAxLeL3yltZY</string>
 
-    <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -23,49 +18,12 @@
     <string name="slide_4_title">Build Communities!</string>
     <string name="slide_4_desc">Build a community around the locations that you all love to visit.</string>
 
-    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
-    <string name="play_again">Play Again</string>
-
     <string name="map_showcase_1">You can add a wild location making it available for trading by pressing this button.</string>
     <string name="map_showcase_2">Click on the blue circles to initiate a trade.</string>
     <string name="map_showcase_3">Other screens can be accessed via this menu.</string>
 
     <!--sliding window tutorial -->
     <string name="action_settings">Settings</string>
-    <string name="drawer_open">Slider Menu Opened</string>
-    <string name="drawer_close">Slider Menu Closed</string>
-
-    <!-- Settings Page -->
-    <string name="signout_button">Sign Out</string>
-
-    <!-- Nav Drawer Menu Items -->
-    <string-array name="nav_drawer_items">
-        <item >Map</item>
-        <item >Your Sites</item>
-        <item >Known Sites</item>
-        <item >Open Trades</item>
-        <item >Settings</item>
-    </string-array>
-
-    <string-array name= "trade_tab_titles">
-        <item>Received</item>
-        <item>Sent</item>
-    </string-array>
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/map_location</item>
-        <item>@drawable/markerred</item>
-        <item>@drawable/markergreen</item>
-        <item>@drawable/arrows</item>
-        <item>@drawable/three</item>
-    </array>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings2">Settings</string>
-    <string name="title_activity_my">Details</string>
-    <string name="action_search">Search</string>
 
     <!-- Features List -->
     <string name="titleDefault">Cool wild location</string>
@@ -82,7 +40,6 @@
     <string name="feature8">Pub Nearby</string>
     <string name="feature9">Shop Nearby</string>
     <string name="feature10">Grazing Animals</string>
-    <string name="feature11">Playing Field</string>
 
     <!--Site Builder-->
     <string name="distantTerrain">Let\'s start by selecting the distant terrain.</string>
@@ -101,8 +58,6 @@
     <string name="distantFeature5">Mountains</string>
     <string name="distantFeature6">Valley</string>
     <string name="distantFeature7">Ocean</string>
-    <string name="distantFeature8"></string>
-    <string name="distantFeature9"></string>
 
     <string name="nearbyFeature1">Hills</string>
     <string name="nearbyFeature2">Forest</string>
@@ -125,7 +80,7 @@
     <string name="immediateFeature9"></string>
 
     <!--Questions -->
-    <string name="question1">What is the maximum amount of time that should be spent in one location?</string>
+    <string name="question1">What is the maximum amount of time that you spend in one location?</string>
     <string name="question2">I am the kind of wild camper that&#8230;</string>
     <string name="question3">The best way to dispose of human waste is&#8230;</string>
     <string name="question4">Deadwood should be&#8230;</string>
@@ -136,14 +91,14 @@
     <string name="question9">I usually visit wild locations&#8230;</string>
 
     <!--Answers -->
-    <string name="question1_answer1">1 night</string>
-    <string name="question1_answer2">2 or 3 nights</string>
-    <string name="question1_answer3">3 to 5 nights</string>
-    <string name="question1_answer4">There is no maximum</string>
-    <string name="question2_answer1">Leaves no trace</string>
-    <string name="question2_answer2">Leaves some trace</string>
-    <string name="question2_answer3">Leaves a lot of trace</string>
-    <string name="question2_answer4">Leaves as much trace as possible</string>
+    <string name="question1_answer1">1 night.</string>
+    <string name="question1_answer2">2 or 3 nights.</string>
+    <string name="question1_answer3">3 to 5 nights.</string>
+    <string name="question1_answer4">more than 5 nights.</string>
+    <string name="question2_answer1">leaves no trace.</string>
+    <string name="question2_answer2">leaves some trace.</string>
+    <string name="question2_answer3">leaves a lot of trace.</string>
+    <string name="question2_answer4">leaves as much trace as possible.</string>
     <string name="question3_answer1">in a stream, river or loch.</string>
     <string name="question3_answer2">on the ground and cover with tissue paper.</string>
     <string name="question3_answer3">carry out in biodegradable bag.</string>
@@ -164,16 +119,15 @@
     <string name="question7_answer2">you move it back to where you found it.</string>
     <string name="question7_answer3">it won\'t roll away.</string>
     <string name="question7_answer4">there are lots of boulders.</string>
-
     <string name="question8_answer1">car.</string>
     <string name="question8_answer2">motorbike.</string>
     <string name="question8_answer3">push bike.</string>
     <string name="question8_answer4">campervan.</string>
-
     <string name="question9_answer1">in a group.</string>
     <string name="question9_answer2">solo.</string>
     <string name="question9_answer3">with my partner.</string>
     <string name="question9_answer4">with my animal.</string>
+
 
     <!--User Types-->
     <string name="userType1">Beginner</string>
@@ -186,7 +140,6 @@
     <string name="userTypeDescription3">You live for Wild Camping, through rain, sleet and snow.</string>
 
     <!-- Content Description -->
-    <string name="desc_list_item_icon">Item Icon</string>
 
     <!-- Profile Default Text -->
     <string name="profile_numSites">Number of Owned Sites</string>
@@ -196,6 +149,7 @@
     <string name="rejected">- Rejected</string>
     <string name="accepted">- Accepted</string>
     <string name="pending">- Pending</string>
+    <string name="cancelled">- Cancelled</string>
 
     <string name="quizText">Complete this short quiz to help other users gain an impression of the kind of wild camper you are. All of the questions relate to the Scottish Outdoor Access Code.</string>
 

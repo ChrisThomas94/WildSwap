@@ -30,7 +30,7 @@
 
     </RelativeLayout>
 
-    <scot.wildcamping.wildswap.NonScrollListView
+    <com.wildswap.wildswapapp.NonScrollListView
         android:id="@+id/badge_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

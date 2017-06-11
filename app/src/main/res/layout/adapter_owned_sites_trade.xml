@@ -12,7 +12,7 @@
         android:layout_height="190dp"
         android:padding="5dp"
         android:elevation="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:focusable="false"
@@ -39,6 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="30sp"
                 android:layout_marginTop="15dp"
+                android:textColor="@color/text_dark"
                 android:text="Site title"/>
 
             <RatingBar
@@ -47,6 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title"
                 android:layout_centerHorizontal="true"
+                android:max="5"
+                android:numStars="5"
                 android:clickable="false"
                 android:isIndicator="true"/>
 
@@ -59,6 +62,7 @@
             android:layout_below="@+id/titleAndRatingBar"
             android:textSize="15sp"
             android:paddingLeft="5dp"
+            android:textColor="@color/text_light"
             android:text="Scotland, Loch Lomond"/>
 
         <TextView
@@ -67,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="Owned Site"
+            android:textColor="@color/text_light"
             android:padding="5dp"/>
 
         <FrameLayout
@@ -85,6 +90,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Amateur"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
             <TextView
@@ -94,6 +100,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Casual"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
             <TextView
@@ -103,6 +110,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Expert"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
 
@@ -122,14 +130,11 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="2.5dp"
-            android:elevation="5dp"
+            android:layout_centerHorizontal="true"
             app:civ_border_width="2dp"
             app:civ_border_color="#fff"
             android:scaleType="centerCrop"
-            android:clickable="true"
-            android:src="@drawable/pic_of_me"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:clickable="true"/>
 
     </RelativeLayout>
 

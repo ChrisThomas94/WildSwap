@@ -27,15 +27,43 @@
         android:layout_below="@+id/profilePicture"
         android:layout_gravity="center"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\nSpecial Thanks to"
-        android:textSize="20sp"/>
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Madeline Balaam\tGavin Wood\nNewcastle University Fellwalking Society \nLorraine Armstrong\tMark Hoggins\nJack Buddin\tAmy Crow\nNick Hope\tHarry Green\n"/>
+        android:layout_margin="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\nSpecial Thanks to:"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/list1"
+            android:layout_below="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Madeline Balaam\nLorraine Armstrong\nAmy Crow\nNick Hope"/>
+
+        <TextView
+            android:layout_below="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:text="Gavin Wood\nMark Hoggins\nJack Buddin\nHarry Green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_below="@+id/list1"
+            android:layout_centerHorizontal="true"
+            android:text="Newcastle University Fellwalking Society"/>
+
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -47,8 +75,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/freepik"
             android:layout_gravity="center_horizontal"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             app:civ_border_width="2dp"
             app:civ_border_color="#fff"
             android:elevation="5dp"
@@ -62,8 +90,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/google"
             android:layout_gravity="center_horizontal"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             app:civ_border_width="2dp"
             app:civ_border_color="#fff"
             android:elevation="5dp"
@@ -76,8 +104,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iconpond"
             android:layout_gravity="center_horizontal"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             app:civ_border_width="2dp"
             app:civ_border_color="#fff"
             android:elevation="5dp"

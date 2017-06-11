@@ -10,13 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        android:src="@drawable/rounded_grey_button"/>
+        android:src="@drawable/square_grey_button"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/fade_box"/>
+        android:layout_marginTop="60dp"
+        android:background="@drawable/fade_box"
+        android:id="@+id/imageView2" />
 
     <RelativeLayout
         android:id="@+id/theirSite"
@@ -25,18 +26,21 @@
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:layout_gravity="center"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:focusable="false"
         android:padding="15dp"
-        android:background="@drawable/clear_shadow">
+        android:background="@drawable/clear_shadow"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/signpostUnknown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unknown Site"/>
+            android:text="Unknown Site"
+            android:textColor="@color/text_light"/>
 
         <FrameLayout
             android:id="@+id/classifications"
@@ -54,6 +58,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Amateur"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
             <TextView
@@ -63,6 +68,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Casual"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
             <TextView
@@ -72,6 +78,7 @@
                 android:gravity="center"
                 android:background="@drawable/rounded_white_button"
                 android:text="Expert"
+                android:textColor="@color/text_light"
                 android:textSize="15sp"/>
 
         </FrameLayout>
@@ -85,6 +92,7 @@
             android:textSize="30sp"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/signpostUnknown"
+            android:textColor="@color/text_dark"
             android:text="Site title"/>
 
 
@@ -95,15 +103,26 @@
             android:layout_below="@+id/recieveTitle"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:isIndicator="true"/>
+            android:isIndicator="true"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/ratedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recieveRating"
+            android:textColor="@color/text_light"
+            android:text="Rated By: 99"/>
 
         <TextView
             android:id="@+id/country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
+            android:layout_marginTop="5dp"
             android:text="Scotland, Loch Lomond"
-            android:layout_below="@+id/recieveRating"/>
+            android:textColor="@color/text_light"
+            android:layout_below="@+id/ratedBy"/>
 
     </RelativeLayout>
 
@@ -111,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="10dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="30dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profilePicture"
@@ -120,7 +139,6 @@
             android:layout_height="100dp"
             android:layout_marginBottom="2.5dp"
             android:elevation="5dp"
-            android:src="@drawable/pic_of_me"
             app:civ_border_width="2dp"
             app:civ_border_color="#fff"
             android:scaleType="centerCrop"

@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainrl"
-    android:foreground="@drawable/dimmer">
+    android:id="@+id/mainrl">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -13,80 +12,113 @@
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/filterLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_gravity="end">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-155dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_circle"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="120dp"/>
 
         <RelativeLayout
-            android:id="@+id/ownedFilterLayout"
+            android:id="@+id/filters"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="-5dp"
+            android:background="@drawable/square_white_button">
 
-            <TextView
-                android:id="@+id/textOwned"
+            <RelativeLayout
+                android:id="@+id/ownedFilterLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/ownedFilter"
-                android:text="Owned Sites"/>
+                android:layout_marginTop="-5dp">
 
-            <CheckBox
-                android:id="@+id/ownedFilter"
+                <TextView
+                    android:id="@+id/textOwned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Owned Sites"/>
+
+                <CheckBox
+                    android:id="@+id/ownedFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:checked="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/knownFilterLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:checked="true"/>
+                android:layout_marginTop="-5dp"
+                android:layout_below="@id/ownedFilterLayout">
+
+                <TextView
+                    android:id="@+id/textKnown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Known Sites"/>
+
+                <CheckBox
+                    android:id="@+id/knownFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:checked="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/unknownFilterLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                android:layout_below="@id/knownFilterLayout">
+
+                <TextView
+                    android:id="@+id/textUnknown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Unknown Sites"/>
+
+                <CheckBox
+                    android:id="@+id/unkownFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:checked="true"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/knownFilterLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/filterIcon"
+            android:layout_toRightOf="@+id/filters"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/filter2"
+            android:scaleType="fitXY"
+            android:background="@drawable/square_white_button"/>
 
-            <TextView
-                android:id="@+id/textKnown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/knownFilter"
-                android:text="Known Sites"/>
-
-            <CheckBox
-                android:id="@+id/knownFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:checked="true"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/unknownFilterLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textUnknown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/unkownFilter"
-                android:text="Unknown Sites"/>
-
-            <CheckBox
-                android:id="@+id/unkownFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:checked="true"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/buttonFrame"

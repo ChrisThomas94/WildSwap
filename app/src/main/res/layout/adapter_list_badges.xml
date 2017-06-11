@@ -8,15 +8,14 @@
 
     <FrameLayout
         android:id="@+id/badgeDimmer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foreground="@drawable/circular_dimmer">
+        android:layout_width="70dp"
+        android:layout_height="70dp">
 
         <ImageView
             android:id="@+id/badgeThumbnail"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@mipmap/badge_icon_1"/>
+            android:background="@drawable/icon"/>
 
     </FrameLayout>
 
