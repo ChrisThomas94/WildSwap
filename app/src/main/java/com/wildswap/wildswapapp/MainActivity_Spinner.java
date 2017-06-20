@@ -3,6 +3,7 @@ package com.wildswap.wildswapapp;
 import java.util.ArrayList;
 
 import android.app.FragmentManager;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -10,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +29,7 @@ import com.wildswap.wildswapapp.AsyncTask.FetchTradeRequests;
 import com.wildswap.wildswapapp.AsyncTask.FetchUnknownSites;
 import com.wildswap.wildswapapp.Objects.StoredData;
 
-public class MainActivity_Spinner extends AppCompatActivity {
+public class MainActivity_Spinner extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private Menu optionsMenu;
     private Toolbar toolbar;
@@ -158,7 +160,11 @@ public class MainActivity_Spinner extends AppCompatActivity {
                                 new FetchUnknownSites(MainActivity_Spinner.this, showDialog, new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("search", null);
+
                                         MapsFragment mapsFragment = new MapsFragment();
+                                        mapsFragment.setArguments(bundle);
                                         FragmentManager fragmentManager = getFragmentManager();
                                         fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
@@ -171,7 +177,11 @@ public class MainActivity_Spinner extends AppCompatActivity {
                     }).execute();
 
                 } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("search", null);
+
                     MapsFragment mapsFragment = new MapsFragment();
+                    mapsFragment.setArguments(bundle);
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.frame_container, mapsFragment).commit();
 
@@ -254,6 +264,16 @@ public class MainActivity_Spinner extends AppCompatActivity {
         this.optionsMenu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        SearchManager searchManager = (SearchManager) this.getSystemService(SEARCH_SERVICE);
+
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -264,7 +284,7 @@ public class MainActivity_Spinner extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {
@@ -273,6 +293,34 @@ public class MainActivity_Spinner extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        MapsFragment mapsFragment = (MapsFragment)getFragmentManager().findFragmentById(R.id.frame_container);
+        mapsFragment.searchMap(query);
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MapsFragment mapsFragment = (MapsFragment)getFragmentManager().findFragmentById(R.id.frame_container);
+        mapsFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        //if (fragments != null) {
+        //    for (Fragment fragment : fragments) {
+        //        fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //    }
+        //}
     }
 
     private boolean isNetworkAvailable() {

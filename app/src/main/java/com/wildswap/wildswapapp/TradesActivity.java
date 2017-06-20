@@ -336,7 +336,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
             startActivity(intent);
             return true;
         } else if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
             return true;
         }

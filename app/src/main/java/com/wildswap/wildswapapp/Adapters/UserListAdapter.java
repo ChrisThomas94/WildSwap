@@ -110,7 +110,7 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
                 // search content in friend list
                 for (User user : fetchedUsers) {
 
-                    if (user.getEmail() != null && user.getEmail().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    if (user.getEmail() != null && !user.getEmail().equals("") && user.getEmail().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         tempList.add(user);
                     }
                 }

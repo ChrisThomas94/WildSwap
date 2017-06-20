@@ -115,9 +115,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
         ratedBy = (TextView)findViewById(R.id.ratedBy);
         featuresBackground = (LinearLayout)findViewById(R.id.featuresBackground);
-        expandedImage = (ImageView)findViewById(R.id.expanded_image);
         frame = (FrameLayout) findViewById(R.id.frame);
-        close = (ImageView)findViewById(R.id.closeImage);
         scroll = (ScrollView)findViewById(R.id.pageScrollView);
         //frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
@@ -358,14 +356,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                 close.setVisibility(View.VISIBLE);
                 //frame.getForeground().setAlpha(150);
 
-                break;
-
-            case R.id.closeImage:
-
-                expandedImage.setVisibility(View.INVISIBLE);
-                close.setVisibility(View.GONE);
-                //frame.getForeground().setAlpha(0);
-                scroll.setClickable(true);
                 break;
         }
 

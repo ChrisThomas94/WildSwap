@@ -85,7 +85,7 @@ public class SplashActivity extends AppCompatActivity {
                 thisUser.setCountry(AppController.getString(this, "country"));
                 */
 
-                Intent i = new Intent(this, Login.class);
+                Intent i = new Intent(this, MainActivity_Spinner.class);
                 startActivity(i);
                 finish();
             }

@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 .show();
                     }
                 } else {
-                    Snackbar.make(v, "No Connection", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "No Internet Connection", Snackbar.LENGTH_LONG).show();
                 }
                 break;
         }

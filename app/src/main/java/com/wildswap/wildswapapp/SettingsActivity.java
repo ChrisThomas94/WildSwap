@@ -1,5 +1,7 @@
 package com.wildswap.wildswapapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,8 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
+import com.wildswap.wildswapapp.AsyncTask.CreateSite;
 import com.wildswap.wildswapapp.Objects.StoredData;
 import com.wildswap.wildswapapp.Objects.User;
+
+import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -21,11 +27,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
-    TextView txtName;
     TextView txtEmail;
+    TextView language;
+    TextView about;
     TextView projects;
     TextView credits;
     Button btnLogout;
+    Button btnDeactivate;
 
     private SessionManager session;
 
@@ -39,9 +47,11 @@ public class SettingsActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        txtName = (TextView) findViewById(R.id.name);
         txtEmail = (TextView) findViewById(R.id.email);
+        language = (TextView) findViewById(R.id.language);
         btnLogout = (Button) findViewById(R.id.btnLogout);
+        btnDeactivate = (Button) findViewById(R.id.btnDeactivate);
+        about = (TextView) findViewById(R.id.about);
         projects = (TextView) findViewById(R.id.projects);
         credits = (TextView) findViewById(R.id.credits);
 
@@ -51,8 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
             logoutUser();
         }
 
-        txtName.setText(thisUser.getName());
         txtEmail.setText(thisUser.getEmail());
+
+        language.setText(Locale.getDefault().getDisplayLanguage());
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -61,6 +72,41 @@ public class SettingsActivity extends AppCompatActivity {
                 logoutUser();
             }
         });
+
+        btnDeactivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(SettingsActivity.this);
+                builder1.setTitle("Are you sure?!");
+                builder1.setMessage("Do you really wish to deactivate your account?");
+
+                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert1 = builder1.create();
+                alert1.show();
+            }
+        });
+
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent about = new Intent(getBaseContext(), AboutActivity.class);
+                startActivity(about);
+            }
+        });
+
         projects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,16 +121,6 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivity(credits);
             }
         });
-
-        PackageInfo pInfo = null;
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String version = pInfo.versionName;
-        TextView versionText = (TextView) findViewById(R.id.versionName);
-        versionText.setText("Version: " + version);
     }
 
     private void logoutUser() {

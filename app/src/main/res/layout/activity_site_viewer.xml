@@ -350,29 +350,36 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.wildswap.wildswapapp.SlidingTabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:elevation="2dp"
+                        android:background="@color/list_item_title"/>
+
+                    <View android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_below="@+id/tabs"
+                        android:background="@drawable/toolbar_dropshadow"/>
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:layout_below="@+id/tabs"
+                        android:layout_height="500dp"
+                        android:layout_width="match_parent"/>
+
+                </RelativeLayout>
+
             </LinearLayout>
 
         </ScrollView>
 
     </FrameLayout>
-
-    <ImageView
-        android:id="@+id/expanded_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:layout_below="@+id/closeImage"
-        android:layout_toRightOf="@+id/closeImage"
-        android:layout_toEndOf="@+id/closeImage" />
-
-    <ImageView
-        android:id="@+id/closeImage"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:padding="16dp"
-        android:src="@drawable/red_cross"
-        android:layout_alignParentRight="true"
-        android:visibility="gone"/>
-
 
 </RelativeLayout>

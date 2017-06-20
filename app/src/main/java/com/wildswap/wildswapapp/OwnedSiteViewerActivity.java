@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wildswap.wildswapapp.Adapters.ImageGalleryAdapter;
+import com.wildswap.wildswapapp.Adapters.ViewPagerAdapter;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
 import com.wildswap.wildswapapp.AsyncTask.FetchUsers;
 import com.wildswap.wildswapapp.AsyncTask.UpdateSite;
@@ -69,18 +70,20 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     SparseArray<Gallery> images;
     Address thisAddress;
 
+    ViewPager pager;
+    ViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
+    CharSequence Titles[]={"Events", "Discussion"};
+    int Numboftabs =2;
 
     Gallery gallery;
     ArrayList<String> imagesList;
 
     FrameLayout frame;
     Boolean hasImages = false;
-    ImageView close;
     ScrollView scroll;
     ViewPager imageViews;
     boolean showDialog = true;
-
-    ImageView expandedImage;
 
     TextView lat;
     TextView lon;
@@ -119,6 +122,26 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles, Numboftabs);
+
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+        // Assiging the Sliding Tab Layout View
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.colorPrimaryDark);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+
         lat = (TextView)findViewById(R.id.lat);
         lon = (TextView)findViewById(R.id.lon);
         title = (TextView)findViewById(R.id.siteViewTitle);
@@ -139,9 +162,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
         ratedBy = (TextView)findViewById(R.id.ratedBy);
         featuresBackground = (LinearLayout)findViewById(R.id.featuresBackground);
-        expandedImage = (ImageView)findViewById(R.id.expanded_image);
         frame = (FrameLayout) findViewById(R.id.frame);
-        close = (ImageView)findViewById(R.id.closeImage);
         scroll = (ScrollView)findViewById(R.id.pageScrollView);
         //frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
@@ -308,7 +329,6 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
             featuresBackground.setVisibility(View.GONE);
         }
 
-        close.setOnClickListener(this);
     }
 
     @Override
@@ -447,23 +467,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         Intent intent;
         switch (v.getId())
         {
-            case R.id.imageViewPager:
 
-                imageBit = StringToBitMap(gallery.getGallery().get(0));
-                expandedImage.setImageBitmap(imageBit);
-                expandedImage.setVisibility(View.VISIBLE);
-                close.setVisibility(View.VISIBLE);
-                //frame.getForeground().setAlpha(150);
-
-                break;
-
-            case R.id.closeImage:
-
-                expandedImage.setVisibility(View.INVISIBLE);
-                close.setVisibility(View.GONE);
-                //frame.getForeground().setAlpha(0);
-                scroll.setClickable(true);
-                break;
         }
 
     }

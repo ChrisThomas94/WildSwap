@@ -13,39 +13,34 @@
         android:layout_marginTop="20dp"
         android:padding="10dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:id="@+id/logo"
-            android:src="@drawable/ecology"/>
-
-        <TextView
-            android:id="@+id/versionName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_gravity="center"
-            android:text="Version Name"/>
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="name"
-            android:textColor="#333333"
-            android:textSize="25dp" />
-
         <TextView
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="email"
+            android:text="Email"
             android:textColor="#333333"
-            android:textSize="25dp" />
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Language"
+            android:textColor="#333333"
+            android:textSize="20dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:layout_above="@+id/projects"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/projects"
@@ -69,10 +64,21 @@
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
         android:text="LOGOUT"
+        android:layout_alignParentBottom="true"
         android:textSize="18sp"
         android:background="@color/colorPrimaryDark"
+        android:textColor="#ffffff"/>
+
+    <Button
+        android:id="@+id/btnDeactivate"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:text="Deactivate account"
+        android:textSize="18sp"
+        android:background="@color/red"
         android:textColor="#ffffff"/>
 
 </RelativeLayout>

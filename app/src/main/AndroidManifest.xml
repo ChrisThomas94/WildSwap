@@ -190,6 +190,10 @@
             android:label="Acknowledgements"
             android:theme= "@style/AppTheme"/>
 
+        <activity android:name="com.wildswap.wildswapapp.AboutActivity"
+            android:label="About"
+            android:theme= "@style/AppTheme"/>
+
         <!-- [START firebase_service] -->
         <service
             android:name="com.wildswap.wildswapapp.firebase.MyFirebaseMessagingService"

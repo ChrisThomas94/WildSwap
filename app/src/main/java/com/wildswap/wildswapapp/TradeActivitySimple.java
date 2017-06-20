@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -62,6 +63,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
     ViewPager ownedPage;
 
     Geocoder geocoder;
+    View parentLayout;
 
 
     @Override
@@ -72,6 +74,8 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
+
+        parentLayout = findViewById(android.R.id.content);
 
         geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -241,7 +245,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
                         }
                     }).execute();
                 } else {
-                    Toast.makeText(this, "No connection", Toast.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "No Internet Connection", Toast.LENGTH_LONG).show();
 
                 }
 

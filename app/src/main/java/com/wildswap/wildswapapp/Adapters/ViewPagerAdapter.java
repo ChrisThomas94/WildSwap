@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.wildswap.wildswapapp.BadgesFragment;
+import com.wildswap.wildswapapp.DiscussionFragment;
+import com.wildswap.wildswapapp.EventsFragment;
 import com.wildswap.wildswapapp.SentTradesFragment;
 import com.wildswap.wildswapapp.KnownSitesFragment;
 import com.wildswap.wildswapapp.ReceivedTradesFragment;
@@ -45,7 +47,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             } else if (Titles[0] == "Questions"){
                 tab1 = new QuestionFragment();
 
-            } else {
+            } else if(Titles[0] == "Events") {
+                tab1 = new EventsFragment();
+
+            }else{
                 tab1 = new OwnedSitesFragment();
             }
             return tab1;
@@ -57,6 +62,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 tab2 = new SentTradesFragment();
             } else if(Titles[1] == "Badges"){
                 tab2 = new BadgesFragment();
+
+            } else if(Titles[1] == "Discussion") {
+                tab2 = new DiscussionFragment();
 
             } else {
                 tab2 = new KnownSitesFragment();

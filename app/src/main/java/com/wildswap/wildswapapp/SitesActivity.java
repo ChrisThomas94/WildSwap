@@ -264,7 +264,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
                         }
                     }).execute();
                 } else {
-                    Snackbar.make(parentLayout, "No connection", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(parentLayout, "No Internet Connection", Snackbar.LENGTH_LONG).show();
                 }
                 break;
 
@@ -323,7 +323,7 @@ public class SitesActivity extends AppCompatActivity implements OnShowcaseEventL
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings1) {
-            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_refresh) {

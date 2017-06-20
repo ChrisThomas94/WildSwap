@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import java.util.Locale;
@@ -128,6 +130,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                     }
                                 }
                             }).execute();
+                        } else {
+                            Snackbar.make(v, "No Internet Connection", Toast.LENGTH_LONG).show();
+
                         }
                     } else {
                         Snackbar.make(v, "Please choose a password with a minimum of six characters!", Snackbar.LENGTH_LONG)

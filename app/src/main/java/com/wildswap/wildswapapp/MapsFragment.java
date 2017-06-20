@@ -7,10 +7,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v13.app.FragmentCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseArray;
@@ -26,15 +32,17 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.location.LocationListener;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+//import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -136,6 +144,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     List<Marker> ownedMarkersList;
     BadgeManager bM;
     View v;
+    GoogleMap googleMap;
+    LocationResult locationResult;
+    LocationListener locationListenerGps;
+    final int LOCATION_REQUEST = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,7 +158,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         //.getAppli
 
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
-
 
         ownedSitesMap = inst.getOwnedSitesMap();
         ownedSiteSize = inst.getOwnedSiteSize();
@@ -238,13 +249,24 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         mMapView.getMapAsync(this);
 
+        /*locationListenerGps = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                locationResult.gotLocation(location);
+            }
+            public void onProviderDisabled(String provider) {}
+            public void onProviderEnabled(String provider) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+        };*/
+
         if(register){
             bM.awardJoinBadge();
             showcase();
         }
 
-        bM.checkTradeBadges();
+        if(isNetworkAvailable()){
+            bM.checkTradeBadges();
 
+        }
 
         return v;
 
@@ -313,6 +335,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                                                     knownFilterLayout.setVisibility(View.VISIBLE);
                                                     unknownFilterLayout.setVisibility(View.VISIBLE);
                                                     register = false;
+                                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+
                                                 }
 
                                                 @Override
@@ -378,6 +402,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(final GoogleMap googleMap) {
 
+        this.googleMap = googleMap;
+
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -389,7 +415,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         } else {
-            //request permission?
+            //request permission
+
         }
 
         if(add){
@@ -457,9 +484,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 }
             });
         } else {
-            // center Map on Scotland
-
-            //String country = AppController.getString(getContext(), "country");
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
 
@@ -562,6 +586,41 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         updateMap(mClusterManager, googleMap);
     }
 
+    private boolean canAccessLocation() {
+        return(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    public void searchMap(String locationSearch){
+
+        List<Address>addressList = null;
+
+        Geocoder geocoder = new Geocoder(getContext());
+
+        try {
+            addressList = geocoder.getFromLocationName(locationSearch, 1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Address address = addressList.get(0);
+        LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(10).build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                updateMap(mClusterManager, googleMap);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
     public void showUnknownSites(GoogleMap googleMap){
         addClusterMarkers(mClusterManager, googleMap);
         updateMap(mClusterManager, googleMap);
@@ -655,10 +714,49 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 showOwnedSites();
                 owned.setChecked(true);
                 known.setChecked(true);
+                unknown.setChecked(true);
 
                 googleMap.setOnMapClickListener(null);
 
             } else {
+
+                if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Your GPS is enabled, do you want to add your current location to the map?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+
+                                    LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+                                    //mLocationManager.requestLocationUpdates(mLocationManager.GPS_PROVIDER, mLocationListener, this);
+
+                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+
+                                    try {
+                                        Location currentPos = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                        double currentLat = currentPos.getLatitude();
+                                        double currentLon = currentPos.getLongitude();
+
+                                        System.out.println("current pos" + currentLat + currentLon);
+
+                                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+                                        intent.putExtra("latitude", currentLat);
+                                        intent.putExtra("longitude", currentLon);
+
+                                        getActivity().startActivity(intent);
+                                    } catch (SecurityException e){
+
+                                    }
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(final DialogInterface dialog, final int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                }
 
                 clickActive = true;
                 snackBar = Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE);
@@ -709,6 +807,42 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             }
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        System.out.println("permission result" + requestCode);
+
+        switch(requestCode) {
+            case LOCATION_REQUEST:
+                if (canAccessLocation()) {
+                    System.out.println("request permission result");
+                    try {
+                        googleMap.setMyLocationEnabled(true);
+                    } catch (SecurityException e){
+
+                    }
+
+                    LocationManager lm = (LocationManager)getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+                    try {
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+
+                    } catch (SecurityException e){
+
+                    }
+
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                }
+                else {
+
+                }
+                break;
+        }
+    }
+
+    public static abstract class LocationResult{
+        public abstract void gotLocation(Location location);
     }
 
     class MyOnClickListener implements View.OnClickListener{
@@ -998,6 +1132,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             @Override
             public void onInfoWindowClick(Marker marker) {
 
+                System.out.println("click");
+
                 if (knownSiteSize > 0) {
                     for (int i = 0; i < knownSiteSize; i++) {
                         Site currentSite = knownSitesMap.get(i);
@@ -1067,6 +1203,38 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         }
                     }
                 }
+
+                if (clickedCluster != null) {
+                    for (AppClusterItem item : clickedCluster.getItems()) {
+                        // Extract data from each item in the cluster as needed
+                        System.out.println(item);
+                    }
+
+                    if (inst.getOwnedSiteSize() > 0) {
+                        previouslyClickedCluster = null;
+                        ArrayList<LatLng> cluster = new ArrayList<>();
+                        ArrayList<String> emails = new ArrayList<>();
+                        SparseArray<Site> selectedUnknownSites = new SparseArray<>();
+
+                        Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
+
+                        for (AppClusterItem item : clickedCluster.getItems()) {
+                            // Extract data from each item in the cluster as needed
+                            //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
+                            cluster.add(item.getPosition());
+                            System.out.println("maps fragment" + item.getPosition());
+                        }
+
+                        intent.putParcelableArrayListExtra("cluster", cluster);
+
+                        // Launching  main activity
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getActivity(), "You do not own a site to trade!", Toast.LENGTH_LONG).show();
+                    }
+
+                    previouslyClickedCluster = clickedCluster;
+                }
             }
         });
 
@@ -1086,14 +1254,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             }
         });
 
-        mClusterManager.setOnClusterInfoWindowClickListener(new ClusterManager.OnClusterInfoWindowClickListener<AppClusterItem>() {
-            @Override
-            public void onClusterInfoWindowClick(Cluster<AppClusterItem> cluster) {
-                System.out.println("click");
-            }
-        });
-
-
     }
 
     class MyCustomAdapterForClusters implements GoogleMap.InfoWindowAdapter {
@@ -1109,49 +1269,15 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             View view = getActivity().getLayoutInflater().inflate(R.layout.cluster_popup, null);
 
-            if (clickedCluster != null) {
-                for (AppClusterItem item : clickedCluster.getItems()) {
-                    // Extract data from each item in the cluster as needed
-                    System.out.println(item);
-                }
-
-            if(previouslyClickedCluster == clickedCluster) {
-                if (inst.getOwnedSiteSize() > 0) {
-                    previouslyClickedCluster = null;
-                    ArrayList<LatLng> cluster = new ArrayList<>();
-                    ArrayList<String> emails = new ArrayList<>();
-                    SparseArray<Site> selectedUnknownSites = new SparseArray<>();
-
-                    Intent intent = new Intent(getActivity().getApplicationContext(), TradeActivitySimple.class);
-
-                    for (AppClusterItem item : clickedCluster.getItems()) {
-                        // Extract data from each item in the cluster as needed
-                        //use the position to pass through to the trade screen where the position can be used to find the campsite id and display other info without giving away the location
-                        cluster.add(item.getPosition());
-                        System.out.println("maps fragment" + item.getPosition());
-                    }
-
-                    intent.putParcelableArrayListExtra("cluster", cluster);
-
-                    // Launching  main activity
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "You do not own a site to trade!", Toast.LENGTH_LONG).show();
-                }
-            }
-
-                previouslyClickedCluster = clickedCluster;
-            }
-
             int size = clickedCluster.getSize();
 
             TextView popup = (TextView)view.findViewById(R.id.popup_text);
 
             if(size != 1){
-                popup.setText("There are " + size + " campsites in this area, click it again to trade one of your campsites for one of them.");
+                popup.setText("There are " + size + " campsites in this area. Click here to view.");
 
             } else {
-                popup.setText("There is " + size + " campsite in this area, click it again to trade one of your campsites for it.");
+                popup.setText("There is " + size + " campsite in this area. Click here to view.");
 
             }
 
@@ -1187,8 +1313,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         mClusterManager.setAlgorithm(new CustomAlgorithm<AppClusterItem>());
     }
 
-    class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T>
-    {
+    class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T> {
+
         public CustomRenderer(Context context, GoogleMap map, ClusterManager<T> clusterManager) {
             super(context, map, clusterManager);
         }
@@ -1214,8 +1340,6 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         public MyInfoWindowAdapter() {
             view = getActivity().getLayoutInflater().inflate(R.layout.custom_infowindow, null);
-
-            System.out.println("custom info window!");
         }
 
         @Override
@@ -1261,6 +1385,14 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         }
 
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }
 
 
