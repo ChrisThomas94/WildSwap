@@ -5,7 +5,9 @@
     <color name="colorPrimaryDark">#267326</color>
     <color name="colorAccent">#303030</color>
 
+    <color name="list_background">#fff</color>
     <color name="list_item_title">#fff</color>
+
     <color name="counter_text_color">#c5c4c4</color>
     <color name="rating_bar_color">#DBDBDB</color>
     <color name="cancel_anything">#E6462C</color>

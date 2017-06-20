@@ -24,6 +24,8 @@
 
     <!--sliding window tutorial -->
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+
 
     <!-- Features List -->
     <string name="titleDefault">Cool wild location</string>

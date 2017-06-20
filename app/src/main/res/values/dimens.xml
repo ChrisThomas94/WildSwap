@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <dimen name="feature_text">20sp</dimen>
+    <dimen name="dropDownVerticalOffset">5sp</dimen>
+
 
     <!-- Welcome Screen. -->
     <dimen name="dots_height">30dp</dimen>
