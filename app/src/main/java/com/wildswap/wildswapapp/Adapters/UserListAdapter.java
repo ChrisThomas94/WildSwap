@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView email = (TextView) convertView.findViewById(R.id.email);
         ImageView profile_pic = (ImageView) convertView.findViewById(R.id.profile_pic);
+        TextView userType = (TextView) convertView.findViewById(R.id.userTypeText);
+        RelativeLayout userTypeBackground = (RelativeLayout) convertView.findViewById(R.id.userType);
 
         String image = filterUsers.get(position).getProfile_pic();
         Bitmap compress = StringToBitMap(image);
@@ -73,6 +76,24 @@ public class UserListAdapter extends BaseAdapter implements Filterable {
         name.setText(filterUsers.get(position).getName());
         email.setText(filterUsers.get(position).getEmail());
         profile_pic.setImageBitmap(compress);
+        userType.setText(filterUsers.get(position).getUserType());
+
+        if(userType.getText().toString().equals("null") || userType.getText().toString().equals("NULL")){
+            userType.setText("");
+        }
+
+        if(userType.getText().toString().equals(context.getResources().getString(R.string.userType1))) {
+            userTypeBackground.setBackgroundResource(R.drawable.rounded_green_button);
+
+        } else if(userType.getText().toString().equals(context.getResources().getString(R.string.userType2))){
+            userTypeBackground.setBackgroundResource(R.drawable.rounded_orange_button);
+
+        } else if(userType.getText().toString().equals(context.getResources().getString(R.string.userType3))){
+            userTypeBackground.setBackgroundResource(R.drawable.rounded_red_button);
+
+        } else {
+            userTypeBackground.setBackgroundResource(R.drawable.rounded_white_button);
+        }
 
         return convertView;
     }

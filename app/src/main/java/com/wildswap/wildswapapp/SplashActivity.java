@@ -15,6 +15,7 @@ import com.wildswap.wildswapapp.AsyncTask.FetchTradeRequests;
 import com.wildswap.wildswapapp.AsyncTask.FetchUnknownSites;
 import com.wildswap.wildswapapp.AsyncTask.FetchUsers;
 import com.wildswap.wildswapapp.AsyncTask.Login;
+import com.wildswap.wildswapapp.AsyncTask.UpdateProfile;
 import com.wildswap.wildswapapp.Objects.StoredData;
 import com.wildswap.wildswapapp.Objects.User;
 
@@ -30,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
 
         SessionManager session = new SessionManager(getApplicationContext());
 
-        StoredData inst = new StoredData();
+        final StoredData inst = new StoredData();
         final User thisUser = inst.getLoggedInUser();
         final Boolean showDialog = false;
 
@@ -45,32 +46,46 @@ public class SplashActivity extends AppCompatActivity {
             ArrayList<String> users = new ArrayList<>();
             users.add(0, thisUser.getEmail());
 
+
+
             final Intent intent = new Intent(this, MainActivity_Spinner.class);
             intent.putExtra("fetchData", false);
+
+            final Intent unfinishedProfile = new Intent(this, CreateProfileActivity.class);
+            unfinishedProfile.putExtra("update", false);
 
             if(isNetworkAvailable()) {
                 new FetchUsers(this, users, showDialog, new AsyncResponse() {
 
                     @Override
                     public void processFinish(String output) {
-                        new FetchTradeRequests(SplashActivity.this, showDialog, new AsyncResponse() {
-                            @Override
-                            public void processFinish(String output) {
-                                new FetchKnownSites(SplashActivity.this, showDialog, new AsyncResponse() {
-                                    @Override
-                                    public void processFinish(String output) {
-                                        new FetchUnknownSites(SplashActivity.this, showDialog, new AsyncResponse() {
-                                            @Override
-                                            public void processFinish(String output) {
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        }).execute();
 
-                                    }
-                                }).execute();
-                            }
-                        }).execute();
+                        User thisUser = inst.getLoggedInUser();
+
+                        if(thisUser.getUserType().equals("null")){
+                            startActivity(unfinishedProfile);
+                            finish();
+                        }else {
+                            new FetchTradeRequests(SplashActivity.this, showDialog, new AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) {
+                                    new FetchKnownSites(SplashActivity.this, showDialog, new AsyncResponse() {
+                                        @Override
+                                        public void processFinish(String output) {
+                                            new FetchUnknownSites(SplashActivity.this, showDialog, new AsyncResponse() {
+                                                @Override
+                                                public void processFinish(String output) {
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            }).execute();
+
+                                        }
+                                    }).execute();
+                                }
+                            }).execute();
+                        }
+
                     }
                 }).execute();
             } else {
@@ -85,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
                 thisUser.setCountry(AppController.getString(this, "country"));
                 */
 
-                Intent i = new Intent(this, MainActivity_Spinner.class);
+                Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
                 finish();
             }

@@ -66,27 +66,27 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="15sp"
+                android:textSize="10sp"
                 android:text="name@email.com"
-                android:layout_alignParentBottom="true"/>
+                android:layout_below="@+id/name"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:gravity="end"
-                android:layout_toRightOf="@+id/name">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:gravity="end">
 
                 <RelativeLayout
-                    android:id="@+id/userType1"
+                    android:id="@+id/userType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:background="@drawable/rounded_white_button">
 
                     <TextView
-                        android:id="@+id/userTypeText1"
+                        android:id="@+id/userTypeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/userType1"

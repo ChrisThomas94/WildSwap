@@ -70,11 +70,11 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
     SparseArray<Gallery> images;
     Address thisAddress;
 
-    ViewPager pager;
-    ViewPagerAdapter adapter;
-    SlidingTabLayout tabs;
-    CharSequence Titles[]={"Events", "Discussion"};
-    int Numboftabs =2;
+    //ViewPager pager;
+    //ViewPagerAdapter adapter;
+    //SlidingTabLayout tabs;
+    //CharSequence Titles[]={"Events", "Discussion"};
+    //int Numboftabs =2;
 
     Gallery gallery;
     ArrayList<String> imagesList;
@@ -122,7 +122,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles, Numboftabs);
+        /*adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles, Numboftabs);
 
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -140,7 +140,7 @@ public class OwnedSiteViewerActivity extends AppCompatActivity implements View.O
         });
 
         // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
+        tabs.setViewPager(pager);*/
 
         lat = (TextView)findViewById(R.id.lat);
         lon = (TextView)findViewById(R.id.lon);

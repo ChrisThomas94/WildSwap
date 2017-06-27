@@ -18,8 +18,8 @@ android {
         applicationId "com.wildswap.wildswapapp"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 8
-        versionName "1.1.7"
+        versionCode 9
+        versionName "1.1.9"
 
     }
     buildTypes {

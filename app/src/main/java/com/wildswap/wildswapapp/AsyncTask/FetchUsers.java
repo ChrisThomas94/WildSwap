@@ -113,6 +113,7 @@ public class FetchUsers extends AsyncTask<String, String, String> {
                                 user.setProfile_pic(jsonUser.getString("profile_pic"));
                                 user.setName(jsonUser.getString("name"));
                                 user.setEmail(jsonUser.getString("email"));
+                                user.setUserType(jsonUser.getString("userType"));
                                 user.setUid(jsonUser.getString("unique_uid"));
                                 user.setToken(jsonUser.getString("token"));
                             }

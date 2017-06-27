@@ -133,11 +133,6 @@
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name="com.wildswap.wildswapapp.KnownSiteActivity"
-            android:label="Known Site"
-            android:theme="@style/AppTheme"/>
-
-        <activity
             android:name="com.wildswap.wildswapapp.KnownSiteViewerActivity"
             android:label="Known Site"
             android:theme="@style/AppTheme"/>

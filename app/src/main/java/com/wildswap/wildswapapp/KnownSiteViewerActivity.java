@@ -64,7 +64,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
     FrameLayout frame;
     Boolean hasImages = false;
-    ImageView close;
     ScrollView scroll;
     ViewPager imageViews;
 
@@ -254,7 +253,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             }
         });
 
-        close.setOnClickListener(this);
     }
 
     @Override
@@ -353,7 +351,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                 imageBit = StringToBitMap(gallery.getGallery().get(0));
                 expandedImage.setImageBitmap(imageBit);
                 expandedImage.setVisibility(View.VISIBLE);
-                close.setVisibility(View.VISIBLE);
                 //frame.getForeground().setAlpha(150);
 
                 break;

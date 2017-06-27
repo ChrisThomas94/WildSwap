@@ -60,10 +60,22 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:gravity="center"
+                        android:text="Chris Thomas"
+                        android:textColor="#333333"
+                        android:textSize="25dp" />
+
                     <RelativeLayout
                         android:id="@+id/profileStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/name"
                         android:clickable="true"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/rounded_green_button">
@@ -86,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/name"
                         android:clickable="true">
 
                         <ImageButton
@@ -101,35 +114,6 @@
                             android:textColor="@color/list_item_title"
                             android:textSize="25sp"
                             android:text="99"/>
-
-                    </RelativeLayout>
-
-                    <ImageButton
-                        android:id="@+id/edit"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/list_item_title"
-                        android:scaleType="fitXY"
-                        android:visibility="gone"
-                        android:src="@drawable/ic_site_builder_48dp" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="50dp"
-                        android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:gravity="center"
-                                android:paddingBottom="15dp"
-                                android:text="Chris Thomas"
-                                android:textColor="#333333"
-                                android:textSize="25dp" />
 
                     </RelativeLayout>
 

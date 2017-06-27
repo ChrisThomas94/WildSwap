@@ -146,7 +146,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     View v;
     GoogleMap googleMap;
     LocationResult locationResult;
-    LocationListener locationListenerGps;
+    //LocationListener locationListenerGps;
     final int LOCATION_REQUEST = 100;
 
     @Override
@@ -721,6 +721,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
             } else {
 
                 if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("Your GPS is enabled, do you want to add your current location to the map?")
                             .setCancelable(false)
@@ -728,12 +731,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                                 public void onClick(final DialogInterface dialog, final int id) {
 
                                     LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-                                    //mLocationManager.requestLocationUpdates(mLocationManager.GPS_PROVIDER, mLocationListener, this);
-
-                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
 
                                     try {
-                                        Location currentPos = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                        Location currentPos = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
                                         double currentLat = currentPos.getLatitude();
                                         double currentLon = currentPos.getLongitude();
 
@@ -824,13 +824,13 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
                     }
 
-                    LocationManager lm = (LocationManager)getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+                    /*LocationManager lm = (LocationManager)getActivity().getSystemService(getActivity().LOCATION_SERVICE);
                     try {
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
 
                     } catch (SecurityException e){
 
-                    }
+                    }*/
 
                     googleMap.getUiSettings().setMyLocationButtonEnabled(true);
                 }
