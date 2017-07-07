@@ -67,18 +67,6 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
-        Element logout = new Element();
-        logout.setTitle("LOGOUT");
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                session.setLogin(false);
-                Intent intent = new Intent(AboutActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
                 .setImage(R.drawable.ecology_small)
@@ -93,7 +81,6 @@ public class AboutActivity extends AppCompatActivity {
                 .addGitHub("ChrisThomas94")
                 .addItem(projects)
                 .addItem(acknowledgements)
-                .addItem(logout)
                 .create();
 
         setContentView(aboutPage);

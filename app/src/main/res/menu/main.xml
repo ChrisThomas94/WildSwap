@@ -19,9 +19,16 @@
         android:title="Refresh"/>
 
     <item
-        android:id="@+id/action_settings1"
+        android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="About"
+        app:showAsAction="never"/>
+
 
 </menu>

@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
@@ -96,6 +97,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     boolean filtersShowing = false;
 
     ImageButton addSite;
+    FloatingActionButton gps_fab;
+    FloatingActionButton manual_fab;
     Button gpsAdd;
     Button manualAdd;
     Button longLatAdd;
@@ -237,6 +240,8 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         //initialize views
         addSite = (ImageButton)v.findViewById(R.id.fab);
+        gps_fab = (FloatingActionButton) v.findViewById(R.id.gps_fab);
+        manual_fab = (FloatingActionButton) v.findViewById(R.id.manual_fab);
         owned = (CheckBox) v.findViewById(R.id.ownedFilter);
         known = (CheckBox) v.findViewById(R.id.knownFilter);
         unknown = (CheckBox) v.findViewById(R.id.unkownFilter);
@@ -406,6 +411,22 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         googleMap.getUiSettings().setMapToolbarEnabled(false);
 
+        String mapType = AppController.getString(getContext(), "mapType");
+
+        if(mapType.equals("normal")){
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        } else if(mapType.equals("terrain")){
+            googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
+        } else if(mapType.equals("hybrid")){
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        } else if(mapType.equals("satellite")){
+            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+        }
+
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -510,9 +531,13 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         googleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
 
         // set listeners for buttons
+
         addSite.setClickable(true);
-        //addSite.setOnClickListener(new MyOnClickListener(googleMap));
+        gps_fab.setClickable(true);
+        manual_fab.setClickable(true);
         addSite.setOnClickListener(new noPopupClickListener(googleMap));
+        gps_fab.setOnClickListener(new gpsClickListener(googleMap));
+        manual_fab.setOnClickListener(new manualClickListener(googleMap));
 
         owned.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -690,16 +715,33 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         collKnown.clear();
     }
 
-    class noPopupClickListener implements View.OnClickListener{
+    private class gpsClickListener implements View.OnClickListener {
 
         GoogleMap googleMap;
 
-        public noPopupClickListener(GoogleMap googleMap){
+        private gpsClickListener(GoogleMap googleMap) {
             this.googleMap = googleMap;
         }
 
         @Override
         public void onClick(final View view) {
+
+        }
+    }
+
+    private class noPopupClickListener implements View.OnClickListener{
+
+        GoogleMap googleMap;
+
+        private noPopupClickListener(GoogleMap googleMap){
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onClick(final View view) {
+
+            gps_fab.setPadding(0, 120, 0, 0);
+            manual_fab.setPadding(0, 240, 0, 0);
 
             if (clickActive) {
 

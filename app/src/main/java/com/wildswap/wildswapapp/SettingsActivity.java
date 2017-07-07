@@ -11,8 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
 import com.wildswap.wildswapapp.AsyncTask.CreateSite;
 import com.wildswap.wildswapapp.Objects.StoredData;
@@ -27,13 +30,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     StoredData inst = new StoredData();
     User thisUser = inst.getLoggedInUser();
-    TextView txtEmail;
     TextView language;
-    TextView about;
-    TextView projects;
-    TextView credits;
+    CheckBox normalMap;
+    CheckBox terrainMap;
+    CheckBox hybridMap;
+    CheckBox satelliteMap;
     Button btnLogout;
-    Button btnDeactivate;
 
     private SessionManager session;
 
@@ -47,13 +49,12 @@ public class SettingsActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
 
-        txtEmail = (TextView) findViewById(R.id.email);
         language = (TextView) findViewById(R.id.language);
+        normalMap = (CheckBox) findViewById(R.id.normalMap);
+        terrainMap = (CheckBox) findViewById(R.id.terrainMap);
+        hybridMap = (CheckBox) findViewById(R.id.hybridMap);
+        satelliteMap = (CheckBox) findViewById(R.id.satelliteMap);
         btnLogout = (Button) findViewById(R.id.btnLogout);
-        btnDeactivate = (Button) findViewById(R.id.btnDeactivate);
-        about = (TextView) findViewById(R.id.about);
-        projects = (TextView) findViewById(R.id.projects);
-        credits = (TextView) findViewById(R.id.credits);
 
         session = new SessionManager(this);
 
@@ -61,9 +62,75 @@ public class SettingsActivity extends AppCompatActivity {
             logoutUser();
         }
 
-        txtEmail.setText(thisUser.getEmail());
-
         language.setText(Locale.getDefault().getDisplayLanguage());
+
+        String mapType = AppController.getString(this, "mapType");
+
+        if(mapType.equals("normal")){
+            normalMap.setChecked(true);
+
+        } else if(mapType.equals("terrain")){
+            terrainMap.setChecked(true);
+
+        } else if(mapType.equals("hybrid")){
+            hybridMap.setChecked(true);
+
+        } else if(mapType.equals("satellite")){
+            satelliteMap.setChecked(true);
+        }
+
+
+        terrainMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+
+                    AppController.setString(SettingsActivity.this, "mapType", "terrain");
+                    normalMap.setChecked(false);
+                    hybridMap.setChecked(false);
+                    satelliteMap.setChecked(false);
+                }
+            }
+        });
+
+        normalMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+
+                    AppController.setString(SettingsActivity.this, "mapType", "normal");
+                    terrainMap.setChecked(false);
+                    hybridMap.setChecked(false);
+                    satelliteMap.setChecked(false);
+                }
+            }
+        });
+
+        hybridMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+
+                    AppController.setString(SettingsActivity.this, "mapType", "hybrid");
+                    terrainMap.setChecked(false);
+                    normalMap.setChecked(false);
+                    satelliteMap.setChecked(false);
+                }
+            }
+        });
+
+        satelliteMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+
+                    AppController.setString(SettingsActivity.this, "mapType", "satellite");
+                    terrainMap.setChecked(false);
+                    normalMap.setChecked(false);
+                    hybridMap.setChecked(false);
+                }
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -73,54 +140,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        btnDeactivate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(SettingsActivity.this);
-                builder1.setTitle("Are you sure?!");
-                builder1.setMessage("Do you really wish to deactivate your account?");
-
-                builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builder1.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alert1 = builder1.create();
-                alert1.show();
-            }
-        });
-
-        about.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent about = new Intent(getBaseContext(), AboutActivity.class);
-                startActivity(about);
-            }
-        });
-
-        projects.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent projects = new Intent(getBaseContext(), ProjectsActivity.class);
-                startActivity(projects);
-            }
-        });
-        credits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent credits = new Intent(getBaseContext(), AcknowledgementsActivity.class);
-                startActivity(credits);
-            }
-        });
     }
 
     private void logoutUser() {
@@ -134,6 +153,9 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity_Spinner.class);
+                intent.putExtra("data", false);
+                startActivity(intent);
                 finish();
                 return true;
         }
