@@ -107,6 +107,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean updateImage = false;
     Boolean showDialog = false;
     Boolean update = false;
+    Boolean manual = false;
     int arrayPos;
 
     Intent intent;
@@ -161,6 +162,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         if(extras != null)
         {
             update = extras.getBoolean("update");
+            manual = extras.getBoolean("manual");
             arrayPos = extras.getInt("arrayPosition");
 
             latitude = extras.getDouble("latitude");
@@ -316,6 +318,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             Lon.setText(lon);
 
         } else {
+
+            if(manual){
+                Lat.setClickable(true);
+                Lon.setClickable(true);
+                Lat.setEnabled(true);
+                Lon.setEnabled(true);
+            }
 
             if(titlePassed == null){
                 title.setText(R.string.titleDefault);

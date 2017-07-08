@@ -43,6 +43,7 @@ import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 //import com.google.android.gms.location.LocationListener;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -96,9 +97,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
     double newLon;
     boolean filtersShowing = false;
 
-    ImageButton addSite;
-    FloatingActionButton gps_fab;
-    FloatingActionButton manual_fab;
+    FloatingActionMenu menu;
+    com.github.clans.fab.FloatingActionButton addSite;
+    com.github.clans.fab.FloatingActionButton gps_fab;
+    com.github.clans.fab.FloatingActionButton manual_fab;
     Button gpsAdd;
     Button manualAdd;
     Button longLatAdd;
@@ -239,9 +241,10 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         }
 
         //initialize views
-        addSite = (ImageButton)v.findViewById(R.id.fab);
-        gps_fab = (FloatingActionButton) v.findViewById(R.id.gps_fab);
-        manual_fab = (FloatingActionButton) v.findViewById(R.id.manual_fab);
+        menu = (FloatingActionMenu) v.findViewById(R.id.fab_menu);
+        addSite = (com.github.clans.fab.FloatingActionButton) v.findViewById(R.id.fab);
+        gps_fab = (com.github.clans.fab.FloatingActionButton) v.findViewById(R.id.gps_fab);
+        manual_fab = (com.github.clans.fab.FloatingActionButton) v.findViewById(R.id.manual_fab);
         owned = (CheckBox) v.findViewById(R.id.ownedFilter);
         known = (CheckBox) v.findViewById(R.id.knownFilter);
         unknown = (CheckBox) v.findViewById(R.id.unkownFilter);
@@ -715,6 +718,24 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         collKnown.clear();
     }
 
+    private class manualClickListener implements View.OnClickListener {
+
+        GoogleMap googleMap;
+
+        private manualClickListener(GoogleMap googleMap) {
+            this.googleMap = googleMap;
+        }
+
+        @Override
+        public void onClick(final View view) {
+            Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+            intent.putExtra("manual", true);
+
+            getActivity().startActivity(intent);
+        }
+
+    }
+
     private class gpsClickListener implements View.OnClickListener {
 
         GoogleMap googleMap;
@@ -725,6 +746,46 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
         @Override
         public void onClick(final View view) {
+
+            if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Your GPS is enabled, do you want to add your current location to the map?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+
+                                LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+
+                                try {
+                                    Location currentPos = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                                    double currentLat = currentPos.getLatitude();
+                                    double currentLon = currentPos.getLongitude();
+
+                                    System.out.println("current pos" + currentLat + currentLon);
+
+                                    Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
+                                    intent.putExtra("latitude", currentLat);
+                                    intent.putExtra("longitude", currentLon);
+
+                                    getActivity().startActivity(intent);
+                                } catch (SecurityException e){
+
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, final int id) {
+                                dialog.cancel();
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
+            } else {
+                //ask user to enable gps
+            }
 
         }
     }
@@ -740,15 +801,13 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         @Override
         public void onClick(final View view) {
 
-            gps_fab.setPadding(0, 120, 0, 0);
-            manual_fab.setPadding(0, 240, 0, 0);
-
             if (clickActive) {
 
                 clickActive = false;
 
-                addSite.setRotation(90);
+                //addSite.setRotation(90);
                 frame.setPadding(0, 120, 0, 0);
+                //hide filter tab
 
                 snackBar.dismiss();
                 showUnknownSites(googleMap);
@@ -762,52 +821,15 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
             } else {
 
-                if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
-
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Your GPS is enabled, do you want to add your current location to the map?")
-                            .setCancelable(false)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-
-                                    LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-
-                                    try {
-                                        Location currentPos = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                                        double currentLat = currentPos.getLatitude();
-                                        double currentLon = currentPos.getLongitude();
-
-                                        System.out.println("current pos" + currentLat + currentLon);
-
-                                        Intent intent = new Intent(getActivity().getApplicationContext(), AddSiteActivity.class);
-                                        intent.putExtra("latitude", currentLat);
-                                        intent.putExtra("longitude", currentLon);
-
-                                        getActivity().startActivity(intent);
-                                    } catch (SecurityException e){
-
-                                    }
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, final int id) {
-                                    dialog.cancel();
-                                }
-                            });
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-                }
-
                 clickActive = true;
                 snackBar = Snackbar.make(view, "Touch a point on the map to add a marker!", Snackbar.LENGTH_INDEFINITE);
 
+                menu.close(true);
+                menu.hideMenuButton(true);
                 frame.setPadding(0, 0, 0, 120);
-                addSite.setRotation(45);
+                filterLayout.setVisibility(View.INVISIBLE);
 
                 googleMap.getUiSettings().setAllGesturesEnabled(true);
-                //layout_main.getForeground().setAlpha(0);
 
                 hideUnknownSites(googleMap);
                 hideKnownSites();
