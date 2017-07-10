@@ -96,7 +96,7 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
         stars.getDrawable(1).setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(0).setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_ATOP);
 
-        if(thisAddress.getLocality().equals("null")){
+        if(thisAddress.getLocality() == null || thisAddress.getLocality().equals("null")){
             country.setText(thisAddress.getCountryName());
         } else {
             country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());

@@ -75,7 +75,7 @@ public class SiteListAdapter extends BaseAdapter {
 
         title.setText(knownSites.get(position).getTitle());
 
-        if(thisAddress.getLocality().equals("null")){
+        if(thisAddress.getLocality() == null || thisAddress.getLocality().equals("null")){
             country.setText(thisAddress.getCountryName());
         } else {
             country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());

@@ -191,7 +191,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
 
         try {
             address = geocoder.getFromLocation(position.latitude, position.longitude, 1);
-            if(address.get(0).getLocality().equals("null")){
+            if(address.get(0).getLocality() == null || address.get(0).getLocality().equals("null")){
                 saveAddress = address.get(0).getCountryName();
             } else {
                 saveAddress = address.get(0).getCountryName() + ", " + address.get(0).getLocality();
