@@ -3,6 +3,8 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,7 +30,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import com.wildswap.wildswapapp.Adapters.ImageGridAdapter;
 import com.wildswap.wildswapapp.Adapters.ImageUriGridAdapter;
@@ -106,10 +111,12 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean updateDesc = false;
     Boolean updateImage = false;
     Boolean showDialog = false;
+    Boolean updateLatLon = false;
     Boolean update = false;
     Boolean manual = false;
     int arrayPos;
 
+    Geocoder geocoder;
     Intent intent;
 
     @Override
@@ -120,6 +127,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
+
+        geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
 
         //initializing views
         Lat =(EditText)findViewById(R.id.Lat);
@@ -327,13 +337,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             if(titlePassed == null){
-                title.setText(R.string.titleDefault);
+                //title.setText(R.string.titleDefault);
             } else {
                 title.setText(titlePassed);
             }
 
             if(descPassed == null){
-                description.setText(R.string.descriptionDefault);
+                //description.setText(R.string.descriptionDefault);
             } else {
                 description.setText(descPassed);
             }
@@ -411,6 +421,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         classificationA.setOnClickListener(this);
         classificationC.setOnClickListener(this);
         classificationE.setOnClickListener(this);
+        Lon.setOnClickListener(this);
     }
 
     @Override
@@ -418,6 +429,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
         switch (v.getId())
         {
+            case R.id.Long:
+                if(!updateLatLon){
+                    updateProgress();
+                }
+                updateLatLon = true;
+                break;
+
             case R.id.classificationA:
 
                 if(!updateClassification){
@@ -504,11 +522,30 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.progressBar:
 
                 if(progressValue > 0) {
-                    if(update){
+
+                    if(manual){
+                        latitude = Double.parseDouble(Lat.getText().toString());
+                        longitude = Double.parseDouble(Lon.getText().toString());
+
+                        try {
+                            List<Address> address = geocoder.getFromLocation(latitude, longitude, 1);
+                            System.out.println("address: " + address);
+
+                            if (address.isEmpty() || (Lat.getText().equals("0.0")) || Lon.getText().equals("0.0")) {
+                                Snackbar.make(v, "Please enter a valid latitude and longitude!", Snackbar.LENGTH_LONG).show();
+                            } else {
+                                submit();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else if(update) {
                         update();
                     } else {
                         submit();
                     }
+
+
                 } else {
                     Snackbar.make(v, "Please make some changes!", Snackbar.LENGTH_LONG).show();
                 }
@@ -625,7 +662,12 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
     public void updateProgress(){
 
-        progressValue = progress.getProgress()+25;
+        if(manual){
+            progressValue = progress.getProgress()+20;
+        } else {
+            progressValue = progress.getProgress()+25;
+        }
+
         progress.setProgress(progressValue);
 
         if(progressValue >= 100){

@@ -74,7 +74,12 @@ public class SiteListAdapter extends BaseAdapter {
         Address thisAddress = address.get(0);
 
         title.setText(knownSites.get(position).getTitle());
-        country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
+
+        if(thisAddress.getLocality().equals("null")){
+            country.setText(thisAddress.getCountryName());
+        } else {
+            country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
+        }
 
         String amateurText = amateur.getText().toString();
         String casualText = casual.getText().toString();

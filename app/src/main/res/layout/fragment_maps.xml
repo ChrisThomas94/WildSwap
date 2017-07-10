@@ -166,31 +166,31 @@
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/gps_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="16dp"
                 android:layout_gravity="center"
-                android:src="@drawable/fab_add"
                 android:elevation="6dp"
-                fab:fabSize="mini"
+                android:scaleType="centerCrop"
                 fab:fab_label="Add with GPS"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/manual_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="16dp"
                 android:layout_gravity="center"
-                android:src="@drawable/fab_add"
                 android:elevation="6dp"
-                fab:fabSize="mini"
+                android:scaleType="fitXY"
                 fab:fab_label="Enter Lat/Lng"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fab_add"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="16dp"
                 android:elevation="6dp"
-                fab:fabSize="mini"
+                android:scaleType="fitCenter"
                 fab:fab_label="Touch Map"/>
 
         </com.github.clans.fab.FloatingActionMenu>

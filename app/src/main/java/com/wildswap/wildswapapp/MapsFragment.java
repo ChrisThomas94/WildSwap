@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -68,6 +69,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
 import com.wildswap.wildswapapp.AsyncTask.FetchSiteImages;
 import com.wildswap.wildswapapp.Objects.AppClusterItem;
@@ -542,6 +546,11 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         gps_fab.setOnClickListener(new gpsClickListener(googleMap));
         manual_fab.setOnClickListener(new manualClickListener(googleMap));
 
+        addSite.setImageDrawable(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_touch_app).color(Color.WHITE).sizeDp(16));
+        gps_fab.setImageDrawable(new IconicsDrawable(getActivity()).icon(GoogleMaterial.Icon.gmd_gps_fixed).color(Color.WHITE).sizeDp(16));
+        manual_fab.setImageDrawable(new IconicsDrawable(getActivity(), GoogleMaterial.Icon.gmd_create).color(Color.WHITE).sizeDp(16));
+
+
         owned.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -785,6 +794,9 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                 alert.show();
             } else {
                 //ask user to enable gps
+                Intent gpsOptionsIntent = new Intent(
+                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(gpsOptionsIntent);
             }
 
         }

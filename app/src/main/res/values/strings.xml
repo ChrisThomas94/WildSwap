@@ -28,8 +28,8 @@
 
 
     <!-- Features List -->
-    <string name="titleDefault">Cool wild location</string>
-    <string name="descriptionDefault">It is really cool here&#8230;</string>
+    <string name="titleDefault">A Short Title</string>
+    <string name="descriptionDefault">Describe the location and any distinguishing features.</string>
 
     <!-- Features List -->
     <string name="feature1">Car Access</string>

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 
+import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.wildswap.wildswapapp.Adapters.CustomSpinnerAdapter;
 import com.wildswap.wildswapapp.Adapters.ViewPagerAdapter;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;

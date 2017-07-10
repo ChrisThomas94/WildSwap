@@ -96,8 +96,11 @@ public class TradeOwnedSitesAdapter extends PagerAdapter {
         stars.getDrawable(1).setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP);
         stars.getDrawable(0).setColorFilter(Color.LTGRAY, PorterDuff.Mode.SRC_ATOP);
 
-        country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
-
+        if(thisAddress.getLocality().equals("null")){
+            country.setText(thisAddress.getCountryName());
+        } else {
+            country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
+        }
         String amateurText = amateur.getText().toString();
         String casualText = casual.getText().toString();
         String expertText = expert.getText().toString();
