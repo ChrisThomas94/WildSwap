@@ -38,7 +38,7 @@ import java.util.Locale;
 import com.wildswap.wildswapapp.Adapters.ImageGridAdapter;
 import com.wildswap.wildswapapp.Adapters.ImageUriGridAdapter;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
-import com.wildswap.wildswapapp.AsyncTask.CreateSite;
+import com.wildswap.wildswapapp.AsyncTask.AddSite;
 import com.wildswap.wildswapapp.AsyncTask.UpdateSite;
 import com.wildswap.wildswapapp.Objects.Gallery;
 import com.wildswap.wildswapapp.Objects.Site;
@@ -61,6 +61,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     TextView classificationA;
     TextView classificationC;
     TextView classificationE;
+    ImageView tent;
+    ImageView camper;
+    ImageView bothy;
+    FrameLayout tentFrame;
+    FrameLayout camperFrame;
+    FrameLayout bothyFrame;
+    TextView suitedDescription;
     RatingBar ratingBar;
     CheckBox imagePermission;
     ViewGroup.LayoutParams layoutParams;
@@ -98,6 +105,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     Boolean feature9;
     Boolean feature10;
     String classification;
+    String suited;
     String titlePassed;
     String descPassed;
     int relat = 90;
@@ -107,6 +115,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     int progressValue;
 
     Boolean updateClassification = false;
+    Boolean updateSuited = false;
     Boolean updateTitle = false;
     Boolean updateDesc = false;
     Boolean updateImage = false;
@@ -150,6 +159,17 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         distantTerrainFeatures = (ImageView)findViewById(R.id.distantTerrainFeatures);
         nearbyTerrainFeatures = (ImageView)findViewById(R.id.nearbyTerrainFeatures);
         immediateTerrainFeatures = (ImageView)findViewById(R.id.immediateTerrainFeatures);
+        classificationA = (TextView) findViewById(R.id.classificationA);
+        classificationC = (TextView) findViewById(R.id.classificationC);
+        classificationE = (TextView) findViewById(R.id.classificationE);
+        classA = (FrameLayout) findViewById(R.id.classificationAFrame);
+        classC = (FrameLayout) findViewById(R.id.classificationCFrame);
+        classE = (FrameLayout) findViewById(R.id.classificationEFrame);
+        classDescription = (TextView)findViewById(R.id.classificationDescription);
+        tentFrame = (FrameLayout) findViewById(R.id.tentFrame);
+        camperFrame = (FrameLayout) findViewById(R.id.camperFrame);
+        bothyFrame = (FrameLayout) findViewById(R.id.bothyFrame);
+        suitedDescription = (TextView) findViewById(R.id.suitedDescription);
 
         Lat.setEnabled(false);
         Lon.setEnabled(false);
@@ -158,15 +178,8 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         nearbyTerrainFeatures.setVisibility(View.GONE);
         immediateTerrainFeatures.setVisibility(View.GONE);
 
-        classificationA = (TextView) findViewById(R.id.classificationA);
-        classificationC = (TextView) findViewById(R.id.classificationC);
-        classificationE = (TextView) findViewById(R.id.classificationE);
-        classA = (FrameLayout) findViewById(R.id.classificationAFrame);
-        classC = (FrameLayout) findViewById(R.id.classificationCFrame);
-        classE = (FrameLayout) findViewById(R.id.classificationEFrame);
-        classDescription = (TextView)findViewById(R.id.classificationDescription);
-
         classification = classificationA.getText().toString();
+        suited = "tent";
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -317,6 +330,32 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 classDescription.setText(R.string.expertClassification);
             }
 
+            suited = focused.getSuited();
+            updateProgress();
+
+            switch (suited){
+                case "tent":
+                    tentFrame.getForeground().setAlpha(0);
+                    camperFrame.getForeground().setAlpha(150);
+                    bothyFrame.getForeground().setAlpha(150);
+                    suitedDescription.setText(R.string.suitedTent);
+                    break;
+
+                case "camper":
+                    tentFrame.getForeground().setAlpha(150);
+                    camperFrame.getForeground().setAlpha(0);
+                    bothyFrame.getForeground().setAlpha(150);
+                    suitedDescription.setText(R.string.suitedCamper);
+                    break;
+
+                case "bothy":
+                    tentFrame.getForeground().setAlpha(150);
+                    camperFrame.getForeground().setAlpha(150);
+                    bothyFrame.getForeground().setAlpha(0);
+                    suitedDescription.setText(R.string.suitedBothy);
+                    break;
+            }
+
             //position
             latitude = focused.getPosition().latitude;
             longitude = focused.getPosition().longitude;
@@ -336,20 +375,13 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 Lon.setEnabled(true);
             }
 
-            if(titlePassed == null){
-                //title.setText(R.string.titleDefault);
-            } else {
+            if(titlePassed != null){
                 title.setText(titlePassed);
             }
 
-            if(descPassed == null){
-                //description.setText(R.string.descriptionDefault);
-            } else {
+            if(descPassed != null){
                 description.setText(descPassed);
             }
-
-            System.out.println(imageUpload);
-
 
             if(imageUpload) {
 
@@ -365,6 +397,16 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             classE.getForeground().setAlpha(150);
             classification = classificationA.getText().toString();
             classDescription.setText(R.string.amateurClassification);
+
+            tentFrame.getForeground().setAlpha(0);
+            camperFrame.getForeground().setAlpha(150);
+            bothyFrame.getForeground().setAlpha(150);
+            suitedDescription.setText(R.string.suitedTent);
+
+            if(!updateSuited){
+                updateProgress();
+            }
+            updateSuited = true;
 
             if(!updateClassification){
                 updateProgress();
@@ -421,6 +463,9 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         classificationA.setOnClickListener(this);
         classificationC.setOnClickListener(this);
         classificationE.setOnClickListener(this);
+        tentFrame.setOnClickListener(this);
+        camperFrame.setOnClickListener(this);
+        bothyFrame.setOnClickListener(this);
         Lon.setOnClickListener(this);
     }
 
@@ -473,6 +518,51 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                 classC.getForeground().setAlpha(150);
                 classE.getForeground().setAlpha(0);
                 classDescription.setText(R.string.expertClassification);
+                break;
+
+            case R.id.tentFrame:
+
+                if(!updateSuited){
+                    updateProgress();
+                }
+
+                updateSuited = true;
+                suited = "tent";
+                tentFrame.getForeground().setAlpha(0);
+                camperFrame.getForeground().setAlpha(150);
+                bothyFrame.getForeground().setAlpha(150);
+                suitedDescription.setText(R.string.suitedTent);
+
+                break;
+
+            case R.id.camperFrame:
+
+                if(!updateSuited){
+                    updateProgress();
+                }
+
+                updateSuited = true;
+                suited = "camper";
+                tentFrame.getForeground().setAlpha(150);
+                camperFrame.getForeground().setAlpha(0);
+                bothyFrame.getForeground().setAlpha(150);
+                suitedDescription.setText(R.string.suitedCamper);
+
+                break;
+
+            case R.id.bothyFrame:
+
+                if(!updateSuited){
+                    updateProgress();
+                }
+
+                updateSuited = true;
+                suited = "bothy";
+                tentFrame.getForeground().setAlpha(150);
+                camperFrame.getForeground().setAlpha(150);
+                bothyFrame.getForeground().setAlpha(0);
+                suitedDescription.setText(R.string.suitedBothy);
+
                 break;
 
             case R.id.addPhotoRel:
@@ -702,7 +792,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
     public void submit(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(AddSiteActivity.this);
         builder1.setTitle("Attention!");
-        builder1.setMessage("The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.");
+        builder1.setMessage(R.string.addSiteSubmit);
 
         builder1.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             @Override
@@ -729,7 +819,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
 
                     System.out.println("imageupload"+updateImage);
 
-                    new CreateSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
+                    new AddSite(AddSiteActivity.this, relat, latReq, lonReq, titleReq, descReq, classification, suited, ratingReq, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, imageUris2, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
 

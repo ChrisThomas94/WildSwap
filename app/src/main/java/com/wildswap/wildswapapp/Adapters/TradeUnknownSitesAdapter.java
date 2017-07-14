@@ -96,6 +96,7 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
             RatingBar rating = (RatingBar) itemView.findViewById(R.id.recieveRating);
             TextView ratedBy = (TextView) itemView.findViewById(R.id.ratedBy);
             TextView country = (TextView) itemView.findViewById(R.id.country);
+            ImageView suited = (ImageView) itemView.findViewById(R.id.suited);
 
             LayerDrawable stars = (LayerDrawable) rating.getProgressDrawable();
             stars.getDrawable(2).setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_ATOP);
@@ -134,7 +135,23 @@ public class TradeUnknownSitesAdapter extends PagerAdapter {
             casual.setVisibility(View.INVISIBLE);
             expert.setVisibility(View.INVISIBLE);
 
+            switch (thisSite.getSuited()){
+                case "tent":
+                    suited.setImageResource(R.drawable.tent01);
+                    break;
 
+                case "camper":
+                    suited.setImageResource(R.drawable.campervan01);
+                    break;
+
+                case "bothy":
+                    suited.setImageResource(R.drawable.silhouette01);
+                    break;
+
+                default:
+                    suited.setVisibility(View.GONE);
+                    break;
+            }
 
             if (!thisSite.getClassification().isEmpty()) {
 

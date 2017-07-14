@@ -52,6 +52,11 @@
     <string name="casualClassification">A Casual location is off the beaten track and will require a short hike or drive into the wilderness, no nearby amenities.</string>
     <string name="expertClassification">An Expert location requires some serious navigational skills, do not expect to see another soul at this location and make sure to bring enough food and toilet roll.</string>
 
+    <string name="addSiteSubmit">The exact location of this site will not be visible to any other users until you trade it with them. Please only add locations where access rights can be exercised, as outlined in the Scottish Outdoor Access Code. If not your location may be at risk of being removed and your account banned, you can remove your location at any time.</string>
+
+    <string name="suitedTent">Suited to a tent.</string>
+    <string name="suitedCamper">Suited to a campervan.</string>
+    <string name="suitedBothy">There is a bothy/public house here.</string>
 
     <string name="distantFeature1">Hills</string>
     <string name="distantFeature2">Forest</string>

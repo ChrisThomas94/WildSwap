@@ -132,6 +132,7 @@ public class FetchUnknownSites extends AsyncTask<String, String, String> {
                         siteClass.setTitle(jsonDetails.getString("title"));
                         siteClass.setDescription(jsonDetails.getString("description"));
                         siteClass.setClassification(jsonDetails.getString("classification"));
+                        siteClass.setSuited(jsonDetails.getString("suited"));
 
                         Double d = Double.parseDouble(jsonDetails.getString("rating"));
 

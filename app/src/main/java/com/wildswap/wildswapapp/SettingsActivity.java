@@ -1,10 +1,6 @@
 package com.wildswap.wildswapapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +11,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
-import com.wildswap.wildswapapp.AsyncTask.CreateSite;
 import com.wildswap.wildswapapp.Objects.StoredData;
 import com.wildswap.wildswapapp.Objects.User;
 

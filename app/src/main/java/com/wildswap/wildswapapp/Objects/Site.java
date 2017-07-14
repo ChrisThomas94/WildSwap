@@ -24,13 +24,10 @@ public class Site {
     private Double lat;
     private Double lon;
     private int numOwners;
-
     private String classification;
-
+    private String suited;
     private List<android.location.Address> address;
-
     private SparseArray<String> features;
-
     private String display_pic;
 
     private String feature1;
@@ -53,6 +50,14 @@ public class Site {
     private String image2;
     private String image3;
     private SparseArray<Gallery> images;
+
+    public String getSuited() {
+        return suited;
+    }
+
+    public void setSuited(String suited) {
+        this.suited = suited;
+    }
 
     public int getNumOwners() {
         return numOwners;

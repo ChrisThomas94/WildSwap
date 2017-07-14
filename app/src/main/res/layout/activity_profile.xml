@@ -256,7 +256,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="15dp"
-                            android:text="Why I'm on WildScotland"
+                            android:text="Why I'm on Wild Swap"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="15sp"
                             android:visibility="visible" />

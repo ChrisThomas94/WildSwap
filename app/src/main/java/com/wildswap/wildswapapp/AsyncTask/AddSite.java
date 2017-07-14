@@ -39,7 +39,7 @@ import com.wildswap.wildswapapp.Objects.User;
  * Created by Chris on 16-Mar-16.
  *
  */
-public class CreateSite extends AsyncTask<String, String, String> {
+public class AddSite extends AsyncTask<String, String, String> {
 
     private AsyncResponse delegate = null;
 
@@ -62,6 +62,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
     private String title;
     private String description;
     private String classification;
+    private String suited;
     private String rating;
     private String json;
 
@@ -97,10 +98,11 @@ public class CreateSite extends AsyncTask<String, String, String> {
     ArrayList<String> imagesSingleLine;
 
 
-    public CreateSite(Context context, int relationship, String lat, String lon, String title, String description, String classification,
-                      String rating,Boolean permission, String distant, String nearby, String immediate,
-                      Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10,
-                      ArrayList<String> images, AsyncResponse delegate) {
+    public AddSite(Context context, int relationship, String lat, String lon, String title, String description, String classification, String suited,
+                   String rating, Boolean permission, String distant, String nearby, String immediate,
+                   Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5,
+                   Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10,
+                   ArrayList<String> images, AsyncResponse delegate) {
 
         this.context = context;
         this.relat = relationship;
@@ -109,6 +111,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
         this.title = title;
         this.description = description;
         this.classification = classification;
+        this.suited = suited;
         this.rating = rating;
 
         this.feature1 = feature1;
@@ -181,7 +184,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
 
         // issue the post request
         try {
-            String json = addSite(uid, email, relat, lat, lon, title, description, classification, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound, imagesSingleLine);
+            String json = addSite(uid, email, relat, lat, lon, title, description, classification, suited, rating, permission, distant, nearby, immediate, feature1, feature2, feature3, feature4, feature5, feature6, feature7, feature8, feature9, feature10, latLowerBound, latUpperBound, lonLowerBound, lonUpperBound, imagesSingleLine);
             System.out.println("json: "+json);
             postResponse = doPostRequest(Appconfig.URL, json);
             System.out.println("post response: "+ postResponse);
@@ -209,6 +212,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                     newSite.setDescription(jsonSite.getString("description"));
                     newSite.setRating(jsonSite.getDouble("rating"));
                     newSite.setClassification(jsonSite.getString("classification"));
+                    newSite.setSuited(jsonSite.getString("suited"));
 
                     newSite.setPermission(jsonSite.getString("permission"));
                     newSite.setDistant(jsonSite.getString("distantTerrain"));
@@ -326,7 +330,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"error_msg\":\"" + "Server Timeout" + "\"}";
     }
 
-    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String classification, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound, ArrayList<String> images) {
+    private String addSite(String uid, String email, int relat, String lat, String lon, String title, String description, String classification, String suited, String rating, Boolean permission, String distant, String nearby, String immediate, Boolean feature1, Boolean feature2, Boolean feature3, Boolean feature4, Boolean feature5, Boolean feature6, Boolean feature7, Boolean feature8, Boolean feature9, Boolean feature10, Double latLowerBound, Double latUpperBound, Double lonLowerBound, Double lonUpperBound, ArrayList<String> images) {
 
         JSONArray jsonGallery = new JSONArray();
 
@@ -353,6 +357,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
                 + "\"classification\":\"" + classification + "\","
+                + "\"suited\":\"" + suited + "\","
                 + "\"rating\":\"" + rating + "\","
                 + "\"permission\":\"" + permission + "\","
                 + "\"distant\":\"" + distant + "\","
@@ -383,6 +388,7 @@ public class CreateSite extends AsyncTask<String, String, String> {
                 + "\"title\":\"" + title + "\","
                 + "\"description\":\"" + description + "\","
                 + "\"classification\":\"" + classification + "\","
+                + "\"suited\":\"" + suited + "\","
                 + "\"rating\":\"" + rating + "\","
                 + "\"permission\":\"" + permission + "\","
                 + "\"distant\":\"" + distant + "\","

@@ -89,6 +89,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     FrameLayout classA;
     FrameLayout classC;
     FrameLayout classE;
+    ImageView suited;
 
     Boolean showDialog = true;
 
@@ -116,16 +117,15 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         featuresBackground = (LinearLayout)findViewById(R.id.featuresBackground);
         frame = (FrameLayout) findViewById(R.id.frame);
         scroll = (ScrollView)findViewById(R.id.pageScrollView);
-        //frame.getForeground().setAlpha(0);
         imageViews = (ViewPager) findViewById(R.id.imageViewPager);
         country = (TextView)findViewById(R.id.country);
-
         classificationA = (TextView) findViewById(R.id.classificationA);
         classificationC = (TextView) findViewById(R.id.classificationC);
         classificationE = (TextView) findViewById(R.id.classificationE);
         classA = (FrameLayout) findViewById(R.id.classificationAFrame);
         classC = (FrameLayout) findViewById(R.id.classificationCFrame);
         classE = (FrameLayout) findViewById(R.id.classificationEFrame);
+        suited = (ImageView) findViewById(R.id.suited);
 
 
         Bundle extras = getIntent().getExtras();
@@ -185,6 +185,25 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         thisAddress = address.get(0);
 
         country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
+
+        String suitedType = focused.getSuited();
+        switch (suitedType){
+            case "tent":
+                suited.setImageResource(R.drawable.tent01);
+                break;
+
+            case "camper":
+                suited.setImageResource(R.drawable.campervan01);
+                break;
+
+            case "bothy":
+                suited.setImageResource(R.drawable.silhouette01);
+                break;
+
+            default:
+                suited.setVisibility(View.GONE);
+                break;
+        }
 
         if(focused.getDistant().equals("null") && focused.getNearby().equals("null") && focused.getImmediate().equals("null")) {
             distantTerrainFeatures.setVisibility(View.GONE);

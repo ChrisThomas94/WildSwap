@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +42,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scrollHorizontally="false"
-                        android:text="Title"
+                        android:hint="Title"
                         android:inputType="textMultiLine"
                         android:textStyle="bold"
                         android:padding="10dp"
@@ -63,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:scrollHorizontally="false"
                         android:inputType="textMultiLine"
-                        android:text="Description"
+                        android:hint="Description"
                         android:textSize="15sp"
                         android:maxLines="10"
                         android:maxLength="300"
@@ -355,6 +356,93 @@
                     android:text="Sample Text"/>
 
             </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/suitedBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_linear_layout">
+
+            <TextView
+                android:id="@+id/suitedInstruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Select the form of wild camping your location is suited to:"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp">
+
+                <FrameLayout
+                    android:id="@+id/tentFrame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="@drawable/rounded_dimmer"
+                    android:background="@drawable/rounded_green_button">
+
+                    <ImageView
+                        android:id="@+id/tent"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/rounded_white_button"
+                        android:duplicateParentState="true"
+                        android:src="@drawable/tent01" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/camperFrame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="@drawable/rounded_dimmer"
+                    android:background="@drawable/rounded_green_button">
+
+                    <ImageView
+                        android:id="@+id/camper"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/campervan01"
+                        android:duplicateParentState="true"
+                        android:background="@drawable/rounded_white_button"/>
+
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/bothyFrame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="@drawable/rounded_dimmer"
+                    android:background="@drawable/rounded_green_button">
+
+                    <ImageView
+                        android:id="@+id/bothy"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/silhouette01"
+                        android:duplicateParentState="true"
+                        android:background="@drawable/rounded_white_button"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/suitedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Sample Text"/>
+
+
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

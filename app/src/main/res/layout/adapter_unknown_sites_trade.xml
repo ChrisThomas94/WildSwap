@@ -124,6 +124,14 @@
             android:textColor="@color/text_light"
             android:layout_below="@+id/ratedBy"/>
 
+        <ImageView
+            android:id="@+id/suited"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:src="@drawable/tent01"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"/>
+
     </RelativeLayout>
 
     <RelativeLayout

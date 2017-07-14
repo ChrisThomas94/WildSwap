@@ -120,6 +120,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         String title = jsonSite.getString("title");
                         String description = jsonSite.getString("description");
                         String classification = jsonSite.getString("classification");
+                        String suited = jsonSite.getString("suited");
                         String rating = jsonSite.getString("rating");
                         String permission = jsonSite.getString("permission");
                         String distant = jsonSite.getString("distantTerrain");
@@ -152,6 +153,7 @@ public class FetchKnownSites extends AsyncTask<String, String, String> {
                         siteClass.setRating(avrRating);
                         siteClass.setRatedBy(ratedBy);
                         siteClass.setClassification(classification);
+                        siteClass.setSuited(suited);
                         siteClass.setPermission(permission);
                         siteClass.setDistant(distant);
                         siteClass.setNearby(nearby);

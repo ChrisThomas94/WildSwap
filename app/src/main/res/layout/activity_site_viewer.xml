@@ -86,7 +86,7 @@
                         android:padding="10dp"
                         android:textSize="30sp"/>
 
-                        <RelativeLayout
+                    <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
@@ -171,7 +171,6 @@
 
                     </RelativeLayout>
 
-
                     <TextView
                         android:id="@+id/siteViewDescription"
                         android:layout_width="wrap_content"
@@ -181,21 +180,35 @@
                         android:textSize="15sp"
                         android:padding="10dp"/>
 
-                    <RatingBar
-                        android:id="@+id/siteViewRating"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:isIndicator="true"
-                        android:layout_gravity="center"/>
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/ratedBy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/siteViewRating"
-                        android:text="Rated By: 1"
-                        android:layout_margin="5dp"/>
+                        <RatingBar
+                            android:id="@+id/siteViewRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:isIndicator="true"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/ratedBy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/siteViewRating"
+                            android:text="Rated By: 1"
+                            android:layout_margin="5dp"/>
+
+                        <ImageView
+                            android:id="@+id/suited"
+                            android:layout_width="75dp"
+                            android:layout_height="50dp"
+                            android:layout_below="@id/siteViewRating"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/tent01"/>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
