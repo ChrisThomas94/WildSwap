@@ -30,8 +30,6 @@ public class OwnedSitesFragment extends Fragment {
     SparseArray<Site> ownedSites;
     SiteListAdapter adapter;
     ListView mDrawerList;
-    //boolean register = false;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,10 +55,11 @@ public class OwnedSitesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final Intent intent = new Intent(getActivity(), OwnedSiteViewerActivity.class);
+                final Intent intent = new Intent(getActivity(), SiteViewerActivity.class);
                 intent.putExtra("arrayPosition", position);
                 intent.putExtra("cid", ownedSites.get(position).getCid());
                 intent.putExtra("prevState", 1);
+                intent.putExtra("owned", true);
 
                 SparseArray<Gallery> images = inst.getImages();
                 String cid = ownedSites.get(position).getCid();

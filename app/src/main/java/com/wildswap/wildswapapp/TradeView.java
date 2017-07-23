@@ -301,7 +301,7 @@ public class TradeView extends AppCompatActivity {
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (send_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
-                    System.out.println("owned site found");
+                    System.out.println("sites site found");
                     break;
                 }
             }
@@ -311,7 +311,7 @@ public class TradeView extends AppCompatActivity {
             for (int i = 0; i < ownedMap.size(); i++) {
                 if (recieve_cid.equals(ownedMap.get(i).getCid())) {
                     ownedSite.put(0, ownedMap.get(i));
-                    System.out.println("owned site found");
+                    System.out.println("sites site found");
                     break;
                 }
             }
@@ -323,7 +323,7 @@ public class TradeView extends AppCompatActivity {
         if(sent) {
             //loop through all known sites and find the site that was offered for trading
             for (int i = 0; i < knownMap.size(); i++) {
-                System.out.println("site owned map" + knownMap.get(i).getCid());
+                System.out.println("site sites map" + knownMap.get(i).getCid());
                 if (recieve_cid.equals(knownMap.get(i).getCid())) {
                     knownSite.put(0, knownMap.get(i));
                     System.out.println("known site found - received");

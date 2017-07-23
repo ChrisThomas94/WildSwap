@@ -19,9 +19,18 @@ public class StoredData {
     private static SparseArray<Site> ownedSitesMap = new SparseArray<>();
     private static SparseArray<Gallery> temp = new SparseArray<>();
     private static SparseArray<User> dealers = new SparseArray<>();
+    private static SparseArray<User> guardians = new SparseArray<>();
     private static User loggedInUser = new User();
     private static User otherUser = new User();
     private static SparseArray<Badge> badgeCollection = new SparseArray<>();
+
+    public SparseArray<User> getGuardians() {
+        return guardians;
+    }
+
+    public void setGuardians(SparseArray<User> guardians) {
+        StoredData.guardians = guardians;
+    }
 
     public static User getOtherUser() {
         return otherUser;

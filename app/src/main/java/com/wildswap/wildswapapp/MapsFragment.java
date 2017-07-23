@@ -13,12 +13,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseArray;
@@ -38,14 +35,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.location.LocationListener;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 //import com.google.android.gms.location.LocationListener;
 import com.github.clans.fab.FloatingActionMenu;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -68,11 +63,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
+import com.wildswap.wildswapapp.AsyncTask.FetchGuardians;
 import com.wildswap.wildswapapp.AsyncTask.FetchSiteImages;
 import com.wildswap.wildswapapp.Objects.AppClusterItem;
 import com.wildswap.wildswapapp.Objects.Gallery;
@@ -673,7 +669,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         ownedMarkersList = new ArrayList<>();
 
         if(ownedSiteSize > 0){
-            System.out.println("I have a owned site");
+            System.out.println("I have a sites site");
             for(int i = 0; i< ownedSiteSize; i++){
 
                 Site currentSite = ownedSitesMap.get(i);
@@ -1200,7 +1196,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         showOwnedSites();
 
         // Point the unknownSitesMap's listeners at the listeners implemented by the cluster manager.
-        //googleMap.setOnCameraChangeListener(mClusterManager);
+        //google_map.setOnCameraChangeListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mMarkerManager);
         googleMap.setInfoWindowAdapter(mMarkerManager);
 
@@ -1215,10 +1211,18 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
                         Site currentSite = knownSitesMap.get(i);
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
-                            final Intent intent = new Intent(getActivity().getApplicationContext(), KnownSiteViewerActivity.class);
+                            try {
+                                new FetchGuardians(getActivity(), currentSite.getCid(), currentSite.getSiteAdmin(), false).execute().get();
+                            } catch (ExecutionException e){
+
+                            } catch (InterruptedException e){
+
+                            }
+                            final Intent intent = new Intent(getActivity().getApplicationContext(), SiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
+                            intent.putExtra("owned", false);
 
                             SparseArray<Gallery> images = inst.getImages();
                             String cid = currentSite.getCid();
@@ -1250,10 +1254,18 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
 
                         if (marker.getPosition().equals(currentSite.getPosition())) {
 
-                            intent = new Intent(getActivity().getApplicationContext(), OwnedSiteViewerActivity.class);
+                            try {
+                                new FetchGuardians(getActivity(), currentSite.getCid(), currentSite.getSiteAdmin(), false).execute().get();
+                            } catch (ExecutionException e){
+
+                            } catch (InterruptedException e){
+
+                            }
+                            intent = new Intent(getActivity().getApplicationContext(), SiteViewerActivity.class);
                             intent.putExtra("arrayPosition", i);
                             intent.putExtra("cid", currentSite.getCid());
                             intent.putExtra("prevState", 0);
+                            intent.putExtra("owned", true);
 
                             SparseArray<Gallery> images = inst.getImages();
                             String cid = currentSite.getCid();

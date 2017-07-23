@@ -128,13 +128,8 @@
         </activity>
 
         <activity
-            android:name="com.wildswap.wildswapapp.OwnedSiteViewerActivity"
+            android:name="com.wildswap.wildswapapp.SiteViewerActivity"
             android:label="Owned Site"
-            android:theme="@style/AppTheme"/>
-
-        <activity
-            android:name="com.wildswap.wildswapapp.KnownSiteViewerActivity"
-            android:label="Known Site"
             android:theme="@style/AppTheme"/>
 
         <activity android:name="com.wildswap.wildswapapp.FeaturesActivity"

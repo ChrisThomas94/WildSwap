@@ -1,9 +1,12 @@
 package com.wildswap.wildswapapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
@@ -21,15 +24,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.wildswap.wildswapapp.Adapters.ImageGalleryAdapter;
+import com.wildswap.wildswapapp.Adapters.ViewPagerAdapter;
+import com.wildswap.wildswapapp.Adapters.WrapContentHeightViewPager;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
 import com.wildswap.wildswapapp.AsyncTask.CreateNotification;
 import com.wildswap.wildswapapp.AsyncTask.FetchKnownSites;
@@ -39,22 +44,21 @@ import com.wildswap.wildswapapp.AsyncTask.UpdateSite;
 import com.wildswap.wildswapapp.Objects.Gallery;
 import com.wildswap.wildswapapp.Objects.Site;
 import com.wildswap.wildswapapp.Objects.StoredData;
-
+import com.wildswap.wildswapapp.Objects.User;
 
 /**
  * Created by Chris on 26-Feb-16.
  *
  */
-public class KnownSiteViewerActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
+public class SiteViewerActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
 
     int arrayPos;
     Double latitude;
     Double longitude;
     String cid;
-    String imageStr;
     Bitmap imageBit;
     int prevState;
-    SparseArray<Site> known = new SparseArray<>();
+    SparseArray<Site> sites = new SparseArray<>();
     SparseArray<Gallery> images;
     Address thisAddress;
     double ratingOnStart;
@@ -66,8 +70,8 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     Boolean hasImages = false;
     ScrollView scroll;
     ViewPager imageViews;
-
-    ImageView expandedImage;
+    boolean showDialog = true;
+    boolean owned = false;
     View parentLayout;
 
     Site focused;
@@ -90,8 +94,13 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     FrameLayout classC;
     FrameLayout classE;
     ImageView suited;
+    ImageButton googleMap;
 
-    Boolean showDialog = true;
+    ViewPager pager;
+    ViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
+    CharSequence Titles[]={"Events", "Guardians"};
+    int Numboftabs =2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,33 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
+
+        adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles, Numboftabs);
+
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+        // Assiging the Sliding Tab Layout View
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.colorPrimaryDark);
+            }
+        });
+
+        // Setting the ViewPager For the SlidingTabsLayout
+        tabs.setViewPager(pager);
+
+        StoredData inst = new StoredData();
+        SparseArray<User> fetchedUsers = inst.getGuardians();
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) pager.getLayoutParams();
+        params.height = 360*fetchedUsers.size();
+        pager.setLayoutParams(params);
 
         lat = (TextView)findViewById(R.id.lat);
         lon = (TextView)findViewById(R.id.lon);
@@ -126,7 +162,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         classC = (FrameLayout) findViewById(R.id.classificationCFrame);
         classE = (FrameLayout) findViewById(R.id.classificationEFrame);
         suited = (ImageView) findViewById(R.id.suited);
-
+        googleMap = (ImageButton) findViewById(R.id.googleMap);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null)
@@ -134,15 +170,22 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             arrayPos = extras.getInt("arrayPosition");
             cid = extras.getString("cid");
             prevState = extras.getInt("prevState");
+            owned = extras.getBoolean("owned");
         }
 
-        System.out.println("cid1" + cid);
+        if(owned){
+            //this is an owned site
+            sites = inst.getOwnedSitesMap();
+            getSupportActionBar().setTitle("Owned Site");
 
-        StoredData inst = new StoredData();
-        known = inst.getKnownSitesMap();
-        focused = known.get(arrayPos);
+        } else {
+            //this is a known site
+            sites = inst.getKnownSitesMap();
+            getSupportActionBar().setTitle("Known Site");
+        }
+
+        focused = sites.get(arrayPos);
         cid = focused.getCid();
-        System.out.println("cid" + cid);
         latitude = focused.getLat();
         longitude = focused.getLon();
         lat.setText("Latitude: "+latitude.toString());
@@ -152,10 +195,14 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         rating.setRating((focused.getRating()).floatValue());
         ratedBy.setText("Rated By: " + focused.getRatedBy());
 
-        rating.setClickable(true);
-        rating.setIsIndicator(false);
-        ratingOnStart = rating.getRating();
-        System.out.println("rating on start" + ratingOnStart);
+        if(owned){
+
+        } else {
+
+            rating.setClickable(true);
+            rating.setIsIndicator(false);
+            ratingOnStart = rating.getRating();
+        }
 
         StoredData ks = new StoredData();
         images = ks.getImages();
@@ -168,10 +215,10 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             imagesList = gallery.getGallery();
 
             ImageGalleryAdapter adapter = new ImageGalleryAdapter(this, imagesList);
-            if(imagesList.size() == 1) {
-                imageViews.setPageMargin(0);
-            } else {
+            if(imagesList.size() > 1) {
                 imageViews.setPageMargin(-150);
+            } else {
+                imageViews.setPageMargin(0);
             }
             imageViews.setAdapter(adapter);
             imageViews.setOffscreenPageLimit(imagesList.size()-1);
@@ -181,7 +228,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             imageViews.setVisibility(View.GONE);
         }
 
-        List<Address> address = focused.getAddress();
+        List<android.location.Address> address = focused.getAddress();
         thisAddress = address.get(0);
 
         country.setText(thisAddress.getCountryName() + ", " + thisAddress.getLocality());
@@ -248,38 +295,26 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         } else if(focused.getClassification().equals(expertText)){
             classE.setVisibility(View.VISIBLE);
 
-        } else {
-
         }
 
-        /*features = focused.getFeatures();
-        for (int i = 0; i<features.unknownSiteSize(); i++){
-            if(features.get(i+1).equals("0")){
-                String featureID = "feature"+(i+1)+"Image";
-
-                feature1Image.setVisibility(View.GONE);
-                feature1 = false;
-            }
-        }*/
-
-        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Toast.makeText(getApplicationContext(), "Rating Updated!", Toast.LENGTH_SHORT).show();
-
-                BadgeManager bM = new BadgeManager(KnownSiteViewerActivity.this);
-                bM.awardRateBadge();
-            }
-        });
-
+        googleMap.setOnClickListener(this);
     }
 
     @Override
     public void processFinish(String output){
 
         StoredData inst = new StoredData();
-        known = inst.getOwnedSitesMap();
-        Site focused = known.get(arrayPos);
+
+        if(owned){
+            //this is an owned site
+            sites = inst.getOwnedSitesMap();
+
+        } else {
+            //this is a known site
+            sites = inst.getKnownSitesMap();
+        }
+
+        focused = sites.get(arrayPos);
         cid = focused.getCid();
         latitude = focused.getLat();
         longitude = focused.getLon();
@@ -302,22 +337,15 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.imagesLinear);
 
-        if(imagesList.isEmpty()){
-            //no images
-            Log.d("Images", "There are no images");
-        } else {
+        if(!imagesList.isEmpty()){
             for(int i = 0; i<imagesList.size(); i++){
                 //populate the grid view.
                 Log.d("View", "Add View for Image");
                 imageBit = StringToBitMap(imagesList.get(i));
                 ImageButton imageView = new ImageButton(this);
                 imageView.setId(i);
-                //imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(imageBit);
-                //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                //imageView.setBackgroundColor(Color.TRANSPARENT);
                 imageView.setClickable(true);
-                //imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
                 layout.addView(imageView);
             }
         }
@@ -345,17 +373,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             nearbyTerrainFeatures.setVisibility(View.GONE);
             immediateTerrainFeatures.setVisibility(View.GONE);
         }
-
-        /*features = focused.getFeatures();
-        for (int i = 0; i<features.unknownSiteSize(); i++){
-            if(features.get(i+1).equals("0")){
-                String featureID = "feature"+(i+1)+"Image";
-
-                feature1Image.setVisibility(View.GONE);
-                feature1 = false;
-            }
-        }*/
-
     }
 
 
@@ -365,12 +382,16 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
         Intent intent;
         switch (v.getId())
         {
-            case R.id.imageViewPager:
+            case R.id.googleMap:
 
-                imageBit = StringToBitMap(gallery.getGallery().get(0));
-                expandedImage.setImageBitmap(imageBit);
-                expandedImage.setVisibility(View.VISIBLE);
-                //frame.getForeground().setAlpha(150);
+                String label = focused.getTitle();
+                String uriBegin = "geo:" + latitude + "," + longitude;
+                String query = latitude + "," + longitude + "(" + label + ")";
+                String encodedQuery = Uri.encode(query);
+                String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+                Uri uri = Uri.parse(uriString);
+                Intent i = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                startActivity(i);
 
                 break;
         }
@@ -380,8 +401,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     public Bitmap StringToBitMap(String encodedString){
         try{
             byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
+            return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
         }catch(Exception e){
             e.getMessage();
             return null;
@@ -389,13 +409,33 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if(owned) {
+            inflater.inflate(R.menu.owned_site_viewer, menu);
+        } else {
+            inflater.inflate(R.menu.known_site_viewer, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-
             case android.R.id.home:
-
-                updateRating();
-
+                if(owned) {
+                    //Intent intent = null;
+                    if (prevState == 1) {
+                        Intent intent = new Intent(getApplicationContext(), SitesActivity.class);
+                        intent.putExtra("fragment", 1);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        finish();
+                    }
+                } else {
+                    updateRating();
+                }
                 return true;
 
             case R.id.profile:
@@ -427,16 +467,30 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
 
                 break;
 
+            case R.id.gift:
+
+                ArrayList<String> emails = new ArrayList<>();
+                final Intent i = new Intent(this, GiftSiteActivity.class);
+                i.putExtra("cid", cid);
+                new FetchUsers(this, emails, showDialog, new AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        startActivity(i);
+                    }
+                }).execute();
+
+                break;
+
             case R.id.report:
 
                 new CreateNotification(this, Appconfig.myToken, new AsyncResponse() {
                     @Override
                     public void processFinish(String output) {
-                        new ReportSite(KnownSiteViewerActivity.this, cid, new AsyncResponse() {
+                        new ReportSite(SiteViewerActivity.this, cid, new AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
 
-                                BadgeManager bm = new BadgeManager(KnownSiteViewerActivity.this);
+                                BadgeManager bm = new BadgeManager(SiteViewerActivity.this);
                                 bm.checkReportedBadges();
                                 Snackbar.make(parentLayout, "This site has been reported to the administrator.", Snackbar.LENGTH_LONG).show();
 
@@ -445,17 +499,55 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                     }
                 }).execute();
 
-                /*Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
-                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-                try {
-                    startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(KnownSiteViewerActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }*/
+                break;
 
+            case R.id.delete:
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                builder1.setTitle("Attention!");
+                builder1.setMessage("Are you sure you want to delete this site?");
+
+                builder1.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        boolean active = false;
+                        //String ratingReq = Double.toString(ratingBun);
+                        final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                        //trigger php to deactivate site
+                        new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, new AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).execute();
+
+                    }
+
+                });
+
+                builder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert1 = builder1.create();
+                alert1.show();
+
+                break;
+
+            case R.id.update:
+                intent = new Intent(getApplicationContext(),AddSiteActivity.class);
+                //bundle all current details into "add site"
+                intent.putExtra("update", true);
+                intent.putExtra("arrayPosition", arrayPos);
+                intent.putExtra("image", hasImages);
+                startActivity(intent);
+                finish();
                 break;
 
         }
@@ -463,16 +555,11 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.known_site_viewer, menu);
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
 
-        updateRating();
+        if(!owned) {
+            updateRating();
+        }
     }
 
     public void updateRating(){
@@ -486,7 +573,7 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
                 @Override
                 public void processFinish(String output) {
 
-                    new FetchKnownSites(KnownSiteViewerActivity.this, showDialog, new AsyncResponse() {
+                    new FetchKnownSites(SiteViewerActivity.this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             if(prevState == 1) {
@@ -512,18 +599,6 @@ public class KnownSiteViewerActivity extends AppCompatActivity implements View.O
             } else {
                 finish();
             }
-        }
-    }
-
-    public String getStringImage(Bitmap bmp){
-        if(bmp != null){
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-            return encodedImage;
-        } else {
-            return null;
         }
     }
 

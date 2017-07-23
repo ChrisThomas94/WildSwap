@@ -54,10 +54,11 @@ public class KnownSitesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final Intent intent = new Intent(getActivity(), KnownSiteViewerActivity.class);
+                final Intent intent = new Intent(getActivity(), SiteViewerActivity.class);
                 intent.putExtra("arrayPosition", position);
                 intent.putExtra("cid", knownSites.get(position).getCid());
                 intent.putExtra("prevState", 2);
+                intent.putExtra("owned", false);
 
                 SparseArray<Gallery> images = inst.getImages();
                 String cid = knownSites.get(position).getCid();

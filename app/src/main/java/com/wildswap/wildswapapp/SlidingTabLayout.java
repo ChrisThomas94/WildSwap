@@ -34,6 +34,8 @@ package com.wildswap.wildswapapp;
         import android.widget.LinearLayout;
         import android.widget.TextView;
 
+        import com.wildswap.wildswapapp.Adapters.WrapContentHeightViewPager;
+
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's frame progress.
@@ -295,9 +297,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
-
-            //WrapContentViewPager page = new WrapContentViewPager(getContext());
-            //page.reMeasureCurrentPage(position);
 
             if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
                 mTabStrip.onViewPagerPageChanged(position, 0f);

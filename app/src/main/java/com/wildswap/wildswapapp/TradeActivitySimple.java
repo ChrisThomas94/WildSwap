@@ -152,9 +152,10 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
         {
             case R.id.ownedSiteLinear:
 
-                final Intent i = new Intent(this, OwnedSiteViewerActivity.class);
+                final Intent i = new Intent(this, SiteViewerActivity.class);
                 i.putExtra("cid", send_cid);
                 i.putExtra("prevState", 2);
+                i.putExtra("owned", true);
 
                 new FetchSiteImages(this, send_cid, new AsyncResponse() {
                     @Override

@@ -14,6 +14,7 @@
             android:id="@+id/pageScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fillViewport="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -337,31 +338,65 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_linear_layout"
                     android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/lat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Latitude"
-                        android:textSize="15sp"
-                        android:padding="10dp"/>
+                    <ImageButton
+                        android:id="@+id/googleMap"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/google_map"
+                        android:background="@color/transparent"/>
 
-                    <TextView
-                        android:id="@+id/lon"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_toRightOf="@+id/googleMap"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Longitude"
-                        android:textSize="15sp"
-                        android:padding="10dp"/>
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/lat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Latitude"
+                            android:textSize="15sp"
+                            android:padding="10dp"/>
+
+                        <TextView
+                            android:id="@+id/lon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Longitude"
+                            android:textSize="15sp"
+                            android:padding="10dp"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <com.wildswap.wildswapapp.SlidingTabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:elevation="2dp"
+                    android:background="@color/list_item_title"/>
+
+                <View android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_below="@+id/tabs"
+                    android:background="@drawable/toolbar_dropshadow"/>
+
+                <view
+                    android:id="@+id/pager"
+                    class="com.wildswap.wildswapapp.Adapters.WrapContentHeightViewPager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_below="@+id/tabs"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
 
             </LinearLayout>
 
