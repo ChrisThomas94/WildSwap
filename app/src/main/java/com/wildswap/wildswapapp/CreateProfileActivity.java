@@ -217,35 +217,39 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
             alert1.show();
         }
 
-        if(!update){
+        if(update){
+            addCoverPicture.setVisibility(View.VISIBLE);
+
+            addCoverPicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    i.putExtra("imageType", "cover");
+                    addCoverPicture.setVisibility(View.GONE);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                }
+            });
+
+            coverPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    i.putExtra("imageType", "cover");
+                    addCoverPicture.setVisibility(View.GONE);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                    anyUpdates = true;
+
+                }
+            });
+        } else {
+            addCoverPicture.setVisibility(View.INVISIBLE);
+
             userType = userTypeText1.getText().toString();
             userType1.setBackgroundResource(R.drawable.rounded_green_button);
             userTypeDescription.setText(R.string.userTypeDescription1);
             updateProgress();
             updateUserType = false;
         }
-
-        addCoverPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                i.putExtra("imageType", "cover");
-                addCoverPicture.setVisibility(View.GONE);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
-
-        coverPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                i.putExtra("imageType", "cover");
-                addCoverPicture.setVisibility(View.GONE);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                anyUpdates = true;
-
-            }
-        });
 
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -575,7 +579,11 @@ public class CreateProfileActivity extends AppCompatActivity implements View.OnC
 
     public void updateProgress(){
 
-        progressValue = progress.getProgress()+20;
+        if(update){
+            progressValue = progress.getProgress()+20;
+        } else {
+            progressValue = progress.getProgress()+25;
+        }
         progress.setProgress(progressValue);
 
         if(progressValue >= 100){

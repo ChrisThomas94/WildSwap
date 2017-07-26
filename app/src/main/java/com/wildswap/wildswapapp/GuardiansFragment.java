@@ -48,7 +48,7 @@ public class GuardiansFragment extends android.support.v4.app.Fragment {
 
         mDrawerList = (ListView)rootView.findViewById(R.id.user_listview);
 
-        StoredData inst = new StoredData();
+        final StoredData inst = new StoredData();
         fetchedUsers = inst.getGuardians();
 
         adapter = new UserListAdapter(getActivity(), fetchedUsers);
@@ -60,8 +60,15 @@ public class GuardiansFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 final Intent profile = new Intent(getActivity(), ProfileActivity.class);
+
+                if(inst.getLoggedInUser().getEmail().equals(fetchedUsers.get(position).getEmail())){
+                    profile.putExtra("this_user", true);
+                    startActivity(profile);
+                } else {
+                    profile.putExtra("this_user", false);
+                }
+
                 profile.putExtra("email", fetchedUsers.get(position).getEmail());
-                profile.putExtra("this_user", false);
 
                 ArrayList<String> users = new ArrayList<>();
                 users.add(0, fetchedUsers.get(position).getEmail());

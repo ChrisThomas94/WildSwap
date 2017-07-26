@@ -2,6 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/updateProfile"
+        android:orderInCategory="100"
+        android:title="Update Profile"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/arrows128"
         android:orderInCategory="100"
@@ -18,9 +24,9 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/updateProfile"
+        android:id="@+id/action_about"
         android:orderInCategory="100"
-        android:title="Update Profile"
+        android:title="About"
         app:showAsAction="never"/>
 
 </menu>

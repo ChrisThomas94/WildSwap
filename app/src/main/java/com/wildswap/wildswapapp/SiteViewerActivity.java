@@ -99,7 +99,7 @@ public class SiteViewerActivity extends AppCompatActivity implements View.OnClic
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Events", "Guardians"};
+    CharSequence Titles[]={"Guardians", "News"};
     int Numboftabs =2;
 
     @Override
@@ -379,7 +379,6 @@ public class SiteViewerActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
 
-        Intent intent;
         switch (v.getId())
         {
             case R.id.googleMap:

@@ -1,16 +1,15 @@
 package com.wildswap.wildswapapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-public class EventsFragment extends Fragment {
+public class NewsFragment extends Fragment {
 
-    public EventsFragment() {
+    public NewsFragment() {
         // Required empty public constructor
     }
 
@@ -27,7 +26,7 @@ public class EventsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         // inflate and return the layout
-        View rootView = inflater.inflate(R.layout.fragment_events, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_news, container, false);
 
 
         return rootView;

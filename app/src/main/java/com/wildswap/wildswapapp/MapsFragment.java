@@ -287,18 +287,7 @@ public class MapsFragment extends MapFragment implements OnMapReadyCallback{
         lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         lps.setMargins(90,0,0,90);
 
-        ownedFilterLayout.setVisibility(View.INVISIBLE);
-        knownFilterLayout.setVisibility(View.INVISIBLE);
-        unknownFilterLayout.setVisibility(View.INVISIBLE);
-
-        String addWildLocationString = "You can add a wild location making it available for trading by pressing this button.";
-
-        /*if(newCamper){
-            //Create better text for when a new camper installs the app, point them to additional info
-            addWildLocationString = "I see that you have never been wild camping before...";
-        } else {
-            addWildLocationString = "You can add a wild location making it available for trading by pressing this button.";
-        }*/
+        filterLayout.setVisibility(View.INVISIBLE);
 
         ShowcaseView sv = new ShowcaseView.Builder(getActivity())
                 .setTarget(new ViewTarget(addSite))
