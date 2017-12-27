@@ -714,7 +714,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
         }
 
-        intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+        intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("add", false);
         intent.putExtra("data", false);
         startActivity(intent);
@@ -740,7 +740,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(getApplicationContext(), "Site creation canceled!", Toast.LENGTH_LONG).show();
                 }
 
-                intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("add", false);
                 intent.putExtra("data", false);
                 startActivity(intent);
@@ -779,7 +779,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
         new UpdateSite(this, true, true, cid, titleReq, descReq, classification, "0", imageUris2, new AsyncResponse() {
             @Override
             public void processFinish(String output) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("update", true);
@@ -810,7 +810,7 @@ public class AddSiteActivity extends AppCompatActivity implements View.OnClickLi
                     titleReq = titleReq.replace("'", "\'");
                     descReq = descReq.replace("'", "\'");
 
-                    final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                    final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("add", true);

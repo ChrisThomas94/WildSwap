@@ -14,8 +14,6 @@ import com.wildswap.wildswapapp.AsyncTask.FetchKnownSites;
 import com.wildswap.wildswapapp.AsyncTask.FetchTradeRequests;
 import com.wildswap.wildswapapp.AsyncTask.FetchUnknownSites;
 import com.wildswap.wildswapapp.AsyncTask.FetchUsers;
-import com.wildswap.wildswapapp.AsyncTask.Login;
-import com.wildswap.wildswapapp.AsyncTask.UpdateProfile;
 import com.wildswap.wildswapapp.Objects.StoredData;
 import com.wildswap.wildswapapp.Objects.User;
 
@@ -48,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-            final Intent intent = new Intent(this, MainActivity_Spinner.class);
+            final Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("fetchData", false);
 
             final Intent unfinishedProfile = new Intent(this, CreateProfileActivity.class);

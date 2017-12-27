@@ -225,7 +225,7 @@ public class TradeActivitySimple extends AppCompatActivity implements View.OnCli
             case R.id.action_submit:
 
                 final Intent intent = new Intent(getApplicationContext(),
-                        MainActivity_Spinner.class);
+                        MainActivity.class);
                 intent.putExtra("trade", true);
                 intent.putExtra("latitude", position.latitude);
                 intent.putExtra("longitude", position.longitude);

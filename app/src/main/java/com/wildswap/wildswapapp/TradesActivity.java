@@ -248,7 +248,7 @@ public class TradesActivity extends AppCompatActivity implements OnShowcaseEvent
         MapsFragment mapsFragment = null;
         switch (position) {
             case 0:
-                Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("data", false);
                 startActivity(i);
                 overridePendingTransition(0, 0);

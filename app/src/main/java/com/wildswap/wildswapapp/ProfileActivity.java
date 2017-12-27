@@ -363,7 +363,7 @@ public class ProfileActivity extends AppCompatActivity {
         // update the main content by replacing fragments
         switch (position) {
             case 0:
-                Intent i = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("data", false);
                 startActivity(i);
                 overridePendingTransition(0, 0);

@@ -170,7 +170,7 @@ public class TradeView extends AppCompatActivity {
                 //update trade record in db
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
-                            MainActivity_Spinner.class);
+                            MainActivity.class);
                     intent.putExtra("data", false);
                     new UpdateTrade(this, reject, unique_tid, negativeTradeStatus, new AsyncResponse() {
                         @Override
@@ -195,7 +195,7 @@ public class TradeView extends AppCompatActivity {
                 //update trade record in db
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
-                            MainActivity_Spinner.class);
+                            MainActivity.class);
                         intent.putExtra("data", false);
 
                     new UpdateTrade(this, reject, unique_tid, cancelTradeStatus, new AsyncResponse() {
@@ -214,7 +214,7 @@ public class TradeView extends AppCompatActivity {
             case R.id.action_accept:
                 if(isNetworkAvailable()) {
                     final Intent intent = new Intent(getApplicationContext(),
-                            MainActivity_Spinner.class);
+                            MainActivity.class);
                     intent.putExtra("latitude", unknownSite.get(0).getPosition().latitude);
                     intent.putExtra("longitude", unknownSite.get(0).getPosition().longitude);
                     intent.putExtra("trade", true);

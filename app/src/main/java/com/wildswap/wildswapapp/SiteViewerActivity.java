@@ -24,17 +24,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import com.wildswap.wildswapapp.Adapters.ImageGalleryAdapter;
 import com.wildswap.wildswapapp.Adapters.ViewPagerAdapter;
-import com.wildswap.wildswapapp.Adapters.WrapContentHeightViewPager;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
 import com.wildswap.wildswapapp.AsyncTask.CreateNotification;
 import com.wildswap.wildswapapp.AsyncTask.FetchKnownSites;
@@ -457,7 +454,7 @@ public class SiteViewerActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.showOnMap:
-                Intent intent = new Intent(this, MainActivity_Spinner.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 intent.putExtra("add", true);
@@ -513,7 +510,7 @@ public class SiteViewerActivity extends AppCompatActivity implements View.OnClic
 
                         boolean active = false;
                         //String ratingReq = Double.toString(ratingBun);
-                        final Intent intent = new Intent(getApplicationContext(), MainActivity_Spinner.class);
+                        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         //trigger php to deactivate site
                         new UpdateSite(getApplicationContext(), true, active, cid, null, null, null, null, null, new AsyncResponse() {
                             @Override

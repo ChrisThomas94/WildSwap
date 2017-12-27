@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
 
-import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.wildswap.wildswapapp.Adapters.CustomSpinnerAdapter;
 import com.wildswap.wildswapapp.Adapters.ViewPagerAdapter;
 import com.wildswap.wildswapapp.AsyncTask.AsyncResponse;
@@ -30,7 +29,7 @@ import com.wildswap.wildswapapp.AsyncTask.FetchTradeRequests;
 import com.wildswap.wildswapapp.AsyncTask.FetchUnknownSites;
 import com.wildswap.wildswapapp.Objects.StoredData;
 
-public class MainActivity_Spinner extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private Menu optionsMenu;
     private Toolbar toolbar;
@@ -59,7 +58,7 @@ public class MainActivity_Spinner extends AppCompatActivity implements SearchVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_spinner);
+        setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
@@ -158,7 +157,7 @@ public class MainActivity_Spinner extends AppCompatActivity implements SearchVie
                     new FetchKnownSites(this, showDialog, new AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
-                                new FetchUnknownSites(MainActivity_Spinner.this, showDialog, new AsyncResponse() {
+                                new FetchUnknownSites(MainActivity.this, showDialog, new AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) {
                                         Bundle bundle = new Bundle();

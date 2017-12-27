@@ -146,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity_Spinner.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("data", false);
                 startActivity(intent);
                 finish();

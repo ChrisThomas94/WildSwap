@@ -69,7 +69,7 @@ public class QuestionFragment extends Fragment {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
 
-                //Intent intent = new Intent(getApplicationContext(),MainActivity_Spinner.class);
+                //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 //startActivity(intent);
                 getActivity().finish();
                 return true;

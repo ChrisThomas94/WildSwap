@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         // Launching  main activity
                         intent = new Intent(LoginActivity.this,
-                                MainActivity_Spinner.class);
+                                MainActivity.class);
 
                         // login user
                         new Login(this, email, password, new AsyncResponse() {
